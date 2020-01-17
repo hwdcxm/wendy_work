@@ -55,5 +55,6 @@ library OPTIONSLib
 	coclass TTOptions
 	{
 		[default] interface ITTOptions;
+		interface ITTObject;
 	};
 };
