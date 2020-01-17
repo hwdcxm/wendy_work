@@ -1,3 +1,11 @@
+1 git add "文件名" //用户添加文件
+2 git add . //可以用来添加当前目录下的所有文件
+3 git commit -m "提交的内容" //提交版本信息
+4 git push //这一步才是真正的上传
+
+
+
+
 环境部署（六）：Git关联github
 https://www.cnblogs.com/imyalost/p/8777684.html
 我们使用Git进行版本管理，前面的博客也介绍了Linux下安装Git以及Git基础教程，这篇博客，简单介绍下如何使用Git关联github。。。
