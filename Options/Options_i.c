@@ -5,7 +5,7 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Fri Jan 17 10:51:42 2020
+/* at Fri Jan 17 15:56:13 2020
  */
 /* Compiler settings for E:\wendy_work\Options\Options.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
@@ -34,6 +34,9 @@ typedef struct _IID
 #define CLSID_DEFINED
 typedef IID CLSID;
 #endif // CLSID_DEFINED
+
+const IID IID_ITTObject = {0xF763D0E1,0x6359,0x11d3,{0xB2,0x4E,0x00,0x00,0x00,0x00,0x00,0x00}};
+
 
 const IID IID_ITTOptions = {0xA2A4F837,0x24CC,0x4CA8,{0xB3,0x6F,0xAC,0xF7,0xD0,0x40,0xD1,0x01}};
 

@@ -8,17 +8,35 @@ import "oaidl.idl";
 import "ocidl.idl";
 #include "olectl.h"
 	
+interface ITTObject;
+[
+    object,
+    uuid(F763D0E1-6359-11d3-B24E-000000000000),
+    pointer_default(unique),
+    local
+]
 
-	[
-		object,
-		uuid(A2A4F837-24CC-4CA8-B36F-ACF7D040D101),
-		dual,
-		helpstring("ITTOptions Interface"),
-		pointer_default(unique)
-	]
-	interface ITTOptions : IDispatch
-	{
-	};
+interface ITTObject: IUnknown
+{
+	HRESULT InitObject();
+	HRESULT Activate([in]int nState);
+	HRESULT GetState([out, retval]int* pnState);
+	HRESULT GetByID([in]int nID, [in, out]VARIANT** ppVar);
+	HRESULT PutByID([in]int nID, [in] VARIANT* pVar);
+	HRESULT GetByName([in]BSTR strName, [in, out]VARIANT** ppVar);
+	HRESULT PutByName([in]BSTR strName, [in]VARIANT* pVar);
+}
+
+[
+	object,
+	uuid(A2A4F837-24CC-4CA8-B36F-ACF7D040D101),
+	dual,
+	helpstring("ITTOptions Interface"),
+	pointer_default(unique)
+]
+interface ITTOptions : IDispatch
+{
+};
 
 [
 	uuid(024401C5-443E-4C48-8782-0C25FCD3AD24),

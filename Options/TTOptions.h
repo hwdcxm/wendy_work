@@ -25,7 +25,8 @@ class ATL_NO_VTABLE CTTOptions :
 	public IQuickActivateImpl<CTTOptions>,
 	public IDataObjectImpl<CTTOptions>,
 	public IProvideClassInfo2Impl<&CLSID_TTOptions, NULL, &LIBID_OPTIONSLib>,
-	public CComCoClass<CTTOptions, &CLSID_TTOptions>
+	public CComCoClass<CTTOptions, &CLSID_TTOptions>,
+	public ITTObject
 {
 public:
 	CContainedWindow m_ctlEdit;
@@ -62,6 +63,7 @@ BEGIN_COM_MAP(CTTOptions)
 	COM_INTERFACE_ENTRY(IDataObject)
 	COM_INTERFACE_ENTRY(IProvideClassInfo)
 	COM_INTERFACE_ENTRY(IProvideClassInfo2)
+	COM_INTERFACE_ENTRY(ITTObject)
 END_COM_MAP()
 
 BEGIN_PROP_MAP(CTTOptions)
@@ -152,6 +154,14 @@ END_MSG_MAP()
 
 // ITTOptions
 public:
+	// ITTObject
+	STDMETHOD(InitObject)();	
+	STDMETHOD(Activate)(int nState);
+	STDMETHOD(GetState)(int* pnState);
+	STDMETHOD(GetByID)(int nID, VARIANT** ppVar);	
+	STDMETHOD(PutByID)(int nID, VARIANT* pVar);
+	STDMETHOD(GetByName)(BSTR strName, VARIANT** ppVar);
+	STDMETHOD(PutByName)(BSTR strName, VARIANT* pVar);
 };
 
 #endif //__TTOPTIONS_H_

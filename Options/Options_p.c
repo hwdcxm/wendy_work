@@ -2,7 +2,7 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Fri Jan 17 10:51:42 2020
+/* at Fri Jan 17 15:56:13 2020
  */
 /* Compiler settings for E:\wendy_work\Options\Options.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
@@ -47,8 +47,16 @@ extern const MIDL_TYPE_FORMAT_STRING __MIDL_TypeFormatString;
 extern const MIDL_PROC_FORMAT_STRING __MIDL_ProcFormatString;
 
 
+/* Standard interface: __MIDL_itf_Options_0000, ver. 0.0,
+   GUID={0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}} */
+
+
 /* Object interface: IUnknown, ver. 0.0,
    GUID={0x00000000,0x0000,0x0000,{0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46}} */
+
+
+/* Object interface: ITTObject, ver. 0.0,
+   GUID={0xF763D0E1,0x6359,0x11d3,{0xB2,0x4E,0x00,0x00,0x00,0x00,0x00,0x00}} */
 
 
 /* Object interface: IDispatch, ver. 0.0,
