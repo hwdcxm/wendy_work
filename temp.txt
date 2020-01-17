@@ -1,3 +1,16 @@
+使用Git获取最新版本到本地
+http://blog.csdn.net/u011127019/article/details/55044061
+一、使用Git UI
+1.获取远程最新版本
+2.合并远程版本到本地
+二、使用Git Brush 、
+1.带有查看版本变更详细
+2、简单方式
+git pull：相当于是从远程获取最新版本并merge到本地
+git pull origin master
+
+
+
 润园四季 蓉悦 海底捞 八合里 
 
 在 ATL 项目中添加新接口
