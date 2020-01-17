@@ -1,4 +1,341 @@
+润园四季 蓉悦 海底捞 八合里 
+
+在 ATL 项目中添加新接口
+https://docs.microsoft.com/zh-cn/cpp/atl/reference/adding-a-new-interface-in-an-atl-project?view=vs-2017
+当将接口添加到对象或控件时，该接口中创建无存根函数为每个方法。 在您的对象或控件，可以添加仅当前在现有类型库中找到的接口。 此外，在其中添加了接口的类必须实现BEGIN_COM_MAP宏或，如果项目属性化，它必须具有coclass属性。
+
+若要在类视图中使用代码向导将接口添加到现有对象或控件
+在中类视图，右键单击一个控件的类名。 例如，完全控制或复合控件或在其标头文件中实现 BEGIN_COM_MAP 宏的任何其他控件类。
+在快捷菜单上，单击外，然后单击实现接口。
+选择要在中实现的接口实现接口向导。 如果接口不存在任何可用的类型库中，然后你必须将其添加手动到.idl 文件。
+若要手动添加新接口
+将新接口的定义添加到.idl 文件。
+派生对象或从接口的控件。
+创建一个新COM_INTERFACE_ENTRY接口或者，如果项目属性化，添加coclass属性。
+该接口上实现方法。
+
+若要手动添加新接口
+1,将新接口的定义添加到.idl 文件。
+2,派生对象或从接口的控件。
+3,创建一个新COM_INTERFACE_ENTRY接口或者，如果项目属性化，添加coclass属性。
+4,该接口上实现方法。
+
+ATL如何添加一个新接口？如何用简便的方法添加？ [问题点数：20分，结帖人sinall]
+https://bbs.csdn.net/topics/60191735
+new 一个atl object
+这是新增一个类。虽然可以增加接口，但不属于原来的类。类包括多个接口。
+vc6好象只能用手工添加，至少我是这样。
+
+idl文件
+在原来的那个后添加一个
+[
+object,
+uuid(xxxxxxxxxxx),
+helpstring("xxxx Interface"),
+pointer_default(unique)
+]
+interface xxxx : Ixxxxxxxx
+{
+};
+
+
+library xxxxxxxxLib
+{
+coclass xxxxx
+{
+添加
+interface xxxx;
+};
+}
+
+h文件里
+主类从Ixxxx派生,加句public Ixxxx
+
+
+BEGIN_COM_MAP(Cxxx)
+加
+COM_INTERFACE_ENTRY(Ixxx)
+END_COM_MAP()
+
+
+SVN和Git比较，哪个好用，适用？
+https://jingyan.baidu.com/article/676629976401a154d51b8430.html
+SVN 和 Git 哪个更适用于项目管理？
+      首先说一下，我是一个研发团队的项目经理，SVN和Git我都用过，SVN更适用于项目管理， Git仅适用于代码管理。
+     一个研发队伍的成员正常包括：需求分析、设计、美工、程序员、测试、实施、运维，每个成员在工作中都有产出物，  包括了文档、设计代码、程序代码，这些都需要按项目集中进行管理的。SVN能清楚的按目录进行分类管理， 使项目组的管理处于有序高效的状态。
+
+
+svn、git的区别，优缺点，使用范围
+https://www.jianshu.com/p/e0072bba0b33
+转载自：https://blog.csdn.net/mine_song/article/details/70770467
+
+简单总结：
+
+GIT是分布式的，SVN不是
+GIT把内容按元数据方式存储，而SVN是按文件
+GIT分支和SVN的分支不同
+GIT没有一个全局的版本号，而SVN有
+GIT的内容完整性要优于SVN
+为什么要用GIT而不是SVN？
+转载自：https://blog.mimvp.com/article/47.html
+使用了近一年的git之后，再使用svn，发现自己svn这种版本管理工具是十分低效的，主要原因有以下几个方面：
+
+从使用者角度分析：
+
+1） svn下载源代码慢。在git中一个几G的版本库，一般一二十分钟就能下载完毕，但是在svn中要一个小时左右；
+
+2）svn随时都得要与服务器交互，无论是查看log，还是查看以往的版本，你必须跟服务器相连，并且速度奇慢务必，而git做这些几乎是瞬间的事；
+
+3）各个分支之间的补丁迁移麻烦，在git上只要两三个命令就可以完事的(其实一个命令，因为需要查找与分支切换)，但是在svn上你必须要下载每个分支的代码，然后比较修改，再上传；
+
+4）git查看历史版本速度快，并且不需要联网，保存在本地.git目录下。svn必须跟服务器相连才能取得版本、日志等信息，并且取版本非常慢；
+
+5）git自带有优化过的grep，使得我们查询相关字符串的效率大大提高
+
+下面从服务器角度说为什么要用git
+
+1）git版本库占用空间小（几乎是svn的分支数之一也就是说如果有四个分支，svn的版本库的体积将接近git的四倍），SVN每个分支都是一份代码的copy，而git每个分支只是各个提交点的hash值的集合，分支几乎不占用什么空间；
+
+2）git是分布式管理系统，我们完全可以不对代码进行备份，但SVN不行，一旦你服务器的硬盘挂掉你整个代码库就完了；
+
+3）git不用时时联网查询，并且对文件进行压缩，使得文件体积大大减小，并且传输速度快，svn是单个文件，git是压缩后的，在使用svn时我已经碰到过好几次服务器无响应了。由于git很多都可以在本地操作的，所以大大降低了客户端对服务器的连接，出现这种情况的概率会大大减小；
+
+4）如果客户端离服务器端非常远，在网速糟糕的情况下，用svn下代码简直是个噩梦
+
+0人点赞
+git github cmd
+
+
+作者：吾爱真理更爱葛巾
+链接：https://www.jianshu.com/p/e0072bba0b33
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+Git与SVN区别，各自优缺点
+https://blog.csdn.net/zhezhebie/article/details/82563568
+Git优点：
+
+1、分布式，每个参与开发的人的电脑上都有一个完整的仓库，不担心硬盘出问题； 
+2、在不联网的情况下，照样可以提交到本地仓库，可以查看以往的所有log，等到有网的时候，push到远程即可； 
+3、非常强大的分支管理功能。 
+4、Git的内容的完整性要优于SVN: GIT的内容存储使用的是SHA-1哈希算法。这能确保代码内容的完整性，确保在遇到磁盘故障和网络问题时降低对版本库的破坏。
+
+Git缺点：
+
+权限管理不是很方便，需要安装插件gitolite，配置有点麻烦，或者直接使用gitlab管理。
+
+SVN优点
+
+1、较好的权限管理功能，可以精确控制每个目录的权限； 
+2、使用相对git要简单一点。
+
+SVN缺点
+
+1、集中式，如果中心服务器出现问题，所有人都不能正常干活，恢复也很麻烦，因为SVN记录的是每次改动的差异，不是完整文件； 
+2、分支功能没有git强大； 
+3、速度没有git快，如果有五个分支，是把五个分支的文件全部拷下来； 
+4、必须联网才能commit。
+————————————————
+版权声明：本文为CSDN博主「SHUIPING_YANG」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/zhezhebie/article/details/82563568
+
+
+浅谈为什么Git没有取代SVN
+https://blog.csdn.net/u013519551/article/details/52485487
+在做开发的过程中，发现Git对于代码的版本控制和管理也是挺好用的，但是为什么还有很多软件公司一直在用svn呢？本人做了一下简单的分析：
+1.一般的非纯技术开发公司更倾向于svn；
+2.公司一直使用svn，所以公司的项目团队和员工也需要使用；
+
+3.svn的安全控制和权限管理相较于Git更好。git 下，如果一个人clone以后，所有代码和历史都泄漏了。而 svn 有细致的按照目录级的权限控制；
+4.源代码管理工具，还是 svn 更强；
+5.Git 有一定的学习成本，分布式的工作方式，需要转换思维方式；
+
+6.服务器公司统一控制管理；
+7.安全机制, 不会每个人都拷贝一份, 可以对组员限制, 也可以分配不同组；
+8.团队合作开发起来传递的数据量不会过大, Git因为都是镜像, 如果有个美工传个500mb的psd, 不相关的人员也要去下载, 很浪费流量和更新时间；
+9.每个人的电脑大小不一定能装下特别大的项目, 对于svn来讲, 公司配备一个足够大的服务器硬盘就好了, 而且哪个项目完成, 直接删掉本地目录就好, 完全没有保留的必要；
+10.网游公司, 广告公司这些需要大量媒体设计混合到程序的项目中, 很需要svn这样的服务器；
+11.svn相对于Git分支确实弱爆了, 但是并不能通过鄙视svn就能把所有人的习惯改过来；
+12.Git在这方面来讲更倾向于开源和纯代码开发；
+13.毕竟svn使用的最普及和广泛，很多项目团队和个人都用的很顺手，改掉习惯也是需要时间的；
+————————————————
+版权声明：本文为CSDN博主「独家记忆0408」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u013519551/article/details/52485487
+
+
+SVN与Git比较的优缺点差异
+https://blog.csdn.net/baidu_38661691/article/details/94456873
+优缺点比较
+SVN优缺点
+优点：
+1.管理方便，逻辑明确，符合一般人思维习惯。
+2.易于管理，集中式服务器更能保证安全性。
+3.代码一致性非常高。
+4.适合开发人数不多的项目开发。
+缺点：
+1.服务器压力太大，数据库容量暴增。
+2.如果不能连接到服务器上，基本上不可以工作，看上面第二步，如果服务器不能连接上，就不能提交，还原，对比等等。
+3.不适合开源开发（开发人数非常非常多，但是Google app engine就是用svn的）。但是一般集中式管理的有非常明确的权限管理机制（例如分支访问限制），可以实现分层管理，从而很好的解决开发人数众多的问题。
+Git优缺点
+优点：
+1.适合分布式开发，强调个体。
+2.公共服务器压力和数据量都不会太大。
+3.速度快、灵活。
+4.任意两个开发者之间可以很容易的解决冲突。
+5.离线工作。
+缺点：
+1.学习周期相对而言比较长。
+2.不符合常规思维。
+3.代码保密性差，一旦开发者把整个库克隆下来就可以完全公开所有代码和版本信息。
+
+
+
+
+Git 版本回退的几种操作方法
+https://www.cnblogs.com/revel171226/p/11360844.html
+1， 结合使用 git reset --hard <commit id> , git reset --hard HEAD^,  git reflog , git log
+
+　　1) 使用 git log 查看你需要回退版本的commit id, 如果git log显示的结果看着不舒服可以多加一个参数 --pretty=oneline (git log --pretty=oneline)
+
+　　2)  使用git reset  --hard <commit id>
+
+　　3)  在第2)的时候需要找到对应的commit id， 
+
+　　　　Scenario 1 : 你已经回退到某个你指定的版本，但是你这时后悔了想再次回到最新的版本，可以通过 git reset --hard HEAD^ 实现。
+
+　　　　Scenario 2 : 你已经回退到你指定的A版本，但是你实际上应该回退到A版本后面的B版本，你这是又无法通过 git log查看commit id；这时你可以执行git reflog找到B版本的commit id。
+
+　　　　　　　　　　这时你可以通过第2）步的命令来实现。
+
+ PS : 这种方法是不会再当前比较粗暴的方式，因为他不会保留你已经回退的版本之后版本的log（有点拗口），下面我们介绍一种回退到你指定的某个版本，并且保留log的方法
+
+ 
+
+ 
+
+2，结合使用git checkout  <commit id> -- <paths>, git reflog, git commit -m 'xxxxxxx'
+
+　　1) 使用git log 或者 git reflog 找到你想要回到的哪个版本的commit id
+
+　　2) 使用 git checkout <commit id> -- <paths> 返回到你想要返回的版本， <paths>参数代表的是你想要指定哪个或者哪几个文件 
+
+　　3) 执行完第2)步之后需要执行git commit -m '' 命令提交你当前的修改
+
+
+git pull 提示 There is no tracking information for the current branch
+https://blog.csdn.net/qq_28351609/article/details/86165502
+在执行git pull的时候，提示当前branch没有跟踪信息
+是因为本地分支和远程分支没有建立联系 (使用git branch -vv 可以查看本地分支和远程分支的关联关系) .
+对于这种情况有两种解决办法，就比如说要操作master吧，一种是直接指定远程master：
+git pull origin master
+另外一种方法就是先指定本地master到远程的master，然后再去pull：
+git branch --set-upstream-to=origin/master master
+git pull
+这样就不会再出现“There is no tracking information for the current branch”这样的提示了。
+
+
+git pull出现There is no tracking information for the current branch
+https://blog.csdn.net/MyheartMylove/article/details/78863973
+问题是指本地的分支和远程的分支之间需要建立联系。如：本地master对应远程的master
+git branch --set-upstream-to=origin/master master
+
+
+git强制覆盖本地代码（与git远程仓库保持一致）
+https://blog.csdn.net/jal517486222/article/details/82663177
+ git fetch --all
+ git reset --hard origin/master
+ git pull
+
+
+git强制覆盖：
+    git fetch --all
+    git reset --hard origin/master
+    git pull
+git强制覆盖本地命令（单条执行）：
+    git fetch --all && git reset --hard origin/master && git pull
+https://www.cnblogs.com/pinganzi/p/11593189.html
+
+
+git放弃修改&放弃增加文件
+https://blog.csdn.net/qq_40713392/article/details/86653082
+
+1. 本地修改了一堆文件(并没有使用git add到暂存区)，想放弃修改。 
+ 单个文件/文件夹： 
+$ git checkout  filename1
+
+所有文件/文件夹： 
+$ git checkout .1
+
+2. 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。 
+ 单个文件/文件夹： 
+$ rm filename / rm dir -rf1
+
+所有文件/文件夹： 
+$ git clean -xdf1
+
+// 删除新增的文件，如果文件已经已经git add到暂存区，并不会删除！
+
+3. 本地修改/新增了一堆文件，已经git add到暂存区，想放弃修改。 
+ 单个文件/文件夹：
+$ git reset HEAD filename1
+
+所有文件/文件夹：
+$ git reset HEAD .1
+
+4. 本地通过git add & git commit 之后，想要撤销此次commit 
+$ git reset commit_id1
+
+这个id是你想要回到的那个节点，可以通过git log查看，可以只选前6位 
+// 撤销之后，你所做的已经commit的修改还在工作区！ 
+$ git reset --hard commit_id1
+
+这个id是你想要回到的那个节点，可以通过git log查看，可以只选前6位 
+// 撤销之后，你所做的已经commit的修改将会清除，仍在工作区/暂存区的代码不会清除！ 
+
+
+
+
+git gui 提交整个目录
+
+git 提交 全部文件
+https://blog.csdn.net/lan861698789/article/details/90928715
+原文：https://www.cnblogs.com/smuxiaolei/p/7484678.html 
+1. git add . 
+git add xx命令可以将xx文件添加到暂存区，如果有很多改动可以通过 git add -A .来一次添加所有改变的文件。注意 -A 选项后面还有一个句点。 git add -A表示添加所有内容， git add . 表示添加新文件和编辑过的文件不包括删除的文件; git add -u 表示添加编辑或者删除的文件，不包括新添加的文件
+2. git commit -m "提交注释"
+3. 
+git push origin  分支名称，一般使用：git push origin master
+正常来说这三部就够了
+
+
+https://github.com/hwdcxm/wendy_work.git
+git@github.com:hwdcxm/wendy_work.git
+
+https://github.com/-> sign in or https://github.com/login
+name: hwdcxm or 23465028@qq.com
+passwd: o + birthday
+
+Git GUI可视化操作教程
+https://www.cnblogs.com/zhoumiao/p/8018249.html
+
+
+之后，只要本地做了修改提交，就可以使用git push origin master命令进行文件推送。
+https://www.cnblogs.com/imyalost/p/8762522.html
+
+git commit 报 "Changes not staged for commit:"是怎么回事? - ...
+https://segmentfault.com/q/1010000004428943?_ea=613759
+你 git add 了吗
+我今天也遇到这个问题了，但是还不太一样，这个是很有可能会踩得坑 所以想分享一下：
+我是clone了一个文件夹下来，然后想把这个文件夹添加上去，使用了git add .，但是一直报Changes not staged for commit的错误，并且那个文件夹后面有(modified content)，解决如下：
+因为是clone下来的文件，所以有.git文件，将.git文件删除就ok啦
 git commit -am "modified Cheatsheet.html"
+-a 表示 add
+git commit -am 管用
+-a 表示 all
+git commit -am "modified Cheatsheet.html"
+我用了git add. git commit -m "",出现了这样的Changes not staged for commit:提示，后来发现时我提交时路径错了
+
 
 1 git add "文件名" //用户添加文件
 2 git add . //可以用来添加当前目录下的所有文件
