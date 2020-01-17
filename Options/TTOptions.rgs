@@ -1,0 +1,34 @@
+HKCR
+{
+	Options.TTOptions.1 = s 'TTOptions Class'
+	{
+		CLSID = s '{492E31D4-B80D-11D3-AF24-00A0CC23E698}'
+	}
+	Options.TTOptions = s 'TTOptions Class'
+	{
+		CLSID = s '{492E31D4-B80D-11D3-AF24-00A0CC23E698}'
+		CurVer = s 'Options.TTOptions.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {492E31D4-B80D-11D3-AF24-00A0CC23E698} = s 'TTOptions Class'
+		{
+			ProgID = s 'Options.TTOptions.1'
+			VersionIndependentProgID = s 'Options.TTOptions'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 102'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{024401C5-443E-4C48-8782-0C25FCD3AD24}'
+			'Version' = s '1.0'
+		}
+	}
+}

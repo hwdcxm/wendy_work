@@ -11,11 +11,13 @@
 #include "Options.h"
 
 #include "Options_i.c"
+#include "TTOptions.h"
 
 
 CComModule _Module;
 
 BEGIN_OBJECT_MAP(ObjectMap)
+OBJECT_ENTRY(CLSID_TTOptions, CTTOptions)
 END_OBJECT_MAP()
 
 class COptionsApp : public CWinApp

@@ -6,6 +6,19 @@
 
 import "oaidl.idl";
 import "ocidl.idl";
+#include "olectl.h"
+	
+
+	[
+		object,
+		uuid(A2A4F837-24CC-4CA8-B36F-ACF7D040D101),
+		dual,
+		helpstring("ITTOptions Interface"),
+		pointer_default(unique)
+	]
+	interface ITTOptions : IDispatch
+	{
+	};
 
 [
 	uuid(024401C5-443E-4C48-8782-0C25FCD3AD24),
@@ -17,4 +30,12 @@ library OPTIONSLib
 	importlib("stdole32.tlb");
 	importlib("stdole2.tlb");
 
+	[
+		uuid(492E31D4-B80D-11D3-AF24-00A0CC23E698),
+		helpstring("TTOptions Class")
+	]
+	coclass TTOptions
+	{
+		[default] interface ITTOptions;
+	};
 };
