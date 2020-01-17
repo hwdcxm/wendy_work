@@ -1,0 +1,20 @@
+// Options.idl : IDL source for Options.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Options.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(024401C5-443E-4C48-8782-0C25FCD3AD24),
+	version(1.0),
+	helpstring("Options 1.0 Type Library")
+]
+library OPTIONSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+};

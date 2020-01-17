@@ -1,0 +1,4425 @@
+环境部署（六）：Git关联github
+https://www.cnblogs.com/imyalost/p/8777684.html
+我们使用Git进行版本管理，前面的博客也介绍了Linux下安装Git以及Git基础教程，这篇博客，简单介绍下如何使用Git关联github。。。
+更多关于Git的内容，可参考下列内容：
+Git官方文档
+深入理解学习Git工作流
+1、拥有github账号
+由于本地仓库和远程的github仓库需要关联，首先需要登录github，注册一个账号，然后建立一个仓库。
+注册链接：https://github.com/join?source=header-home
+成功注册后，登录github，首页如下：
+2、创建SSH Key
+Git和github之间是通过SSH加密的，因此需要执行下面的操作：
+①、在本地主目录查找，是否有.ssh目录，如果有，打开该目录，一般会有这两个文件：id_rsa和id_rsa.pub，如果有的话，直接跳过，如果没有的话，打开命令行，输入如下命令：
+ssh-keygen  -t rsa –C “youselfemail@email.com”（你自己的邮箱地址，推荐和注册github的邮箱保持一致）, 我本地已经有了这些文件，如下所示：
+PS：如果本地还未生成SSK key，可以通过该命令生成： ssh-keygen -t rsa -C "youremailaddress@mail.com" 
+②、登录github，右上角：设置→settings-SSH and GPR keys→New SSH key，然后输入你的标题，输入上面的公钥，然后点击保存。
+3、创建仓库
+点击右上角，添加→New repository，按照下图所示创建仓库：
+然后进入创建的仓库，点击Clone or download，找到你的仓库地址：
+然后通过命令:git remote add origin https://github.com/zwg481026/APITest.git，
+将本地仓库和github仓库连接就好了。
+
+ git remote add origin https://github.com/hwdcxm/wendy_work.git
+
+
+
+https://github.com/hwdcxm/wendy_work.git
+git@github.com:hwdcxm/wendy_work.git
+
+Git命令行添加整个文件夹及目录
+https://blog.csdn.net/xinqingwuji/article/details/79391453
+git add 文件夹/            添加整个文件夹及内容
+git add *.文件类型       添加目录中所有此文件类型的文件
+git放弃本地修改：
+放弃所有修改
+git checkout .
+放弃某个文件的修改
+git checkout -- filepathname
+
+Git基础使用教程
+https://www.cnblogs.com/imyalost/p/8762522.html
+一、Windows上安装Git
+一般我们工作的电脑都是Windows系统，要使用git首先要进行安装。从软件管家或者其他平台找到git的安装包，下载后默认安装即可。
+安装成功之后，可以在开始菜单里面找到git：
+或者在桌面右键，也可以看到：
+其中GUI为用户界面模式，Bash为命令行模式，这里就以Bash为例子介绍git的基本使用方法（其实相比于GUI，个人觉得Bash更容易学习理解）。
+二、设置
+由于git是分布式管理工具，需要输入用户名和邮箱以作为标识，因此，在命令行输入下列的命令：
+PS：注意git config  --global参数，有了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然你也可以对某个仓库指定的不同的用户名和邮箱，根据个人情况设置。
+三、工作原理
+安装好之后，在使用前先来了解一下Git的工作原理，是很有必要的一件事，下面是Git的工作流程和简化原理图：
+1、Git工作流程
+2、Git简化原理图
+四、基本用法
+1、创建版本库
+版本库就是我们所说的“仓库”，英文名repository，你可以理解为一个目录，这个目录里面的所有文件都可以被Git管理，文件的修改，删除Git都能跟踪，
+以便任何时刻都可以追踪历史，或者在将来某个时刻还可以将文件”还原”。
+下面是在我的电脑→D盘→TEST文件下，创建一个名为lianxi的版本库：
+命令解析：
+cd：进入某个目录
+mkdir：创建一个文件
+pwd：显示当前的目录路径
+2、添加文件到版本库
+要添加文件到版本库，首先需要将这个目录变为git可以管理的仓库，命令如下：
+然后，在lianxi目录下创建一个文件，这里我创建的文件为0409.txt，内容为123456
+使用下列的命令，将创建的文件添加到暂存区，然后提交到仓库：
+命令解析：
+git add：将文件提交到暂存区
+git commit -m：将暂存区文件提交到仓库（单引号内为注释）
+3、检查是否有未提交的文件
+通过下面的命令，检查该版本库是否有文件未提交：
+命令解析：
+git status：检查当前文件状态us
+4、检查文件是否被修改
+修改0409.txt的文件，然后重新检查状态：
+修改文件后，通过命令git status发现，文件已经被修改，但是未提交，如果要检查文件修改了什么内容，可以通过上图中的命令来查看，发现文件的第二行增加了666666的内容。
+检查无误后，继续提交修改后的文件，提交命令和上面一样。
+命令解析：
+git diff：查看文件修改的内容
+再次修改文件内容，第三行增加233333的内容，然后保存提交：
+现在已经修改了2次文件，可以通过如下命令查看历史修改记录：
+如上图所示：每次提交都会有自己的版本号，当然，入过觉得这样看起来比较费事，可以使用命令，获得精简版本的日志记录。
+命令解析：
+git log：获得历史修改记录
+git log --pretty=oneline：使记录只显示主要的内容，一行显示
+6、版本回退
+首先通过命令行查看当前的文件内容：
+然后通过下列的命令，执行版本回退：
+可以看到内容已经回退到上一个版本，通过git log查看修改记录，发现最近的一次233333内容的记录已经看不到了，如果想回到最新的版本，可以通过如下命令进行回退：
+从上图可以看到，文件版本又回退到了最新的状态。
+命令解析：
+cat：查看文件内容
+git reset --hard HEAD^：回退到上一个版本
+git reflog：获取历史版本号
+git reset --hard 版本号：回退到该版本号对应的版本
+PS：如果要回退到上上个版本，可以使用git reset --hard HEAD^^命令，但是这样稍显麻烦，如果回退到100个版本之前，只需要执行这个命令即可：git reset --hard HEAD~100；
+五、将本地文件推送到github仓库
+PS：关于Git和github关联，可以参考这篇博客：Git关联github，这里跳过不细说。
+检查文件是否还有未提交或者修改的，然后将文件提交到github仓库，命令如下：
+命令解析：
+git remote add origin https://github.com/zwg481026/APITest.git是将你本地的仓库和github仓库进行关联，在操作时候，需要将github地址替换为自己的，否则无法推送！
+然后执行下面的命令：
+第一次推送master分支时，加上了 –u参数，Git会将本地的master分支内容推送的远程新的master分支，还会把2个master分支关联起来，在以后的推送或者拉取时就可以简化操作。
+推送成功后，可以立刻在github页面中看到远程库的内容已经和本地一模一样了，登录你的github，从仓库中查看：
+之后，只要本地做了修改提交，就可以使用git push origin master命令进行文件推送。
+六、其他
+关于git的命令还有很多，后续会不断更新，敬请期待。。。
+https://www.cnblogs.com/imyalost/p/8762522.html
+
+2020.01.17
+
+Git的安装和使用
+https://blog.csdn.net/wangligong/article/details/53591593
+
+C:\Users\Wendy\.gitconfig
+[user]
+	name = wendy
+	email = 23465028@qq.com
+
+
+Git 中文详细安装教程
+https://blog.csdn.net/sishen47k/article/details/80211002
+
+Git的安装与使用（超详细版教程）
+https://blog.csdn.net/u010074690/article/details/80209635
+
+Git客户端下载及安装
+Git客户端安装过程
+1.双击安装程序“Git-2.10.2-64-bit.exe”，显示截图如下：
+https://blog.csdn.net/zzfenglin/article/details/53147604
+
+
+源代码管理工具 一一 Git-介绍与SVN的对比
+https://blog.csdn.net/m0_37989980/article/details/79067733
+
+常用源代码管理软件 及 比较
+常用源代码管理软件
+
+全称
+
+出处
+
+CVS
+
+Concurrent Versions System
+
+Open Source
+
+SVN
+
+Apache Subversion
+
+Open Source
+
+VSS
+
+Visual Source Safe
+
+Microsoft
+
+TFS
+
+Team Foundation Server
+
+Microsoft
+
+P4
+
+Perforce
+
+Perforce
+
+Git
+
+Git, 中文蠢货，作者自嘲之意
+
+Open Source
+
+CC
+
+ClearCase
+
+IBM Rational
+
+https://www.cnblogs.com/dancewithautomation/archive/2012/01/12/2320793.html
+
+几种代码管理工具比较
+笔者有幸接触过以下几种常用的配置管理工具：VSS、SVN、Clearcase，在此做一个小小的总结
+https://blog.csdn.net/isscollege/article/details/78404272
+
+https://git-scm.com/downloads/
+
+git for windows(32+64)
+ditto_zhou：可以用，再次下载
+https://download.csdn.net/download/ghy110523/10959355
+
+Git软件　Git-2.18.0-64-bit软件.exe
+官网下载太慢，感谢楼主
+https://download.csdn.net/download/qq_27262727/10633734
+
+为什么说 Git 将取代 SVN 做软件版本控制？
+如果你不能理解“分布式”，那么我们看一个简单例子：假如你把开发任务从公司带回家，晚饭后突然有了灵感，要对代码进行修改，不巧家里的电脑不能连接到公司的文件库，你怎么下载要修改的文件？即使你将文件用优盘带回去了，那么修改之后，又怎样提交？SVN 对这种情况没有解决方案，而 Git 可以！因为 Git 在每个用户硬盘上都创建了完整的文件库，不需要、也不存在一个“中心服务器”，你只要能连接上任何一个团队成员的电脑，就能将代码提交到文件库去（有点像 P2P）。  顺便说一下，Git 是由“Linux之父”  Linus Torvalds 创建的。因为他发现找不到满意的方案来管理 Linux Kernel 联合开发的版本控制，就自己写了 Git。
+
+Git 有什么优势？  从网上的用户评价来看，Git 最大的优势就是“快”！对于大型的联合开发项目，用 SVN 进行版本控制管理时速度很慢，但是用 Git 就快很多。  还有一个说法是：SVN 有的功能 Git 都有，而 Git 的某些特色 SVN 根本做不到。  这就足够打动我了。我不是开发人员，无需关心更细节的比较了。如果你有兴趣深入了解，请 Google 之。
+————————————————
+版权声明：本文为CSDN博主「QQ_370566617」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/begtostudy/article/details/6024788
+
+假如你们已经在用 SVN 了，那么建议你参考一下 SVN+Git 鱼与熊掌兼得 这篇文章，可以同时使用 SVN 和 Git，这样也方便团队成员完成平稳过渡。  下载 TortoiseGit for Windows 32-bit Git版本控制系统客户端软件   原帖：http://www.joomlagate.com/article/joomla-review/why-subversion-will-be-replaced-by-git-for-version-control/
+
+https://blog.csdn.net/begtostudy/article/details/6024788
+
+
+	COM_INTERFACE_ENTRY(ITTObject) (v ok)
+END_COM_MAP()
+
+
+关闭return全部分ITTObject接口包括函数PutByID.
+关闭构造函数
+CTTOptions::CTTOptions() 
+{
+	return;  // wendy test
+..}
+关闭OnCreate函数
+LRESULT CTTOptions::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	return 0;  // wendy test
+...}
+关闭OnSize函数
+LRESULT CTTOptions::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	// TODO : Add Code for message handler. Call DefWindowProc if necessary.
+
+	return 0; // wendy test
+...}
+w2t.exe不出错显示白色界面.
+
+
+[14:57:35.983]:CTTOptions::CTTOptions() b 
+[14:57:36.043]:CTTOptions::MakeFutCode()  
+[14:57:36.043]:CTTOptions::ReadExpiryDateListFile()  
+[14:57:36.043]:CTTOptions::GetExpiryTime()  
+[14:57:36.043]:CTTOptions::GetExpiryDays()  
+[14:57:36.113]:CTTOptions::CTTOptions() e 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=1000,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=3301,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=3188,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=3409,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=2024,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=4004,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=2060,VARIANT* pVar) b 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:36.113]:STDMETHODIMP CTTOptions::PutByID(nID=1017,VARIANT* pVar) b 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID(nID=1110,VARIANT* pVar) b 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID(nID=3306,VARIANT* pVar) b 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID(nID=3307,VARIANT* pVar) b 
+[14:57:52.583]:STDMETHODIMP CTTOptions::PutByID() e S_OK 
+
+
+
+
+tooltip.cpp line 234
+void CToolTipCtrl::UpdateTipText(LPCTSTR lpszText, CWnd* pWnd, UINT nIDTool)
+{
+	ASSERT(::IsWindow(m_hWnd));
+...}
+
+
+	// 协议API.
+	BOOL  AdviseDataProxy(BOOL bAdvise);
+	STDMETHOD( OnNewFrame)(short wDataType,IStream* pIStream,unsigned long dwID) ;
+	void ReadDSFrame(IStream* pIStream);	// 解析'DS'(Tele) 协议	
+	void ReadDOFrame(IStream* pIStream,unsigned long dwID);	// 解析Options 协议	
+	void ReadDPFrame(IStream* pIStream);    //解析'DP'不同itemcode+date市价 协议  2017.9.28 ben
+	void SendRequestFrame() ;				// 请求所有数据.
+	void SendEndFrame() ;					// 请求断开与DO连接.  ??
+	void SendMonthRequestFrame() ;			// query month list.
+
+	HRESULT ReadDFFrame(IStream *pIStream);
+	void SendDFChlFrame( BOOL bConnect ); 
+	void SendDFRequestFrame();
+
+
+
+	BOOL SubmitRQ(IStream* pIStream, short wDataType = 'DO'); // helper function, call ITTDataProxy::TranslateQueryFrame()
+
+
+BOOL CTTOptions::SubmitRQ(IStream* pIStream, short wDataType)
+{
+	if(m_pDataProxy == NULL)
+	{
+		AtlTrace(_T("OptionsTab: Can't get DataProxy!\n"));
+		return FALSE;
+	}
+	CComQIPtr<ITTDataProxy> pObj(m_pDataProxy);
+	if(pObj == NULL)
+	{
+		AtlTrace(_T("OptionsTab: Can't get interface ITTDataProxy!\n"));
+		return FALSE;
+	}	
+	
+	HRESULT hr = pObj->TranslateQueryFrame(wDataType, pIStream, m_dwID);
+	return (hr == S_OK);
+}
+
+
+BOOL CTTOptions::SendUpdateRQ(BOOL bConnect)
+{
+	if( bConnect )
+		m_fBF = 0.0;
+
+	FrameLen    framelen;
+	FrameHead	framehead;
+	FrameID		frameid;
+	unsigned short	wElemType;
+
+	framelen = sizeof(FrameHead) + sizeof(FrameID) + sizeof(short); // +sizeof(char);
+	memset(&framehead, 0, sizeof(framehead));
+	framehead.wFrameType = 'DO';
+	frameid.cbGroupCode = m_cbGroupCode;
+	memcpy(frameid.szItemCode,m_szItemCode,G_GENCODELEN);  //这是发给OptionsDO的,仍然使用Itemcode
+	frameid.lTransdate = m_lTransdate;
+	wElemType = bConnect ? 'UC' : 'UD';
+
+	CComPtr<IStream> pIStream;
+	CreateStreamOnHGlobal(NULL,TRUE,&pIStream);
+	ULARGE_INTEGER size;
+	size.QuadPart = framelen + sizeof(framelen);
+	pIStream->SetSize(size);
+	SeekFromBegin(pIStream, 0);
+
+	HRESULT hr = pIStream->Write(&framelen, sizeof(framelen), NULL);
+	hr = pIStream->Write(&framehead, sizeof(framehead), NULL);
+	hr = pIStream->Write(&frameid, sizeof(frameid), NULL);
+	hr = pIStream->Write(&wElemType, sizeof(wElemType), NULL);
+	
+	return SubmitRQ(pIStream);
+}
+
+void CTTOptions::SendRequestFrame()
+{
+	SendUpdateRQ(TRUE);
+	SendHistoryRQ();
+	//SendHistoryRI();
+//	SendHistoryRQ();
+//	SendUpdateRQ(TRUE);
+	SendTeleHisRQ();
+	SendTeleUpdateRQ(TRUE);
+	
+}
+
+STDMETHODIMP CTTOptions::PutByID(int nID, VARIANT* pVar)
+{...
+	case TTPID_SystemObject:
+		{...
+VARIANT *pVar1;
+			VARIANT var;
+			var.vt = VT_UNKNOWN;
+			VARIANT *pVar1;
+			pVar1= &var;
+			pObj->GetByID(TTPID_DataProxy,&pVar1);
+			m_pDataProxy = pVar1->punkVal;
+			if(m_pDataProxy == NULL)
+			{
+				AtlTrace(_T("OptionsTab: Can't get DataProxy from SystemObject\n"));
+				CLogout("STDMETHODIMP CTTOptions::PutByID() e4 S_FALSE \r\n");
+				return S_FALSE;
+			}
+			var.vt = VT_I4;
+			pVar1= &var;
+			pObj->GetByID( TTPID_ObjGlobalID,&pVar1);
+			m_dwID = pVar1->lVal;
+			var.vt = VT_UNKNOWN;
+			pVar = &var;
+			pObj->GetByID(TTPID_GroupsMng,&pVar1);
+			if(pVar1->punkVal == NULL)
+				{
+				CLogout("STDMETHODIMP CTTOptions::PutByID() e5 S_FALSE \r\n");
+				return S_FALSE;
+				}
+			m_pGrpMng = pVar1->punkVal;
+			pObj->GetByID(TTPID_MainFrame,&pVar1);
+			if(pVar1->punkVal == NULL)
+				{
+				CLogout("STDMETHODIMP CTTOptions::PutByID() e6 S_FALSE \r\n");
+				return S_FALSE;
+				}
+			m_pMainFrm = pVar1->punkVal;
+...}
+
+	// ITTObject相关数据.
+	IUnknown*		m_pDataProxy;
+	IUnknown*		m_pSystemObj;	
+	IUnknown*		m_pGrpMng;
+	IUnknown*		m_pMainFrm;
+
+void CTTOptions::OnSelectItemCode()
+{...
+
+			//andy add 2003.10.16  先断开原先的请求,包括DO和DS
+			SendEndFrame();
+			//andy add 2003.10.16
+...}
+
+void CwndBgn::OnSelectItemCode() 
+{
+	CLogout("CwndBgn::OnSelectItemCode()  \r\n");
+	if( m_pOwner!=NULL )
+	{
+		m_pOwner->m_bSelectWin = 0;
+		m_pOwner->OnSelectItemCode() ;
+	}
+
+}
+
+Windows7修改文件默认图标
+Windows7下没有提供修改文件默认图标的工具，只能通过注册表修改。
+
+1.  进入注册表，在 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\下找到相应后缀的文件
+
+2. 在第二个地址中的OpenWithProgids目录下，存在一个二进制值，通常是 后缀名_auto_file(如 rp_auto_file)
+3. 在注册表中搜索 后缀名_auto_file ，在 HKEY_CLASSES_ROOT 下找到该项，它的第一个子项通常是 shell 
+
+4. 在 HKEY_CLASSES_ROOT\后缀名_auto_file 下新建一个名为 DefaultIcon 的项。在该目录下会自动生成一个字符串。双击该字符串，在数值数据里面输入你想要的图标地址（如 D:\img\xxx.ico）
+5. 注销系统后，完成修改
+https://blog.csdn.net/jianzhanger/article/details/45369039
+
+VisualStudio.dsw.10.0
+C:\Program Files\Microsoft Visual Studio 10.0\VC\vcpackages\VCProject.dll,8 (x no)
+
+%SystemRoot%\system32\SHELL32.dll
+
+win7中，如何修改文件的图标。
+经过观察发现，现在显示的图标是【exe程序 Moc.exe】那一组图标中的第一个。
+我是这么更改图标的。
+1.创建这个exe程序的快捷方式。
+2.更改这个快捷方式的图标。
+3.然后选择打开方式，选择这个修改图标的快捷方式打开。
+https://bbs.csdn.net/topics/360219137?list=lz
+
+
+计算机\Registered ActiveX Controls
+计算机\Developer Studio Components
+
+关于Registered ActiveX Controls问题？？？？？？
+https://www.cctry.com/thread-50862-1-1.html
+
+小弟我的VC++6.0程序文件夹里面的gallery的文件夹下面什么都没有
+我的VC++6.0程序文件夹里面的gallery的文件夹下面什么都没有
+由于需要添加一个Windows media player的控件。
+可是打开之后发现这个文件是空的~~~
+我们宿舍用的都是同一个VC++~~~他们都有，就我没有~
+我是WIN7的~~宿舍也有好几台WIN7的~~
+我之前恢复过系统。。。
+今天装了几遍都没有。。。。跪求办法~~
+http://m.myexception.cn/vc-mfc/1354513.html
+
+解决Visual C++无法使用ActiveX 控件，Gallery目录下没有Registered ActiveX Controls问题
+https://blog.csdn.net/h532600610/article/details/51823313
+
+vc++ 6.0链接数据库 使用控件 registered activex controls 灾难性故障
+正常安装后，C:\Microsoft Visual Studio\Common\MSDev98\Gallery\Registered ActiveX Controls文件夹下为空。之前程序里使用过一个ActiveX 控件无法运行，且出现：ActiveX控件“{6262D3A0-531B-11CF-...}”没有在此计算机中注册.注册控件然后再试.!
+这个时候我们再检查控件列表，发现多了一个控件，那个控件就是我们要添加的控件。
+https://zhidao.baidu.com/question/682145165034791612.html
+
+
+
+D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Gallery
+
+MFC如何添加自定义控件
+project->add to project->components and controls
+在Registered ActiveX Controls下找到你注册的自定义控件就可以了
+https://blog.csdn.net/weixin_30629977/article/details/97149377
+
+关闭return大部分ITTObject接口函数留PutByID.
+
+w2t.exe可以显示界面, 但不能显示有些按钮和刷新数据.
+
+ActiveX Container中加载却出错 Microsoft ActiveX Control Test Container 已停止工作
+void CHeaderCtrlOptions::OnPaint()
+{...
+//dc.DrawText(this->m_HChar[i],&tRect,nFormat);  // wendy test
+...}
+可显示
+void CTTOptions::OnSelectItemCode()
+{
+
+	CLogout("CTTOptions::OnSelectItemCode()  \r\n");
+	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState( )) 
+
+	if(m_pGrpMng == NULL)
+		return ;
+	//CComQIPtr< ITTGroupsMng,&IID_ITTGroupsMng> pGrp(m_pGrpMng);  // wendy test
+	//if(pGrp == NULL)
+	//	return ;
+...
+
+//			pGrp-> FindItem('A',(BYTE*)szItemCode,&lID); // wendy test
+			TCHAR szName[30];
+//			if( m_iLangType==0 )
+//				pGrp->GetItemPara(lID,ItemID_Lang1Descrip,(BYTE*)szName,30);
+//			else
+//			if( m_iLangType==1 )
+//				pGrp->GetItemPara(lID,ItemID_Lang3Descrip,(BYTE*)szName,30);
+//			else
+//			if( m_iLangType==2 )
+//				pGrp->GetItemPara(lID,ItemID_Lang2Descrip,(BYTE*)szName,30);
+...} 
+按钮可弹出对话框
+
+BOOL CTTOptions::SendTeleUpdateRQ(BOOL bConnect)
+{...
+	hr = pIStream->Write(&wElemType, sizeof(wElemType), NULL);
+	BOOL bSucc = SubmitRQ(pIStream, 'DS');   /////////cash
+...}
+按确定后出错
+BOOL CTTOptions::SubmitRQ(IStream* pIStream, short wDataType)
+{
+	if(m_pDataProxy == NULL)
+	{
+		AtlTrace(_T("OptionsTab: Can't get DataProxy!\n"));
+		return FALSE;
+	}
+	CComQIPtr<ITTDataProxy> pObj(m_pDataProxy);
+..}
+template <class T, const IID* piid = &__uuidof(T)>
+class CComQIPtr
+{
+public:
+	typedef T _PtrClass;
+	CComQIPtr()
+	{
+		p=NULL;
+	}
+	CComQIPtr(T* lp)
+	{
+		if ((p = lp) != NULL)
+			p->AddRef();
+	}
+	CComQIPtr(const CComQIPtr<T,piid>& lp)
+	{
+		if ((p = lp.p) != NULL)
+			p->AddRef();
+	}
+	CComQIPtr(IUnknown* lp)
+	{
+		p=NULL;
+		if (lp != NULL)
+			lp->QueryInterface(*piid, (void **)&p);
+	}
+	~CCom
+...}
+
+SystemObject Module 已停止工作
+
+使用MIDL编译IDL文件
+一、先在CMD下运行vcvarsall.bat
+a.在CMD中cd到VS的vc的安装路径：cd C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
+b.接着输入vcvarsall.bat X86
+二、编译你的idl
+a.在CMD中cd到你的idl所在的目录：cd E:\testForwork\ComWorkPlace\OutofProc\DictPrxy
+b.接着输入：MIDL Dictionary.idl
+结果就会出现在你的idl目录下。
+————————————————
+版权声明：本文为CSDN博主「Red fog」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/BooleanWater/article/details/103317474
+
+MIDL示例
+MIDL编译器将生成XX.H XX_.C XX_P.C DLLDATA.C几个文件，其作用分别为：
+XX.H       一个同C和C++兼容的，包含IDL中所描述的所有接口声明的头文件；
+XX_.C     一个定义有IDL文件中所用的所有GUID的C文件
+XX_P.C     一个实现IDL文件中接口的代理及残根的C文件
+DLLDATA.C 一个包含代理和残根的DLL的C文件
+https://blog.csdn.net/sunshine1314/article/details/1562376
+
+MIDL_INTERFACE
+
+本站提供特别信息:仅供参考!^_^
+Visual Assist X v10.1.1301 Final 正式版
+Name：SSG Team
+Code：xdaRF G4bKE Ic87U J7pF8 /XGEV Iz/oP YcNmg JVjaU GqzkI M1QtN ZRg9V Q 
+
+2020.01.16
+
+memmove
+memmove 编辑 讨论
+memmove用于拷贝字节，如果目标区域和源区域有重叠的话，memmove能够保证源串在被覆盖之前将重叠区域的字节拷贝到目标区域中，但复制后源内容会被更改。但是当目标区域与源区域没有重叠则和memcpy函数功能相同。
+函数简介编辑
+原型：void *memmove( void* dest, const void* src, size_t count );
+头文件：<string.h>
+功能：由src所指内存区域复制count个字节到dest所指内存区域。
+相关函数：memset、memcpy
+程序示例编辑
+// memmove.c
+#include <stdio.h>
+#include <string.h>
+int main(void)
+{
+char s[]="Golden Global View";
+memmove(s,s+7,strlen(s)+1-7);
+printf("%s",s);
+getchar();
+return 0;
+}
+程序输出结果：Global View
+MSDN上也有相关示例。
+*注意：这里的拷贝长度strlen(s)+1-7表示把字符串结尾的'\0'也拷贝进来。
+https://baike.baidu.com/item/memmove/5494877?fr=aladdin
+
+error C2065: 'getch' : undeclared identifier
+包含头文件加一个conio.h
+#include <conio.h>
+或者把getch
+这个函数改成 getchar函数。
+https://zhidao.baidu.com/question/537125299.html?fr=iks&word=error+C2065%3A+%27getch%27+%3A+undeclared+identifier&ie=gbk
+
+
+: 'printf' : undeclared identifier
+未声明定义，缺少printf函数的头文件
+#include<stdio.h>
+https://zhidao.baidu.com/question/175997549107882044.html
+
+Open HKStock2.occ failed
+
+2020.01.15
+
+template <class T>
+class ATL_NO_VTABLE IOleObjectImpl : public IOleObject
+{
+public:
+...
+		switch (iVerb)
+		{
+		case OLEIVERB_PRIMARY:
+			hr = pT->DoVerbPrimary(lprcPosRect, hwndParent);
+			break;
+		case OLEIVERB_SHOW:
+			hr = pT->DoVerbShow(lprcPosRect, hwndParent);
+			break;
+...}
+
+---->
+
+	HRESULT DoVerbShow(LPCRECT prcPosRect, HWND /* hwndParent */)
+	{
+		T* pT = static_cast<T*>(this);
+		HRESULT hr;
+		hr = pT->OnPreVerbShow();
+		if (SUCCEEDED(hr))
+		{
+			hr = pT->InPlaceActivate(OLEIVERB_SHOW, prcPosRect);
+			if (SUCCEEDED(hr))
+				hr = pT->OnPostVerbShow();
+		}
+		return hr;
+	}
+--->
+
+inline HRESULT CComControlBase::InPlaceActivate(LONG iVerb, const RECT* /*prcPosRect*/)
+{...
+		if (!m_bWndLess)
+		{
+			if (m_hWndCD)
+			{
+				ShowWindow(m_hWndCD, SW_SHOW);
+				if (!::IsChild(m_hWndCD, ::GetFocus()))
+					::SetFocus(m_hWndCD);
+			}
+			else
+			{
+				HWND h = CreateControlWindow(hwndParent, rcPos);
+				ATLASSERT(h != NULL);	// will assert if creation failed
+				ATLASSERT(h == m_hWndCD);
+				h;	// avoid unused warning
+			}
+		}
+...}
+
+--------->
+template <class T, class WinBase =  CWindowImpl< T > >
+class ATL_NO_VTABLE CComControl :  public CComControlBase, public WinBase
+{
+public:...
+	}
+	virtual HWND CreateControlWindow(HWND hWndParent, RECT& rcPos)
+	{
+		T* pT = static_cast<T*>(this);
+		return pT->Create(hWndParent, rcPos);
+	}
+..}
+
+----->
+
+class ATL_NO_VTABLE CWindowImpl : public CWindowImplBaseT< TBase, TWinTraits >
+{
+public:
+	DECLARE_WND_CLASS(NULL)
+
+	HWND Create(HWND hWndParent, RECT& rcPos, LPCTSTR szWindowName = NULL,
+			DWORD dwStyle = 0, DWORD dwExStyle = 0,
+			UINT nID = 0, LPVOID lpCreateParam = NULL)
+	{
+		if (T::GetWndClassInfo().m_lpszOrigName == NULL)
+			T::GetWndClassInfo().m_lpszOrigName = GetWndClassName();
+		ATOM atom = T::GetWndClassInfo().Register(&m_pfnSuperWindowProc);
+
+		dwStyle = T::GetWndStyle(dwStyle);
+		dwExStyle = T::GetWndExStyle(dwExStyle);
+
+		return CWindowImplBaseT< TBase, TWinTraits >::Create(hWndParent, rcPos, szWindowName,
+			dwStyle, dwExStyle, nID, atom, lpCreateParam);
+	}
+};
+--->
+
+template <class TBase, class TWinTraits>
+HWND CWindowImplBaseT< TBase, TWinTraits >::Create(HWND hWndParent, RECT& rcPos, LPCTSTR szWindowName,
+		DWORD dwStyle, DWORD dwExStyle, UINT nID, ATOM atom, LPVOID lpCreateParam)
+{
+	ATLASSERT(m_hWnd == NULL);
+
+	if(atom == 0)
+		return NULL;
+
+	_Module.AddCreateWndData(&m_thunk.cd, this);
+
+	if(nID == 0 && (dwStyle & WS_CHILD))
+		nID = (UINT)this;
+
+	HWND hWnd = ::CreateWindowEx(dwExStyle, (LPCTSTR)MAKELONG(atom, 0), szWindowName,
+		dwStyle, rcPos.left, rcPos.top, rcPos.right - rcPos.left,
+		rcPos.bottom - rcPos.top, hWndParent, (HMENU)nID,
+		_Module.GetModuleInstance(), lpCreateParam);
+
+	ATLASSERT(m_hWnd == hWnd);
+
+	return hWnd;
+}
+
+---->
+
+template <class TBase, class TWinTraits>
+LRESULT CALLBACK CWindowImplBaseT< TBase, TWinTraits >::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	CWindowImplBaseT< TBase, TWinTraits >* pThis = (CWindowImplBaseT< TBase, TWinTraits >*)hWnd;
+	// set a ptr to this message and save the old value
+	MSG msg = { pThis->m_hWnd, uMsg, wParam, lParam, 0, { 0, 0 } };
+	const MSG* pOldMsg = pThis->m_pCurrentMsg;
+	pThis->m_pCurrentMsg = &msg;
+	// pass to the message map to process
+	LRESULT lRes;
+	BOOL bRet = pThis->ProcessWindowMessage(pThis->m_hWnd, uMsg, wParam, lParam, lRes, 0);
+...}
+
+
+--->
+
+BEGIN_MSG_MAP(Cfullctr)
+	MESSAGE_HANDLER(WM_CREATE, OnCreate)
+	MESSAGE_HANDLER(WM_SETFOCUS, OnSetFocus)
+	CHAIN_MSG_MAP(CComControl<Cfullctr>)
+ALT_MSG_MAP(1)
+--->
+
+	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+	{
+		RECT rc;
+		GetWindowRect(&rc);
+		rc.right -= rc.left;
+		rc.bottom -= rc.top;
+		rc.top = rc.left = 0;
+		m_ctlEdit.Create(m_hWnd, rc);
+		m_ctlEdit.SetWindowText("测试foptions.fullctr");
+		return 0;
+	}
+....
+
+
+File could not be opened 3
+
+ATL com组件的OnCreate不会被调用 [问题点数：40分，结帖人my_aa]
+发现this->m_hWnd为NULL(我那构造函数中有m_bWindowOnly = TRUE)
+https://bbs.csdn.net/topics/390152995
+
+
+在ATL无窗口ACTIVEX控件中响应timer消息
+https://blog.csdn.net/gxulg/article/details/311057
+
+使用VC2008创建基于ATL的ActiveX控件,不自动调用OnCreate函数
+为什么ATL控件的OnCreate进不去
+atl控件的oncreate进不去?
+
+用ATL编写窗口程序 [问题点数：0分]
+https://bbs.csdn.net/topics/230864
+
+ATL如此显示窗口及对话框
+https://blog.csdn.net/AsongWam/article/details/2505155?utm_source=blogxgwz1
+
+ATL和MFC创建ActiveX控件的区别
+https://www.cnblogs.com/huhewei/p/6202804.html
+
+如何使用ATL OBJECT WIZARD 
+https://bbs.csdn.net/topics/314998
+
+BEGIN_MSG_MAP(CLitctr)
+	MESSAGE_HANDLER(WM_CREATE, OnCreate) (v ok)
+ATL Object Wizard 属性->Miscellaneous->Add control base on: Edit or Button or xxxx
+
+使用ATL来写个简单的窗口程序
+https://blog.csdn.net/superleolx/article/details/4896045
+
+使用ATL 窗口类
+https://blog.csdn.net/lan354898254/article/details/7556686
+
+VC++ ATL 学习总结
+https://blog.csdn.net/bcbobo21cn/article/details/69055605
+
+ATL窗口(1) (转)
+，当你创建一个基于Windows控制的ATL控制，ATL Object Wizard产生代码如下：
+BEGIN_MSG_MAP(CMyButton)
+     MESSAGE_HANDLER(WM_CREATE, OnCreate)
+     MESSAGE_HANDLER(WM_SETFOCUS, OnSetFocus)
+     CHAIN_MSG_MAP(CComControl) file://看这里
+    ALT_MSG_MAP(1)
+ END_MSG_MAP()
+https://blog.csdn.net/dragoo1/article/details/48789639
+
+
+ATL窗口(2) (转)
+https://blog.csdn.net/JoySwing/article/details/11592
+
+
+ATL窗口添加功能的5种方法[转]
+https://blog.csdn.net/weixin_34269583/article/details/94740793
+
+ATL问题集(转载）
+#9 如何做一个简单的控件容器?
+http://blog.sina.com.cn/s/blog_5c68ccb801017rwz.html
+https://blog.csdn.net/fengrx/article/details/4171629
+https://blog.csdn.net/fengrx/article/details/4175278
+https://www.cnblogs.com/zhehan54/p/4705989.html
+
+ATL ActiveX控件的OnCreate函数不能执行
+你的控件是复合控件吗？只有复合控件才会有窗口，有窗口才会有WM_CREATE
+检查一下m_hWnd是否为空如果组件有窗口，则需要在构造函数里，
+m_bWindowOnly = TRUE;
+这样，组件的m_hWnd句柄就不是NULL了
+https://www.debugease.com/vc/2225152.html
+
+
+为什么ATL控件的OnCreate进不去？
+当然添加了啊，我用向导生成的，我的是ATL复合控件，构造函数里已经把m_bWindowOnly置为TRUE了啊~
+https://bbs.csdn.net/topics/300057406
+
+
+
+m_bWindowOnly = TRUE; 为何在VC对话框编辑器中插入我的控件的时候还是没有窗口句柄 OnCreate 也
+ActiveX控件测试容器 踪发现在VC的对话框中插入控件的时候并没有调用 CComControlBase::InPlaceActivate 
+https://bbs.csdn.net/topics/90064077
+我在创建的时候在ATL向导中选择了 WindowOnly 属性, 控件类的构造函数中确实也有 m_bWindowOnly = TRUE; 这一句. 在ActiveX控件测试容器中和IE中也都正常, 能够得到控件的窗口句柄, 但是在VC的对话框编辑器中取得的窗口句柄却为NULL, ATLTRACE 发现控件的 OnCreate 消息响应函数根本就没有被调用! 
+对话框上的控件显示为一个白框.
+之后在控件的方法中设置断点, 查看 m_bWindowOnly 确实为 TRUE , 而 m_hWnd 和 m_hWndCD 还有 *m_phWndCD 均为 NULL .
+为何控件窗口没有被创建呢, ATL中具体创建控件窗口代码又是在哪里呢?
+
+总算有人关注了:) 我还以为我的问题很火星, 没人理我呢:)
+昨天又试了一下, 使用 ATL 向导选择 Full Control 生成的ActiveX控件(除了m_bWindowOnly = TRUE之外没做其他修改), 在VC的对话框编辑器中插入也不会创建控件窗口. 因为代码全部由向导生成, 因此排除是我添加的代码的问题. 那么到底是什么问题呢? 还望高手解答!
+
+解决办法是在控件类的 OnDraw 中判断是 DesignTime 还是 Runtime:
+如果是 Runtime 进行正常的界面绘制;
+如果是 DesignTime 就直接使用 ATL_DRAWINFO& di 参数中的 DC 绘制出界面.
+可用如下代码判断是 Runtime 还是 DesignTime
+BOOL CYTNetCameraCtrl::InDesignTime()
+{
+ATLTRACE("InDesignTime\n");
+
+BOOL bUserMode = TRUE;
+HRESULT hr = GetAmbientUserMode(bUserMode);
+if ( FAILED(hr) || bUserMode ) // run-time
+{
+return FALSE;
+}
+return TRUE; // design-time
+}
+
+
+atl OnCreate m_bWindowOnly 百度
+
+
+OBJECT_ENTRY 映射
+其中OBJECT_ENTRY映射为--->
+#define OBJECT_ENTRY(clsid, class) {&clsid, class::UpdateRegistry, class::_ClassFactoryCreatorClass::CreateInstance,  －－－－组件类厂创建class::_CreatorClass::CreateInstance,   －－－－组件实例创建NULL, 0, class::GetObjectDescription, class::GetCategoryMap, class::ObjectMain },
+其中的_ClassFactoryCreatorClass和_CreatorClass定义如下(都为创建类－－CComCreator)：#define DECLARE_CLASSFACTORY() DECLARE_CLASSFACTORY_EX(ATL::CComClassFactory)#define DECLARE_CLASSFACTORY_EX(cf) typedef ATL::CComCreator< ATL::CComObjectCached< cf > > _ClassFactoryCreatorClass;
+#define DECLARE_AGGREGATABLE(x) public:/ typedef ATL::CComCreator2< ATL::CComCreator< ATL::CComObject< x > >, ATL::CComCreator< ATL::CComAggObject< x > > > _CreatorClass;
+————————————————
+版权声明：本文为CSDN博主「Tianyu-liu」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/wishfly/article/details/2069595
+https://blog.csdn.net/wishfly/article/details/2069595
+
+初学ATL，BEGIN_OBJECT_MAP 搞不定 ？？ [问题点数：100分，结帖人okmnjizc]
+#include <atlbase.h>
+//You may derive a class from CComModule and use it if you want to override
+//something, but do not change the name of _Module
+CComModule _Module;
+#include <atlcom.h>
+知道了，要把
+CComModule   _Module;
+写在
+#include <atlcom.h>
+的上面........... =.=
+https://bbs.csdn.net/topics/370267251
+
+BEGIN_OBJECT_MAP(ObjectMap)
+OBJECT_ENTRY(CLSID_TTOptions, CTTOptions)
+END_OBJECT_MAP()
+
+MFC对话框的创建和销毁顺序
+了解了理论过后，下面我们就可以用代码实现一下非模态对话框的创建和销毁过程:
+建立：
+//主框架中，即调用/创建非模态对话框的对话框/窗体：
+CTestDlg *pDlg=new CTestDlg;
+ pDlg->Create(IDD_TESTDLG,this);
+ pDlg->ShowWindow(SW_SHOW);
+ //非模态对话框中：
+void CTestDlg::OnCancel()
+ {
+      DestroyWindow();
+ }
+ void CTestDlg::PostNcDestroy()
+ {
+      CDialog::PostNcDestroy();
+      delete this;
+ }
+如果要在点击按钮的情况下，销毁非模态对话框，只需要把按钮的事件映射到OnCancel函数即可。
+https://blog.csdn.net/leaf6094189/article/details/7609185
+
+OnDestroy 和 DestroyWindow 的区别
+
+虚拟函数DestroyWindow()和视窗消息OnDestroy()的区别在何处？ [问题点数：35分，结帖人xujialin_xjl
+这两个函数可以理解成一个是主动的, 另一个是被动的.
+用户主动调用DestroyWindows来关闭窗口, 而当窗口被关闭时OnDestroy函数 被 调用!
+所以你上面说的现象是正常的... 
+你调用DestroyWindow(),那么系统就会发一个WM_DESTROY的消息,这个消息会调用OnDestroy()函数.
+DestroyWindow会自动delete ，你再删有可能出错
+DestroyWindow()  ------> WM_DESTROY+ WM_NCDESTROY ------>OnDestroy()
+                 发消息                          响应消息映射
+https://bbs.csdn.net/topics/274198
+
+
+mfc 关闭对话框的各种消息与方法
+以下是对话框关闭时发送的不同消息：
+   1）点击OK按钮：OnOk-WM_DESTROY
+   2) 点击Cancel按钮：OnCancel－WM_DESTROY
+   3) 点击×按钮：WM_CLOSE－ONCANCEL－WM_DESTROY
+   4) 键盘ESC按键：OnCancel-WM_DESTROY
+   5）调用EndDialog（IDCANCEL），直接到WM_DESTROY消息
+这些方式都可以的，要是你的关闭没有成功，那么一定是出现内存泄漏，你需要在WM_DESTROY消息中释放资源，应为WM_DESTROY消息是所有销毁方式都要发送的。
+-----------------------------
+下面的据说也可以，没有试过。
+PostQuitMessage(0)和exit(0)和ExitProcess()
+https://blog.csdn.net/wchengshen/article/details/24535151
+
+总结：MFC中一个对话框的关闭过程
+说起来挺简单的，一个对话框关闭时要依次调用该类的DestroyWindow-OnDestroy-PostNcDestroy，根据关闭的方法不同，在这些函数之前会调用OnOK、OnCancle或者OnClose。
+这里要说的是，模态对话框的消息循环要到调用了PostNcDestroy之后才真正的结束，即ContinueModal循环在这里才结束，然后类的析构函数将被调用，这个对话框才真正的被销毁了。
+如果一个模态对话框还有一个模态的子对话框，那就更要注意了。如果子对话框还在显示的时候，父对话框由于某种原因关闭了(如从其他线程接收到了WM_CLOSE消息)，父对话框在执行完OnClose函数后会等到，直到子对话框销毁了，才会继续执行自己的如第一段所说的关闭过程。
+ 
+https://blog.csdn.net/andy5zhu/article/details/17322373
+
+MFC使用Create创建创建窗体后释放内存的方法
+//结束时
+        delete pTd;
+        pTd = NULL;
+        这样的写法就会出现的Warning: calling DestroyWindow in CDialog::~CDialog --,正确的做法如下：
+        //结束时应该
+        if(pTd)
+        {
+            pTd->DestoryWindow();
+            pTd = NULL;
+        }
+        //在后生成的窗口类中加如下代码
+//添加消息PostNcDestory 
+        void CTestDlg ::PostNcDestroy()
+        {
+            // TODO: 在此添加专用代码和/或调用基类
+            delete this;//这个一定要
+            CDialog::PostNcDestroy();
+        }
+————————————————
+版权声明：本文为CSDN博主「爷就是这个范儿」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/syytem004/article/details/43526055
+这样的写法就会出现的Warning: calling DestroyWindow in CDialog::~CDialog --,正确的做法如下：
+
+MFC非模态对话框内存释放
+非模态对话框的内存释放：
+第一步：在OnClose() 函数中添加DestroyWindow() ；
+第二步：在PostNcDestroy() 中添加delete this。
+https://blog.csdn.net/qq_32561069/article/details/71249296
+
+MFC DestroyWindow
+DestroyWindow会发送WM_NCDESTROY；
+
+5.       WM_NCDESTROY对应的消息处理函数是OnNcDestroy；
+
+
+6.       OnNcDestroy最后会调用PostNcDestroy；
+
+7.       PostNcDestroy经常被用户重载以提供释放内存操作。
+例如可以使用delete this；
+通过这种方式，窗口对象对应的窗口和窗口对象本身都被释放了。
+————————————————
+版权声明：本文为CSDN博主「工程师WWW」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weiwangchao_/article/details/7031011
+https://blog.csdn.net/weiwangchao_/article/details/7031011
+
+为什么微软的MFC源代码中，有大量的delete this? [问题点数：40分，结帖人medeel]
+https://bbs.csdn.net/topics/370002679
+
+delete this 的使用及注意事项
+https://blog.csdn.net/nie2314550441/article/details/76880711
+
+在类中调用delete this问题
+https://blog.csdn.net/kuimzzs/article/details/81517451
+
+为什么MFC自动生成的类，没有析构函数的声明
+默认的析构函数
+在mfc中CDialog的析构函数
+CDialog::~CDialog()
+{
+if (m_hWnd != NULL)
+{
+TRACE0( "Warning: calling DestroyWindow in CDialog::~CDialog --\n ");
+TRACE0( "\tOnDestroy or PostNcDestroy in derived class will not be called.\n ");
+DestroyWindow();
+}
+而你创建的这个对话框类是继承于CDialog。
+}
+https://zhidao.baidu.com/question/238238619.html
+
+
+MFC对话框什么找不到析构函数？自己定义又提示错误“已定义”。。。。急
+因为由于不在头文件中声明析构函数，编译器会自动生成一个析构函数；我觉得你的问题是因为你没有在头文件中声明析构函数，而直接在cpp文件定义了析构函数。由于头文件中没有声明，编译器已经帮你定义了一个了，你再次定义时，就会出错，显示函数体已经存在了。
+https://zhidao.baidu.com/question/492775435.html?sort=11&rn=5&pn=0#wgt-answers
+
+C++中类对象的创建与释放过程
+在C++的学习过程中，来分享类对象的创建过程与释放过程，即类对象的构造函数与析构函数；
+//********************************************
+创建过程：
+       分配内存（对象）-> 父类构造函数-> 成员的构造函数-> 自己的构造函数
+父类构造的顺序：按照继承表从左到右依次构造。
+成员构造的顺序：按照声明顺序从上至下依次构造
+释放过程：
+       自己的析构函数 -> 成员析构函数-> 父类析构函数-> 释放内存（对象）
+析构成员的顺序：按照声明顺序从上至下依次析构
+析构父类的顺序：按照继承表从左到右依次析构
+//*********************************************
+实现的C++代码：
+————————————————
+版权声明：本文为CSDN博主「芥末味鸭肠」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_43505112/article/details/99705745
+https://blog.csdn.net/weixin_43505112/article/details/99705745
+
+浅谈new/delete和malloc/free的用法与区别
+三.new和malloc的区别
+a.属性
+
+　　new/delete是C++关键字，需要编译器支持。malloc/free是库函数，需要头文件支持c。
+
+b.参数
+
+　　使用new操作符申请内存分配时无须指定内存块的大小，编译器会根据类型信息自行计算。而malloc则需要显式地指出所需内存的尺寸。
+
+c.返回类型
+
+　　new操作符内存分配成功时，返回的是对象类型的指针，类型严格与对象匹配，无须进行类型转换，故new是符合类型安全性的操作符。而malloc内存分配成功则是返回void * ，需要通过强制类型转换将void*指针转换成我们需要的类型。
+
+e. 分配失败
+
+　　new内存分配失败时，会抛出bac_alloc异常。malloc分配内存失败时返回NULL。
+https://www.cnblogs.com/maluning/p/7944231.html
+
+
+
+启用内存泄漏检测
+https://www.cnblogs.com/itdef/p/9883497.html
+
+简单内存泄漏检测方法 解决 Detected memory leaks!
+Detected memory leaks!
+Dumping objects ->
+{98500} normal block at 0x05785AD0, 152 bytes long.
+ Data: << N       N x 7 > 3C AC 4E 10 00 00 00 00 BC A4 4E 10 78 B6 37 00
+Object dump complete.
+而且每次退出都是一样的.泄漏的内存块都是98500.
+
+解决方法:
+
+1. 在程序开始启动的地方(足够前的地方,只要在泄漏的内存分配的前面,比如在一个大的工程中的app类的构造函数中)使用代码:
+
+_CrtSetBreakAlloc(98500); //98500为上面内存泄漏的块号.
+
+2. 然后debug运行,程序自动断点在"内存块98500"分配的位置:
+
+if (_crtBreakAlloc != -1L && lRequest == _crtBreakAlloc)
+    _CrtDbgBreak();
+3 .我们已经找到了泄漏的那块内存分配的底层操作的地方了(好拗口!).
+
+这个时候我们利用 "调试" –> "退出" ,快捷键为:"Shift + F11" .
+
+跳出当前函数..然后一直往"上"跳,边跳边查看调用栈.直到看到了自己写的代码,例如我的
+
+std::ifstream* origStream = new std::ifstream();
+4 .这个时候我已经可以判断 origStream 分配了内存,但是没有合理释放.处理后再次运行就没有出现内存泄漏了.
+
+5.最后,记得把_CrtSetBreakAlloc(98500); 这句话删除掉,不然每次都断点,岂不是烦死..
+
+----------------------------------------------------------------------------------------------------------
+
+写在后面:
+
+关于内存泄漏检测,有一个Visual Leak Detector ,按照它的介绍的确很不错,可以直接具体到代码行指出内存泄漏,但是个人使用了一下,发现debug的速度太慢了,不知道是不是我个人程序的问题.......像上面的泄漏,我用CrtSetBreakAlloc这种简单的方法就足够了....
+https://www.cnblogs.com/dorothychai/archive/2012/03/22/2412031.html
+
+最快速度找到内存泄漏
+有没有可能，我们让程序运行到第52次内存分配操作的时候，自动停下来，进入调试状态？所幸，crtdbg确实提供了这样的函数：即 long _CrtSetBreakAlloc(long nAllocID)。我们加上它：
+https://blog.csdn.net/qq_33826977/article/details/79750294
+
+
+VC检测内存泄漏（Detected memory leaks!）
+Detected memory leaks!
+Dumping objects ->
+{98500} normal block at 0x05785AD0, 152 bytes long.
+Data: << N       N x 7 > 3C AC 4E 10 00 00 00 00 BC A4 4E 10 78 B6 37 00
+Object dump complete.
+解决方法:
+在程序开始启动的地方(足够前的地方,只要在泄漏的内存分配的前面)使用代码:
+_CrtSetBreakAlloc(98500); //98500为上面内存泄漏的块号,然后在堆栈窗口即可知道哪里allocated的memory未释放。
+https://www.cnblogs.com/bigfi/p/7682416.html
+
+
+2020.01.14
+
+leaks
+
+VC++获取文件大小集锦
+WIN32_FIND_DATA fileInfo;
+HANDLE hFind;
+DWORD fileSize;
+const char *fileName = 文件的路径及名字;
+hFind = FindFirstFile(fileName ,&fileInfo);
+if(hFind != INVALID_HANDLE_VALUE)
+fileSize = fileInfo.nFileSizeLow;
+FindClose(hFind);
+https://blog.csdn.net/feidegengao/article/details/8231554
+
+MFC 两种创建状态栏方法以及在状态栏实时显示时间
+一、创建状态栏的两种方法
+创建状态栏有两种方法，分别使用CStatusBarCtrl和CStatusBar两个类来完成
+方法一：
+1.添加成员变量CStatusBarCtrl m_StatusBar;
+2.在OnInitDialog()中加入：
+                  m_StatusBar.Create(WS_CHILD|WS_VISIBLE|SBT_OWNERDRAW, CRect(0,0,0,0), this, 0);
+
+                  int strPartDim[3]= {100, 200, -1}; //分割数量
+                  m_StatusBar.SetParts(3, strPartDim);
+
+                  //设置状态栏文本                  m_StatusBar.SetText("分栏一", 0, 0);                  m_StatusBar.SetText("分栏二", 1, 0);                  m_StatusBar.SetText("分栏三", 2, 0);                  //下面是在状态栏中加入图标                  m_StatusBar.SetIcon(1,                                 SetIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME),
+
+                                FALSE));//为第二个分栏中加的图标
+
+方法二：
+1.添加成员变量CStatusBar m_wndStatusBar;
+2.在OnInitDialog()中加入：
+                  static UINT indicators[] =
+                  {
+                                ID_SEPARATOR,                        // status line indicator
+                                ID_INDICATOR_CAPS,              //CAP lock indicator.
+                                ID_INDICATOR_NUM,               //NUM lock indicator.
+                                ID_INDICATOR_SCRL,              //SCRL lock indicator.
+                  };
+
+                  if (!m_wndStatusBar.Create(this) ||
+                                !m_wndStatusBar.SetIndicators(indicators,
+                                  sizeof(indicators)/sizeof(UINT)))
+                  {
+                                TRACE0("Failed to create status barn");
+                                return -1;         // fail to create
+                  }
+
+                  UINT nID;        //控制状态栏里面的分栏
+                  m_wndStatusBar.SetPaneInfo(0,nID,SBPS_STRETCH|SBPS_NOBORDERS,100);      //返回值存nID中
+                  m_wndStatusBar.SetPaneText(0,"就绪");
+
+                  m_wndStatusBar.SetPaneInfo(1,nID,SBPS_NORMAL,100);
+                  m_wndStatusBar.SetPaneText(1,"大写");
+
+                  m_wndStatusBar.SetPaneInfo(2,nID,SBPS_POPOUT,100);
+                  m_wndStatusBar.SetPaneText(2,"数字");
+
+                 //----------------让这个状态栏最终显示在对话框中-------------                  RepositionBars(AFX_IDW_CONTROLBAR_FIRST,AFX_IDW_CONTROLBAR_LAST,0);
+————————————————
+版权声明：本文为CSDN博主「HW140701」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/HW140701/article/details/53995464
+https://blog.csdn.net/HW140701/article/details/53995464
+
+VC中获取文件大小
+#include <io.h>
+int getfilesize01()
+ {
+     int fp;
+     fp=_open(__FILE__,_O_RDONLY);
+     if(fp==-1) 
+         return NULL;
+     return _filelength(fp);
+     //return NULL;
+ }
+https://blog.csdn.net/qq_23992597/article/details/52162740
+
+在基于对话框的MFC创建状态栏以及添加时间显示
+https://blog.csdn.net/Cowry5/article/details/79618339
+
+MFC在状态栏实时显示系统时间
+1.定义状态栏句柄
+HWND Statu;
+2.窗口初始化函数中创建状态栏
+statu = CreateStatusWindow(WS_CHILD|WS_VISIBLE,"音乐播放器v1.0",this->m_hWnd,IDI_ICON_LOGO);
+3.时钟响应函数
+void CPracticalplayerDlg::OnTimer(UINT_PTR nIDEvent)
+{
+ CTime t = CTime::GetCurrentTime();
+ CString str;
+ str.Format("%04d/%02d/%02d  %02d:%02d:%02d",t.GetYear(),t.GetMonth(),t.GetDay(),t.GetHour(),t.GetMinute(),t.GetSecond());
+ ::SetWindowText(statu,str);
+ CDialogEx::OnTimer(nIDEvent);
+}
+4.窗口初始化函数中设置时钟
+SetTimer(1,1000,NULL);
+————————————————
+版权声明：本文为CSDN博主「九月丫头」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/wangwenjing90/article/details/8481638
+https://blog.csdn.net/wangwenjing90/article/details/8481638
+
+MFC之对话框 添加状态栏 实时显示时间
+https://blog.csdn.net/i_likechard/article/details/77508571
+
+C语言中%f表示的是什么，为什么有时小数点后保留6位，有时小数点后保留1位
+printf("%f", fVal ); //这是浮点默认输出格式，小数点保留6位
+printf("%.1f", fVal ); //.1是说明，小数点保留1位，对其后的数据进行四舍五入
+printf("%.2f", fVal ); //.2是说明，小数点保留2位，对其后的数据进行四舍五入，你想保留几位，就用点几
+printf("%10f", fVal ); //输出宽度为10个字符，右对齐，前补空格，小数点保留6位
+printf("%10.2f", fVal ); //输出宽度为10个字符，右对齐，前补空格，小数点保留2位
+https://zhidao.baidu.com/question/938443103429394372.html
+
+VC/MFC 如何使列表控件（CListCtrl）可编辑
+五、（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法为：在对话框中依次按下“CTRL+D”组合键，如图：按照顺序依次点击相应控件重新对控件进行排序。
+（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法请参考第五步
+https://jingyan.baidu.com/article/e75057f2f438f8ebc91a89a7.html
+
+在VC中改变TAB顺序的方法
+用VC来写MFC程序的时候，多数情况下，会发现TAB顺序和预期的顺序不一致，那么这时就有必要重新调整TAB顺序，
+来适应我们所写的程序。
+    调整TAB顺序的方法有两种：
+    1.在当前的界面或对话框下按“Ctrl+D”键，就会出现各个控件的TAB序号，我们只需
+要操作鼠标点击，即可调整出我们想要的顺序了。
+    2.打开资源视图文件(*.rc)，找到相应的BEGIN...END 模块里边，把对CSpinButtonCtrl
+所定义的属性描述剪切到所要关联控件属性描述后边，即可。
+https://blog.csdn.net/weixin_34332905/article/details/85694139
+
+
+VC6 注册表DevStudio
+
+VC6 修改资源默认语言
+
+【MFC】 多国语言设置
+设置方法： 
+1、准备好中文对话框 
+2、在资源视图中右键中文对话框，选择“插入副本”，选择目标语言。 
+3、在对话框副本中修改成对应的目标语言 
+4、判断系统语言类型
+
+LANGID lid = GetSystemDefaultLangID();1
+
+5、根据获取到的系统语言设置对应语言的应用程序
+
+
+
+ //多国语言支持
+    LANGID lid = GetSystemDefaultLangID();
+    if(LANGUAGE_EN == lid)
+    {
+        //英语 0x0809
+        SetThreadUILanguage( MAKELCID( MAKELANGID( LANG_ENGLISH , SUBLANG_ENGLISH_US ) , SORT_DEFAULT ) );
+    }
+    else
+    {
+        //中文 0x0804
+        SetThreadUILanguage( MAKELCID( MAKELANGID( LANG_CHINESE , SUBLANG_CHINESE_SIMPLIFIED ) , SORT_DEFAULT ) );
+    }
+12345678910111213
+
+将上述代码放置到MFC工程中的InitInstance()函数中即可。
+
+语言表可以参考： 
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd318693(v=vs.85).aspx
+
+测试：系统设置中修改区域和语言，下载并安装语言包，重启电脑。
+————————————————
+版权声明：本文为CSDN博主「brunomarss」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/brunomarss/article/details/54411006
+https://blog.csdn.net/brunomarss/article/details/54411006
+
+在VC 中实现多国语言切换 - 豆丁网
+http://www.docin.com/p-1297243905.html
+
+VC的若干实用小技巧(-)
+Visual C++6.0(5.0)开发工具功能非常强大，但是对于初学者来说，却有很多细节的问题需要注意。作者搜集整理了以下一些实用小技巧，希望对初学者有所帮助。 
+1:使用vc开发项目时，常会遇到这种情况： 
+即明明只改动了一个文件，却要把整个项目全部重新编译连接一次。刚刚连接好，一运行，又提示重新编译连接一次，非常讨厌。这是因为出现了未来文件的缘故。 
+解决方法： 
+找出对应文件夹下的debug目录，将未来文件全部delete, 再rebuild all一次。(未来 文件即其创建和修改时间都比系统时间靠后） 
+2:有时，workspace中的classview显示混乱。其表现如下： 
+(1):添加的成员变量或函数不能显示； 
+(2):即使显示出来了变量或函数，双击后不能跳至正确的位置。 
+解决方法： 
+删除.ncb文件，再rebuild all. 
+3:如何干净的删除一个类？ 
+1:先从workspace中的FileView中删除对应的.h和.cpp文件。 
+2.再关闭项目，从实际的文件夹中删除对应的.h和.cpp文件。 
+3.灾删除.clw文件。 
+打开项目，rebuild all。 
+4:初学者常有这样的疑惑： 
+直接望工程文件里加入一个CPP原文件再编译连接的话老是提示没有找到预编译头 
+解决方法： 
+#include "stdafx.h" 
+5:如何向项目中加入自己定义的类? 
+方法很多，介绍一个简便的： 
+选择Insert/New Class菜单 
+弹出对话框； 
+选择Class Type为generic; 
+输入类名。 
+当然，也可以自己决定该类的基类 
+6:如何在工作区(Workspace)导入多个项目(Project)? 
+在打开一个项目(*.dsp文件)后，在利用“Project” 菜单下Insert Project into Workspace 子菜单选择另一个项目文件（*.dsp文件），可插入另一个项目。 
+在ClassView 视图中，右键可以激活其中某个项目，工作区插入多个项目能方便不同项目间拷贝代码、资源等。 
+7: 在ClassView 视图中类太多如何整理? 
+我们可以在ClassView 视图中右键新建文件夹（New Folder），再把具有相近性质的类拖到对应的文件夹中，使整个视图看上去清晰明了。 
+8：如何快速删除项目下Debug 文件夹中临时文件? 
+在FileView视图中选中对应项目，右键Clean即可。 
+9: 打开一个源文件较大的项目编辑操作非常慢，怎么办? 
+不要打开项目文件(*.dsp文件)，直接打开要编辑的单个源文件（*.h或*.cpp）进行编辑，要快得多。 
+10:如果想把整个项目拷贝到软盘，那些文件可以删掉? 
+除了项目文件夹中debug文件夹可以删除外，.ncb,.clw,.opt 等文件也可以删除，这些文件Rebuilt all后可以重新生成。 
+————————————————
+版权声明：本文为CSDN博主「ShowMan」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ShowMan/article/details/9158
+
+
+VC6 修改资源默认语言
+DevStudio
+
+VC6开发环境、调试、语言的若干实用小技巧【转】
+https://www.baidu.com/s?wd=VC6%20%E4%BF%AE%E6%94%B9%E8%B5%84%E6%BA%90%E9%BB%98%E8%AE%A4%E8%AF%AD%E8%A8%80&pn=10&oq=VC6%20%E4%BF%AE%E6%94%B9%E8%B5%84%E6%BA%90%E9%BB%98%E8%AE%A4%E8%AF%AD%E8%A8%80&ie=utf-8&rsv_idx=1&rsv_pq=a57fa0a900676731&rsv_t=2a47XSsDu8uHl5EFUgy8fi7%2FAaZEyPTRkpT2LgGZiDCafOXwqtEXQTZ0jQM
+
+VC6.0的若干实用小技巧 
+　1:使用vc开发项目时，常会遇到这种情况： 　 　　即明明只改动了一个文件，却要把整个项目全部重新编译连接一次。刚刚连接好，一运行，又提示重新编译连接一次，非常讨厌。这是因为出现了未来文件的缘故。 　 　　解决方法： 　 　　找出对应文件夹下的debug目录，将未来文件全部delete, 再rebuild all一次。(未来 文件即其创建和修改时间都比系统时间靠后） 　　 　　2:有时，workspace中的classview显示混乱。其表现如下： 　 　　(1):添加的成员变量或函数不能显示； 　 　　(2):即使显示出来了变量或函数，双击后不能跳至正确的位置。 　 　　解决方法： 　　 　　删除.ncb文件，再rebuild all. 　 　　3:如何干净的删除一个类？ 　　 　　1:先从workspace中的FileView中删除对应的.h和.cpp文件。 　 　　2.再关闭项目，从实际的文件夹中删除对应的.h和.cpp文件。 　 　　3.灾删除.clw文件。 　 　　打开项目，rebuild all。 　 　　4:初学者常有这样的疑惑： 　 　　直接望工程文件里加入一个CPP原文件再编译连接的话老是提示没有找到预编译头 　 　　解决方法： 　 　　#include "stdafx.h" 　 　　5:如何向项目中加入自己定义的类? 　 　　方法很多，介绍一个简便的： 　 　　选择Insert/New Class菜单 　 　　弹出对话框； 　 　　选择Class Type为generic; 　 　　输入类名。 　 　　当然，也可以自己决定该类的基类 　 　6:如何在工作区(Workspace)导入多个项目(Project)? 　 　　在打开一个项目(*.dsp文件)后，在利用“Project” 菜单下Insert Project into Workspace 子菜单选择另一个项目文件（*.dsp文件），可插入另一个项目。　 　　在ClassView 视图中，右键可以激活其中某个项目，工作区插入多个项目能方便不同项目间拷贝代码、资源等。 　　 　　7: 在ClassView 视图中类太多如何整理? 　 　　我们可以在ClassView 视图中右键新建文件夹（New Folder），再把具有相近性质的类拖到对应的文件夹中，使整个视图看上去清晰明了。 　　8：如何快速删除项目下Debug 文件夹中临时文件? 　 　　在FileView视图中选中对应项目，右键Clean即可。 　 　　9: 打开一个源文件较大的项目编辑操作非常慢，怎么办? 　 　　不要打开项目文件(*.dsp文件)，直接打开要编辑的单个源文件（*.h或*.cpp）进行编辑，要快得多。 　 　　10:如果想把整个项目拷贝到软盘，那些文件可以删掉? 　 　　除了项目文件夹中debug文件夹可以删除外，.ncb,.clw,.opt 等文件也可以删除，这些文件Rebuilt all后可以重新生成。 　　 　　11：怎样快速生成一个与现有项目除了项目名外完全相同的新项目? 　 　　利用File菜单下生成新项目中的Custom AppWizard ，选择 An existing Project ,然后选择现有项目的项目文件名（*.dsp）Finish,编译后就生成一个可以生成与现有项目相同但可以重新取名的项目的AppWizard。你可以象用MFC AppWizard一样用它。如果不想用了，可以在VC 安装目录下Common/MSDev98/Template目录中删除该Wizard中.awx和 .pdb文件。 　　 　　12:如何在源文件中定位光标到对称的{ }和 #if, #endif ? 　　 　　前者使用Ctrl和 “} ”键 ，后者使用Ctrl和“K”键。
+            　13：如何在VC中设置头文件和库文件？ 　　 　　除了VC缺省头文件和库文件外，如果经常要用到第三方的头文件和库文件可以在Tools Options 的Directories中设置。如果只是本项目要用到，可以在Project Setting->Link Object/library Modules中设置库文件。 　 　　14:如果让控制台应用程序支持MFC类库？ 　 　　可以在控制台应用程序中include 来引入MFC库，但是控制台应用程序缺省是单线程的，MFC是多线程的，为解决该矛盾，在Project Setting->C/C++ 选项，选择Code Generation,在Use Run-Time Library 下拉框中选择Debug Multithread。 　 　　15:如何为一个MFC应用程序添加ODBC功能？ 　 　　（1）在文件Stdafx.h文件末尾添加下面一行： 　　 　　#include // MFC ODBC database classes 　　 　　（2）在文本模式下编辑RC文件（利用File->Open As text 方式） 　 　　在下面的程序行（共有两处） 　　 　　#include "l.chs/afxprint.rc" // printing/print preview resources 　 　　添加下一行： 　 　　#include "l.chs/afxdb.rc" // Database resources 　　 　　16：数据库表修改后，如何快速更新一个绑定到表的CrecordSet记录集？ 　 　　利用ClassWizard 中 Member Variables标签下选中记录集类后，利用UpdateColoumns和Bind All。 　 　　17：如何汉化只有可执行代码的.exe 文件？ 　 　　在NT 下利用VC Open File 以Resources方式打开*.exe 文件，直接修改资源文件，然后保存即可。 　　 　　以上只是初学VC者常遇到的一些小问题，希望和大家共同学习。
+————————————————
+版权声明：本文为CSDN博主「Micro_lee」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/Micro_lee/article/details/837620
+
+
+VC++ 修改资源页面语言
+选中 资源文件，在“属性”页面中更改 “language”选项：
+资源视图中：
+属性 页面中：
+https://www.cnblogs.com/pangkang/p/5852690.html
+
+VC6 你的资源使用的语言是默认
+
+列表编辑框右键不弹出复制菜单原因调试.(v ok)
+VC/MFC 如何使列表控件（CListCtrl）可编辑
+五、（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法为：在对话框中依次按下“CTRL+D”组合键，如图：按照顺序依次点击相应控件重新对控件进行排序。
+（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法请参考第五步
+https://jingyan.baidu.com/article/e75057f2f438f8ebc91a89a7.html
+
+2020.01.13
+
+3963之前都没有详细数据.
+
+
+VC控件与变量绑定,赋值，获取方式总结
+一. 不绑定变量的赋值和获取方法一
+GetDlgItem(IDC_EDIT1)->GetWindowText(变量)；
+ 如果是数组->GetWindowText(数组名，长度)
+GetDlgItem(IDC_EDIT1)->SetWindowText(变量)；
+二. 不绑定变量的赋值和获取方法二
+CString str;
+SetDlgItemText(IDC_EDIT1,"1");
+GetDlgItemText(IDC_EDIT1,str);
+ 
+三. 绑定value型变量（一共4处）获取，赋值
+ 
+<1处>***Dlg.h : 头文件
+class C***Dlg : public CDialog
+{
+// 构造
+public:
+ C***Dlg(CWnd* pParent = NULL); // 标准构造函数
+// 对话框数据
+ enum { IDD = IDD_***_DIALOG };
+ protected:
+ virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV 支持
+// 实现
+protected:
+ HICON m_hIcon;
+ // 生成的消息映射函数
+ virtual BOOL OnInitDialog();
+ afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+ afx_msg void OnPaint();
+ afx_msg HCURSOR OnQueryDragIcon();
+ DECLARE_MESSAGE_MAP()
+public:
+ afx_msg void OnBnClickedOk();
+ CString edit1;    //定义了该变量
+};
+
+<2处> ***Dlg.cpp : 实现文件
+C***Dlg::C***Dlg(CWnd* pParent )
+ : CDialog(C***Dlg::IDD, pParent)
+ , edit1(_T(""))
+{
+ m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+参数列表跟了m_edit1
+
+<3处> ***Dlg.cpp : 实现文件
+void C***Dlg::DoDataExchange(CDataExchange* pDX)
+{
+ CDialog::DoDataExchange(pDX);
+ DDX_Text(pDX, IDC_EDIT1, m_edit1);
+ }
+DDX_Text(pDX, IDC_EDIT1, m_edit1);  变量与控件关联
+ 
+<4处>//应用之处
+UpdateData(TRUE) ；
+edit1="你要赋值的";
+ UpdateData(FALSE) ；
+
+通过调用 UpdateData(TRUE)  UpdateData(FALSE) 将控件数据取到变量或将变量数据显到控件
+如果 变量赋值语句写在对话框构造函数里，则UpdateData(FALSE)可省略，会被自动调用
+
+三. 绑的是control型变量
+
+代码与上方一样,看m_edit2
+但只有两处涉及
+CEdit m_edit2;
+DDX_Control(pDX, IDC_EDIT2, m_edit2);
+程序里只需要   m_edit2.GetWindowText(变量);
+               m_edit2.SetWindowText(变量);就可以用了
+除了赋值,还能干很多事情.
+————————————————
+版权声明：本文为CSDN博主「qinxiaoli1204」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qinxiaoli1204/article/details/6901462
+
+https://blog.csdn.net/qinxiaoli1204/article/details/6901462
+
+MFC EnableMenuItem_使能菜单
+MSDN是最佳的查找解决办法的工具,但是他不是万能的
+CMenu* mmenu =GetMenu();
+CMenu* submenu =mmenu->GetSubMenu(0);
+submenu->EnableMenuItem(ID_FILE_NEW,MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+使menu菜单不可选,变灰,........
+MSDN的代码例子都给出来了,可是使用却无法成效.句柄都获得,返回0,也没出错.
+https://blog.csdn.net/autumn20080101/article/details/8802326
+
+//struct _Frame_e  // get from _tagTTDataFrame
+//{
+//	int nLength;
+//	time_t lTime;
+//	BYTE btGroupCode;
+//	char arItemCode[8];
+//	BYTE btTransCode;
+//	int nTransDataLength;
+//	void * pTransData;
+
+//	DWORD	dwVal;
+//	WORD	BrokerNo;
+//	WORD	TradeTime;
+//	DWORD   TradeTime2; 
+//	WORD	Key;
+//	float	Price;
+//	unsigned long Quantity;
+//	BYTE	TyadeType;
+//	DWORD	lTemp;
+//	BYTE	byTmp;
+//};
+
+
+
+vc右键菜单
+CMenu menu ,* pSubMenu;//定义下面要用到的cmenu对象
+?menu.LoadMenu(IDR_POPMENU);//装载自定义的右键菜单
+
+?pSubMenu = menu.GetSubMenu(0);//获取第一个弹出菜单，所以第一个菜单必须有子菜单
+
+?CPoint oPoint;//定义一个用于确定光标位置的位置
+?GetCursorPos( &oPoint);//获取当前光标的位置，以便使得菜单可以跟随光标
+
+?pSubMenu->TrackPopupMenu (TPM_LEFTALIGN, oPoint.x, oPoint.y, this); //在指定位置显示弹出菜单
+————————————————
+版权声明：本文为CSDN博主「sevene2015」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/aGan2007/article/details/1693599
+https://blog.csdn.net/aGan2007/article/details/1693599
+
+VC 添加右键菜单
+void CGVideoDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	// TODO: 在此处添加消息处理程序代码
+	CRect rect;
+	GetDlgItem(IDC_PLAYER)->GetWindowRect(&rect);
+	if (rect.PtInRect(point))
+	{
+		CMenu menu;
+		VERIFY(menu.LoadMenuW(IDR_MENU1));
+ 
+		CMenu *pPopup = menu.GetSubMenu(0);
+		ASSERT(pPopup != NULL);
+		pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_LEFTBUTTON, point.x, point.y, this);
+	}
+}
+https://blog.csdn.net/ljz9425/article/details/6877935
+
+VC 添加对话框右键菜单方法
+给对话框添加右键菜单有好多方法，下面简单介绍两种。
+一、响应WM_RBUTTONDOWN消息
+在响应函数中添加以下代码
+//右键菜单
+CMenu menu;
+menu.LoadMenu(IDR_MENU);
+ClientToScreen(&point);
+menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN|TPM_LEFTBUTTON,point.x,point.y,this);
+//end
+二、响应WM_CONTEXTMENU消息
+在响应函数中添加以下代码
+//右键菜单
+CMenu menu;
+menu.LoadMenu(IDR_MENU);
+menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN|TPM_LEFTBUTTON,point.x,point.y,pWnd);
+//end
+https://blog.csdn.net/u010258235/article/details/9945707
+
+
+VC 创建弹出式菜单
+void CMy82Dlg::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	CMenu *pMenu = m_Menu.GetSubMenu(0);			//获得菜单句柄
+	CRect rect;
+	ClientToScreen(&point);							//将客户坐标转换为屏幕坐标
+	rect.top = point.x;								//将鼠标当前横坐标作为弹出菜单的左上角坐标
+	rect.left = point.y;							//将鼠标当前纵坐标作为弹出菜单的左上角坐标
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON|TPM_VERTICAL,rect.top,rect.left,this,&rect);		//显示弹出菜单
+	CDialogEx::OnRButtonUp(nFlags, point);
+}
+https://blog.csdn.net/homechao/article/details/8571910
+
+
+MFC点击按钮弹出菜单
+CMenu menu,*pMenu;
+menu.LoadMenu(IDR_MENU_MANAGE);
+CRect pt;
+GetDlgItem(IDC_BUTTON)->GetWindowRect(&pt);
+pMenu = menu.GetSubMenu(0);
+pMenu->TrackPopupMenu(TPM_LEFTALIGN,ppt.left,ppt.bottom,this);  
+https://blog.csdn.net/rundll64/article/details/24860865
+
+void CShowData::OnRclickListData(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	
+	NM_LISTVIEW*   pNMListView   =   (NM_LISTVIEW*)pNMHDR;  
+	CRect CEret;
+	CRect offset;
+	if(m_list_data.GetSubItemRect(pNMListView->iItem, pNMListView->iSubItem, LVIR_LABEL, CEret))//取得指定单元格大小
+	{
+		m_list_data.GetWindowRect(&offset);   
+		ScreenToClient(&offset);   
+	}
+	CPoint point;
+	point.x = offset.TopLeft().x + CEret.TopLeft().x + 2;
+	point.y = offset.TopLeft().y + CEret.TopLeft().y + 2;
+
+	ClientToScreen(&point);
+
+	CMenu menu;//菜单
+	CMenu* pPopupMenu;//菜单指针
+	menu.LoadMenu(IDR_MENU1);//加载ID为IDR_MENU1的菜单
+	pPopupMenu = menu.GetSubMenu(0);   //获取弹出菜单的第一层子菜单的类指针
+	pPopupMenu->TrackPopupMenu(TPM_BOTTOMALIGN,point.x,point.y,this,NULL); //point.x,point.y TPM_BOTTOMALIGN  TPM_LEFTALIGN
+
+	*pResult = 0;
+}
+
+
+
+VC++实现弹出菜单(转)
+void CPopupMenuDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+ // TODO: 在此添加消息处理程序代码和/或调用默认值
+ CMenu menu;//菜单
+ CMenu* pPopupMenu;//菜单指针
+ CBitmap m_bitmap1;//位图
+ 
+ menu.LoadMenu(IDR_MENU1);//加载ID为IDR_MENU1的菜单
+ m_bitmap1.LoadBitmap(IDB_BITMAP1);//加载ID为IDB_BITMAP1的位图
+
+ pPopupMenu = menu.GetSubMenu(0);   //获取弹出菜单的第一层子菜单的类指针
+
+//为菜单的第一和第三项设置图标
+ pPopupMenu->SetMenuItemBitmaps(0,MF_BYPOSITION,&m_bitmap1,&m_bitmap1); 
+ pPopupMenu->SetMenuItemBitmaps(2,MF_BYPOSITION,&m_bitmap1,&m_bitmap1);
+
+ ClientToScreen(&point);//将鼠标单击处的坐标转换为屏幕坐标
+
+//弹出菜单函数，第一个参数表示快捷菜单的下边界与由参数y指定的坐标对齐 
+
+//第二和第三个为x、y坐标，第四个表示拥有此菜单的窗口句柄，
+
+//第五个默认为NULL,表示当用户在菜单以外的区域按鼠标键时，菜单会消失
+
+pPopupMenu->TrackPopupMenu(TPM_BOTTOMALIGN,point.x,point.y,this,NULL);
+
+ CDialog::OnLButtonDown(nFlags, point);
+}
+https://blog.csdn.net/adu285041555/article/details/8608543
+
+vc6 右键菜单
+
+vc6 对话框右击弹出菜单
+
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+
+FONT 10, "System"
+
+1 invalid_records=3848, records=32424...AHMFC    , tradeticker-- TickTime:17041 92802, key: 9, price:28271.0000, share:1, total:4119, BrokerNo:0
+1 invalid_records=3848, records=32425...AHMF20   , tradeticker-- TickTime:17041 92802, key: 7, price:28271.0000, share:1, total:4117, BrokerNo:0
+The thread 0x1D50 has exited with code 0 (0x0).
+
+32737
+
+1 invalid_records=3848, records=31862...ACUF20   , tradeticker-- TickTime:17023 92726, key: 0, price:6.9673, share:3, total:20, BrokerNo:0
+1 invalid_records=3848, records=31863...ACUF20   , tradeticker-- TickTime:17023 92726, key: 1, price:6.9673, share:1, total:21, BrokerNo:0
+
+
+1 invalid_records=3848, records=32445...AHIF20   , tradeticker-- TickTime:17042 92804, key: 3, price:28271.0000, share:6, total:6505, BrokerNo:0
+1 invalid_records=3848, records=32446...AHMFC    , tradeticker-- TickTime:17042 92804, key: 0, price:28270.0000, share:1, total:4120, BrokerNo:0
+1 invalid_records=3848, records=32447...AHMFC    , tradeticker-- TickTime:17042 92804, key: 1, price:28270.0000, share:1, total:4121, BrokerNo:0
+
+frame_e_count = 28889
+
+32737
+
+1 invalid_records=3848, records=32708...AHIF20   , tradeticker-- TickTime:17046 92812, key: 12, price:28268.0000, share:1, total:6570, BrokerNo:0
+1 invalid_records=3848, records=32709...AHIF20   , tradeticker-- TickTime:17046 92812, key: 13, price:28268.0000, share:3, total:6571, BrokerNo:0
+The thread 0x7E0 has exited with code 0 (0x0).
+
+32737
+
+
+1 invalid_records=3848, records=31682...AHIF20   , tradeticker-- TickTime:17018 92716, key: 5, price:28280.0000, share:1, total:6314, BrokerNo:0
+1 invalid_records=3848, records=31683...AHMFC    , tradeticker-- TickTime:17018 92716, key: 2, price:28281.0000, share:1, total:4032, BrokerNo:0
+The thread 0x179C has exited with code 0 (0x0). 35531
+
+32737
+
+
+1 valid_records=0, records=31749...AHIFC    , tradeticker-- TickTime:17020 92720, key: 4, price:28286.0000, share:1, total:6328, BrokerNo:0
+1 valid_records=0, records=31750...AHIFC    , tradeticker-- TickTime:17020 92720, key: 5, price:28286.0000, share:1, total:6329, BrokerNo:0
+1 valid_records=0, records=31751...AHIFC    , tradeticker-- TickTime:17020 92720, key: 6, price:28286.0000, share:1, total:6330, BrokerNo:0
+The thread 0x628 has exited with code 0 (0x0).
+
+
+1 valid_records=0, records=31820...AHEF20   , tradeticker-- TickTime:17021 92722, key: 1, price:11224.0000, share:1, total:781, BrokerNo:0
+1 valid_records=0, records=31821...AHIFC    , tradeticker-- TickTime:17022 92724, key: 0, price:28285.0000, share:1, total:6339, BrokerNo:0
+1 valid_records=0, records=31822...AHIF20   , tradeticker-- TickTime:17022 92724, key: 0, price:28285.0000, share:1, total:6339, BrokerNo:0
+1 valid_records=0, records=31823...AHIFC    , tradeticker-- TickTime:17022 92724, key: 1, price:28286.0000, share:1, total:6340, BrokerNo:0
+The thread 0x1AD4 has exited with code 0 (0x0).
+
+
+
+valid	英[?v?l?d]
+美[?v?l?d]
+adj.	(法律上) 有效的; (正式) 认可的; 符合逻辑的; 合理的; 有根据的; 确凿的; 有效的; 系统认可的;
+[例句]They put forward many valid reasons for not exporting
+他们提出了很多不出口的正当理由。
+
+available	英[??ve?l?bl]
+美[??ve?l?bl]
+adj.	可获得的; 可购得的; 可找到的; 有空的;
+[例句]Since 1978, the amount of money available to buy books has fallen by 17%
+自1978年以来，可用于采购图书的经费已经减少了17%。
+
+invalid
+英[?n?v?l?d , ??nv?l?d]
+美[?n?v?l?d , ??nv?l?d]
+adj.	(法律上或官方) 不承认的; 无效的; 无充分事实的; 站不住脚的; 不能识别的;
+n.	病弱者; 久病衰弱者;
+v.	(因伤病) 令…退役;
+[例句]I hate being treated as an invalid.
+我讨厌被人当作伤病号对待。
+[其他]	第三人称单数：invalids 复数：invalids 现在分词：invaliding 过去式：invalided 过去分词：invalided
+
+
+struct BargRecord
+{
+public:
+	// Stream API.
+	BOOL LoadFile( FILE* pFile ) ;
+	BOOL SaveFile( FILE* pFile ) ;
+
+	BOOL operator == ( const BargRecord& record ) const ;
+
+public:
+	unsigned short m_iBrokerNo ;
+	unsigned short m_iTickerTime ;
+	unsigned short m_iTransactionKey ;
+	float	m_fPrice ;
+	long	m_lQuantify ;
+	char	m_cTradeType ;
+	char	m_cReserve ;
+
+};
+
+Process_t
+
+Process_e
+
+HandleFrame_e
+
+分析并处理e数据
+
+BrokerNo
+
+HandleFrame_t
+
+列表编辑框右键不弹出复制菜单原因调试.
+VC/MFC 如何使列表控件（CListCtrl）可编辑
+五、（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法为：在对话框中依次按下“CTRL+D”组合键，如图：按照顺序依次点击相应控件重新对控件进行排序。
+（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法请参考第五步
+https://jingyan.baidu.com/article/e75057f2f438f8ebc91a89a7.html
+
+2020.01.10
+
+datacount = 299 2709
+datacount = 453 0574 
+datacount = 1148 7481
+190617X.MDS 339,576 KB
+
+datacount = 271 7545  
+200102.MDS 88,725 KB
+
+
+在VC6中实现多语言支持
+随着计算机在各种行业的普及，以及我国软件行业的发展，国产软件在不断的走出国门，所以各种软件的多语言支持也被越来越多的程序员所关注。对于一个软件程序为了支持不同语言，而创建不同的源程序显然不是一个很好的方法。本文主要介绍如何在VC6环境下通过创建支持多语言的资源文件来实现多语言支持。
+
+首先创建一个支持简体中文的工程项目Test，对该工程中的所有资源项使用 Insert Copy命令创建支持英文的资源项；
+
+打开该工程的.rc文件，将该文件中的3 TEXTINCLUDE DISCARDABLE部分改写为：
+
+3 TEXTINCLUDE DISCARDABLE
+
+BEGIN
+
+??? "#define _AFX_NO_SPLITTER_RESOURCES/r/n"
+
+??? "#define _AFX_NO_OLE_RESOURCES/r/n"
+
+??? "#define _AFX_NO_TRACKER_RESOURCES/r/n"
+
+??? "#define _AFX_NO_PROPERTY_RESOURCES/r/n"
+
+??? "/r/n"
+
+??? "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)/r/n"
+
+??? "#ifdef _WIN32/r/n"
+
+??? "LANGUAGE 4, 2/r/n"
+
+??? "#pragma code_page(936)/r/n"
+
+??? "#endif //_WIN32/r/n"
+
+??? "#include ""res//Test.rc2""? // non-Microsoft Visual C++ edited resources/r/n"
+
+??? "#include ""l.chs//afxres.rc""????????? // Standard components/r/n"
+
+??? "#endif/r/n"
+
+??? "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)/r/n"
+
+??? "#ifdef _WIN32/r/n"
+
+??? "LANGUAGE 9, 1/r/n"
+
+??? "#pragma code_page(1252)/r/n"
+
+??? "#endif //_WIN32/r/n"
+
+??? "#include ""res// Test .rc2""? // non-Microsoft Visual C++ edited resources/r/n"
+
+??? "#include ""afxres.rc""???????? // Standard components/r/n"
+
+??? "#endif/r/n"
+
+??? "/0"
+
+END
+
+将该文件末尾的Generated from the TEXTINCLUDE 3 resource.部分改写为：
+
+#define _AFX_NO_SPLITTER_RESOURCES
+
+#define _AFX_NO_OLE_RESOURCES
+
+#define _AFX_NO_TRACKER_RESOURCES
+
+#define _AFX_NO_PROPERTY_RESOURCES
+
+
+?
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+
+#ifdef _WIN32
+
+LANGUAGE 4, 2
+
+#pragma code_page(936)
+
+#endif //_WIN32
+
+#include "res/PhTools.rc2"? // non-Microsoft Visual C++ edited resources
+
+#include "l.chs/afxres.rc"????????? // Standard components
+
+#endif
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+
+#ifdef _WIN32
+
+LANGUAGE 9, 1
+
+#pragma code_page(1252)
+
+#endif //_WIN32
+
+#include "res/PhTools.rc2"? // non-Microsoft Visual C++ edited resources
+
+#include "afxres.rc"???????? // Standard components
+
+#endif
+
+这样该工程项目的资源就可以支持中文和英文了。从Project菜单选择Setting…选项，打开Project Settings对话框，选择Resources 选项卡，在“Preprocessor definitions”追加“, AFX_TARG_ENU,AFX_RESOURCE_DLL”，对工程进行编译就可生成支持英文的程序，如果不加入“, AFX_TARG_ENU,AFX_RESOURCE_DLL”，对工程进行编译可生成支持中文的程序。
+
+点赞
+————————————————
+版权声明：本文为CSDN博主「zzgff」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/zzgff/article/details/31588
+
+https://blog.csdn.net/zzgff/article/details/31588
+
+转载：VC在一个工程中实现多语言版本
+前段时间笔者因为做一个程序，客户要求要有中英文版本，开始以为要做二个工程，只是资源文件不同，但是发现这样一个工程更新另外一个也要更新，实在是很麻烦 ，后来经过网上查找资料与自己亲身实验，发现其实只要在一个工程中就可以实现。但是这个工程中要有两个资源文件，当编译不同版本时，程序可以自动链接不同资源文件 。下面把具体的方法写出来。供大家参考一下。
+
+第一步、创建中英文版本资源文件
+
+我们先创建第一个中文版本工程，假设工程名称为 Example，在向导第一步的“What language would you like you resource in” 选择中文 (如下图)，其它使用缺省值。
+
+
+
+然后在工程中把 Example.rc 删除，这里虽然删除了文件，但实际上在工程文件目录文件还是存在的。进入工程目录下把资源文件名改成Example_Ch.rc，再在 VC 编译器中加入 Example_Ch.rc 文件 ，关闭工程。
+
+然后再创建一个同名的英文版本工程。也就是在选择资源语言时选择英语(可以保存在不同的目录下)
+
+
+
+创建完后，把英文版本目录下的 Example.rc 文件拷贝到中文工程的目录下，其实我们就只是要这个资源文件。并把名称改为 Example_En.rc。
+
+第二步、在工程中设置版本信息
+
+打开中文件工程，把英文资源文件添加进工程，在添加时会有提示出现，不要理会，按确认就行。
+
+选择菜单 Build->Configurations，增加一个工程配置，在Configuration中输入 Debug English 在 Copy Setting from 中选择 Debug 就可以(见下图)，使用相同的方法，再增加一个 Debug Chinese 配置，并把原来的 Debug 删除。
+
+
+
+第三步、设置工程信息
+
+选择菜单 Project->Settings，在左边的 Setting For 中选择 Debug Chinese 在 Generatl 属性页的 Intermediate files 中输入 Debug Chinese，在 Output files 中输入 Chinese。在 Resource 属性页的 Resource file name 中输入 Debug Chinese/Example_Ch.res，(见下图)其它缺省就行。
+
+用同样的方法在来设置英文版本信息。在左边的 Setting For 中选择 Debug Enghlis 在 Generatl 属性页的 Intermediate files 中输入 Debug Enghlis，在 Output files 中输入 Enghlis。在 Resource 属性页的 Resource file name中输入 Debug English/Example_En.res，其它缺省就行。
+
+本程序在 WIN2000+VC6。0环境下通过。
+
+
+
+第四步、修改 DSP 文件，用记事本打开工程下的 Example。dsp 文件
+
+找到如下行:
+
+01.
+SOURCE=.\Example_ch.rc
+02.
+ 
+03.
+# End Source File
+04.
+# Begin Source File
+05.
+ 
+06.
+SOURCE=.\Example_en.rc
+07.
+# PROP Exclude_From_Build 1
+08.
+ 
+09.
+# End Source File
+10.
+# Begin Source File
+在SOURCE=.\Example_ch.rc行后面加入下面代码
+
+01.
+SOURCE=.\Example_ch.rc
+02.
+ 
+03.
+!IF  "$(CFG)" == "Example - Win32 Debug English"
+04.
+ 
+05.
+# PROP Exclude_From_Build 1
+06.
+ 
+07.
+!ELSEIF  "$(CFG)" == "Example - Win32 Debug Chinese"
+08.
+ 
+09.
+!ENDIF
+在SOURCE=.\Example_en.rc行后面加入下面代码：
+
+1.
+!IF  "$(CFG)" == "Example - Win32 Debug English"
+2.
+ 
+3.
+!ELSEIF  "$(CFG)" == "Example - Win32 Debug Chinese"
+第五步、现在打开工程，按照不同的要求编译不同版本就行了，比如这个时候我们要英文版本
+
+在编译时选择 Builder->Set Active configuration 中选择 Win32 Debug English 即可，如果要中文版本 ， 在编译时选择 Builder->Set Active configuration 中选择 Win32 Debug Chinese 即可。
+
+结论
+
+如果以后要添加资源，只要在 Resourch。h 文件中定义资源号，然后在中英文资源文件中添加相应的资源串就行，当然这个时候不能直接在工作区的 Resourc 中添加 ，而要用记事本等工具打开资源文件再添加哟。
+
+本程序在Win2000，VC++6.0英文版本下编译通过。
+
+作者信息：
+
+朱勤武
+
+联络电话：057783122865
+
+电子信箱：qingwuzhu@163。net
+
+通讯地址：广东省深圳市福田区上梅新村 159 栋 703
+
+邮编：518049
+https://blog.csdn.net/chunyexiyu/article/details/22381063
+
+
+vc如何产生有效的随机数
+int no;
+srand((unsigned)time(NULL));
+no=rand()%(n)；
+
+例:
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+intmain(void)
+{
+int i;
+time_t t;
+srand((unsigned) time(&t));
+printf("Ten random numbers from 0 to 99\n\n");
+for (i=0; i<10; i++)
+printf("%d\n", rand()%100);
+return 0;
+}
+这时运行程序，会发现每次产生的随机数都不一样。这是因为这里采用了时间作为种子,而时间在每时每刻都不相同,所以就产生了"随机"的随机数了。
+所以，要想产生不同的随机数，在使用rand之前需要先调用srand。
+————————————————
+版权声明：本文为CSDN博主「yueyaquanBoy」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/yueyaquanBoy/article/details/22848281
+
+https://blog.csdn.net/yueyaquanBoy/article/details/22848281
+
+地址: 福田区深南中路1025号新城大厦1楼外文书店 地图 公交 电
+
+选中编辑框后右键没弹复制等菜单.(x no) (v ok)
+VC/MFC 如何使列表控件（CListCtrl）可编辑
+五、（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法为：在对话框中依次按下“CTRL+D”组合键，如图：按照顺序依次点击相应控件重新对控件进行排序。
+（注意）要显示的控件和列表控件的ID号必须相连，并且列表ID大于显示控件ID,处理方法请参考第五步
+https://jingyan.baidu.com/article/e75057f2f438f8ebc91a89a7.html
+
+CString 与数字之间的转换
+将字符转换为整数，可以使用atoi、_atoi64或atol。
+https://blog.csdn.net/u010025211/article/details/25917957
+
+CString 与 int的互相转换
+CString to int:
+CString a = "123";
+int b;
+b = _ttoi(a);
+……
+int to CString:
+b = 123;
+a.Format( "%d", b );
+https://blog.csdn.net/smallshell7220/article/details/25025293
+
+0x737280001
+
+1578521700
+
+1578530700
+1578521700
+int CShowData::op_item(_tagTTDataFrame *pStFrame)
+{
+	int strcount = pME_WD->m_item.GetLength();
+	if (strcount == 0)
+		return 1;
+	else
+	{
+		for(int i = 0; i< 8-strcount; i++)
+		{
+			pME_WD->m_item = pME_WD->m_item + ' ';
+		}
+		if (memcmp(&(pStFrame->arItemCode),pME_WD->m_item,sizeof(char)*8)==0)
+			return 1;
+		else
+			return 0;
+	}
+}
+
+
+VC CString 字符串处理函数的应用.doc
+https://download.csdn.net/download/zhengyanfeng/3195324
+
+实现MFC CListCtrl控件的可编辑功能(v ok)
+https://download.csdn.net/download/shen8686/1472794
+
+VC/MFC 如何使列表控件（CListCtrl）可编辑
+https://jingyan.baidu.com/article/e75057f2f438f8ebc91a89a7.html
+
+CListCtrl控件详解
+https://blog.csdn.net/milanleon/article/details/29195657
+
+表格控件GridCtrl
+https://download.csdn.net/download/yzhuang/3331073
+
+【MFC】CListCtrl列表控件右键复制内容到粘贴板
+在列表控件属性中，增加对NM_RCLICK消息处理。
+https://blog.csdn.net/sunriver2000/article/details/100134074
+
+listctrl中的cell如何支持被复制
+听说grid控件，自带可被复制功能，同时数据又不会被修改，后面可以学习一下该控件的使用。
+https://blog.csdn.net/weixin_30399797/article/details/95668148
+
+六种查找算法效率比较
+接着上次的排序算法讨论，这次谈的是六种查找算法，分别是：顺序查找、折半查找、二叉树查找、索引查找、开地址哈希查找方法、拉链法哈希查找方法。
+https://blog.csdn.net/fangyonghao/article/details/37875373
+
+内存比较函数 - CompareMem（文件、数组等比较）
+https://blog.csdn.net/haiou327/article/details/6647162
+
+数据比较函数（内存比较）
+https://blog.csdn.net/dongtuoc/article/details/79099485
+
+字符串和内存数据比较函数
+https://blog.csdn.net/zhghost/article/details/5286310
+
+关于字符串比较的一点讨论---strcmp与memcmp的效率及实现原理
+至此，也明白了为什么这两个函数会有效率的差别，strcmp比较的字符串，而memcmp比较的是内存块，strcmp需要时刻检查是否遇到了字符串结束的 /0 字符，而memcmp则完全不用担心这个问题。另一个区别是
+strcmp在比较四字节是逐字节比较，而memcmp是用了字符串比较指令，感觉用字符串比较指令比用逐字节比较好，不知道strcmp为什么比较四字节时不用。感觉memcmp倒是可以用来实现strncmp函数的功能。
+遗留的问题有内存字节对齐的问题，以及两处mov edi,edi和一处nop指令的问题。交给以后吧。
+————————————————
+版权声明：本文为CSDN博主「jcwKyl」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/jcwKyl/article/details/2217428
+
+strcmp和memcmp两个字符串比较函数
+strcmp函数： 
+函数原型：int strcmp(const char * s2,const char * s2)；
+功能：比较字符串s1和字符串s2的大小。
+返回值： 
+s1大于s2，返回值大于零 
+s1等于s2，返回值等于零 
+s1小于s2，返回值小于零
+特点：两个字符串之间是逐个按照它们的ASIIC大小来比较的，一旦发现其中一个大于或小于另一个时，比较结束，返回一个值，不然就一直比较到’\0’为止。 
+memcmp函数: 
+函数原型： 
+int memcmp(const void *buf1, const void *buf2, unsigned int count)；
+功能：比较内存区域buf1和buf2的前count个字节。
+返回值： 
+s1大于s2，返回值大于零 
+s1等于s2，返回值等于零 
+s1小于s2，返回值小于零
+特点：memcmp函数也是按ASICC码逐个比较，在strcmp的基础上多加了个功能，他能比较字符串中前count字节的大小。如果count == strlen(s1)，那就是比较字符串中全部字符。
+https://blog.csdn.net/Tianzez/article/details/78151454
+
+00:26.97 datacount=271,7545 datainterval=271 ListIndex=32737 ListIndex_bak=0
+if (mStFrame.btTransCode == 'e')
+
+00:24.19 datacount=271,7545 datainterval=271 ListIndex=32737 ListIndex_bak=0
+		// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
+		for( ps = mCListDataFrame.GetHeadPosition(); (ps) ; mCListDataFrame.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+		{
+			//pME_WD->m_TransCode.GetBuffer(2)
+			mStFrame = mCListDataFrame.GetAt(ps);
+			if (mStFrame.btTransCode == 'e')
+			{
+				itoa(ListIndex+1,string,10);
+				m_list_data.InsertItem(ListIndex,string,0);
+				ListIndex++;
+			}
+
+//
+//			memcpy(GroupCodeString,&mStFrame.btGroupCode,1);
+//			m_list_data.SetItemText(ListIndex,1, GroupCodeString);
+
+
+
+00:32.13 datacount=271,7545 datainterval=271 ListIndex=1003 ListIndex_bak=1000
+SetTimer( 1, 10, NULL ) ;
+
+00:30.48 datacount=271,7545 datainterval=271 ListIndex=3
+//			mStFrame = mCListDataFrame.GetAt(ps);
+//			itoa(ListIndex+1,string,10);
+//			m_list_data.InsertItem(ListIndex,string,0);
+
+// && ListIndex < ListIndex_bak+100
+00:35.10 datacount=271,7545 datainterval=271 ListIndex=1003
+//			mStFrame = mCListDataFrame.GetAt(ps);
+//			itoa(ListIndex+1,string,10);
+//			m_list_data.InsertItem(ListIndex,string,0);
+
+c语言中的'\0'的数值是多少 
+c语言中“\0”是空字符串。 是字符常量，NULL 字符，ASCII码数值0，用作字符串结尾符。
+https://zhidao.baidu.com/question/555056392654487652.html
+
+c语言memset初始化结构体问题
+https://zhidao.baidu.com/question/601474806.html?qbl=relate_question_1&word=memset%20%C8%E7%B9%FB%BD%E1%B9%B9%CC%E5%D6%D0%D3%D0%CA%FD%D7%E9%B5%C4%BB%B0%BB%B9%CA%C7%D0%E8%D2%AA%B6%D4%CA%FD%D7%E9%B5%A5%B6%C0%BD%F8%D0%D0%B3%F5%CA%BC%BB%AF%B4%A6%C0%ED%B5%C4
+
+strlen和sizeof有什么区别?
+1、sizeof是算符，strlen是函数。 数组做sizeof的参数不退化，传递给strlen就退化为指针了。strlen所作的仅仅是一个计数器的工作，它从内存的某个位置（可以是字符串开头，中间某个位置，甚至是某个不确定的内存区域）开始扫描，直到碰到第一个字符串结束符'\0'为止，然后返回计数器值(长度不包含'\0')。
+2、sizeof操作符的结果类型是size_t，它在头文件中typedef为unsigned int类型。该类型保证能容纳实现所建立的最大对象的字节大小。
+https://zhidao.baidu.com/question/12033577.html
+
+memset
+另外memset()是一个库函数函数,需要加头文件#include<string.h>
+memset是计算机中C/C++语言初始化函数。作用是将某一块内存中的内容全部设置为指定的值， 这个函数通常为新申请的内存做初始化工作。
+void *memset(void *s, int ch, size_t n);
+函数解释：将s中当前位置后面的n个字节 （typedef unsigned int size_t ）用 ch 替换并返回 s 。
+memset：作用是在一段内存块中填充某个给定的值，它是对较大的结构体或数组进行清零操作的一种最快方法 [1]  。
+memset()函数原型是extern void *memset(void *buffer, int c, int count) buffer：为指针或是数组,c：是赋给buffer的值,count：是buffer的长度
+常见错误
+第一：memset函数按字节对内存块进行初始化，所以不能用它将int数组初始化为0和-1之外的其他值（除非该值高字节和低字节相同）。
+第二：memset(void *s, int ch,size_t n);中ch实际范围应该在0~~255，因为该函数只能取ch的后八位赋值给你所输入的范围的每个字节
+第三： 搞反了 ch 和 n 的位置.一定要记住如果要把一个char a[20]清零，一定是 memset(a,0,20*sizeof(char));而不是 memset(a,20*sizeof(char),0);
+第四： 过度使用memset.
+char buffer[4];
+memset(buffer,0,sizeof(char)*4);
+strcpy(buffer,"123");
+//"123"中最后隐藏的'\0'占一位，总长4位。
+这里的memset是多余的. 因为这块内存马上就被全部覆盖，清零没有意义.
+第五：
+int some_func(struct something *a)
+{memset(a,0,sizeof(a));}
+其实这个错误严格来讲不能算用错memset，但是它经常在使用memset的场合出现。这里错误的原因是VC函数传参过程中的指针降级，导致sizeof(a)，返回的是一个something*指针类型大小的的字节数，如果是32位，就是4字节。
+
+int main()
+{
+    char *s="GoldenGlobalView";
+    clrscr();
+    memset(s,'G',6);                //这里没有问题，可以编译运行
+                    //单步运行到这里会提示内存访问冲突
+                     //肯定会访问冲突，s指向的是不可写空间。
+    printf("%s",s);
+    getchar();
+    return 0;
+}
+一般情况下，清空stTest的方法：
+stTest.csName[0]={'\0'}; // question
+另外：
+如果结构体中有数组的话还是需要对数组单独进行初始化处理的。 // question
+https://baike.baidu.com/item/memset/4747579?fr=aladdin
+
+初始化字符串 char[]
+
+2020.01.09
+
+Findwindow
+
+这个关键是要一个主窗口句柄嘛，使用AfxGetMainWnd()这个函数就可以了。
+CMyMainDlg *pMMD = (CMyMainDlg*)AfxGetMainWnd();
+然后就是
+pMMD.ShowWindow(SW_SHOW);
+
+如何判断Dialog窗口
+
+C++多线程——线程同步
+#include <Windows.h>
+#include <iostream>
+using namespace std;
+
+typedef struct  _STRUCT_DATA_
+{
+	int id; //用于标识出票id
+	int tickets;
+}_DATA, *_pDATA;
+
+HANDLE g_hEvent;
+DWORD WINAPI Fun1(LPVOID lpParam);
+DWORD WINAPI Fun2(LPVOID lpParam);
+
+void main()
+{
+	HANDLE hThread1;
+	HANDLE hThread2;
+
+	_DATA stru_data;
+	stru_data.id = 0;
+	stru_data.tickets = 20;
+
+	g_hEvent = CreateEvent(NULL, FALSE, FALSE, L"Ticket");
+	if (g_hEvent) { 
+		if (ERROR_ALREADY_EXISTS == GetLastError()) { 
+			cout << "the instance is exist!" << endl;			
+			return; 
+		} 
+	}
+	
+	hThread1 = CreateThread(NULL, 0, Fun1, &stru_data, 0, NULL);
+	hThread2 = CreateThread(NULL, 0, Fun2, &stru_data, 0, NULL);
+
+	CloseHandle(hThread1);
+	CloseHandle(hThread2);
+
+	SetEvent(g_hEvent);
+	Sleep(4000);
+	CloseHandle(g_hEvent);
+}
+
+DWORD WINAPI Fun1(LPVOID lpParam)
+{
+	_pDATA data = (_pDATA)lpParam;
+	while (TRUE)
+	{
+		WaitForSingleObject(g_hEvent, INFINITE);
+		if (data->tickets > 0)
+		{
+			Sleep(1);
+			cout << "fun1: " << data->id++ ;
+			cout << "thread 1:sell ticket: " << data->tickets-- << endl;
+			SetEvent(g_hEvent);
+		}
+		else {
+			SetEvent(g_hEvent);
+			break;
+		}
+	}
+	return 0;
+}
+
+DWORD WINAPI Fun2(LPVOID lpParam)
+{
+	_pDATA data = (_pDATA)lpParam;
+	while (TRUE)
+	{
+		WaitForSingleObject(g_hEvent, INFINITE);
+		if (data->tickets > 0)
+		{
+			Sleep(1);
+			cout << "fun2: " << data->id++ ;
+			cout << "thread 2:sell  ticket: " << data->tickets-- << endl;
+			SetEvent(g_hEvent);
+		}
+		else {
+			SetEvent(g_hEvent);
+			break;
+		}
+	}
+	return 0;
+}
+
+
+
+https://blog.csdn.net/qq_41498261/article/details/83624326
+
+想问一下POSITION这个变量到底是什么类型，我想将他记录到数据库中，可是… [问题点数：20分，结帖
+POSITION变量应该是C++里容器类的迭代器的一个封装吧，如果你想用int来代的话，一般有个FindIndex(int)可以返回第int个元素对应的POSITION变量，如果没有该元素的话，返回NULL
+https://bbs.csdn.net/topics/40081562
+
+DataCount = 271 7547
+
+
+00:08.16秒 counts=1906240
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddHead(*pStFrame);
+200102.MDS 88,752K
+
+01:28.45秒 counts=19650000
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddTail(*pStFrame);
+			counts ++;
+			if (counts % 10000 == 0)
+			{
+				TRACE("CUnpacker_TTFrame::InputData counts=%d \n",counts);
+			}
+181214.MDS 1,118,643K
+
+TRACE("CUnpacker_TTFrame::InputData counts=%d \n",counts);
+// 添加打印会变慢很多
+
+CList使用说明
+// #include "stdafx.h"
+// #include "test.h"
+#include <afxtempl.h>
+#include <iostream>
+using namespace std;
+class Point
+{
+public:
+    Point()
+    {
+        m_x = 0;
+        m_y = 0;
+    }
+    Point(int x, int y)
+    {
+        m_x = x;
+        m_y = y;
+    }
+	bool operator==(const Point& src) const
+    {
+        return ( (m_x == src.m_x) && (m_y == src.m_y) );
+    }
+public:
+    int m_x;
+    int m_y;
+};
+typedef CList<Point, Point&>  CPntLst;
+int main()
+{
+    CPntLst     lst;
+    Point       point, elem1, elem2;
+    elem1.m_x = 52;
+    elem1.m_y = 102;
+    elem2.m_x = 14;
+    elem2.m_y = 1621;
+	
+    // add a element from tail, certainly, also can from head
+    lst.AddTail(elem1);
+    lst.AddTail(elem2);
+    // print the point count
+    cout<< "count: "<<lst.GetCount()<<endl;
+    // traverse the whole list
+    cout << "First time:\n";
+    size_t index = 0;
+    POSITION ps;
+	
+    for( ps = lst.GetHeadPosition();ps;lst.GetNext(ps) )
+    {
+		// extract the point according the current position
+		point = lst.GetAt(ps);
+		printf("index: %d, m_x = %d, m_y = %d\n", index++, point.m_x, point.m_y);
+    }
+    // search the point which is equal to elem1
+    ps = lst.Find(elem1);
+    point = lst.GetAt(ps);
+    printf("elem1: m_x = %d, m_y = %d\n", point.m_x, point.m_y);
+    Point elem3(123, 123123);
+    // insert elem3 into the list after elem1
+    lst.InsertAfter(ps, elem3);
+    cout << "Second time:\n";
+    for( ps = lst.GetHeadPosition();ps;lst.GetNext(ps) )
+    {
+		// extract the point according the current position
+		point = lst.GetAt(ps);
+		printf("index: %d, m_x = %d, m_y = %d\n", index++, point.m_x, point.m_y);
+    }
+    // remove elem1
+    ps = lst.Find(elem1);
+    lst.RemoveAt(ps);
+    cout << "Third time:\n";
+    for( ps = lst.GetHeadPosition();ps;lst.GetNext(ps) )
+    {
+		// extract the point according the current position
+		point = lst.GetAt(ps);
+		printf("index: %d, m_x = %d, m_y = %d\n", index++, point.m_x, point.m_y);
+    }
+    // remove all the rest
+    lst.RemoveAll();
+    cout << "Fourth time:\n";
+    for( ps = lst.GetHeadPosition();ps;lst.GetNext(ps) )
+    {
+		// extract the point according the current position
+		point = lst.GetAt(ps);
+		printf("index: %d, m_x = %d, m_y = %d\n", index++, point.m_x, point.m_y);
+    }
+    return 0;
+}
+https://blog.csdn.net/liups/article/details/42567035
+
+
+CList如何使用，用法举例
+int main()
+{
+
+??? CPntLst???? lst;
+
+??? Point?????? point, elem1, elem2;
+
+??? elem1.m_x = 52;
+
+??? elem1.m_y = 102;
+
+??? elem2.m_x = 14;
+
+??? elem2.m_y = 1621;
+
+??? // add a element from tail, certainly, also can from head
+
+??? lst.AddTail(elem1);
+
+??? lst.AddTail(elem2);
+
+// print the point count
+
+cout<<"count: "<<lst.GetCount()<<endl;
+
+// traverse the whole list
+
+size_t index = 0;
+
+for( POSITION ps = lst.GetHeadPosition();
+
+???? ps;
+
+??? lst.GetNext(ps) )
+
+{??????
+
+??? // extract the point according the current position
+
+??? point = lst.GetAt(ps);
+
+??? printf("index: %d, m_x = %d, m_y = %d\n", index++, point.m_x, point.m_y);
+
+}
+
+// search the point which is equal to elem1
+
+ps = lst.Find(elem1);
+
+point = lst.GetAt(ps);
+
+printf("elem1: m_x = %d, m_y = %d\n", point.m_x, point.m_y);
+
+Point elem3(123, 123123);
+
+// insert elem3 into the list after elem1
+
+lst.InsertAfter(ps, elem3);
+
+// remove elem1
+
+lst.RemoveAt(ps);
+
+// remove all the rest
+
+lst.RemoveAll();
+
+return 0;
+
+}
+————————————————
+版权声明：本文为CSDN博主「月光秦王」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/yueguangbuxiu/article/details/7310466
+https://blog.csdn.net/yueguangbuxiu/article/details/7310466
+
+
+MFC中CList类使用注意
+https://blog.csdn.net/ellor/article/details/1714736
+
+CList的用法理解
+6、链表的遍历
+方式1：
+POSITION pos = myList.GetHeadPostion();
+while(pos != NULL)
+{
+CString? str = myList.GetNext(pos); //GetNext(pos),先返回pos位置的元素的值，再把pos指向当前位置的下一个。
+}
+
+方式2：
+for(int i = 0 ; i < myList.GetCount(); i++)
+{
+CString str = myList.GetAt(myList.FindIndex(i));
+}
+
+总结：方式2，明显比方式1慢.方式1只需要执行N此就可以了，方式2，需要执行1+2+。。。+N = （1 + N）*N/2次
+
+由于时间关系，写的也不是非常完整，需要这方面知识的，请多看MSDN帮助信息，祝你顺利~
+最后还是请教一下大家，怎么把CList声明为const类型？欢迎留言~
+————————————————
+版权声明：本文为CSDN博主「曾经一片」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/zengweicdut/article/details/8699402
+https://blog.csdn.net/zengweicdut/article/details/8699402
+
+
+00:08.16秒 counts=1906240
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddHead(*pStFrame);
+200102.MDS 88,752K
+
+00:07.57秒 counts=1906240
+mCArrayItemDataFrame.Add(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+200102.MDS 88,752K
+
+01:25.02秒 counts=19592190
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddTail(*pStFrame);
+181214.MDS 1,118,643K
+------------
+00:08.32秒 counts=1906240
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddTail(*pStFrame);
+200102.MDS 88,752K
+
+> 05:30秒 counts=1082351
+//mCArrayItemDataFrame.Add(*pStFrame);
+mCArrayItemDataFrame.Add(*pStFrame);
+00:08.44秒
+//mCListDataFrame.AddHead(*pStFrame);
+mCListDataFrame.AddTail(*pStFrame);
+
+00:07.75秒
+mCArrayItemDataFrame.Add(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+00:07.36秒
+mCListDataFrame.AddHead(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+
+00:07.52秒
+//mCListDataFrame.AddHead(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+00:01.59
+//m_pUnpacker->InputData( (BYTE*)pPkgBuf, pkgSize ) ; 
+200102.MDS 88,752K
+
+------------------
+02:10.97秒
+mCArrayItemDataFrame.Add(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+01:25.55秒
+mCListDataFrame.AddHead(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+01:24.96秒
+//mCListDataFrame.AddHead(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+
+00:09.19
+//m_pUnpacker->InputData( (BYTE*)pPkgBuf, pkgSize ) ; 
+181214.MDS 1,118,643K
+
+00:07.52秒
+//mCListDataFrame.AddHead(*pStFrame);
+//mCListDataFrame.AddHead(*pStFrame);
+00:01.59
+//m_pUnpacker->InputData( (BYTE*)pPkgBuf, pkgSize ) ; 
+200102.MDS 88,752K
+
+2020.01.08 
+---------------------------------------------------------------
+C++：char、int占多少字节
+x86
+
+sizeof(char) ?1
+sizeof(char*) ?4
+sizeof(int) ?4
+sizeof(int*) ?4
+sizeof(double) ?8
+sizeof(double*) ?4
+sizeof(float) ?4
+sizeof(float*) ?4
+sizeof(string) ?28
+sizeof(string*) ?4
+
+x64
+
+sizeof(char) ?1
+sizeof(char*) ?8
+sizeof(int) ?4
+sizeof(int*) ?8
+sizeof(double) ?8
+sizeof(double*) ?8
+sizeof(float) ?4
+sizeof(float*) ?8
+sizeof(string) ?40
+sizeof(string*) ?8
+
+指针只与系统有关，与类型无关
+https://blog.csdn.net/ueh286/article/details/98210588
+
+c++ int转char*
+第一种方法：
+
+int i=0;  
+char itc[10];  
+sprintf(itc,"%d.bmp",i);  
+
+
+第二种方法：
+
+int i=5;
+
+char err_str[10];
+
+_itoa(i, err_str, 10); //
+https://blog.csdn.net/jacke121/article/details/80235064
+
+
+在VC中,CSTRING类的用法形式多样,丰富多彩.但有时与传统数据类型之间的转换成为了很多人的难题.
+下面我来简单介绍它们之间的关系.
+1 如何实现cstring与char*之间的转换:
+
+  CString   m_cstr="abc";   
+  char*   m_char="def";   
+
+  char*   lp=m_cstr.GetBuffer(m_cstr.GetLength());          
+  m_cstr.ReleaseBuffer();   
+    
+     //相反的char* 转换成cstring
+  m_cstr.Format("%s",lp);    // lp为数组指针
+
+
+第二种：强制类型转换为   LPCTSTR   
+  LPTSTR   p   =   m_cstr.GetBuffer(   10   );   
+  strcpy(   Count,   p   );      
+  m_cstr.ReleaseBuffer(   );   
+  
+
+2 .cstring 与BYTE之间的转换
+
+BYET 为无符号字符型.原理与CHAR类似
+
+CString m_cstr;
+BYTE m_byte[100];
+m_byte=(BYTE*)m_cstr.GetBuffer(m_cstr.GetLength());  //cstring转BYTE
+
+同理:
+m_cstr.format("%s",m_byte);   //BYTE字符串输出 
+
+3 BYTE与CHAR类型之间的转换
+
+strcpy,memcpy 函数皆可以强制转换
+
+strcpy(m_char,(char*)m_byte);
+
+strlen=(char*)m_byet;
+
+memcpy(m_char,m_byte,strlen);
+
+分类: visual c++
+https://www.cnblogs.com/zhwl/archive/2012/11/27/2790601.html
+
+
+CString转换 char[100] 
+     
+    char a[100]; 
+    CString str("aaaaaa"); 
+    strncpy(a,(LPCTSTR)str,sizeof(a));
+https://www.xuebuyuan.com/3263371.html
+
+Unhandled exception in MsEdit_Wendy.exe 0xCoooooo5:Access Violation. (x no)
+
+C++字符数组初始化为空
+char str[1024] = {0};
+
+mfc中如何让listctrl生成行序号 [问题点数：40分，结帖人bshedu]
+void CUserManger::List(CString sql)  //将SQL语句查询的结果显示在列表框中
+{
+	m_useradmin.DeleteAllItems(); 
+	
+	int nItem=0;
+	char string[25];
+	try
+	{
+		m_pRecordset.CreateInstance("ADODB.Recordset");
+		m_pRecordset->Open((_variant_t)sql,_variant_t((IDispatch*)theApp.m_pConnection,true),adOpenStatic,adLockOptimistic,adCmdText);
+		if(!m_pRecordset->adoEOF) //如果记录不为空
+		{	
+			while(!m_pRecordset->adoEOF)
+			{	
+				itoa(nItem,string,10);
+				m_useradmin.InsertItem(nItem,string,0);
+				m_useradmin.SetItemText(nItem,1,(LPCTSTR)(_bstr_t)m_pRecordset->GetCollect("AdminName"));
+				m_useradmin.SetItemText(nItem,2,(LPCTSTR)(_bstr_t)m_pRecordset->GetCollect("权限"));
+				m_useradmin.SetItemText(nItem,3,(LPCTSTR)(_bstr_t)m_pRecordset->GetCollect("创建时间"));
+				nItem++;
+				m_pRecordset->MoveNext();
+			}
+		}
+		
+		m_pRecordset->Close();
+	}
+	catch (_com_error e)
+	{						
+		CATCH_ERROR;
+		return;
+	}
+	
+}
+
+	EnterCriticalSection(&m_cs);
+	for( i=0; i<m_TTOptions->m_nDataTotal; i++ )
+		m_arrItem.Add(m_TTOptions->m_pDataBuf[i]);
+	LeaveCriticalSection( &m_cs );
+https://bbs.csdn.net/topics/370128996
+
+
+Strategy.h (options 1.0.0.57):	CArrayItem  m_arrItem;
+TTOptions.h (options 1.0.0.57):typedef CArray<ItemOptions, ItemOptions&> CArrayItem;
+
+---- : public CObject Matches (3 in 1 files) ----
+Afxtempl.h (c:\users\wendy\desktop):class CArray : public CObject
+Afxtempl.h (c:\users\wendy\desktop):class CList : public CObject
+Afxtempl.h (c:\users\wendy\desktop):class CMap : public CObject
+---- : public BASE_CLASS Matches (3 in 1 files) ----
+Afxtempl.h (c:\users\wendy\desktop):class CTypedPtrArray : public BASE_CLASS
+Afxtempl.h (c:\users\wendy\desktop):class _CTypedPtrList : public BASE_CLASS
+Afxtempl.h (c:\users\wendy\desktop):class CTypedPtrMap : public BASE_CLASS
+
+
+MFC中控件之CListCtrl的使用总结
+m_ListCtrl.InsertColumn(0, _T("第0列"), LVCFMT_LEFT, 100);
+m_ListCtrl.InsertColumn(1, _T("第1列"), LVCFMT_LEFT, 100);
+m_ListCtrl.InsertColumn(2, _T("第2列"), LVCFMT_LEFT, 100);
+m_ListCtrl.InsertItem(0, _T("第0行"), 3);//首行添加
+m_ListCtrl.InsertItem(1, _T("第1行"), 4);//首行添加
+m_ListCtrl.InsertItem(2, _T("第2行"), 5);//首行添加
+
+6.添加几条数据向列表控件中：
+for(int i = 0; i < 10; i++)
+{
+m_ListCtrl.InsertItem(i,"");
+m_ListCtrl.SetItemText(i,0, "第一列");
+m_ListCtrl.SetItemText(i,1, "第二列");
+m_ListCtrl.SetItemText(i,2, "第三列");
+}
+
+10.获得列表的列数及行数：
+    //得到列表的列数
+    int nHeadNum = m_list.GetHeaderCtrl()->GetItemCount();
+    //得到列表的行数
+    m_list.GetItemCount();
+https://blog.csdn.net/lovescjinbao/article/details/17691597
+
+BOOL CShowData::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+
+	m_list_data.InsertColumn(0,"btGroupCode", LVCFMT_LEFT, 100);
+	m_list_data.InsertColumn(1,"nLength", LVCFMT_LEFT, 70);
+	m_list_data.InsertColumn(2,"lTime", LVCFMT_LEFT, 50);
+	m_list_data.InsertColumn(3,"arItemCode", LVCFMT_LEFT, 90);
+	m_list_data.InsertColumn(4,"btTransCode", LVCFMT_LEFT, 100);
+	m_list_data.InsertColumn(5,"nTransDataLength", LVCFMT_LEFT, 150);
+	m_list_data.InsertColumn(6,"pTransData", LVCFMT_LEFT, 90);
+...}
+
+#ifdef _DEBUG
+void CWnd::AssertValid() const
+{
+	if (m_hWnd == NULL)
+		return;     // null (unattached) windows are valid
+...
+
+		CObject* p;
+		ASSERT((p = pMap->LookupPermanent(m_hWnd)) != NULL ||
+			(p = pMap->LookupTemporary(m_hWnd)) != NULL);
+		ASSERT((CWnd*)p == this);   // must be us
+// Note: if either of the above asserts fire and you are
+		// writing a multithreaded application, it is likely that
+		// you have passed a C++ object from one thread to another
+		// and have used that object in a way that was not intended.
+		// (only simple inline wrapper functions should be used)
+		//
+		// In general, CWnd objects should be passed by HWND from
+		// one thread to another.  The receiving thread can wrap
+		// the HWND with a CWnd object by using CWnd::FromHandle.
+		//
+		// It is dangerous to pass C++ objects from one thread to
+		// another, unless the objects are designed to be used in
+		// such a manner.
+..}
+https://bbs.csdn.net/topics/50194470
+
+复制粘贴乱码
+电脑上为什么复制以后粘贴出来的都是乱码?
+电脑上为什么复制以后粘贴出来的都是乱码：
+在Windows 2000和Windows XP系统中，经常会在执行“复制”、“粘贴”操作时，粘贴到文本文件里的文字都是乱码，这实际是系统设置问题。解决该问题的方法操作如下几种：
+1．在复制文字前用打开任意一种中文输入法，再执行“复制”→“粘贴”操作，这样就不会出现乱码问题了。
+2．不使用操作系统自带的“文本编辑器”，如记事本。而是安装专门的EmEditor或UltraEdit文本编辑器，在里面选择“按ANSI方式粘贴”功能也可以。
+3．最好解决方法是在系统中是把默认文字输入法设为中文状态下的英文输入法。如在“文字服务和输入语言”设置对话框中，通常会有英语和简体中文两种语言，英语下面有“英语（美国）”一类的项目，中文下面则有“简体中文输入法（美国）”、“微软拼音输入法”一类的项目。实际上，这个“简体中文输入法（美国）” 就是在中文状态下输入英文的，但是它与英语下面的“英语（美国）”又不同，后者是在英文状态下输入英文。只要你把要这个“简体中文输入法（美国）”设为默认输入法，以后右下角输入法上面总是显示“Ch”，而不是“En”，就不会出现粘贴乱码的情况了。如果你的电脑中找不到这一项，说明你没有安装，可通过系统安装盘进行安装。
+https://zhidao.baidu.com/question/69533597.html
+
+counts = 1906240
+
+int counts = 0;
+BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize ) 
+{...
+		{//找到一帧
+			//ATLTRACE("Find a frame .\n");
+			unsigned char * buf=buff+sizeof(_tagTTDataFrame)+1; //for crc16
+			counts ++;
+...}
+
+2020.01.07
+
+(转)VC6调试技巧总结b
+https://www.it610.com/article/5149622.htm
+
+关于成员变量发生改变时的断点问题
+
+Master::m_pDataSrc_TTFrameFile
+
+CDataSrc_TTFrameFile::m_pProc
+
+CUnpacker_TTFrame::pStFrame
+
+vc++6.0断点调试
+https://blog.csdn.net/zxq1138634642/article/details/8108983
+
+一个在VC6中设置数据断点的问题，困扰我好久了 [问题点数：40分，结帖人Snailqiu]
+
+vc++是否可设这样的断点，当变量值变化时中断？
+
+vs中如何跟踪某个变量，一旦其值变化，立刻break
+
+不能添加文件到目录(x no)
+
+m_RecDataCount = 90853904 (10240)
+
+Compiling...
+MsEdit_WendyDlg.cpp
+D:\Program Files\Microsoft Visual Studio\MyProjects\MsEdit_Wendy\MsEdit_WendyDlg.cpp(17) : error C2146: syntax error : missing ';' before identifier 'g_Master'
+D:\Program Files\Microsoft Visual Studio\MyProjects\MsEdit_Wendy\MsEdit_WendyDlg.cpp(17) : error C2501: 'Master' : missing storage-class or type specifiers
+D:\Program Files\Microsoft Visual Studio\MyProjects\MsEdit_Wendy\MsEdit_WendyDlg.cpp(17) : fatal error C1004: unexpected end of file found
+Generating Code...
+Compiling...
+Master.cpp
+Generating Code...
+执行 cl.exe 时出错.
+Creating browse info file...
+BSCMAKE: error BK1506 : cannot open file '.\Debug\MsEdit_WendyDlg.sbr': No such file or directory
+执行 bscmake.exe 时出错.
+MsEdit_Wendy.exe - 1 error(s), 0 warning(s)(v ok)
+#include "Master.h"
+
+
+为CListBox加上智能水平滚动条
+https://blog.csdn.net/i_like_cpp/article/details/196513
+
+
+ C++  > MFC自动水平滚动条CListBox
+https://download.csdn.net/download/ayang1986/9586701
+
+为CListBox垂直滚动条，自动滚动，文字显示不全问题！
+https://blog.csdn.net/u012307430/article/details/51556941
+
+//#define IDD_MSEDIT_WENDY_DIALOG         102
+#define IDD_READMDS                     102
+enum { IDD = IDD_READMDS };  // IDD_MSEDIT_WENDY_DIALOG
+更改对话框资源ID名称后，不能双击按钮添加响应函数(v ok)
+
+2020.01.06 
+
+struct _tagTTDataFrame{
+	int nLength;
+	time_t lTime;
+	BYTE btGroupCode;
+	char arItemCode[8];
+	BYTE btTransCode;
+	int nTransDataLength;
+	void * pTransData;
+};
+
+2020-01-03 13:45:11(102004014), ==========================Start==========================
+2020-01-03 13:45:13(102005777), Groupmng.dll load fail!
+2020-01-03 13:45:22(102014825), Item:002      TransCode:E  Delay:10  Time:0-0
+2020-01-03 13:45:23(102015824), open E:\200102\200102.MDS OK
+2020-01-03 13:45:28(102020597), finish read E:\200102\200102.MDS
+2020-01-03 13:45:28(102020597), finish ttframe files
+2020-01-03 13:45:28(102020597), Frame-'E' total='0'
+2020-01-03 13:45:28(102020597), EndThread DataSrc_TTFrameFile.
+2020-01-03 13:45:28(102020691), ProcTTFrame-InputData finished.
+2020-01-03 13:45:28(102020691), EndThread ProcTTFrame.
+2020-01-03 13:45:28(102020691), ===========================End===========================
+
+
+请问.des文件怎么打开
+.des文件出现表示已经加密了。如果你自己没有设定密码，那么就是它自动生成密钥了。
+DES是安全性比较高的一种算法,目前只有一种方法可以破解该算法,那就是穷举法。
+你要先知道如果des使用的是多少位的密钥，如果是56位的密钥，则可能的密钥数量是2的56次方个。然后下载强行破解软件，因为攻击des的主要形式被称为蛮力的或彻底密钥搜索，即重复尝试各种密钥直到有一个符合为止。就我所知，应该都是收费的并且很难搞懂的黑客软件。
+我觉得希望不大……真的。
+https://zhidao.baidu.com/question/118378997.html
+
+如何打开后缀为.DES格式文件？
+我的图片用加密精灵加密解密过后，JPG格式后缀加了一个.des请问如何才能恢复我原来的JPG格式
+PHOTOSHOP打不开的！
+各种方法都试过了！都没用！
+该问题我已经解决了！主要是加密软件未注册，我花了38元购买了软件重新定义为安全加密后，重新解密就可以了！所以这些不知名的加密软件不了解还是最好不要用！
+这个要解密了才能打开的。你用加密精灵解开就行了。
+https://zhidao.baidu.com/question/121075317.html
+
+VC6.0 不能断点调试的解决方法 VC6.0没有debug模式
+调试旧程序，VC6.0环境
+1.VC6.0没有debug模式
+Build->Configurations->Add
+2.VC6.0不能断点调试  转载地址：http://blog.csdn.net/bin_zh123/article/details/5733459
+现象是用 debug中的 step info或者run to cursor合着设置断点会出现One or morebreakpoints cannot be set and have been disabled.   Execution will stopat the beginning of the program.解决方法，
+1.在project->setting->c/c++-general->debug info->program databse for edit and continue ;
+2.edit->breakpoints->removeall;
+3.build->set active project configuration->*.exe win32 debug.
+经过以上三步，ok!
+另一篇:
+一、两种调试方式：
+1、Debug模式：
+2、Release模式: (v ok)
+单击菜单[Project]->[Settings…],出现"Project Settings"对话框，选择“Release”状态；
+将C/C++标签中的Category选择General,Optimizations选Disable (Debug),Debug info选Program Database；
+在Link标签中选中Generate debug info复选框。
+注：Release模式稍好点，因为某些情况程序只能在Release下运行，如“显示对话框的DLL”在Debug下显示出窗口后 就死在那里。
+二、调试中可能的错误：“不能调试”、“断点错误”。
+1、“不能调试”：
+“One or more breakpoints cannot be set and have been disabled. Execution will stop at the beginning of the program.”
+2、“断点错误”：
+"One or more breakpoints are not positioned on valid lines.These breakpoints have been moved to the next valid line."
+注意：“不能调试”跟“断点错误”不是一回事，“断点错误”会禁用某些错误断点，但“不能调试”则会禁用所有断点。
+三、解决方法
+1、对于“断点错误”，VC会自动帮我们定位到一行，我们不用理会！
+2、对于“不能调试”，解决步骤如下：
+1)、重起电脑
+2)、把工程拷贝到新目录，删除ncb, .opt,.plg文件。 注意是拷贝，不是剪切。
+3)、再菜单栏(menu)：Build->Rebuild All。
+https://blog.csdn.net/hjk216/article/details/53422540
+
+
+MsEdit.dsp
+SOURCE=.\BrokersTrace.cpp
+# End Source File
+# Begin Source File
+
+
+vc6.0不能在工程里面添加文件
+win7的系统，装了vc6.0。不能在工程中添加文件，已经按照了FileTool控件了，添加文件的时候会提示unable to add file to the active project。
+本人菜鸟，希望大神帮帮忙啊帮帮忙，感激不尽！
+用记事本打开.dsp文件，看看里面是否已有要添加的文件，将其删除重新添加就OK了。我的就是这样给解决了。
+https://zhidao.baidu.com/question/1605878237145018307.html
+
+Unpacker_TTFrame.cpp
+e:\msedit\msedit\datadef.h(1056) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\msedit\msedit\datadef.h(1088) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\msedit\msedit\mylistener.h(167) : error C2143: syntax error : missing ';' before '*'
+e:\msedit\msedit\mylistener.h(167) : error C2501: 'DbEnv' : missing storage-class or type specifiers
+e:\msedit\msedit\mylistener.h(167) : error C2501: 'm_pdbEnv' : missing storage-class or type specifiers
+e:\msedit\msedit\mylistener.h(168) : error C2143: syntax error : missing ';' before '*'
+e:\msedit\msedit\mylistener.h(168) : error C2501: 'Db' : missing storage-class or type specifiers
+e:\msedit\msedit\mylistener.h(168) : error C2501: 'm_pdb' : missing storage-class or type specifiers
+e:\msedit\msedit\filesync.h(16) : fatal error C1083: Cannot open include file: 'C:\\db-4.8.30\\build_windows\\db_cxx.h': No such file or directory
+Generating Code...
+
+
+
+MFC编译错误之cannot open file '.\Debug\xxxDlg.sbr': No such file or directory
+
+
+原创linwx2010 发布于2015-06-30 09:57:53 阅读数 3133  收藏
+展开
+
+最近做个MFC小程序，今天在添加了一个自定义函数后出现了一个编译错误：
+
+Creating browse info file...
+BSCMAKE:error BK1506 : cannot open file '.\Debug\COMTOOLDlg.sbr':No such file or directory
+Error executing bscmake.exe.
+
+
+
+删除Debug文件夹，重新编译项目不能解决问题。
+上网搜索解决办法：
+
+
+1、删除 .ncb .opt文件，删除删除Debug文件夹，重新打开项目，Rebuild All，问题解决。
+
+
+
+
+2、取消Build Browser Info file
+
+方法：Project-->Settings-->Browser Info-->取消Build Browser Info file
+————————————————
+版权声明：本文为CSDN博主「linwx2010」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/linwx2010/article/details/46691879
+https://blog.csdn.net/linwx2010/article/details/46691879
+
+
+source insight 和 vc6 工作代码区显示的中文复制到记事本或UltraEdit中显示乱码(x no)
+https://zhidao.baidu.com/question/69533597.html (v ok)
+
+		case 'e':   //andy add 2014.01.28 'e'′úì?'t'
+			HandleFrame_e(buff,Len);
+			break;
+
+每天"新英细姐"
+分主次急缓
+2020.01.03
+
+Astyle编程语言格式化工具的中文说明
+http://blog.chinaunix.net/uid-20662363-id-1904145.html
+
+代码风格格式化--Astyle
+https://winddoing.github.io/post/62371.html
+
+如何在source insight中使用astyle的代码整理功能
+https://zhidao.baidu.com/question/2142157796077477988.html?qbl=relate_question_2&word=sourceinsight%20Astyle%20%B8%F1%CA%BD%BB%AF%BE%D6%B2%BF%B4%FA%C2%EB
+
+source insight代码格式化（Astyle）(v ok)
+https://blog.csdn.net/wzk456/article/details/24302975
+
+vc++ 6.0 怎么格式化代码？(v ok)
+你是想让代码自动排版吧
+选中代码或者全选代码，按"Alt+F8"就可以了
+https://zhidao.baidu.com/question/452298511.html
+
+Source Insight 批量注释 多行注释宏
+https://blog.csdn.net/darennet/article/details/8495551 (v ok)
+
+source insight中注释_取注快捷键设置方法
+source insight中注释_取注快捷键设置方法：（使用//注释）
+??? 1、打开Source Insight4.0，点击Project->Open Project->打开base项目->打开Base下的utils.em文件；相对路径如下：
+./Source Insight 4.0/Projects/Base/utils.em
+??? 2、在文件utils.em末尾添加下面代码,然后在source insight中点击Options->Key Assignments（键值分配）为Macro:MultiLineComment分配快捷键，比如Alt+/；或者点击Options->Menu Assignments（菜单分配）为Macro:MultiLineComment分配菜单按钮
+————————————————
+版权声明：本文为CSDN博主「WenKang_00」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_31701279/article/details/78511614
+https://blog.csdn.net/qq_31701279/article/details/78511614 (v ok)
+
+win7系统中pdf文件怎么打开(v ok)
+方法二、
+直接将pdf格式文件拖到浏览器图标上面，放开鼠标你就会惊奇的发现PDF文件打开了!
+福昕pdf阅读器
+https://www.win7qjb.com/jiaocheng/42279.html
+
+获取系统运行进程信息——PSAPI介绍使用 .(v ok)
+
+#include <windows.h>
+#include <tchar.h>
+#include <stdio.h>
+#include <psapi.h>
+ 
+#pragma comment (lib, "Psapi.lib")
+// To ensure correct resolution of symbols, add Psapi.lib to TARGETLIBS
+// and compile with -DPSAPI_VERSION=1
+ 
+int PrintModules( DWORD processID )
+{
+	HMODULE hMods[1024];
+	HANDLE hProcess;
+	DWORD cbNeeded;
+	unsigned int i;
+ 
+	// Print the process identifier.
+ 
+	printf( "\nProcess ID: %u\n", processID );
+ 
+	// Get a handle to the process.
+ 
+	hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
+		PROCESS_VM_READ,
+		FALSE, processID );
+	if (NULL == hProcess)
+		return 1;
+ 
+	// Get a list of all the modules in this process.
+ 
+	if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded))
+	{
+		for ( i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ )
+		{
+			TCHAR szModName[MAX_PATH];
+ 
+			// Get the full path to the module's file.
+ 
+			if ( GetModuleFileNameEx( hProcess, hMods[i], szModName,
+				sizeof(szModName) / sizeof(TCHAR)))
+			{
+				// Print the module name and handle value.
+ 
+				_tprintf( TEXT("\t%s (0x%08X)\n"), szModName, hMods[i] );
+			}
+		}
+	}
+ 
+	// Release the handle to the process.
+ 
+	CloseHandle( hProcess );
+ 
+	return 0;
+}
+ 
+int main( void )
+{
+ 
+	DWORD aProcesses[1024]; 
+	DWORD cbNeeded; 
+	DWORD cProcesses;
+	unsigned int i;
+ 
+	// Get the list of process identifiers.
+ 
+	if ( !EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ) )
+		return 1;
+ 
+	// Calculate how many process identifiers were returned.
+ 
+	cProcesses = cbNeeded / sizeof(DWORD);
+ 
+	// Print the names of the modules for each process.
+ 
+	for ( i = 0; i < cProcesses; i++ )
+	{
+		PrintModules( aProcesses[i] );
+	}
+ 
+	return 0;
+}
+
+
+https://blog.csdn.net/fanpeii/article/details/8107527
+
+GetProcessImageFileName GetProcessImageFileNameA 
+
+psapi.h 头文件psapi.dll 下载 (v ok)
+psapi.lib复制到vc++6.0的lib目录下（如：C:\Program Files\Microsoft Visual Studio\VC98\Lib），psapi.h复制到Include目录下（如：C:\Program Files\Microsoft Visual Studio\VC98\Include）便可使用，psapi.dll一般在system32目录下会自带，所以可以不做操作
+
+获取当前所有进程的完整路径
+https://blog.csdn.net/u014417619/article/details/52797855?utm_source=blogxgwz4
+
+遍历进程,获取当前进程下进程的路径.(获得全路径)
+https://blog.csdn.net/hgreminem/article/details/4305084
+
+MFC中获取进程名、PID及进程所在路径
+https://blog.csdn.net/hgreminem/article/details/4305084
+
+MFC获得指定进程的ID，路径及终止进程
+https://blog.csdn.net/lebao82/article/details/17142789
+
+C++ 获取进程所在目录（全路径）
+
+获取windows下任务管理器中的进程列表
+#include "stdafx.h"
+
+//int main(int argc, char* argv[])
+//{
+//	printf("Hello World!\n");
+//	return 0;
+//}
+
+#include <iostream>
+#include <Windows.h>
+#include <Tlhelp32.h>
+using namespace std;
+ 
+int main(int argc, char** argv)
+{
+    HANDLE hProcessSnp = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if(NULL == hProcessSnp)
+    {
+        return -1;
+    }
+    
+    /* 列举第一个进程 */
+    PROCESSENTRY32 pe32 = {0};
+    pe32.dwSize = sizeof(pe32);
+    BOOL bResult = Process32First(hProcessSnp, &pe32);
+    while(bResult)
+    {
+        cout << pe32.szExeFile << endl;
+        bResult = Process32Next(hProcessSnp, &pe32);
+    }
+    CloseHandle(hProcessSnp);
+    
+    getchar();
+    return 0;
+}
+https://blog.csdn.net/c1520006273/article/details/50542052 (v ok)
+
+
+求VC++6.0中注释多行代码的快捷键组合!!!!!!!!! [问题点数：5分，结帖人aqbeyond]
+https://bbs.csdn.net/topics/70072414 (v ok)
+
+VC++6.0中设置注释多行代码的快捷键组合(v ok)
+https://blog.csdn.net/zz460833359/article/details/48348431
+
+为Visual C++ 6.0添加批量注释和取消批量注释功能
+首先在Visual C++ 6.0的安装目录下“Microsoft Visual Studio\Common\MSDev98\Macros”中新建一个txt文件，复制如下代码到文件中：然后把文件保存为Comment.dsm，注意文件后缀为dsm，文件类型也要更改。
+打开VC6.0，Tools-Customize
+打开Add-ins and Macro Files标签页，在下面勾上刚刚新建的文件名Comment，如果没有，点击下面的Browse找到自己保存的文件。
+打开Commands标签页，下拉Category找到Macros，右边会出现CancelSelNote和SetSelNote，分别代表取消注释和添加注释的功能。
+用左键选中CancelSelNote或SetSelNote不放，把它们拖动到工具栏上，然后放手，会弹出下面的对话框，让你给这个功能选择一个图标，可以随意选择，然后确定即可。
+注意：
+
+当你用【取消注释】这个功能时，它会删除选中行的前两个字符。。。
+
+　　正常情况下，删除的是每一行前面“//”这两个字符，但是，有时候，你选中多行时，如果其中有1行是不带注释的，那么，它也会删除这行的前两个字符。自己可以慢慢试一下，就清楚了。
+
+　　所以，在使用【 取消注释 】功能时，要慎用。
+————————————————
+版权声明：本文为CSDN博主「qlexcel」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qlexcel/article/details/86709679
+https://blog.csdn.net/qlexcel/article/details/86709679 (v ok)
+
+VC6.0快捷键 与 Visual Assist X 快捷键(转载)
+https://blog.csdn.net/weixin_30432007/article/details/96790356
+
+VS 和Visual Assist X快捷键
+https://blog.csdn.net/xueying_/article/details/7679042
+
+MultiByteToWideChar和WideCharToMultiByte用法详解
+void main()
+{
+    char sBuf[25]={0};
+
+    strcpy(sBuf, "我最棒");
+
+    //获取输入缓存大小
+    int sBufSize=strlen(sBuf);
+    //获取输出缓存大小
+    //VC++ 默认使用ANSI，故取第一个参数为CP_ACP
+    DWORD dBufSize=MultiByteToWideChar(CP_ACP, 0, sBuf, sBufSize, NULL, 0);
+    printf("需要wchar_t%u个\n", dBufSize);
+
+    wchar_t * dBuf=new wchar_t[dBufSize];
+    wmemset(dBuf, 0, dBufSize);
+
+    //进行转换
+    int nRet=MultiByteToWideChar(CP_ACP, 0, sBuf, sBufSize, dBuf, dBufSize);
+    
+    if(nRet<=0)
+    {
+        cout<<"转换失败"<<endl;
+        DWORD dwErr=GetLastError();
+        switch(dwErr)
+        {
+        case ERROR_INSUFFICIENT_BUFFER:
+            printf("ERROR_INSUFFICIENT_BUFFER\n");
+            break;
+        case ERROR_INVALID_FLAGS:
+            printf("ERROR_INVALID_FLAGS\n");
+            break;
+        case ERROR_INVALID_PARAMETER:
+            printf("ERROR_INVALID_PARAMETER\n");
+            break;
+        case ERROR_NO_UNICODE_TRANSLATION:
+            printf("ERROR_NO_UNICODE_TRANSLATION\n");
+            break;
+        }
+    }
+    else
+    {
+        cout<<"转换成功"<<endl;
+        cout<<dBuf; 
+    }
+
+    delete(dBuf);
+}
+https://www.cnblogs.com/ranjiewen/p/5770639.html
+
+Window获取所有运行的进程
+https://blog.csdn.net/oshirdey/article/details/29407467
+
+Windows编程 - 遍历所有进程(exe) 代码(C++)
+https://blog.csdn.net/caroline_wendy/article/details/29381987
+
+【转】Windows下如何枚举所有进程（含代码）
+https://blog.csdn.net/zdragon2002/article/details/3690925
+
+急！获取windows中所有正在运行的应用程序信息 [问题点数：20分，结帖人liaoyilin_2001]
+https://bbs.csdn.net/topics/310054898
+
+C语言编写获取当前系统所有正在运行的应用程序
+EnumProcesses函数枚举进程。
+https://ask.csdn.net/questions/201936
+
+获取当前正在运行的应用程序
+
+查看正在打开的应用程序或目录
+
+最近打开的目录或程序
+
+Windows 三种开机自启动的设置方式（全面）
+https://blog.csdn.net/lee008108/article/details/78713385
+
+Windows设置自己的程序开机自动启动
+https://blog.csdn.net/lwpkjio/article/details/85129507
+
+开机自动打开最近的目录或程序
+
+vc打开文件和打开文件所在目录
+https://blog.csdn.net/mail_cm/article/details/7248359
+
+cmd一次性打开多个应用程序
+https://blog.csdn.net/xufeng0991/article/details/41309603
+
+批处理一键打开多个应用程序
+@echo off
+echo Starting PLSQL...
+start "" "D:\YLZ\PLSQL Developer 12正式版64位+中文语言包+注册码\plsqldev.exe"
+echo Starting sublime...
+start "" "D:\QuickStart\sublime"
+echo Starting youdao...
+start "" "D:\QuickStart\youdao"
+echo Starting idea...
+start "" "D:\tools\quickStart\idea"
+echo Starting mongo...
+start "" "D:\tools\quickStart\mongo"
+echo Starting navicat...
+start "" "D:\tools\quickStart\navicat"
+echo Starting SecureCRT...
+start "" "D:\tools\quickStart\SecureCRT"
+echo Starting xmind...
+start "" "E:\desktop\wzh\xxx\xxx.xmind"
+echo Starting alwaysup...
+start "" "D:\tools\quickStart\alwaysup"
+https://blog.csdn.net/qq_31748587/article/details/84138742
+
+win7如何删除开始菜单最近打开文档记录听语音
+https://jingyan.baidu.com/article/67508eb4974d3edcca1ce488.html
+
+Win7系统中如何查看最近打开过的文档项目？
+右键点击Win7系统的开始按钮，选择属性按钮点击。点击属性按钮后，进入属性界面。
+在属性界面点击自定义按钮，进入自定义菜单，在自定义菜单上勾选“最近使用的项目”，然后点击确定按钮。
+在开始菜单点击最近使用的项目图标，显示最近打开过的文件。
+需要查看最近打开过的所有项目，右键点击最近打开项目的图标。
+C:\Users\Wendy\AppData\Roaming\Microsoft\Windows\Recent
+https://jingyan.baidu.com/article/67508eb4974d3edcca1ce488.html
+
+查找最近打开的目录或程序
+
+如何查看和删除电脑的各种使用历史记录
+四.查看资源管理器地址栏快速打开记录
+查看方法：点击地址栏右侧的向下箭头
+这里写图片描述
+删除方法： 
+1.按下 Windows + R ， 输入并执行 regedit ， 打开注册表编辑器 
+2.按以下路径展开： HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths 
+3.Windows 资源管理器地址栏历史记录会列在以上注册表路径下，不需要的路径删除掉即可。
+https://blog.csdn.net/bruce135lee/article/details/79675259
+
+C:\Windows\Prefetch
+
+记录打开的程序或目录
+
+查看电脑使用记录（包括打开过的文件）
+C:\Windows\Tasks\SCHEDLGU.TXT
+C:\Users\Wendy\Recent Nothings
+6、电脑日志记录
+开始/控制面板/性能和维护(经典视图里去掉这个)/管理工具/事件查看器，看看里面的记录，或者有比较简单的方法就是在开始里\设置\控制面板\管理工具\事件查看器。这样也能查看
+7、查看文档记录
+开始→我最近的文档，点开这里就可以查看最近都写了什么文档，看了什么电影、图片。
+https://blog.csdn.net/bruce135lee/article/details/79674898
+
+2020.01.02
+
+ATL窗口实现
+https://download.csdn.net/download/clever101/4359848
+
+mfc在对话框中创建单文档问题
+
+COM003.Simple.1
+
+com组件对话框
+
+COM组件中显示对话框的资源
+https://download.csdn.net/download/yangshusen55/2508773?utm_source=bbsseo
+
+MFC编程 CButton::Create
+第四个参数，表示按钮的大小和位置。
+CRect(x1,y1,x2,y2)
+x1和y1表示按钮左上角坐标
+x2和y2表示按钮右下角坐标
+所以x2必须大于x1，y2必须大于y1；
+你的x都设成了100，按钮的宽度为0了，当然不显示了。
+明白了不。
+https://zhidao.baidu.com/question/127558261.html
+
+	CRect rect1 ;
+	GetClientRect( rect1 ) ;
+
+	//m_pwndBgn->MoveWindow( rect1 ) ;
+	//m_pwndBgn->GetClientRect( rect1 ) ;
+
+	CRect rectbtn( rect1 ) ;
+	rectbtn.left++ ;  //左上角X位置
+	rectbtn.top++ ;   //左上角Y位置
+	rectbtn.right  = rectbtn.left+120 ; //右下角 X 位置 // wendy 80
+	rectbtn.bottom = rectbtn.top+20 ;  //右下角 Y 位置
+
+	m_pbtnItemCode->Create( "", WS_CHILD|WS_VISIBLE, rectbtn, m_pwndBgn, MACRO_BtnItemCodeID ) ;  // wendy rectbtn rect
+
+
+m_pbtnItemCode->Create( "", WS_CHILD|WS_VISIBLE, rect, m_pwndBgn, MACRO_BtnItemCodeID ) ;
+	ON_BN_CLICKED(MACRO_BtnItemCodeID, OnSelectItemCode)
+
+	CRect rectbtn( rect ) ;
+	rectbtn.left++ ;  //左上角X位置
+	rectbtn.top++ ;   //左上角Y位置
+	rectbtn.right  = rectbtn.left+40 ; //右下角 X 位置 // wendy 80
+	rectbtn.bottom = rectbtn.top+20 ;  //右下角 Y 位置
+	//m_pbtnItemCode->MoveWindow( rectbtn ) ;//设置位置大小
+	int nPreX = rectbtn.right ;	
+
+D:\VC6_SOFT\vc6cn\VC6CN\COMMON\MSDEV98\BIN 覆盖
+
+暂时跳过 直接编辑资源文件改为MS Sans Serif即可 (v ok)
+
+VC6 IDE字体设置增强补丁
+DEVSHL.DLL 6.00.8168.2
+
+VC6.0经典字体 Fixedsys字体 MS Sans Serif
+
+D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\MSDEV.EXE属性
+VC6产品版本: 6.00.8168.2 (v ok)
+
+vc中如何更改对话框的字体属性
+https://jingyan.baidu.com/article/e8cdb32b5a698f37052bad29.html
+
+转载：修改VC++6.0对话框资源字体及大小（不修改源码）
+3、打开工程目录下的rcTest.rc文件
+搜索“IDD_ABOUTBOX DIALOG DISCARDABLE”，可以看到
+CAPTION "关于 rcTest"
+FONT 9, "宋体"
+https://blog.csdn.net/MOLLY0511/article/details/81062011
+
+vc6 选择对话字体
+select dialog font
+
+VC里面大家都喜欢用什么字体？ [问题点数：40分，结帖人HelloDan]
+Fixedsys, system ,Arial
+Courier New or Courier 是标准答案
+https://bbs.csdn.net/topics/320099237
+
+VC++6.0使用非默认字体
+近期在使用vc++6.0写C程序
+问题：vc++自带的字体不太好看
+解决办法：修改注册表
+1. win+r 运行 regedit 调出注册表编辑器
+进入到目录 HKEY_CURRENT_USER\SOFTWARE\Microsoft\DevStudio\6.0\Format
+2.在Format上右键导出
+
+
+https://blog.csdn.net/qq_21808961/article/details/78191167
+
+VC6.0修改字体（非系统自带的5种字体）
+在VC6.0下更改字体，我们一般通过菜单-Tools-Options-Format来更改
+但在我的win7 64位系统下这一选项下的字体和字体颜色是空的，无法选择
+所以我想起来通过注册表来更改。
+Win+R输入“Regedit”，找到“HKEY_CURRENT_USER/Software/Microsoft/DevStudio/6.0”
+发现下面没有Format，这也是为什么VC环境中找不到字体的原因，注册表里面都没有该信息
+在6.0上右键New-Key（项（K）），给它重命名为“Format”
+这里我只要更改编辑源文件窗口和输出窗口的字体
+所以在“Format”下面再新建两个New-Key：“Output Window”和“Source Window”，“Workspace Window”
+单击“Output Window”后在右侧显示详情区右键New-String Value，命名为“FontFace”
+再右键“FontFace”Modify...为“Courier New”
+https://blog.csdn.net/pk124729136/article/details/16339609
+
+VC6 IDE字体设置增强补丁 评分:     
+适用于版本号6.0.9782.0的devshl.dll。对应MSDEV.EXE版本号为6.0.9782.2
+参考moring#pediy的帖子做个一个补丁。
+复制到
+C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin
+覆盖同名原文件(DEVSHL.DLL)即可，然后你可以在VC6的字体设置中选择更多的字体。
+
+引用来自：
+VC6 IDE字体设置增强
+by morning
+
+VC6只枚举系统缺省字符集一致的字体,这导致选择字体时甚为不便.虽然说可以通过修改注册表,直接设置字体,但是总觉得有些遗憾,今天有点时间,就小小patch了
+https://download.csdn.net/download/lonmaor/5108632
+
+VC++6.0字体设置工具（完美版）
+https://download.csdn.net/download/xd20065401417/3270033
+
+VC6字体列表不全和默认字体修改的补丁
+https://download.csdn.net/download/networkdragon/1764649
+https://download.csdn.net/download/limotao2011/4909644
+https://download.csdn.net/download/u010436145/6595767
+VC6 IDE字体设置增强补丁
+https://download.csdn.net/download/lonmaor/5108632
+手动修改注册表来添加vc6.0的字体
+https://download.csdn.net/download/zhouzijian588/4705970
+
+设置VC++6.0字体，非自带字体，可改为任何字体
+
+运行regedit（注册表编辑器），打开 HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format为了方便编写，我们先导出Format，然后修改成下面的样子，只需要改FontFace （字体名称） 这里写你想改成的字体名称
+FontSize（字体大小） 0000000a = 10 （学过16进制的我想应该都知道）
+设置VC++6.0字体，非自带字体，可改为任何字体
+Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format]
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Calls Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Calls Highlight"=hex:00,00,00,00,00,ff,00,00,10,00,10,00
+"Superceded code"=hex:80,80,80,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Disassembly Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Assembly Code"=hex:80,80,80,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Memory Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Memory Highlight"=hex:ff,00,00,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Output Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"文本"=hex:00,00,00,00,ff,ff,ff,00,15,00,15,00
+"文本选择"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"当前错误/标记"=hex:ff,ff,ff,00,00,00,80,00,55,00,55,00
+"书签"=hex:00,00,00,00,00,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Registers Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Value Highlight"=hex:ff,00,00,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Source Browser]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"文本"=hex:00,00,00,00,ff,ff,ff,00,15,00,15,00
+"文本选择"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Source Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"文本"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"文本选择"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"当前错误/标记"=hex:ff,ff,ff,00,00,00,80,00,d2,01,b2,01
+"书签"=hex:00,00,00,00,00,ff,ff,00,10,00,10,00
+"断点"=hex:ff,ff,ff,00,80,00,00,00,10,00,10,00
+"当前声明"=hex:00,00,00,00,ff,ff,00,00,70,00,70,00
+"选择边距"=hex:d4,d0,c8,00,d4,d0,c8,00,13,00,13,00
+"关键字"=hex:00,00,ff,00,ff,ff,ff,00,10,00,11,00
+"注释"=hex:00,80,00,00,ff,ff,ff,00,10,00,11,00
+"Number"=hex:00,00,00,00,ff,ff,ff,00,11,00,11,00
+"String"=hex:00,00,00,00,ff,ff,ff,00,11,00,11,00
+"操作员"=hex:00,00,00,00,ff,ff,ff,00,11,00,11,00
+"Wizard IDL/ODL Code"=hex:80,80,80,00,ff,ff,ff,00,14,00,15,00
+"HTML Element Name"=hex:80,00,80,00,ff,ff,ff,00,14,00,15,00
+"HTML Attribute Name"=hex:ff,00,00,00,ff,ff,ff,00,14,00,15,00
+"HTML Attribute Value"=hex:00,00,ff,00,ff,ff,ff,00,14,00,15,00
+"HTML Comment"=hex:00,80,00,00,ff,ff,ff,00,14,00,15,00
+"HTML Entity"=hex:ff,00,00,00,ff,ff,ff,00,14,00,15,00
+"HTML Tag Delimiter"=hex:00,00,ff,00,ff,ff,ff,00,14,00,15,00
+"HTML String"=hex:00,00,ff,00,ff,ff,ff,00,14,00,15,00
+"HTML Tag Text"=hex:ff,00,ff,00,ff,ff,ff,00,14,00,15,00
+"HTML Operator"=hex:00,00,ff,00,ff,ff,ff,00,14,00,15,00
+"HTML Server-Side Script"=hex:00,00,00,00,ff,ff,00,00,14,00,14,00
+"User Defined Keywords"=hex:00,00,ff,00,ff,ff,ff,00,14,00,15,00
+"Wizard Code"=hex:80,80,80,00,ff,ff,ff,00,14,00,15,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Variables Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Variables Highlight"=hex:ff,00,00,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Watch Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+"Text"=hex:00,00,00,00,ff,ff,ff,00,13,01,b3,00
+"Text Selection"=hex:ff,ff,ff,00,00,00,00,00,19,00,19,00
+"Watch Highlight"=hex:ff,00,00,00,ff,ff,ff,00,10,00,10,00
+[HKEY_CURRENT_USER\Software\Microsoft\Devstudio\6.0\Format\Workspace Window]
+"FontFace"="Courier New"
+"FontSize"=dword:0000000a
+4
+重新打开VC++6.0，是不是变的比较美观了
+https://jingyan.baidu.com/article/90808022f9bedcfd91c80f20.html
+
+?方法一: 1、解压文件,双击MS Sans Serif.fon文件; 2、放到【C:\Windows\Fonts】路径; 3、打开可以切换字体的软件,如Word、笔记本等,即可使用。
+?方法二: 1、在本页直接下载这款字体,对下载好的字体压缩包进行解压处理; 2、直接双击运行字体文件,打开之后点击上方的安装按钮; 3、等待字体安装完毕,打开Word找到该字体即可使用。
+MS Sans Serif.fon 如何安装字体 百度
+
+IDD_FORMVIEW_ItemList DIALOGEX 0, 0, 225, 316
+STYLE WS_CHILD
+EXSTYLE WS_EX_NOPARENTNOTIFY
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+
+IDD_FORMVIEW_ItemList DIALOG DISCARDABLE  0, 0, 187, 96
+STYLE WS_CHILD
+FONT 10, "System"
+BEGIN
+    CONTROL         "List1",IDC_LIST_Item,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    WS_BORDER | WS_TABSTOP,7,7,173,82
+END
+
+2019.12.31
+
+一步搞定Beyond Compare文件乱码(v ok)
+方法一：进行会话设置（仅用于本次会话）
+
+步骤一打开文本比较会话界面，在“会话”菜单下选择“会话设置”选项卡；
+
+步骤二切换到“格式”页面，在左侧编码重写和右侧编码覆盖选择 GB2312/UTF-8/GBK，选择完毕后，单击确定关闭窗口，完成设置。
+方法二：文件格式（永久配置）
+
+步骤一打开文本比较会话界面，在“工具”菜单下选择“文件格式”选项；
+
+步骤二打开文件格式对话框转换窗口，在该窗口下面的编码选项里设置编码方式，然后点击保存即可。
+
+http://www.sohu.com/a/117100747_200939
+
+#define new DEBUG_NEW
+
+使用方式：
+
+在stdafx.h中包含头文件
+
+在要用诊断机制的文件中加入如下的代码。
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+这样不管是new申请的内存泄漏，还是malloc申请的内存泄漏在程序正常退出后都会输出在Debug窗口里。而且都会显示完整文件路径、行数、泄漏字节数。
+
+https://www.cnblogs.com/lisuyun/p/5744548.html
+
+
+C++中析构函数为虚函数
+1、析构函数是否定义为虚函数的区别
+
+（1）析构函数定义为虚函数时：基类指针可以指向派生类的对象（多态性），如果删除该指针delete []p；就会调用该指针指向的派生类析构函数，而派生类的析构函数又自动调用基类的析构函数，这样整个派生类的对象完全被释放。
+
+（2）析构函数不定义为虚函数时：编译器实施静态绑定，在删除基类指针时，只会调用基类的析构函数而不调用派生类析构函数，这样就会造成派生类对象析构不完全。
+
+5、基类析构函数定义为虚函数的情况
+
+        如果不需要基类对派生类及对象进行操作,则不能定义虚函数,因为这样会增加内存开销.当类里面有定义虚函数的时候,编译器会给类添加一个虚函数表,里面来存放虚函数指针,这样就会增加类的存储空间。所以,只有当一个类被用来作为基类的时候,并且有使用到基类指针操作派生类的情况时，才把析构函数写成虚函数。
+
+https://blog.csdn.net/King_weng/article/details/89263215
+
+
+为什么构造函数不能声明为虚函数？
+
+1.创建一个对象必须明确指出它的类型，否则无法创建，一个对象创建成功编译器获得它的实际类型，然后去调用对应的函数，而如果构造函数声明为虚函数，会形成一个死锁，虚函数是在运行才能确定确定其调用哪一个类型的函数，而具体哪一个类型是编译器通过对象的类型去确定的，但是此时对象还未创建也就没法知道其真实类型。
+
+2.虚函数对应一张虚函数表，这个虚函数表是存储在对象的内存空间的，如果构造函数是虚函数就需要通过虚函数表来调用，可是对象还没有实例化，也就是内存空间还没有，找不到虚函数表，所以构造函数是不能声明为虚函数的。
+
+https://www.cnblogs.com/wuyepeng/p/9882289.html
+
+
+股票价格估值DPS
+投融界为你提供股票价格估值DPS相关报道、相关新闻、相关动态，如果你想要了解股票价格估值DPS找项目，股票价格估值DPS相关资金项目介绍，就上投融界！这里拥有海量的投资融资项目合作信息,是专业的融资服务平台。
+https://www.trjcn.com/tags/1569295/
+
+EPS
+每股收益即每股盈利（EPS），又称每股税后利润、每股盈余，指税后利润与股本总数的比率。
+https://baike.baidu.com/item/%E6%AF%8F%E8%82%A1%E6%94%B6%E7%9B%8A/2429458?fromtitle=EPS&fromid=10928288&fr=aladdin
+
+GetOEMCP(v ok)
+VB声明
+Declare Function GetOEMCP Lib "kernel32" Alias "GetOEMCP" () As Long
+说明
+判断在OEM和ANSI字符集间转换的windows代码页
+返回值
+Long，目前处于活动状态的OEM代码页的标识符。针对一种特定的语言，可能存在多个代码页。以下是可用代码页列表
+437
+默认：美国
+708-720
+阿拉伯代码页
+737
+希腊
+775
+波罗的
+850
+国际
+852
+Slavic
+855
+西里尔语
+857
+土耳其语
+860
+葡萄牙语
+861
+冰岛语
+862
+希伯来语
+863
+加拿大法语
+864
+阿拉伯语
+865
+挪威/丹麦语
+866
+俄语
+874
+泰语
+932
+日语
+936
+中文（简体）
+949
+朝鲜语
+950
+中文（台、港繁体）
+1361
+朝鲜语
+http://www.office-cn.net/t/api/getoemcp.htm
+
+VC如何创建没有基类的类(v ok)
+很简单。
+点Class View在最上面的***.classes上面点右键选New Class，
+然后在Class type里选generic class，这样你新建的类就没基类了。
+https://zhidao.baidu.com/question/127700748.html
+
+
+IGPEditor_hwdDoc.cpp(59) : error C2079: 'c_file' uses undefined struct '_finddata_t'(v ok)
+#include <io.h>
+
+上传时间：2017-02-20 所需积分/C币： 
+这个有点不明白了，你下架就下架吧，扣分的理由是什么呢？
+这是2017年上传的,现在2019年底来扣我100分呀？
+
+我只是修改个下载所需积分就要重新审核了？
+积分里有反动内容还是有违犯法律条例的东西在里面了呢？呵呵。
+
+
+舍本求末;本末倒置
+
+这个问题必须从根本上加以解决，头痛医头，脚痛医脚，总不是个办法。
+正本清源
+https://www.cidianwang.com/cy/t/toutongyitoujiaotongyijiao363.htm
+
+很遗憾，你上传的VC6功能完整版本安装后有插入ATL对象菜单项 没有通过审核，已被删除,原因是：资源违规，如有疑问，请联系webmaster@csdn.net
+前几天上传的资源通过了审核,昨晚就仅仅是修改个下载所需积分从免费改为1分。然后就审核不通过了，这是怎么回事呢？
+
+你上传的资源没有通过审核vc6.0 免安装 绿色版 兼容win7 vc助手1小时前
+很遗憾，你上传的vc6.0 免安装 绿色版 兼容win7 vc助手 没有通过审核，已被删除,原因是：资源违规，如有疑问，请联系webmaster@csdn.net
+之前一直好好的资源，也是只修改个下载所需积分就不能通过审核了。这太不合理了吧。
+上一封 下一封
+
+
+vc++ 整型 最大值
+	if (ntimes >= INT_MAX) ntimes = 0;
+https://zhidao.baidu.com/question/383761125.html
+
+windows API 第八篇 _tcsicmp _stricmp _wcsicmp _mbsicmp
+wchar_t szStr1[] = "asdfg";
+wchar_t szStr2[] = "AsDfG";
+int nResult = _wcsicmp(szStr1, szStr2);      //nResult = 0
+https://blog.csdn.net/weixin_34202952/article/details/93466664
+
+#include <string.h>
+_tcsicmp
+
+strcmp|wcscmp 与 stricmp|wcsicmp
+区分大小写：
+
+1、strcmp
+
+????? 这是用于ANSI标准字符串的函数(如string和char *)，此函数接受两个字符串缓冲区做为参数，如果两个字符串是相同的则返回零。否则若第一个传入的字符串的值大于第二个字符串返回值将会大于零，若传入的第一个字符串的值小于第二个字符串返回值将小于零。
+
+
+char *ch="test";
+if(strcmp(ch,"TeSt")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+?
+2、wcscmp
+
+????? 这个函数是strcmp所对应的Unicode系列的函数，它的使用方法和strcmp相同，它用来比较两个Unicode字符串是否相等(如wstring和wchar_t *)。
+
+
+wchar_t *ch=L"NewString";
+if(wcscmp(ch,L"newstring")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+
+不区分大小写：
+
+1、stricmp
+
+????? 这是用于ANSI标准字符串的函数(如string和char *)，此函数接受两个字符串缓冲区做为参数，如果两个字符串是相同的则返回零，不区分大小写。否则若第一个传入的字符串的值大于第二个字符串返回值将会大于零，若传入的第一个字符串的值小于第二个字符串返回值将小于零。
+
+
+char *ch="AbcD";
+if(stricmp(ch,"aBCd")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+
+2、wcsicmp
+????? 这个函数是stricmp所对应的Unicode系列的函数，它的使用方法和stricmp相同，它用来比较两个Unicode字符串是否相等，不区分大小写(如wstring和wchar_t *)。
+
+wchar_t *ch=L"AbcD";
+if(wcsicmp(ch,L"aBCd")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+
+————————————————
+版权声明：本文为CSDN博主「hellokandy」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/hellokandy/article/details/52161852
+
+区分大小写
+这个函数是strcmp所对应的Unicode系列的函数，它的使用方法和strcmp相同，它用来比较两个Unicode字符串是否相等(如wstring和wchar_t *)。
+wchar_t *ch=L"NewString";
+if(wcscmp(ch,L"newstring")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+
+
+不区分大小写
+这个函数是stricmp所对应的Unicode系列的函数，它的使用方法和stricmp相同，它用来比较两个Unicode字符串是否相等，不区分大小写(如wstring和wchar_t *)。
+wchar_t *ch=L"AbcD";
+if(wcsicmp(ch,L"aBCd")==0)
+{
+    //字符串相等
+}
+else
+{
+    //字符串不相等
+}
+
+
+https://blog.csdn.net/hellokandy/article/details/52161852?utm_source=blogxgwz8
+
+windows API 第八篇 _tcsicmp _stricmp _wcsicmp _mbsicmp
+https://blog.csdn.net/weixin_33946605/article/details/93257253
+
+常用的字符串处理函数和宏
+http://www.cppblog.com/xyjzsh/archive/2010/10/15/130044.html
+
+MIDL示例
+cpp_quote：指导MIDL编译器将限定了的字符串转换成生成的头文件。具体来说，这四行会在MIDL编译器生成的头文件中做出C++的注释。
+https://www.xuebuyuan.com/1194141.html
+
+cpp_quote
+
+2019.12.30
+
+CTTOptions::CTTOptions() 
+{
+
+	CLogout("CTTOptions::CTTOptions() b \r\n");
+...
+	m_pwndBgn = new CwndBgn() ;
+	ASSERT( m_pwndBgn!=NULL ) ;
+...}
+
+LRESULT CTTOptions::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	// TODO : Add Code for message handler. Call DefWindowProc if necessary.
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+	RECT rect ;
+	CLogout("CTTOptions::OnCreate() b \r\n");
+	m_pwndBgn->Create( CwndBgn::m_strMyClass, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN , rect, CWnd::FromHandle(m_hWnd), NULL ) ;
+...}
+
+wndBgn.cpp
+CwndBgn::~CwndBgn()
+{
+}
+BEGIN_MESSAGE_MAP(CwndBgn, CWnd)
+	//{{AFX_MSG_MAP(CwndBgn)
+	ON_WM_PAINT()
+	ON_WM_CTLCOLOR()
+	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(MACRO_BtnItemCodeID, OnSelectItemCode)
+
+
+void CwndBgn::OnSelectItemCode() 
+{
+	if( m_pOwner!=NULL )
+	{
+		m_pOwner->m_bSelectWin = 0;
+		m_pOwner->OnSelectItemCode() ;
+	}
+
+}
+
+新视图->期权->左上角按钮单击响应的函数如下:
+[17:01:16.653]:CTTOptions::OnSelectItemCode()  
+void CTTOptions::OnSelectItemCode()
+{
+	CLogout("CTTOptions::OnSelectItemCode()  \r\n");
+...}
+
+
+
+listctrlOptions.cpp
+UINT ColorThread(LPVOID  lParam)  //检查字体颜色的线程函数
+{
+	//CoInitializeEx(NULL,COINIT_MULTITHREADED);
+	ClistctrlOptions * pclass;
+	pclass=(ClistctrlOptions *)lParam;
+	int iCount = 0;
+	int iCount2 = 0;
+	while (pclass->m_bStopColorThread == FALSE)
+	{
+		Sleep(50);
+		iCount++;
+		iCount2++;
+		if(iCount >= 20) //1秒判断一次
+...}
+
+BIN为后缀名的文件是什么文件啊
+.bin是二进制文件，其用途依系统或应用而定
+bin有多种含义，包括虚拟光驱格式.bin，用于科研计算的数据格式为bin格式。另外，FTP 在传送文件时分为ASC 和 Bin 两种格式，只有文字文件 (例如 html 文件) 使用 ASC，其他的通通使用 Bin 格式 (例如图像文件、压缩文件、可执行文件等等)。 
+一般来说，常见的虚拟光驱格式。建议你使用WINISO。WinISO是一款功能强大的镜像文件处理工具，它可以从CD-ROM中创建ISO镜像文件，或将其他格式的镜像文件转换为标准的ISO格式，还可以轻松实现镜像文件的添加、删除、重命名、提取文件等操作。 
+PC上常见的bin如果很大的多半是光盘镜像，1.44M左右的可能是软盘镜像。小于1M的可能是主板BIOS的程序。
+嵌入式开发里面交叉编译出来通常是个bin，烧到板子去用的。
+一切的bin都能用16进制编辑器打开
+https://iask.sina.com.cn/b/iR1ayX5UMLKf.html
+
+
+HRESULT CTTOptions::WriteLogFile(LPTSTR strLog)
+{
+
+	CLogout("CTTOptions::WriteLogFile()  \r\n");
+
+	char strTime[100];
+	SYSTEMTIME sysTime;
+	GetLocalTime(&sysTime);
+
+	HANDLE m_hLogFile;
+	char strFileDir[200];
+	char strTemp[50];
+	sprintf(strTemp,"\\W2TOptionsIV-%04d%02d%02d.LOG",sysTime.wYear,sysTime.wMonth,sysTime.wDay);
+...}
+
+/* File created by MIDL compiler version 5.01.0164 */
+/* at Wed Nov 24 11:34:50 1999
+ */
+/* Compiler settings for C:\MWTT\MAS\MAS.idl:
+    Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
+    error checks: allocation ref bounds_check enum stub_data 
+*/
+
+printf(" TEST_printf() \r\n");v
+ATLTRACE("TEST_ATLTRACE() \r\n");
+TRACE( "TEST_TRACE()\r\n" ) ;
+
+
+删除文件 - G:\Tele-Trend\system\desktop\_g_charting.dsk
+删除文件 - G:\Tele-Trend\system\desktop\_g_pf_aud.dsk
+删除文件 - G:\Tele-Trend\system\desktop\_g_pf_white.dsk
+删除文件 - G:\Tele-Trend\system\desktop\_g_pf_{aud}.dsk
+删除文件 - G:\Tele-Trend\system\desktop\_g_pf_{white}.dsk
+找不到 G:\Tele-Trend\HISTORYDATA\*.his
+[13:44:44.751]:CTTOptions::GetExpiryTime()
+[13:44:44.757]:CTTOptions::GetExpiryDays()
+
+printf("%s", szMsg);
+
+ATLTRACE("OnMySetItemsTotal \r\n");
+
+TRACE( "tool_Icon create faile!\r\n" ) ;
+
+logfile.h
+// Debug版本宏1
+#define _FLAG_OUTLOG_ENABLE TRUE // wendy add
+
+D:\Program Files\Microsoft Visual Studio\MyProjects\CallOptions\Debug
+
+#import "G:\Tele-Trend\bin\Options.dll" no_namespace (v ok)
+
+void CCallOptionsDlg::OnButton1() 
+{
+	CoInitialize(NULL);
+	
+	CLSID clsid;
+	
+	HRESULT hr ;
+	// Looks up a CLSID in the registry, given a ProgID.
+	hr = CLSIDFromProgID(OLESTR("Options.TTOptions.1"),&clsid);
+	
+	if(S_OK !=hr )
+		return;
+
+	ITTObject* pInterf = NULL; //Interface Pointer 
+	
+	hr = CoCreateInstance(clsid,
+		NULL,
+		CLSCTX_INPROC_SERVER,
+		__uuidof(ITTObject),
+		(LPVOID*)&pInterf);
+	
+	if(pInterf->InitObject() != S_OK)  // 2708
+	{
+			printf("no do InitObject");
+	}
+	else
+	{
+			printf("ok do InitObject");
+	}
+
+	if(pInterf->Activate(1) != S_OK)  // 2708
+	{
+			printf("no do InitObject");
+	}
+	else
+	{
+			printf("ok do InitObject");
+	}
+
+	VARIANT var;
+	var.vt = 13;
+	VARIANT *pVar = &var;
+	if(pInterf->GetByID(1021,&pVar) != S_OK)  // 2708
+	{
+			printf("no do GetByID");
+	}
+	else
+	{
+			printf("ok do GetByID");
+	}
+
+
+	CoUninitialize();
+}
+
+G:\Tele-Trend\bin\w2t.exe
+G:\Tele-Trend\bin\
+
+2019.12.27
+
+WINCORE.CPP  894
+
+CTTOptions::CTTOptions() 
+{
+	m_nColorMode = 2;  //颜色  0白色   1黑色   2彩色//wendy test
+...}
+
+
+
+ItemOptions* m_pDataBuf ;	//
+CTTOptions* m_TTOptions;
+
+	theta = theta/(365.0*conversionRatio) ;	// paul, 2008-4-30
+											// ben 2017.6.29   252改为365
+
+	double rho  =  ( bCallOption==TRUE ) ? 
+						X*T_t*pow( MathE, -1.0*r*T_t )*N_d2/conversionRatio :
+						-1.0*X*T_t*pow( MathE, -1.0*r*T_t )*( 1.0 - N_d2 )/conversionRatio ;
+
+
+// ben 2017.6.29   252改为365
+//cove	add 2019.07.08
+//andy add 2003.02.13 for future always display first month
+2002.07.11 create
+char* CTTOptions::MakeFutCode( char* pEchoItemCode, char* pTitleCode, int nMM, int nYY )
+{
+
+	m_bUseNtMth = FALSE;
+
+	//andy add 2003.02.13 for future always display first month
+	memset(pEchoItemCode,' ',G_GENCODELEN);
+...}
+
+
+ClearData(); //ResetTable();  andy modify 20090507
+
+int CStrategy::DrawIncomeLine() 5千 10309 - 4941 = 5368行画图代码
+
+void CStrategy::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	if( m_bMode==1 )
+		return;
+	CRect frmrect;
+	m_frame.GetWindowRect(&frmrect);
+	ScreenToClient(&frmrect);	
+	int nCount = m_arrPL[0].GetSize();
+	CRect rct(frmrect.left,frmrect.top+35,frmrect.right,frmrect.bottom-40);
+	if( rct.PtInRect(point) && m_nRetn==1 && nCount!=0 && m_bDrawing==FALSE )
+	{
+		if( (m_bSelectLo || m_bSelectUp) && m_btMouseGet==1 && m_btMouseRelease==0 )
+		{
+			m_hCursor = LoadCursor(NULL,IDC_CROSS);
+		}
+		else
+			m_hCursor = LoadCursor(NULL,IDC_ARROW);
+		m_point = point;
+		m_bPainted = FALSE;
+		DrawIncomeLine();
+	}
+...}
+
+option （期权） 编辑 讨论
+Option中文译为期权，又称为选择权，是在期货的基础上产生的一种衍生性金融工具。
+从其本质上讲，期权实质上是在金融领域中将权利和义务分开进行定价，使得权利的受让人在规定时间内对于是否进行交易，行使其权利，而义务方必须履行。在期权的交易时，购买期权的一方称作买方，而出售期权的一方则叫做卖方；买方即是权利的受让人，而卖方则是必须履行买方行使权利的义务人。
+https://baike.baidu.com/item/option/1171193?fr=aladdin
+期权具“零和游戏”特性，而个股期权及指数期权皆可组合，进行套利交易或避险交易。
+期权主要可分为买方期权（Call Option）和卖方期权（Put Option），前者也称为看涨期权或认购期权，后者也称为看空期权或认沽期权
+
+Options.TTOptions.1
+492E31D3-B80D-11D3-AF24-00A0CC23E698
+492E31C6-B80D-11D3-AF24-00A0CC23E698
+492E31D4-B80D-11D3-AF24-00A0CC23E698
+
+\CallOptionsDlg.cpp(221) : error C2787: 'ITTOptions' : no GUID has been associated with this object
+
+CallOptionsDlg.cpp(179) : error C2065: 'IFirstInterface' : undeclared identifier
+interface ITTOptions : IDispatch (v ok)
+
+CallOptionsDlg.cpp(201) : error C2059: syntax error : '{'
+CLSID clsid;
+clsid = {0x492E31D3,0xB80D,0x11D3,{0xAF,0x24,0x00,0xA0,0xCC,0x23,0xE6,0x98}};
+CLSID clsid = {0x492E31D3,0xB80D,0x11D3,{0xAF,0x24,0x00,0xA0,0xCC,0x23,0xE6,0x98}}; (v ok)
+
+IDD_STRATEGY
+
+电脑右下角显示星期，选中日期右键调整日期/时间-更改日期和时间...更改日历设置-区域和语言-格式 
+日期和时间格式 其它设置...自定义格式 yyyy/M/d dddd (v ok)
+
+492E31D3-B80D-11D3-AF24-00A0CC23E698 - ITTOptions
+
+太极软件-新视窗-期权(v ok)
+
+工程-设置-连接-输出文件名 (v ok)
+
+CoInitialize
+
+需要为控件工具栏按钮ID_GROUP_ADDITEM增加响应函数才会显示图标(v ok)
+
+Microsoft Office 2013安装与激活
+https://blog.csdn.net/qq_37798548/article/details/95317354
+
+
+32位win7系统安装office2013以及破解
+https://blog.csdn.net/willie_chen/article/details/49683303?utm_source=blogxgwz9
+Microsoft Toolkit.exe
+打开之后这个界面，这个界面不要动。看到左上角Main了么?单击右边的Activation。
+大家来到这个界面第一件事是点击Install。完成后!
+最重要的一步：点击右边绿色的EZ-Activator。大功告成。快去看吧~是不是破解成功了。
+
+
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\SRC\VIEWCORE.CPP
+BOOL CView::OnSplitCmd(UINT) F5->F10调试进去.
+
+MainFrm.cpp(126) : error C2664: 'CreateEx' : cannot convert parameter 1 from 'const int' to 'class CWnd *'
+#define this                            32772 导致
+
+手动修改文件和VC6加菜单资源两种方式.(v ok)
+手动
+Resource.h IGPEditor_hwd.rc 
+#define ID_ADDMENU_TEST                 32771
+MENUITEM "addmenu_test",                ID_ADDMENU_TEST
+    POPUP "编辑(&E)"
+    BEGIN
+        // wendy del MENUITEM "撤消(&U)\tCtrl+Z",            ID_EDIT_UNDO
+        // wendy del MENUITEM SEPARATOR
+        // wendy del MENUITEM "剪切(&T)\tCtrl+X",            ID_EDIT_CUT
+
+VC6
+ResourceView Menu 选中菜单右击属性(分隔符或弹出)填写ID和字符 或按键盘Delete键删除菜单
+
+
+
+
+D:\Program Files\Microsoft Visual Studio\MyProjects\IGPEditor_hwd\MainFrm.cpp(116) : error C2611: '~' : illegal following '~' (expected identifier)
+D:\Program Files\Microsoft Visual Studio\MyProjects\IGPEditor_hwd\MainFrm.cpp(116) : error C2588: '::~CMainFrame' : illegal global destructor
+52936(HZ-GB2312简体中文)会出错 no
+
+[图]捷利资讯执行董事陈玉炯
+https://finance.qq.com/a/20100423/007002.htm
+
+// wendy b
+// wendy e
+
+Beyond Compare乱码问题这样就能解决(v ok)  
+00936 (ANSI/OEM - 简体中文 GBK) ok
+20936 (简体中文 GB2312) ok
+54936 (GB18030 简体中文) ok
+52936(HZ-GB2312简体中文)会出错 no
+65001(UTF-8) or UTF-8 会出错 no
+文本比较乱码
+当使用Beyond Compare软件比较文本文件时，明明在项目里面是对的，可是用Beyond Compare 打开之后就会出现乱码，内容完全错误。
+解决方法：
+步骤一：在已经打开的Beyond Compare文本比较会话中，单击工具栏“会话”按钮，在展开的菜单中选择“会话设置”选项，并切换到“格式”选项卡页面。
+步骤二：在界面“左边编码重写”和“右边编码覆盖”栏目中选择 GB2312/UTF-8/GBK，当然这个也可以根据自己喜好和文本自身的encode选择。
+步骤三：单击“确定”按钮完成比较文本的编码设置，再次回到文本比较会话即可进行正常的文本比较工作。
+https://blog.csdn.net/weixin_34198453/article/details/91910432
+转载于:https://my.oschina.net/navicat/blog/707700
+可以关注相关的Beyond Compare教程 http://www.beyondcompare.cc/support.html
+
+
+了解TSCI - Thermotec Sistemas de Combust?o Industrial的最新动态
+
+tele-trend  添加释义
+网络释义
+
+  环球快车
+...应用标题 东方(香港)环球快车(Tele-Trend) 应用描述 东方(香港)环球快车iOS版是东方证券(香港)有限公司全新打造的一款国际化、专业化的iOS证券交易终端，提供最及时的沪深...
+基于8个网页-相关网页
+  港股快车
+國金(香港)港股快車(Tele-Trend)应用说明 國金證券(香港)有限公司之國金(香港)港股快車，為用戶提供更加方便和全面的資料及資訊服務，讓投資者不管身在何處都可以...
+基于4个网页-相关网页
+短语
+Tele-Trend Limited 捷利资讯有限公司 ; 香港捷利信息有限公司
+http://dict.youdao.com/w/tele-trend/
+
+
+VC6 关键字蓝色如何改
+https://zhidao.baidu.com/question/503043114.html
+vc ++6.0中程序关键字不变蓝色，全部都是黑色的。程序可以正常运行。上面说的改format的方法没用。
+你说的是一个叫visual assisx X 插件的功能,VC6自己是不会变蓝的.(v ok)
+
+
+CSplitterWnd类分割MFC单文档应用程序窗口
+https://blog.csdn.net/m_buddy/article/details/50803102
+
+F5运行，重试自由定位到问题点上。(v ok)
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\SRC\VIEWFORM.CPP
+#ifdef _DEBUG
+	// dialog template must exist and be invisible with WS_CHILD set
+	if (!_AfxCheckDialogTemplate(m_lpszTemplateName, TRUE))
+	{
+		ASSERT(FALSE);          // invalid dialog template name
+		PostNcDestroy();        // cleanup if Create fails too soon
+		return FALSE;
+	}
+#endif //_DEBUG
+
+viewform.cpp , line 69 
+原因是 CFormView 的导出类，需要与一个Dialog资源关联，这个Dialog的属性必须是ws_child，Style必须选 “下层”SystemMenu和TitleBar属性最好都设为False
+参见 http://www.cnweblog.com/vcbird/archive/2005/10/10/36404.html
+https://blog.csdn.net/u011514451/article/details/49174797
+
+注：还有一种方法就是在添加Dialog资源时，在Dialog列表上点右键->添加资源，
+选择Dialog->IDD_FORMVIEW,再点“新建”按钮，这样新建出来的Dialog属性就会自动配好了
+http://www.cnweblog.com/vcbird/archive/2005/10/10/36404.html
+如何导入对话框资源从一个项目到另一个项目使用 Visual C++.NET 或 Visual C
+http://blog.sina.com.cn/s/blog_b646fbcf0102w7it.html
+
+viewform.cpp 69
+是AfxCheckDialogTemplate这个验证失败，CFormView类关联的对话框资源必须具有Child属性，(v ok)
+打开你用来和CFormView关联的对话框属性页面，在Style里面选择Child再试试。
+http://blog.sina.com.cn/s/blog_6a5aef5e0102uztp.html
+
+Beyond Compare 修改保存提示: This file contains Unicode characters that will be lost if it is saved using
+the current encodeing. 编码选改为UTF-8保存即可(v ok)
+
+任务栏按钮:当任务栏被占满时合并(v ok)
+
+通过比对修改后用unicode格式保存VC6会显示读取二进制文件出错。
+用utraedit32打开后另存为格式为ansi/ascii(DOS)后可正常读取.(v ok)
+
+win7 activation(win7激活工具) v2.6 绿色版 (v ok)
+http://www.downcc.com/soft/5435.html
+此windows副本不是正版怎么解决
+
+Uedit32.zip
+https://download.csdn.net/download/messeager5/10232684
+
+source Insight3.0
+https://download.csdn.net/download/ccm163/4194046
+
+c6.0 免安装 绿色版 兼容win7 vc助手
+https://download.csdn.net/download/hixi2007/9758584
+
+beyond compare3 序列号
+sl2T62PGJWHyemKxBS0+G94HyBMAN+qAvdqWlYaw1hN3VkAtOdqDYsDkmi9451fK9567RIt8sb85UwjEm5vb2tJzJXE6YVapYW7f+tRRXRFI4yn4NjjZ0RiiqGRCTVzwComUcXB-eiFWRBY6JpSsCNkmIxL5KsRCo442djHhTZE+
+————————————————
+版权声明：本文为CSDN博主「dlfgh」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/sinat_29891353/article/details/88994831
+
+BCompare-zh-3.3.8.16340
+https://download.csdn.net/download/jiejieforupdate/7440599
+
+首页- 应用软件- 文件管理 - Beyond Compare3绿色破解版下载
+https://www.newasp.net/soft/15746.html
+
+oem7 编辑
+Oem7是一款易用的windows7激活工具，采用一键式激活，人性化设计，所有激活软件中激活率最高。使用Oem7windows7激活软件windows7后是永久激活,和正版一样,可以自动更新,可以通过微软正版验证 [1]  。
+https://baike.baidu.com/item/oem7/10013435?fr=aladdin
+
+用电脑管家中的软件管理找到编程软件"Microsoft .NET Framework 4.6.1" 单独安装 (v ok)
+
+net framework 4安装未成功，原因是hresult 0x80240037 是怎么回事啊
+https://zhidao.baidu.com/question/814177706745454532.html
+
+
+Windows 7安装.net framework 4 安装
+https://blog.csdn.net/kingepoch/article/details/8817936
+
+注册表,
+HKEY_LOCAL_MACHINE\SOFWARE\Microsoft\Internet Explorer下
+MAIN子键的权限问题,改成"允许完全控制"
+https://zhidao.baidu.com/question/379292948.html?sort=11&rn=5&pn=0#wgt-answers
+
+https://blog.csdn.net/gtatcs/article/details/8769787
+.net framework 4.0 0xc8000247错误解决
+
+SoftwareDistribution
+
+Microsoft .NET Framework 4: [2] Error code -2145124297 for this component is not recognized.
+
+安装visual studio 2010到framework 4总是失败
+https://zhidao.baidu.com/question/569005009.html
+
+安装visual studio 2010到framework 4总是失败
+这是截图
+
+错误日志在下面
+[07/08/13,14:29:54] setup.exe: [2] ISetupComponent::Pre/Post/Install() failed in ISetupManager::InternalInstallManager() with HRESULT -2147467259.***EndOfSession***[07/08/13,15:14:45] Microsoft .NET Framework 4: [2] Error code -939523550 for this component is not recognized.[07/08/13,15:14:45] Microsoft .NET Framework 4: [2] Component Microsoft .NET Framework 4 returned an unexpected value.[07/08/13,15:14:46] VS70pgui: [2] DepCheck indicates Microsoft .NET Framework 4 is not installed.[07/08/13,15:14:46] VS70pgui: [2] DepCheck indicates Microsoft .NET Framework 4 简体中文语言包 was not attempted to be installed.
+对了我单独安装framework 4的时候也失败了，出现HRESULT 0xc8000222错误代码
+
+ 我来答 分享 举报 浏览 4714 次
+2个回答 #活动# 请回答2019，答题瓜分百万现金
+lt8799  
+推荐于2018-03-13
+翻译：主要原因是windows update的临时文件损坏 建议重命名该文件夹
+步骤 1.开始----- 运行------- cmd ----- 键入net stop WuAuServ回车（停止windows update服务）
+2.开始----- 运行----键入%windir%回车（打开系统目录）
+3.将SoftwareDistribution文件夹重命名为SDold
+4.开始----- 运行------- cmd ----- 键入net start WuAuServ回车
+5.可以正常安装.net了
+ 19     评论(2) 分享 举报
+
+leiyangbdwk  
+2013-07-11
+有很多人遇到过你那个错误，我本人也遇到过，而且根据如下的办法也解决了。
+安装不了的原因很有可能是你的操作系统是Ghost版本的。
+http://wenku.baidu.com/view/484102e16294dd88d0d26b99.html
+另外，如果你遇到其他问题，请把你的错误号百度一下，没准就可以搜到解决办法。
+
+C#
+
+域服务器windows 2008 Server, IP 10.10.1.2
+把Win7无法加入域的电脑DNS配置成10.10.1.2，即可。
+https://zhidao.baidu.com/question/405352662.html
+
+
+win7下怎么配置ODBC数据源
+我的系统是win7旗舰版的，找了半天也没有找到控制面板中的额管理工具--数据源，后来上网查了之后发现win7不是这样打开ODBC数据源管理器的，打开ODBC数据源管理器的方法是在cmd命令框中输入odbcad32之后会打开管理器。
+
+1.Win+R-àodbcad32
+
+2.点‘添加’
+
+3.测试
+
+之后的步骤都和XP下相同了。
+
+也可以在桌面最下方右键---属性---开始菜单---自定义---系统管理工具---在“所有程序”菜单和【开始】菜单上显示，然后在开始中就可以看到管理工具了。之后使用方法和XP中相同。
+————————————————
+版权声明：本文为CSDN博主「gukesdo」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/gukesdo/article/details/6873445
+https://blog.csdn.net/gukesdo/article/details/6873445
