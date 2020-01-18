@@ -1,0 +1,14 @@
+---- nTradIp Matches (14 in 2 files) ----
+Unpacker_TTFrame.cpp:				nTradIp+=14;	//for decompress frame
+Unpacker_TTFrame.cpp:				nTradIp+=6;		//Itemcode is speci
+Unpacker_TTFrame.cpp:				nTradIp+=9;	//for decompress frame
+Unpacker_TTFrame.cpp:						nTradIp+=9;	//for decompress frame
+Unpacker_TTFrame.cpp:						nTradIp+=10;	//for decompress frame
+Unpacker_TTFrame.cpp:						nTradIp+=11;	//for decompress frame
+Unpacker_TTFrame.cpp:						nTradIp+=12;	//for decompress frame
+Unpacker_TTFrame.cpp:						nTradIp+=16;	//for decompress frame
+Unpacker_TTFrame.cpp:			memmove(buff+sizeof(_tagTTDataFrame),buff+nTradIp+1,sizeof(buff)-nTradIp-2);
+Unpacker_TTFrame.cpp:			nBuffIp=nBuffIp-nTradIp-1;
+Unpacker_TTFrame.cpp:			nTradIp=sizeof(_tagTTDataFrame);
+Unpacker_TTFrame.cpp:	nTradIp=sizeof(_tagTTDataFrame);
+Unpacker_TTFrame.h:	int					nTradIp;
