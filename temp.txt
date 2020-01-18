@@ -1,3 +1,7 @@
+i am home test git option at time 2020.01.19 04:53
+
+who and i
+
 使用Git获取最新版本到本地
 http://blog.csdn.net/u011127019/article/details/55044061
 一、使用Git UI
