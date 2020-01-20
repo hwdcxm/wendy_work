@@ -1,6 +1,259 @@
-i am home test git option at time 2020.01.19 04:53
+IUnKNown接口——QueryInterface函数
+https://blog.csdn.net/lixiangminghate/article/details/74165002
 
-who and i
+用CWnd::CreateControl创建的控件，如何得到它的接口 [问题点数：20分，结帖人yongdu]
+https://bbs.csdn.net/topics/20125176
+CWnd::GetControlUnknown()可以取得控件的IUnknown接口指针。
+
+怎样动态创建OCX控件 [问题点数：40分，结帖人morrisyuan]
+https://bbs.csdn.net/topics/390329334
+IClassFactory *pClf = NULL;
+//::CLSIDFromProgID(pwszProgID, &clsid);
+::CoGetClassObject(clsid, CLSCTX_INPROC_SERVER, NULL, IID_IClassFactory, (void**)&pClf);
+_DDataSa* pDataSa = NULL;
+pClf->CreateInstance(NULL, __uuidof(_DDataSa), (void**)&pDataSa);
+//pDataSa->Create((long)this, cPoint.x, cPoint.y);
+pDataSa->Release();
+CoUninitialize();
+终于成功了，可以访问控件里面的方法了，，不过传参数怎么办，比如我要在我VC工程的某个VIEW里面创建这个控件
+哪里用这么麻烦，如果你想用这样的方式创建的话用CoCreateInstance都行。怎么不用CAxWindow方法 来创建了
+用CWnd m_Wnd;
+ m_Wnd.CreateControl(_T("XX.XX.1") ,NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,200,200), this, 1 );
+
+
+请问CoCreateInstance创建了COM控件后接下来如何在窗口中显示它？ [问题点数：100分，结帖人sproll]
+https://bbs.csdn.net/topics/80218253
+wshcdr：
+IShockwaveFlash是vc根据控件文件自动生成的接口类，没有SHOW方法。
+krh2001(边城浪子) ：
+如果控件正确注册的话，使用VC7"添加类"->"ActiveX控件中的MFC类"，然后选择根据注册表可以生成一继承自CWnd的类，那就可以用Create，不过我想纯粹使用COM接口或者ATL而不是MFC或者API创建控件。
+谢谢firmbird(firmbird) ，loverx(烟花) ，我想你们的方法更接近我要找的。
+要动态地加载控件，需要创建一个“AtlAxWin7”宿主窗口并指定此窗口应承载的控件。执行此操作主要有两种方法： 
+使用标准窗口创建 API 和 ATL 宿主 API。此技术在知识库文章“Adding ATL Control Containment Support to Any Window”(Q192560) 中进行了描述。可以在 MSDN Library 中或 http://support.microsoft.com 上找到知识库文章。 
+按照如下所述使用 CAxWindow 类： 
+确保已经调用 AtlAxWinInit。 
+AtlAxWinInit();
+AtlAxWinInit 初始化控件宿主代码。 
+创建一个 CAxWindow 对象： 
+CAxWindow wnd;
+CAxWindow 是一个从 CWindow 派生的用于创建和操作“AtlAxWin7”窗口的包装。 
+通过调用 Create 创建宿主窗口和控件。 
+RECT rect = { 0, 0, 100, 100 };
+wnd.Create(m_hWnd, rect, _T("MSCAL.Calendar"), WS_CHILD | 
+   WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CLIENTEDGE);
+传递给 Create 函数的窗口标题（第三个参数）是一个标识要创建的控件的字符串。该字符串可以是一个 CLSID（带有大括号）、ProgID、URL 或原始 HTML（以 MSHTML: 为前缀）。如果提供了 URL 或原始 HTML，则 Web 浏览器将与此信息一起加载。 
+
+
+
+MFC如何动态加载ActiveX控件? 求大腿解答下 [问题点数：40分，结帖人qq_23847507]
+https://bbs.csdn.net/topics/391813627
+OleCreate就可以了
+CreateControlEx
+
+vc6.0 调用ocx控件
+https://blog.csdn.net/Road2010/article/details/24515973
+
+最后面我想说的是：使用ActiveX控件并不难，关键在于你对这个控件提供的函数、成员变量了解多少以及能响应的事件等，能灵活应用。
+关于Active控件的开发另见其他文章。
+转自：http://blog.csdn.net/sllins/article/details/5525580
+
+今天做了一下ActiveX的使用测试，总结一下：
+首先使用MFC创建一个activeX的控件譬如ActiveXTest，编译成ocx并注册，然后另外编写一个测试程序来调用该控件，发现有几种方式：
+ 
+1:使用project-->Add to Project-->Components and Controls, 然后选择要加入的ocx或者dll,系统会自动生成.cpp和.h文件.并自动加入AfxEnableControlContainer(),这样就可以使用了.
+ 
+2:由于activeX一般都有界面，所以可以在dialog里面插入控件的方式来使用，该方式是最简单的一种。创建一个dialog，然后点击右键选择Insert ActiveX Control，在控件库里面找到刚才注册的控件，这时在Controls（按钮栏）里面会出现一个ocx的按钮，可以直接拖进去使用。这时MFC会自动产生一个类，就是包含该控件的类（CActiveXTest），同时在InitInstance()方法里面添加控件初始化函数AfxEnableControlContainer();这样就可以直接在dialog使用控件的方法了。譬如定义ocx按钮的名字为actx，则直接调用
+     actx->ShowHello();
+ 
+3:利用上述方法产生包含该控件的类（CActiveXTest），不使用dialog，这时必需手工添加包含该控件的窗体。方法是调用控件类的Create（）方法。
+CAcitveXText*  actx = new CAcitveXText;
+if(!actx->Create("NN", WS_CHILD|WS_VISIBLE, CRect(0,0,0,0), this, IDC_ACITVEXTEXTCTRL, NULL, FALSE, NULL))
+{
+  TRACE0("Failed to create the FPWT Control\n");
+  return;      // fail to create 
+}
+actx->ShowHello();
+ 
+4:利用class wizard添加该控件时，相对比较麻烦一些。这时要在InitInstance()里面添加初始化函数AfxOleInit();
+然后在使用时要调用CreateDispatch（）来创建控件，然后调用。
+ 
+ wchar_t progid[] = L"ACITVEXTEXT.AcitveXTextCtrl.1";
+ CLSID clsid;
+ CLSIDFromProgID(progid, &clsid);
+ COleException *e = new COleException;
+ _DAcitveXText dac;   //产生的类名是_DAcitveXText
+ if(dac.CreateDispatch(clsid), e)
+   dac.ShowHello();
+ else
+   throw e;
+ 但是由于这时是将控件当作normal automation server来使用，必需要重载一下IsInvokeAllowed（），让它直接返回true，否则将不成功，被告之是灾难性失败，错误是编号是：8000ffff。该函数在生成ActiveX的时候重载。（不是在测试程序中）In order
+ to use an OLE control only as an automation server, you need to override COleControl::IsInvokeAllowed()and return TRUE.If any of the control's properties and methods should not be accessed when invoked as a normal automation server, then
+ that automation function could be bypassed and/or an error code can be returned when COleControl::m_bInitialized is FALSE.
+ 
+BOOL IsInvokeAllowed (DISPID)
+{
+// You can check to see if COleControl::m_bInitialized is FALSE
+// in your automation functions to limit access.
+————————————————
+版权声明：本文为CSDN博主「Road2010」的原创文章，遵循CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/Road2010/article/details/24515973
+
+
+
+怎样在运行时动态加载ActiveX控件?急!!!!!(70分)
+https://wedelphi.com/t/108805/
+找到了答案：
+
+如果我们要动态创建任意的ActiveX控件那么该怎么办呢？可以利用OLE Container控件来达到我们的目的！我们可以动态创建TOLEContainer控件，然后OleContainer有可以动态创建任意的对象，例如：
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+OleContainer1.CreateObject(Edit1.Text,False);
+OleContainer1.DoVerb(ovShow);
+end;
+然后我们运行程序，在Edit里面输入'ShockwaveFlash.ShockwaveFlash.1'点击Button1，然后在Edit里面输入Word.Document，然后点击Button，你会发现我们已经能够动态创建任意的ActiveX控件了。 :)。
+注意，若目标机器上面没有安装OCX控件，我们可以在程序的最开始使用WinExec或者ShellExecute()运行regsvr32 来注册OCX控件即可，否则可能无法创建控件。
+
+
+
+调用DoVerb激活控件总是失败 [问题点数：100分，结帖人youxi3505]
+问题如标题
+https://bbs.csdn.net/topics/390245182
+HRESULT CreateAxControl(HWND hWnd,const wchar_t * ProgId,IUnknown ** ppControlUnknown,IUnknown ** ppContainerUnknown)
+{
+HRESULT hr;
+CLSID cls;
+IOleObject * pObject = NULL;
+CControlContainer * pContainer = NULL;
+hr = CLSIDFromProgID(ProgId,&cls);
+if (FAILED(hr)) goto exit1;
+
+hr = CoCreateInstance(cls,NULL,CLSCTX_INPROC_SERVER|CLSCTX_INPROC_HANDLER|CLSCTX_LOCAL_SERVER,IID_IOleObject,(void**)&pObject);
+if (FAILED(hr)) goto exit1;
+
+pContainer = new CControlContainer(hWnd);
+hr = pObject->SetClientSite(pContainer);
+if (FAILED(hr)) goto exit1;
+///////////////此处总是失败//////////////////
+hr = pObject->DoVerb(OLEIVERB_SHOW,0,pContainer,0,hWnd,0);
+if (FAILED(hr)) goto exit1;
+/////////////////////////////////////////
+
+    pObject->QueryInterface(IID_IUnknown,(void**)ppControlUnknown);
+pContainer->QueryInterface(IID_IUnknown,(void**)ppContainerUnknown);
+hr = S_OK;
+exit1:
+if (pObject) pObject->Release();
+if (pContainer) pContainer->Release();
+return hr;
+}
+
+当我调用CreateAxControl载入flash时会成功
+HRESULT hr = CreateAxControl(hWnd,L"ShockwaveFlash.ShockwaveFlash",&pControl,&pContainer);
+但是当我载入自己写的一个ActiveX控件则会失败
+HRESULT hr = CreateAxControl(hWnd,L"MYGAMEX.MyGameXCtrl.1",&pControl,&pContainer);
+代码调试发现在激活控件时总返回失败
+hr = pObject->DoVerb(OLEIVERB_SHOW,0,pContainer,0,hWnd,0);
+
+紧急求救这是为啥
+
+
+Win32编程点滴3 - 简单ActiveX控件的使用
+https://www.cnblogs.com/xumaojun/p/8528593.html
+HRESULT CreateAxControl(HWND hWnd,const wchar_t * ProgId,IUnknown ** ppControlUnknown,IUnknown ** ppContainerUnknown)
+{
+    HRESULT hr;
+    CLSID cls;
+    IOleObject * pObject = NULL;
+    CControlContainer * pContainer = NULL;
+    
+    //通过ProgId得到CLSID
+    CLSIDFromProgID(ProgId,&cls);
+    
+    //创建ActiveX控件的对象，顺便得到IOleObject指针
+    CoCreateInstance(cls,NULL,CLSCTX_INPROC_SERVER|CLSCTX_INPROC_HANDLER|CLSCTX_LOCAL_SERVER,
+        IID_IOleObject,(void**)&pObject);
+    
+    //CControlContainer是实现了IOleClientSite和IOleInPlaceSite接口的类
+    pContainer = new CControlContainer(hWnd);
+    
+    //调用IOleObject::SetClientSite，传入容器指针
+    pObject->SetClientSite(pContainer);
+    
+    //调用IOleObject::DoVerb，显示控件
+    pObject->DoVerb(OLEIVERB_SHOW,0,pContainer,0,hWnd,0);
+    
+    //一些返回的参数
+    pObject->QueryInterface(IID_IUnknown,(void**)ppControlUnknown);
+    pContainer->QueryInterface(IID_IUnknown,(void**)ppContainerUnknown);
+
+    if (pObject) pObject->Release();
+    if (pContainer) pContainer->Release();
+    return S_OK;
+}
+
+
+WIN7打印机无法打印显示本地下层文本正在删除
+https://zhinan.sogou.com/guide/d316513699185.htm?ch=zn.xqy.related.pc
+
+KEEPING-PC  192.168.0.100
+
+先仿做，尽量不要创做。仿做量变到质变再创做。
+
+MFC 对话框中动态加载OCX控件
+https://blog.csdn.net/yumulinxiang/article/details/78385822
+
+MFC OCX三种调用方法
+https://blog.csdn.net/fly0413/article/details/86649294
+1、以ATL的方式进行调用，ocx的本质是ATL，所以可以用调用ATL的方法进行调用。不过在插入头文件的时候跟ATL不同，需要以文件的形式加载读取他的头文件（因为ocx是控件只会生成在"ActiveX控件中的MFC类"，不会生成在"ATL类型库里面的MFC类"）。
+选择完文件之后，即可添加对应的接口类。
+void Ctest5Dlg::OnBnClickedTestBt(){	// TODO: 在此添加控件通知处理程序代码	CoInitialize(NULL); 	m_lpOCX = new COFDReaderActiveX();    //加载控件 指定要创建的IDispatch连接对象的类ID。	BOOL bRet = m_lpOCX->CreateDispatch("suwellreaderax.OFDReaderActiveX.1"); 	if(m_lpOCX != NULL)	{		CString csParam1 = "C:\\Users\\lyf\\Desktop\\PDF\\blank.pdf";		CString csParam2 = "C:\\Users\\lyf\\Desktop\\PDF\\blank.ofd";		CString csParam3 = ""; //C:\\Users\\lyf\\Desktop\\PDF\\bmeta.xml		CString csRet = m_lpOCX->getAllCompsiteNames();		MessageBox(csRet);		//BOOL bRet = m_lpOCX->openFile(csParam1);		//BOOL bRet = m_lpOCX->convertFile(csParam1, csParam2, csParam3);		int a = 3;		a = 4;		return;	} 	if(m_lpOCX != NULL)	{		m_lpOCX->ReleaseDispatch();	} 	if(m_lpOCX != NULL)	{		delete m_lpOCX;		m_lpOCX = NULL;	} 	CoUninitialize();}
+2、在对话框中插入ActiveX，之后对插入的资源添加变量，即可生成对应的类。该方法创建时候有边框的资源。
+3、在类导向中点击 “ActiveX控件中的MFC类”，选取对应的ocx，后可以进行动态添加ocx，或者也可以在资源对话框中创建资源，然后进行添加变量。如有有存在对应的OCX类则，添加变量时不会添加新文件。
+
+
+tortoisegit 常见错误disconnected no supported authentication methods available(server sent: publickey)
+https://blog.csdn.net/yym6789/article/details/53807640
+1.安装好小乌龟git后，用小乌龟的pull 从github上拉取项目，遇到错误：
+disconnected no supported authentication methods available(server sent: publickey) 
+或者是 git did not exit cleanly (exit code 1)
+亦或者是 git did not exit cleanly (exit code 128)
+多半是因为git和小乌龟有冲突，解决方法：
+右键--小乌龟---settings--network--修改ssh client为git的ssh.exe
+https://blog.csdn.net/Hello_World_QWP/article/details/82216345
+
+
+Disconnected: No supported authentication methods available (server send: publickey)
+
+
+VC6.0中的dsp和dsw文件有什么区别和联系？
+https://blog.csdn.net/pursuitbeauty/article/details/9768433
+dsp是:Developer studio Project   工程   开发工作室项目
+dws是:Developer studio workspace  工作空间   开发工作室空间
+
+VC6.0 cannot find the definition (implementation) of this function解决方法
+https://blog.csdn.net/gordennizaicunzai/article/details/78608495
+点击VC6.0左侧工作区ClassView窗口中的类中的函数时，出现cannot find the definition (implementation) of this function弹框提示，解决方法是：关闭工程，然后删除工程目录下面的*.opt *.ncb *.plg文件，再打开工程，最后重新编译即可，之前删除的文件会自动再生成。
+.ncb文件是无编译浏览文件，当自动完成功能（自动显示成员变量列表）出问题时，可删除它，build 后自动重建。
+.opt是开发环境参数（如工具条位置）文件。
+.plg是编译信息(如error和warning信息)文件，html格式。
+其它文件：
+.dsp为工程文件，文本格式，不可丢失或损坏。
+.dsw是工作区文件，丢失或损坏时，可点击.dsp文件打开工程，.dsw文件自动重建。
+.clw是ClassWizard信息文件，ini格式，ClassWizard出问题时可删除它再重建。
+.map是映像信息文件，编制DLL写.def文件时，若不知道函数导出顺序，可在Prject/Settings/Link页中选中“Generate mapfile”，rebuild，用记事本或其它类似程序打开生成的.map文件，里面可看到函数导出表。
+.aps是资源辅助文件，二进制格式。
+.pch为预编译文件，可加快编译速度，但改文件非常大。
+.pdb文件记录程序相关的数据和调试信息。
+.exp是dll信息文件，编译dll时才会生成。
+.bsc文件用于浏览项目信息，可在Prject/Settings/Link页中勾掉“Generate Browse Info File”，禁止生成.bsc文件，以加快编译速度，但若使用Source Browser的话就必须有这个文件。
+
+Cannot find the definition (implementation) of this function
+
+2020.01.20
+
+几款Git GUI客户端工具
+https://www.cnblogs.com/ups216/p/5603199.html
+TortoiseGit
 
 使用Git获取最新版本到本地
 http://blog.csdn.net/u011127019/article/details/55044061

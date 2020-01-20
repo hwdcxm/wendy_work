@@ -50,12 +50,16 @@ COptionsApp theApp;
 
 BOOL COptionsApp::InitInstance()
 {
+	CLogout("---COptionsApp::InitInstance() b \r\n");
+
     _Module.Init(ObjectMap, m_hInstance, &LIBID_OPTIONSLib);
     return CWinApp::InitInstance();
 }
 
 int COptionsApp::ExitInstance()
 {
+	CLogout("---COptionsApp::ExitInstance() b \r\n");
+
     _Module.Term();
     return CWinApp::ExitInstance();
 }
@@ -65,6 +69,8 @@ int COptionsApp::ExitInstance()
 
 STDAPI DllCanUnloadNow(void)
 {
+	CLogout("---DllCanUnloadNow() b \r\n");
+
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     return (AfxDllCanUnloadNow()==S_OK && _Module.GetLockCount()==0) ? S_OK : S_FALSE;
 }
@@ -74,6 +80,8 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv)
 {
+	CLogout("---DllGetClassObject() b \r\n");
+
     return _Module.GetClassObject(rclsid, riid, ppv);
 }
 
@@ -82,6 +90,8 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv)
 
 STDAPI DllRegisterServer(void)
 {
+	CLogout("---DllRegisterServer() b \r\n");
+
     // registers object, typelib and all interfaces in typelib
     return _Module.RegisterServer(TRUE);
 }
@@ -91,6 +101,8 @@ STDAPI DllRegisterServer(void)
 
 STDAPI DllUnregisterServer(void)
 {
+	CLogout("---DllUnregisterServer() b \r\n");
+
     return _Module.UnregisterServer(TRUE);
 }
 

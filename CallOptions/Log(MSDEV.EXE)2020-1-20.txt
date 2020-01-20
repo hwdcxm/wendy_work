@@ -1,0 +1,11 @@
+[16:00:04.907]:COptionsApp::InitInstance() b 
+[16:00:04.945]:DllGetClassObject() b 
+[16:00:04.945]:CTTOptions::CTTOptions() b 
+[16:00:04.946]:CTTOptions::MakeFutCode()  
+[16:00:04.947]:CTTOptions::ReadExpiryDateListFile()  
+[16:00:04.947]:CTTOptions::GetExpiryTime()  
+[16:00:04.947]:CTTOptions::GetExpiryDays()  
+[16:00:04.948]:CTTOptions::CTTOptions() e 
+[16:00:21.287]:CTTOptions::~CTTOptions() b 
+[16:00:21.288]:CTTOptions::~CTTOptions() e 
+[16:00:39.028]:COptionsApp::ExitInstance() b 

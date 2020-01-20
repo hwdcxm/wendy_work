@@ -1,0 +1,42 @@
+// CallOptions.odl : type library source for CallOptions.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (CallOptions.tlb).
+
+[ uuid(2CF7A47B-F463-4D3B-878D-B6AC1C17FEAB), version(1.0) ]
+library CallOptions
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	//  Primary dispatch interface for CCallOptionsDoc
+	
+	[ uuid(3B94ACBA-97C8-4858-B4C6-02A6BA54B509) ]
+	dispinterface ICallOptions
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CCallOptionsDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CCallOptionsDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CCallOptionsDoc
+	
+	[ uuid(59273094-E379-41F4-B66F-FD0034D851E3) ]
+	coclass Document
+	{
+		[default] dispinterface ICallOptions;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

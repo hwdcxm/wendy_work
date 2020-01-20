@@ -6,6 +6,7 @@
 #include "resource.h"       // main symbols
 #include <atlctl.h>
 
+#include "logfile.h" // wendy add 2020.01.20 2019.12.27
 
 /////////////////////////////////////////////////////////////////////////////
 // CTTOptions
@@ -35,6 +36,7 @@ public:
 	CTTOptions() :	
 		m_ctlEdit(_T("Edit"), this, 1)
 	{
+		CLogout("---CTTOptions::CTTOptions() b \r\n");
 		m_bWindowOnly = TRUE;
 	}
 
@@ -88,6 +90,7 @@ END_MSG_MAP()
 
 	BOOL PreTranslateAccelerator(LPMSG pMsg, HRESULT& hRet)
 	{
+		CLogout("---CTTOptions::PreTranslateAccelerator() b \r\n");
 		if(pMsg->message == WM_KEYDOWN && 
 			(pMsg->wParam == VK_LEFT || 
 			pMsg->wParam == VK_RIGHT ||
@@ -103,6 +106,8 @@ END_MSG_MAP()
 
 	LRESULT OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
+		CLogout("---CTTOptions::OnSetFocus() b \r\n");
+
 		LRESULT lRes = CComControl<CTTOptions>::OnSetFocus(uMsg, wParam, lParam, bHandled);
 		if (m_bInPlaceActive)
 		{
@@ -115,6 +120,8 @@ END_MSG_MAP()
 
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 	{
+		CLogout("---CTTOptions::OnCreate() b \r\n");
+
 		RECT rc;
 		GetWindowRect(&rc);
 		rc.right -= rc.left;
@@ -125,6 +132,7 @@ END_MSG_MAP()
 	}
 	STDMETHOD(SetObjectRects)(LPCRECT prcPos,LPCRECT prcClip)
 	{
+		CLogout("---CTTOptions::SetObjectRects() b \r\n");
 		IOleInPlaceObjectWindowlessImpl<CTTOptions>::SetObjectRects(prcPos, prcClip);
 		int cx, cy;
 		cx = prcPos->right - prcPos->left;
@@ -137,6 +145,8 @@ END_MSG_MAP()
 // ISupportsErrorInfo
 	STDMETHOD(InterfaceSupportsErrorInfo)(REFIID riid)
 	{
+		CLogout("---CTTOptions::InterfaceSupportsErrorInfo() b \r\n");
+
 		static const IID* arr[] = 
 		{
 			&IID_ITTOptions,

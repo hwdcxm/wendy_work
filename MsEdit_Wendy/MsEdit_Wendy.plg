@@ -3,96 +3,81 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: MsEdit_Wendy - Win32 Release--------------------
+--------------------Configuration: MsEdit_Wendy - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x804 /fo"Release/MsEdit_Wendy.res" /d "NDEBUG" /d "_AFXDLL" "D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\MsEdit_Wendy.rc"" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP20EE.tmp" with contents
+Creating command line "rc.exe /l 0x804 /fo"Debug/MsEdit_Wendy.res" /d "_DEBUG" /d "_AFXDLL" "E:\wendy_work\MsEdit_Wendy\MsEdit_Wendy.rc"" 
+Creating temporary file "C:\Users\Wendy\AppData\Local\Temp\RSP4C33.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/MsEdit_Wendy.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\DataSrc_TTFrameFile.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\EINFO.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Master.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\MsEdit_Wendy.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\ShowData.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Unpacker_TTFrame.cpp"
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\WorkThread.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/MsEdit_Wendy.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\wendy_work\MsEdit_Wendy\DataSrc_TTFrameFile.cpp"
+"E:\wendy_work\MsEdit_Wendy\EINFO.cpp"
+"E:\wendy_work\MsEdit_Wendy\Master.cpp"
+"E:\wendy_work\MsEdit_Wendy\MsEdit_Wendy.cpp"
+"E:\wendy_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp"
+"E:\wendy_work\MsEdit_Wendy\ShowData.cpp"
+"E:\wendy_work\MsEdit_Wendy\Unpacker_TTFrame.cpp"
+"E:\wendy_work\MsEdit_Wendy\WorkThread.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP20EE.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP20EF.tmp" with contents
+Creating command line "cl.exe @C:\Users\Wendy\AppData\Local\Temp\RSP4C33.tmp" 
+Creating temporary file "C:\Users\Wendy\AppData\Local\Temp\RSP4C34.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/MsEdit_Wendy.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\StdAfx.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/MsEdit_Wendy.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\wendy_work\MsEdit_Wendy\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP20EF.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP20F0.tmp" with contents
+Creating command line "cl.exe @C:\Users\Wendy\AppData\Local\Temp\RSP4C34.tmp" 
+Creating temporary file "C:\Users\Wendy\AppData\Local\Temp\RSP4C35.tmp" with contents
 [
-/nologo /subsystem:windows /incremental:no /pdb:"Release/MsEdit_Wendy.pdb" /machine:I386 /out:"Release/MsEdit_Wendy.exe" 
-.\Release\DataSrc_TTFrameFile.obj
-.\Release\EINFO.obj
-.\Release\Master.obj
-.\Release\MsEdit_Wendy.obj
-.\Release\MsEdit_WendyDlg.obj
-.\Release\ShowData.obj
-.\Release\StdAfx.obj
-.\Release\Unpacker_TTFrame.obj
-.\Release\WorkThread.obj
-.\Release\MsEdit_Wendy.res
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/MsEdit_Wendy.pdb" /debug /machine:I386 /out:"Debug/MsEdit_Wendy.exe" /pdbtype:sept 
+.\Debug\DataSrc_TTFrameFile.obj
+.\Debug\EINFO.obj
+.\Debug\Master.obj
+.\Debug\MsEdit_Wendy.obj
+.\Debug\MsEdit_WendyDlg.obj
+.\Debug\ShowData.obj
+.\Debug\StdAfx.obj
+.\Debug\Unpacker_TTFrame.obj
+.\Debug\WorkThread.obj
+.\Debug\MsEdit_Wendy.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP20F0.tmp"
+Creating command line "link.exe @C:\Users\Wendy\AppData\Local\Temp\RSP4C35.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
 StdAfx.cpp
 Compiling...
 DataSrc_TTFrameFile.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 EINFO.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 Master.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 MsEdit_Wendy.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 MsEdit_WendyDlg.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp(217) : warning C4101: 'iState' : unreferenced local variable
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp(217) : warning C4101: 'i' : unreferenced local variable
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+E:\wendy_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp(217) : warning C4101: 'iState' : unreferenced local variable
+E:\wendy_work\MsEdit_Wendy\MsEdit_WendyDlg.cpp(217) : warning C4101: 'i' : unreferenced local variable
 ShowData.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 Unpacker_TTFrame.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(89) : warning C4101: 'strTemp' : unreferenced local variable
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1026) : warning C4244: '=' : conversion from 'unsigned long' to 'unsigned short', possible loss of data
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1077) : warning C4244: '=' : conversion from 'unsigned long' to 'unsigned short', possible loss of data
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+E:\wendy_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(89) : warning C4101: 'strTemp' : unreferenced local variable
+E:\wendy_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1026) : warning C4244: '=' : conversion from 'unsigned long' to 'unsigned short', possible loss of data
+E:\wendy_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1077) : warning C4244: '=' : conversion from 'unsigned long' to 'unsigned short', possible loss of data
 WorkThread.cpp
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1078) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
+e:\wendy_work\msedit_wendy\datadef.h(1110) : warning C4183: 'Init': member function definition looks like a ctor, but name does not match enclosing class
 Generating Code...
-D:\softs\gxrjsz\2020.01.15_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1057) : warning C4700: local variable 'byTmp' used without having been initialized
+E:\wendy_work\MsEdit_Wendy\Unpacker_TTFrame.cpp(1057) : warning C4700: local variable 'byTmp' used without having been initialized
 Linking...
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP28DD.tmp" with contents
-[
-/nologo /o"Release/MsEdit_Wendy.bsc" 
-.\Release\StdAfx.sbr
-.\Release\DataSrc_TTFrameFile.sbr
-.\Release\EINFO.sbr
-.\Release\Master.sbr
-.\Release\MsEdit_Wendy.sbr
-.\Release\MsEdit_WendyDlg.sbr
-.\Release\ShowData.sbr
-.\Release\Unpacker_TTFrame.sbr
-.\Release\WorkThread.sbr]
-Creating command line "bscmake.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP28DD.tmp"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 

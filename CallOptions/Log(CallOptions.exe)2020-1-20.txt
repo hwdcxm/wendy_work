@@ -1,0 +1,259 @@
+[15:41:44.629]:COptionsApp::InitInstance() b 
+[15:41:44.676]:DllGetClassObject() b 
+[15:41:44.677]:CTTOptions::CTTOptions() b 
+[15:41:44.678]:CTTOptions::MakeFutCode()  
+[15:41:44.678]:CTTOptions::ReadExpiryDateListFile()  
+[15:41:44.678]:CTTOptions::GetExpiryTime()  
+[15:41:44.679]:CTTOptions::GetExpiryDays()  
+[15:41:44.679]:CTTOptions::CTTOptions() e 
+[15:41:44.679]:DllGetClassObject() b 
+[15:42:01.130]:COptionsApp::ExitInstance() b 
+[15:47:58.218]:COptionsApp::InitInstance() b 
+[15:47:58.363]:DllGetClassObject() b 
+[15:47:58.363]:CTTOptions::CTTOptions() b 
+[15:47:58.415]:CTTOptions::MakeFutCode()  
+[15:47:58.416]:CTTOptions::ReadExpiryDateListFile()  
+[15:47:58.417]:CTTOptions::GetExpiryTime()  
+[15:47:58.418]:CTTOptions::GetExpiryDays()  
+[15:47:58.421]:CTTOptions::CTTOptions() e 
+[15:47:58.431]:CTTOptions::OnCreate() b 
+[15:47:58.499]:CTTOptions::SetAllFont()  b
+[15:47:58.504]:CTTOptions::OnLstHScr()  
+[15:47:58.526]:CTTOptions::SetAllFont()  e
+[15:47:58.526]:CTTOptions::OnCreate() e 
+[15:47:58.622]:CTTOptions::~CTTOptions() b 
+[15:47:58.623]:CTTOptions::~CTTOptions() e 
+[15:48:21.014]:DllGetClassObject() b 
+[15:48:21.015]:CTTOptions::CTTOptions() b 
+[15:48:21.067]:CTTOptions::MakeFutCode()  
+[15:48:21.068]:CTTOptions::ReadExpiryDateListFile()  
+[15:48:21.069]:CTTOptions::GetExpiryTime()  
+[15:48:21.070]:CTTOptions::GetExpiryDays()  
+[15:48:21.073]:CTTOptions::CTTOptions() e 
+[15:48:21.076]:CTTOptions::OnCreate() b 
+[15:48:21.131]:CTTOptions::SetAllFont()  b
+[15:48:21.134]:CTTOptions::OnLstHScr()  
+[15:48:21.155]:CTTOptions::SetAllFont()  e
+[15:48:21.155]:CTTOptions::OnCreate() e 
+[15:48:21.224]:CTTOptions::~CTTOptions() b 
+[15:48:21.226]:CTTOptions::~CTTOptions() e 
+[15:48:22.071]:DllGetClassObject() b 
+[15:48:22.072]:CTTOptions::CTTOptions() b 
+[15:48:22.126]:CTTOptions::MakeFutCode()  
+[15:48:22.128]:CTTOptions::ReadExpiryDateListFile()  
+[15:48:22.131]:CTTOptions::GetExpiryTime()  
+[15:48:22.134]:CTTOptions::GetExpiryDays()  
+[15:48:22.139]:CTTOptions::CTTOptions() e 
+[15:48:22.143]:CTTOptions::OnCreate() b 
+[15:48:22.221]:CTTOptions::SetAllFont()  b
+[15:48:22.227]:CTTOptions::OnLstHScr()  
+[15:48:22.249]:CTTOptions::SetAllFont()  e
+[15:48:22.249]:CTTOptions::OnCreate() e 
+[15:48:22.330]:CTTOptions::~CTTOptions() b 
+[15:48:22.333]:CTTOptions::~CTTOptions() e 
+[15:48:23.629]:DllCanUnloadNow() b 
+[15:48:23.630]:COptionsApp::ExitInstance() b 
+[15:53:39.892]:COptionsApp::InitInstance() b 
+[15:53:39.984]:DllGetClassObject() b 
+[15:53:39.985]:CTTOptions::CTTOptions() b 
+[15:53:39.986]:CTTOptions::MakeFutCode()  
+[15:53:39.986]:CTTOptions::ReadExpiryDateListFile()  
+[15:53:39.987]:CTTOptions::GetExpiryTime()  
+[15:53:39.988]:CTTOptions::GetExpiryDays()  
+[15:53:39.988]:CTTOptions::CTTOptions() e 
+[15:53:39.992]:CTTOptions::OnCreate() b 
+[15:53:40.014]:CTTOptions::SetAllFont()  b
+[15:53:40.019]:CTTOptions::OnLstHScr()  
+[15:53:40.040]:CTTOptions::SetAllFont()  e
+[15:53:40.040]:CTTOptions::OnCreate() e 
+[15:53:45.520]:COptionsApp::ExitInstance() b 
+[15:53:49.273]:COptionsApp::InitInstance() b 
+[15:53:49.370]:DllGetClassObject() b 
+[15:53:49.370]:CTTOptions::CTTOptions() b 
+[15:53:49.423]:CTTOptions::MakeFutCode()  
+[15:53:49.424]:CTTOptions::ReadExpiryDateListFile()  
+[15:53:49.425]:CTTOptions::GetExpiryTime()  
+[15:53:49.426]:CTTOptions::GetExpiryDays()  
+[15:53:49.430]:CTTOptions::CTTOptions() e 
+[15:53:49.444]:CTTOptions::OnCreate() b 
+[15:53:49.493]:CTTOptions::SetAllFont()  b
+[15:53:49.496]:CTTOptions::OnLstHScr()  
+[15:53:49.517]:CTTOptions::SetAllFont()  e
+[15:53:49.518]:CTTOptions::OnCreate() e 
+[15:55:52.329]:COptionsApp::InitInstance() b 
+[15:55:52.363]:DllGetClassObject() b 
+[15:55:52.364]:CTTOptions::CTTOptions() b 
+[15:55:52.365]:CTTOptions::MakeFutCode()  
+[15:55:52.365]:CTTOptions::ReadExpiryDateListFile()  
+[15:55:52.366]:CTTOptions::GetExpiryTime()  
+[15:55:52.366]:CTTOptions::GetExpiryDays()  
+[15:55:52.366]:CTTOptions::CTTOptions() e 
+[15:55:52.369]:CTTOptions::OnCreate() b 
+[15:55:52.389]:CTTOptions::SetAllFont()  b
+[15:55:52.393]:CTTOptions::OnLstHScr()  
+[15:55:52.413]:CTTOptions::SetAllFont()  e
+[15:55:52.413]:CTTOptions::OnCreate() e 
+[15:55:57.473]:COptionsApp::ExitInstance() b 
+[15:56:00.673]:COptionsApp::InitInstance() b 
+[15:56:00.746]:DllGetClassObject() b 
+[15:56:00.746]:CTTOptions::CTTOptions() b 
+[15:56:00.797]:CTTOptions::MakeFutCode()  
+[15:56:00.798]:CTTOptions::ReadExpiryDateListFile()  
+[15:56:00.798]:CTTOptions::GetExpiryTime()  
+[15:56:00.798]:CTTOptions::GetExpiryDays()  
+[15:56:00.800]:CTTOptions::CTTOptions() e 
+[15:56:00.806]:CTTOptions::OnCreate() b 
+[15:56:00.827]:CTTOptions::SetAllFont()  b
+[15:56:00.830]:CTTOptions::OnLstHScr()  
+[15:56:00.851]:CTTOptions::SetAllFont()  e
+[15:56:00.851]:CTTOptions::OnCreate() e 
+[15:56:54.561]:COptionsApp::InitInstance() b 
+[15:56:54.621]:DllGetClassObject() b 
+[15:56:54.622]:CTTOptions::CTTOptions() b 
+[15:56:54.675]:CTTOptions::MakeFutCode()  
+[15:56:54.676]:CTTOptions::ReadExpiryDateListFile()  
+[15:56:54.677]:CTTOptions::GetExpiryTime()  
+[15:56:54.678]:CTTOptions::GetExpiryDays()  
+[15:56:54.682]:CTTOptions::CTTOptions() e 
+[15:56:54.696]:CTTOptions::OnCreate() b 
+[15:56:54.737]:CTTOptions::SetAllFont()  b
+[15:56:54.741]:CTTOptions::OnLstHScr()  
+[15:56:54.763]:CTTOptions::SetAllFont()  e
+[15:56:54.763]:CTTOptions::OnCreate() e 
+[15:57:00.398]:CwndBgn::OnSelectItemCode()  
+[15:57:00.399]:CTTOptions::OnSelectItemCode()  m_pGrpMng=-842150451
+[16:14:13.084]:COptionsApp::InitInstance() b 
+[16:14:13.169]:DllGetClassObject() b 
+[16:14:13.169]:CTTOptions::CTTOptions() b 
+[16:14:13.222]:CTTOptions::MakeFutCode()  
+[16:14:13.223]:CTTOptions::ReadExpiryDateListFile()  
+[16:14:13.225]:CTTOptions::GetExpiryTime()  
+[16:14:13.225]:CTTOptions::GetExpiryDays()  
+[16:14:13.229]:CTTOptions::CTTOptions() e 
+[16:14:13.241]:CTTOptions::OnCreate() b 
+[16:14:13.306]:CTTOptions::SetAllFont()  b
+[16:14:13.313]:CTTOptions::OnLstHScr()  
+[16:14:13.335]:CTTOptions::SetAllFont()  e
+[16:14:13.336]:CTTOptions::OnCreate() e 
+[16:15:10.100]:---COptionsApp::InitInstance() b 
+[16:15:10.158]:---DllGetClassObject() b 
+[16:15:10.158]:---CTTOptions::CTTOptions() b 
+[16:15:10.162]:---CTTOptions::OnCreate() b 
+[16:15:10.164]:---CTTOptions::SetObjectRects() b 
+[16:16:48.603]:---COptionsApp::InitInstance() b 
+[16:16:48.680]:---DllGetClassObject() b 
+[16:16:48.680]:---CTTOptions::CTTOptions() b 
+[16:16:48.685]:---CTTOptions::OnCreate() b 
+[16:16:48.687]:---CTTOptions::SetObjectRects() b 
+[16:18:10.859]:---COptionsApp::InitInstance() b 
+[16:18:10.913]:---DllGetClassObject() b 
+[16:18:10.914]:---CTTOptions::CTTOptions() b 
+[16:18:10.922]:---CTTOptions::OnCreate() b 
+[16:18:10.924]:---CTTOptions::SetObjectRects() b 
+[16:26:03.277]:---COptionsApp::InitInstance() b 
+[16:26:03.348]:---DllGetClassObject() b 
+[16:26:03.348]:---CTTOptions::CTTOptions() b 
+[16:26:03.352]:---CTTOptions::OnCreate() b 
+[16:26:03.354]:---CTTOptions::SetObjectRects() b 
+[16:26:03.355]:---STDMETHODIMP CTTOptions::Activate(nState=3) b 
+[16:26:38.920]:---DllCanUnloadNow() b 
+[16:26:38.921]:---DllCanUnloadNow() b 
+[16:26:38.922]:---COptionsApp::ExitInstance() b 
+[16:27:32.503]:COptionsApp::InitInstance() b 
+[16:27:32.555]:DllGetClassObject() b 
+[16:27:32.556]:CTTOptions::CTTOptions() b 
+[16:27:32.557]:CTTOptions::MakeFutCode()  
+[16:27:32.557]:CTTOptions::ReadExpiryDateListFile()  
+[16:27:32.557]:CTTOptions::GetExpiryTime()  
+[16:27:32.557]:CTTOptions::GetExpiryDays()  
+[16:27:32.558]:CTTOptions::CTTOptions() e 
+[16:27:32.560]:CTTOptions::OnCreate() b 
+[16:27:32.584]:CTTOptions::SetAllFont()  b
+[16:27:32.588]:CTTOptions::OnLstHScr()  
+[16:27:32.609]:CTTOptions::SetAllFont()  e
+[16:27:32.610]:CTTOptions::OnCreate() e 
+[16:27:32.621]:STDMETHODIMP CTTOptions::Activate(nState=3) b 
+[16:27:32.621]:STDMETHODIMP CTTOptions::Activate() e 
+[16:27:41.542]:CwndBgn::OnSelectItemCode()  
+[16:27:41.543]:CTTOptions::OnSelectItemCode()  m_pGrpMng=-842150451
+[16:27:43.606]:COptionsApp::ExitInstance() b 
+[16:31:54.319]:COptionsApp::InitInstance() b 
+[16:31:54.407]:DllGetClassObject() b 
+[16:31:54.407]:CTTOptions::CTTOptions() b 
+[16:31:54.458]:CTTOptions::MakeFutCode()  
+[16:31:54.459]:CTTOptions::ReadExpiryDateListFile()  
+[16:31:54.460]:CTTOptions::GetExpiryTime()  
+[16:31:54.461]:CTTOptions::GetExpiryDays()  
+[16:31:54.464]:CTTOptions::CTTOptions() e 
+[16:31:54.475]:CTTOptions::OnCreate() b 
+[16:31:54.526]:CTTOptions::SetAllFont()  b
+[16:31:54.530]:CTTOptions::OnLstHScr()  
+[16:31:54.551]:CTTOptions::SetAllFont()  e
+[16:31:54.551]:CTTOptions::OnCreate() e 
+[16:31:54.562]:STDMETHODIMP CTTOptions::Activate(nState=3) b 
+[16:31:54.563]:STDMETHODIMP CTTOptions::Activate() e 
+[16:35:04.731]:DllCanUnloadNow() b 
+[16:35:08.015]:DllCanUnloadNow() b 
+[16:35:08.016]:DllCanUnloadNow() b 
+[16:35:08.017]:COptionsApp::ExitInstance() b 
+[16:35:13.212]:COptionsApp::InitInstance() b 
+[16:35:13.283]:DllGetClassObject() b 
+[16:35:13.284]:CTTOptions::CTTOptions() b 
+[16:35:13.335]:CTTOptions::MakeFutCode()  
+[16:35:13.336]:CTTOptions::ReadExpiryDateListFile()  
+[16:35:13.336]:CTTOptions::GetExpiryTime()  
+[16:35:13.336]:CTTOptions::GetExpiryDays()  
+[16:35:13.338]:CTTOptions::CTTOptions() e 
+[16:35:13.342]:CTTOptions::OnCreate() b 
+[16:35:13.370]:CTTOptions::SetAllFont()  b
+[16:35:13.374]:CTTOptions::OnLstHScr()  
+[16:35:13.395]:CTTOptions::SetAllFont()  e
+[16:35:13.395]:CTTOptions::OnCreate() e 
+[16:35:13.408]:STDMETHODIMP CTTOptions::Activate(nState=1) b 
+[16:35:13.411]:CTTOptions::AdviseDataProxy() b 
+[16:35:13.411]:CTTOptions::AdviseDataProxy() e 
+[16:35:13.513]:STDMETHODIMP CTTOptions::Activate() e 
+[16:35:47.470]:CwndBgn::OnSelectItemCode()  
+[16:35:47.470]:CTTOptions::OnSelectItemCode()  m_pGrpMng=-842150451
+[16:45:03.662]:COptionsApp::InitInstance() b 
+[16:45:03.718]:DllGetClassObject() b 
+[16:45:03.718]:CTTOptions::CTTOptions() b 
+[16:45:03.771]:CTTOptions::MakeFutCode()  
+[16:45:03.772]:CTTOptions::ReadExpiryDateListFile()  
+[16:45:03.774]:CTTOptions::GetExpiryTime()  
+[16:45:03.774]:CTTOptions::GetExpiryDays()  
+[16:45:03.778]:CTTOptions::CTTOptions() e 
+[16:45:03.789]:CTTOptions::OnCreate() b 
+[16:45:03.846]:CTTOptions::SetAllFont()  b
+[16:45:03.851]:CTTOptions::OnLstHScr()  
+[16:45:03.872]:CTTOptions::SetAllFont()  e
+[16:45:03.873]:CTTOptions::OnCreate() e 
+[16:45:03.889]:STDMETHODIMP CTTOptions::PutByID(nID=1000,VARIANT* pVar) b 
+[17:05:04.148]:COptionsApp::InitInstance() b 
+[17:05:04.275]:DllGetClassObject() b 
+[17:05:04.275]:CTTOptions::CTTOptions() b 
+[17:05:04.326]:CTTOptions::MakeFutCode()  
+[17:05:04.327]:CTTOptions::ReadExpiryDateListFile()  
+[17:05:04.327]:CTTOptions::GetExpiryTime()  
+[17:05:04.328]:CTTOptions::GetExpiryDays()  
+[17:05:04.330]:CTTOptions::CTTOptions() e 
+[17:05:04.335]:CTTOptions::OnCreate() b 
+[17:05:04.382]:CTTOptions::SetAllFont()  b
+[17:05:04.385]:CTTOptions::OnLstHScr()  
+[17:05:04.406]:CTTOptions::SetAllFont()  e
+[17:05:04.407]:CTTOptions::OnCreate() e 
+[17:05:04.419]:STDMETHODIMP CTTOptions::PutByID(nID=1000,VARIANT* pVar) b 
+[17:05:54.420]:COptionsApp::InitInstance() b 
+[17:05:54.486]:DllGetClassObject() b 
+[17:05:54.486]:CTTOptions::CTTOptions() b 
+[17:05:54.487]:CTTOptions::MakeFutCode()  
+[17:05:54.537]:CTTOptions::ReadExpiryDateListFile()  
+[17:05:54.537]:CTTOptions::GetExpiryTime()  
+[17:05:54.538]:CTTOptions::GetExpiryDays()  
+[17:05:54.540]:CTTOptions::CTTOptions() e 
+[17:05:54.544]:CTTOptions::OnCreate() b 
+[17:05:54.573]:CTTOptions::SetAllFont()  b
+[17:05:54.577]:CTTOptions::OnLstHScr()  
+[17:05:54.598]:CTTOptions::SetAllFont()  e
+[17:05:54.598]:CTTOptions::OnCreate() e 
+[17:05:54.609]:STDMETHODIMP CTTOptions::PutByID(nID=1000,VARIANT* pVar) b 

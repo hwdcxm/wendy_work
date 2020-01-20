@@ -1,0 +1,55 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8168.0 (a6be7a09).
+//
+// Options.tli
+//
+// Wrapper implementations for Win32 type library G:\Tele-Trend\bin\Options.dll
+// compiler-generated file created 01/20/20 at 16:01:18 - DO NOT EDIT!
+
+#pragma once
+
+//
+// interface ITTObject wrapper method implementations
+//
+
+inline HRESULT ITTObject::InitObject ( ) {
+    HRESULT _hr = raw_InitObject();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT ITTObject::Activate ( int nState ) {
+    HRESULT _hr = raw_Activate(nState);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline int ITTObject::GetState ( ) {
+    int _result;
+    HRESULT _hr = raw_GetState(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT ITTObject::GetByID ( int nID, VARIANT * * ppVar ) {
+    HRESULT _hr = raw_GetByID(nID, ppVar);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT ITTObject::PutByID ( int nID, VARIANT * pVar ) {
+    HRESULT _hr = raw_PutByID(nID, pVar);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT ITTObject::GetByName ( _bstr_t strName, VARIANT * * ppVar ) {
+    HRESULT _hr = raw_GetByName(strName, ppVar);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT ITTObject::PutByName ( _bstr_t strName, VARIANT * pVar ) {
+    HRESULT _hr = raw_PutByName(strName, pVar);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}

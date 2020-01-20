@@ -1,0 +1,96 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8168.0 (a6be7a09).
+//
+// Options.tlh
+//
+// C++ source equivalent of Win32 type library G:\Tele-Trend\bin\Options.dll
+// compiler-generated file created 01/20/20 at 16:01:18 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct /* coclass */ TTOptions;
+struct __declspec(uuid("492e31d3-b80d-11d3-af24-00a0cc23e698"))
+/* dual interface */ ITTOptions;
+struct __declspec(uuid("f763d0e1-6359-11d3-b24e-000000000000"))
+/* interface */ ITTObject;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(ITTOptions, __uuidof(ITTOptions));
+_COM_SMARTPTR_TYPEDEF(ITTObject, __uuidof(ITTObject));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("492e31d4-b80d-11d3-af24-00a0cc23e698"))
+TTOptions;
+    // [ default ] interface ITTOptions
+    // interface ITTObject
+
+struct __declspec(uuid("492e31d3-b80d-11d3-af24-00a0cc23e698"))
+ITTOptions : IDispatch
+{};
+
+struct __declspec(uuid("f763d0e1-6359-11d3-b24e-000000000000"))
+ITTObject : IUnknown
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    HRESULT InitObject ( );
+    HRESULT Activate (
+        int nState );
+    int GetState ( );
+    HRESULT GetByID (
+        int nID,
+        VARIANT * * ppVar );
+    HRESULT PutByID (
+        int nID,
+        VARIANT * pVar );
+    HRESULT GetByName (
+        _bstr_t strName,
+        VARIANT * * ppVar );
+    HRESULT PutByName (
+        _bstr_t strName,
+        VARIANT * pVar );
+
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall raw_InitObject ( ) = 0;
+    virtual HRESULT __stdcall raw_Activate (
+        int nState ) = 0;
+    virtual HRESULT __stdcall raw_GetState (
+        int * pnState ) = 0;
+    virtual HRESULT __stdcall raw_GetByID (
+        int nID,
+        VARIANT * * ppVar ) = 0;
+    virtual HRESULT __stdcall raw_PutByID (
+        int nID,
+        VARIANT * pVar ) = 0;
+    virtual HRESULT __stdcall raw_GetByName (
+        BSTR strName,
+        VARIANT * * ppVar ) = 0;
+    virtual HRESULT __stdcall raw_PutByName (
+        BSTR strName,
+        VARIANT * pVar ) = 0;
+};
+
+//
+// Wrapper method implementations
+//
+
+#include "Options.tli"
+
+#pragma pack(pop)
