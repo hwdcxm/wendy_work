@@ -13,6 +13,7 @@
 #include "Options_i.c"
 #include "TTOptions.h"
 
+#include "..\Common\DataProxy_i.c"
 
 CComModule _Module;
 

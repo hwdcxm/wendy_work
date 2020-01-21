@@ -19,12 +19,16 @@
 extern "C"   {
 #endif
 
+EXTERN_PROXY_FILE( DataProxy )
 EXTERN_PROXY_FILE( Options )
+EXTERN_PROXY_FILE( WTTCommon )
 
 
 PROXYFILE_LIST_START
 /* Start of list */
+  REFERENCE_PROXY_FILE( DataProxy ),
   REFERENCE_PROXY_FILE( Options ),
+  REFERENCE_PROXY_FILE( WTTCommon ),
 /* End of list */
 PROXYFILE_LIST_END
 

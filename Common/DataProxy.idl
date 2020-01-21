@@ -1,0 +1,61 @@
+// DataProxy.idl : IDL source for DataProxy.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DataProxy.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\Common\WTTCommon.idl";
+	[
+		object,
+		uuid(8D5DC90E-641F-11D3-BE14-00A0CC23E61B),
+		dual,
+		helpstring("ITTDataProxy Interface"),
+		pointer_default(unique)
+	]
+	interface ITTDataProxy : IDispatch
+	{
+	};
+
+[
+	uuid(8D5DC901-641F-11D3-BE14-00A0CC23E61B),
+	version(1.0),
+	helpstring("DataProxy 1.0 Type Library")
+]
+library DATAPROXYLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(8D5DC90F-641F-11D3-BE14-00A0CC23E61B),
+		dual,
+		helpstring("_ITTDataProxyEvents Interface"),
+		pointer_default(unique)
+	]
+	interface _ITTDataProxyEvents: IDispatch
+	{
+	};
+
+	[
+		uuid(81F75143-6265-11D3-BE13-00A0CC23E61B),
+		helpstring("TTDataProxy Class")
+	]
+	coclass TTDataProxy
+	{
+		[default] interface ITTDataProxy;
+		[default, source] dispinterface _ITTDataProxyEvents;
+	};
+
+	[
+		uuid(8D5DC910-641F-11D3-BE14-00A0CC23E61B),
+		helpstring("TTDataProxyProp Class")
+	]
+	coclass TTDataProxyProp
+	{
+		interface IUnknown;
+		interface ITTObject;
+	};
+};

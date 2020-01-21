@@ -1,3 +1,108 @@
+_UNICODE,UNICODE -> _MBCS,
+
+VC++ 6.0中关于UNICODE和_UNICODE的问题总结
+https://blog.csdn.net/u012132050/article/details/45113959
+在TCHAR.H头文件中总体的结构如下： 
+/* For backwards compatibility */为了向后的兼容性
+#ifdefine _UNICODE     //如果定义了_UNICODE标识符，字符或字符串则按照宽字符集进行编码
+1、在”工程项目“中设置属性，C/C++选项下的Preprocessor definition中，默认是按照多字节字符集进行编码的如图，即没有定义_UNICODE和UNICODE，所以_T(x)将按照x进行编码存储，即按照ASCII码。    MessageBox将按照MessageBoxA()进行输出，即按照ASCII码。 所以他们的编码表是一致的，所以输出正常。
+2、如果在Preprocessor definition中添加UNICODE或者_UNICODE中的任何一个则上面的程序就出现乱码或者显示不完全的现象。
+
+  如果添加UNICODE：
+
+     则MessageBox将按照MessageBoxW进行输出，即宽字符输出，但是_T(x)由于没有定义_UNICODE,所以依然按照ASCII进行编码即为x,两个字码表不一致           
+
+     所以就会出现乱码。
+
+  如果添加_UNICODE:（注意前面有下划线）
+
+     则MessageBox()将按照MessageBoxA进行输出，即ASCII或多字节字符集，但是_T(x)会按照L##x，即宽字符进行编码，即一个字符占用两个字节，低字节在前，高字节在后，所以在输出字符时候，比如编码为0x0041,而存储的顺序则为0x41,0x00,所以MessageBox再按照ASCII码进行输出时只会输出一个字符而把0x00当做字符串结束标识。所以最终只会输出一个字符。
+
+     
+
+因此在VC++6.0中需要将两个同时添加到里面才会显示正常，如图。
+
+
+error C2664: '_wcsicmp' : cannot convert parameter 1 from 'const char *' to 'const unsigned short *'
+_UNICODE,UNICODE -> _MBCS, (v ok)
+
+error C2664: “FindFirstFileW”: 不能将参数 1 从“char [260]”转换为“LPCWST
+https://blog.csdn.net/jindou910101/article/details/9188029
+解决方法：
+1、把工程设置里去掉UNICODE宏定义
+      项目->XXX属性->配置属性->常规->字符集 改为 “未设置” 就去掉了unicode支持，不过应该回报一个警告
+ 
+      如果实在找不到也可以在#include <windows.h>之前加上一句
+      #undef UNICODE
+      来解决
+2、或者，你全部使用
+      TCHAR替换char
+      字符串常量用_T()括起来，如_T("*")
+
+
+
+#include "..\common\DataProxy.h" 
+
+#include "..\Common\DataProxy_i.c"
+
+(v ok)
+
+SOURCE=..\Common\WTTCommon.idl
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\Common\DataProxy.idl
+# ADD MTL /tlb ".\DataProxy.tlb" /h "DataProxy.h" /iid "DataProxy_i.c" /Oicf
+# End Source File
+# Begin Source File
+
+
+
+
+
+怎么在VC++6.0环境下编译一个IDL文件？ [问题点数：50分，结帖人firecityplans]
+https://bbs.csdn.net/topics/310068194
+把接口ITimeBeijing的声明放到 library TimeBeijingLib 内
+或者在Project Settings中去掉"MkTypLib compatible"
+
+
+求助 Regsvr32注册成功 但在注册表CLSID里没有发现该键值 [问题点数：100分，结帖人yanweiqi]
+https://bbs.csdn.net/topics/340192507
+Bbs1	
+谢谢啦--oyljerry
+果然是rgs文件的事情，我手工修改了rgs文件后就可以了。
+
+492E31D4-B80D-11D3-AF24-00A0CC23E698 vv
+492E31D4-7117-11D3-AF24-00A0CC23E698 xx
+
+0012F77C-33D4-002A-D4F6-12002E509B75 F5 CLSIDFromProgID(OLESTR("Options.TTOptions.1"),&clsid); ??
+492E31D4-7117-11D3-AF24-00A0CC23E698 ??
+
+regsvr32 G:\Tele-Trend\Bin\DataProxy.dll 成功但找不到注册表中的相关信息(x no)
+
+怎么样不注册一个ACTIVEX控件就可以使用它呢? [问题点数：100分，结帖人duankuanjun]
+https://bbs.csdn.net/topics/30262349
+你可以按创建Com对象的方式使用它，你首先将ActiveX这个Dll加载到程序中，然后调用这个Dll的导出函数DllGetClassObject获得该ActiveX的类厂对象，然后通过该类厂对象，在创建你的需要的接口对象，然后调用你需要调用的接口函数。这样你就可以不用注册了!
+
+#import "G:\Tele-Trend\bin\DataProxy.dll" no_namespace
+DataProxy.tlh
+struct __declspec(uuid("81f75143-6265-11d3-be13-00a0cc23e61b"))
+TTDataProxy;
+    // [ default ] interface ITTDataProxy
+    // [ default, source ] interface _ITTDataProxyEvents
+
+struct __declspec(uuid("8d5dc90e-641f-11d3-be14-00a0cc23e61b"))
+ITTDataProxy : IDispatch
+{...}
+
+creating a blank workspace and adding the project.
+
+2020.01.21 
+
 IUnKNown接口——QueryInterface函数
 https://blog.csdn.net/lixiangminghate/article/details/74165002
 

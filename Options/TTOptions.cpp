@@ -10,8 +10,14 @@
 
 STDMETHODIMP CTTOptions::InitObject()
 {
-		CLogout("---STDMETHODIMP CTTOptions::InitObject() b \r\n");
+	CLogout("---STDMETHODIMP CTTOptions::InitObject() b \r\n");
 
+//	 CComQIPtr<ITTObject,&IID_ITTObject> pObj(m_pMainFrm);
+//	 if(pObj == NULL)
+//		{
+//			CLogout("---STDMETHODIMP CTTOptions::InitObject() e1 S_FALSE\r\n");
+//			return S_FALSE;
+//		}
 	return S_OK;
 }
 STDMETHODIMP CTTOptions::Activate(int nState)

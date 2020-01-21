@@ -47,7 +47,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x804 /d "_DEBUG" /d "_AFXDLL"
 # ADD RSC /l 0x804 /d "_DEBUG" /d "_AFXDLL"
@@ -277,6 +277,11 @@ SOURCE="$(InputPath)"
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\Common\DataProxy.idl
+# ADD MTL /tlb ".\DataProxy.tlb" /h "DataProxy.h" /iid "DataProxy_i.c" /Oicf
+# End Source File
+# Begin Source File
+
 SOURCE=.\Options.cpp
 # End Source File
 # Begin Source File
@@ -300,6 +305,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\TTOptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\Common\WTTCommon.idl
 # End Source File
 # End Group
 # Begin Group "Header Files"

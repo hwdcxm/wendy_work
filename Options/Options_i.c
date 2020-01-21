@@ -5,7 +5,7 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Fri Jan 17 16:17:50 2020
+/* at Tue Jan 21 16:35:32 2020
  */
 /* Compiler settings for E:\wendy_work\Options\Options.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext

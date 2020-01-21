@@ -6,6 +6,8 @@
 #include "resource.h"       // main symbols
 #include <atlctl.h>
 
+#include "..\common\DataProxy.h" 
+
 #include "logfile.h" // wendy add 2020.01.20 2019.12.27
 
 /////////////////////////////////////////////////////////////////////////////
@@ -13,6 +15,7 @@
 class ATL_NO_VTABLE CTTOptions : 
 	public CComObjectRootEx<CComSingleThreadModel>,
 	public IDispatchImpl<ITTOptions, &IID_ITTOptions, &LIBID_OPTIONSLib>,
+	public IDispatchImpl<_ITTDataProxyEvents,&IID__ITTDataProxyEvents, &LIBID_DATAPROXYLib>, //
 	public CComControl<CTTOptions>,
 	public IPersistStreamInitImpl<CTTOptions>,
 	public IOleControlImpl<CTTOptions>,
@@ -31,7 +34,18 @@ class ATL_NO_VTABLE CTTOptions :
 {
 public:
 	CContainedWindow m_ctlEdit;
-	
+
+	// ITTObject相关数据.
+	IUnknown*		m_pDataProxy;
+	IUnknown*		m_pSystemObj;	
+	IUnknown*		m_pGrpMng;
+	IUnknown*		m_pMainFrm;
+	int				m_nControlID;		// control 在MainFrame中的标识ID.		
+	unsigned long	m_dwID;				// control 在DO中的标识ID.		
+	HANDLE			m_hAdviseThread;	// advise thread hande. Warning: not CloseHandle()
+	DWORD			m_dwAdvise;			// Advise返回值, 未用.
+	BOOL			m_bAdvise;			// 连接命令 or 短开连接命令.		
+	LONG            m_PTransdate;           //获取保存的当前Options的日期.
 
 	CTTOptions() :	
 		m_ctlEdit(_T("Edit"), this, 1)
@@ -46,7 +60,9 @@ DECLARE_PROTECT_FINAL_CONSTRUCT()
 
 BEGIN_COM_MAP(CTTOptions)
 	COM_INTERFACE_ENTRY(ITTOptions)
-	COM_INTERFACE_ENTRY(IDispatch)
+	COM_INTERFACE_ENTRY2(IDispatch,ITTOptions)
+	COM_INTERFACE_ENTRY(_ITTDataProxyEvents)  //
+//	COM_INTERFACE_ENTRY(IDispatch) //
 	COM_INTERFACE_ENTRY(IViewObjectEx)
 	COM_INTERFACE_ENTRY(IViewObject2)
 	COM_INTERFACE_ENTRY(IViewObject)

@@ -1,0 +1,284 @@
+//+---------------------------------------------------------------------------
+//
+//  Eagleye Project ---- WTT
+//  Copyright 1999 - 2000 Tele-Trend Ltd.
+//
+//  File: wttcommon.idl
+//  Author: Gary Hai, 
+//  Date, September 5,1999
+//
+//----------------------------------------------------------------------------
+
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  Eagleye Project")
+cpp_quote("//  Copyright 1999 - 2000 Tele-Trend Ltd.")
+cpp_quote("//  Author: ")
+cpp_quote("//  Date: ")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+
+cpp_quote("#if ( _MSC_VER >= 800 )")
+cpp_quote("#pragma warning(disable:4201)    /* Nameless struct/union */")
+cpp_quote("#endif")
+
+#ifndef DO_NO_IMPORTS
+import "oaidl.idl";
+#endif
+
+////////////////////////// Define Parameter ID ///////////////////////////////
+cpp_quote("#define TTPID_SystemObject		1000")
+cpp_quote("#define TTPID_Container			1001")
+cpp_quote("#define TTPID_RootStorage		1002")
+cpp_quote("#define TTPID_ContainerStorage	1003")
+cpp_quote("#define TTPID_Storage			1004")
+cpp_quote("#define TTPID_Stream				1005")
+cpp_quote("#define TTPID_Exception			1006")
+cpp_quote("#define TTPID_DataProxy			1007")
+cpp_quote("#define TTPID_MainFrame			1008")		//Put to all want send message to it.
+cpp_quote("#define TTPID_SystemDefault		1009")
+cpp_quote("#define TTPID_UserStg			1010")
+cpp_quote("#define TTPID_DataFrameMAS       1011")
+cpp_quote("#define TTPID_EventLog			1012")
+cpp_quote("#define TTPID_GroupsMng			1013")
+cpp_quote("#define TTPID_DlgObj				1100")
+cpp_quote("#define TTPID_StatObj			1101")
+cpp_quote("#define TTPID_GBBIG5Obj			1102")		//obj for GB BIG5 convert
+cpp_quote("#define TTPID_CSS				1103")
+cpp_quote("#define TTPID_RadarAlert			1104")
+cpp_quote("#define TTPID_RecalcObj			1105")		//recalc Object
+cpp_quote("#define TTPID_ISO				1106")
+
+cpp_quote("#define TTPID_ChartDoProcess		1043")		//For chartdo notify mainframe to pop up a dialog.
+cpp_quote("#define TTPID_MinKeepHour		1110")
+
+cpp_quote("#define TTPID_ControlStorage		1014")
+cpp_quote("#define TTPID_HtmlStream		1015")
+cpp_quote("#define TTPID_IsDelayRelease		1016")
+cpp_quote("#define TTPID_MainCommand		1017")
+cpp_quote("#define TTPID_PrivateStorage		1019")
+cpp_quote("#define TTPID_ItemCodeWillChg	1020")		// notify mainfrm, itemcode will change.
+
+
+cpp_quote("#define TTPID_GiveMeUTitle		1021")		//for view ask all control to get title text
+cpp_quote("#define TTPID_SetMeTitle			1024")		//for view ask for set title
+cpp_quote("#define TTPID_DecompressByteSum	1025")		//for recive Byte total
+cpp_quote("#define TTPID_FrameSum			1026")		//for recive Frame total
+cpp_quote("#define TTPID_CompressFrameSum	1027")		//for recive Frame total
+cpp_quote("#define TTPID_ErrorFrame			1028")		//for recive Frame Error
+cpp_quote("#define TTPID_CompressByteSum	1029")		//for recive Byte total
+cpp_quote("#define TTPID_ByteSum			1030")		//for recive Byte total
+cpp_quote("#define TTPID_MasWriteLen		1031")		//for recive Byte Error
+cpp_quote("#define TTPID_ErrorByte			1032")		//for recive Byte Error
+cpp_quote("#define TTPID_MasUseSize			1033")		//for recive Byte Error
+
+cpp_quote("#define TTPID_ReplyIStream		1034")      //for reply to control query frame
+
+cpp_quote("#define TTPID_DataExporter		1035")      
+
+cpp_quote("#define TTPID_OnlineUpdate		1036")  
+cpp_quote("#define TTPID_TradeEngine		1040")  
+
+cpp_quote("#define TTPID_ObjGlobalID		2000")
+
+cpp_quote("#define TTPID_FireBroker			2002")
+cpp_quote("#define TTPID_FireNoBroker		2003")
+
+cpp_quote("#define TTPID_MultiKbdObject		2004")		// ID of multiple keyboard object, added by Tony, 99.10.23
+cpp_quote("#define TTPID_KeyEvent			2006")		// ID of key event, added by Tony, 99.10.23
+cpp_quote("#define TTPID_DInputMainHwnd		2008")		// ID of handle of DirectInput main window, added by Tony, 99.10.23
+
+cpp_quote("#define TTPID_SetBrokerFocus		2012")
+cpp_quote("#define TTPID_ControlID			2024")		//for Storage save.
+
+cpp_quote("#define TTPID_ResHinstance		2026")		//for get mdi tool bar.
+cpp_quote("#define TTPID_ResToolBarID		2028")		//for get mdi tool bar res id.
+cpp_quote("#define TTPID_ClkMDIToolBar		2030")		//mdi toolbar click. var = No.
+cpp_quote("#define TTPID_GETMDIToolBarState		2031")		//get mdi toolbar UI property
+
+cpp_quote("#define TTPID_SystemDate			2040")		//System Date 
+cpp_quote("#define TTPID_ItemCode			2050")		//PutId to every control now ItemCode
+cpp_quote("#define TTPID_ItemCodeA			2060")		//PutId to every control now ItemCode before initobj
+cpp_quote("#define TTPID_ItemCodeEx			2070")		//PutId for TTChartWindow
+cpp_quote("#define TTPID_ItemCodeOrder			2080")		//PutId for TradeOrder
+cpp_quote("#define TTPID_GetCtrlItemCode	2061")		//Request for get control ItemCode
+cpp_quote("#define TTPID_GetCtrlGroupCode	2063")		//Request for get control GroupCode(TeleText class window)
+cpp_quote("#define TTPID_ItemCodePrint		2064")		//putId to every control the itemcode to print
+
+
+cpp_quote("#define TTPID_GetDeviceStatus	3060")		//Get Data proxy device status
+cpp_quote("#define TTPID_GetDeviceStatusString	3061")		//Get Data proxy device status detail string is point to byte.BSTR
+cpp_quote("#define TTPID_MessageWindow		3063")		//Message window handle
+cpp_quote("#define TTPID_FileReload			3065")		//Group file or other file need to be reload . UI4 described in GENFILAMD.DES
+
+cpp_quote("#define TTPID_ES_DO_START			3066")
+cpp_quote("#define TTPID_ES_DO_STOP			3067")
+cpp_quote("#define TTPID_ES_AUTO_CHECKHISTDATA	3068") //ES'CONSOLE AUTO CHECK HISTDATA
+
+
+cpp_quote("#define TTPID_HouseKeeping			4000")		//manual Housekeeping
+
+cpp_quote("#define TTPID_NewsAccount			4003")		//news account record
+cpp_quote("#define TTPID_FunctionControl		4004")		//function control record
+cpp_quote("#define TTPID_HELP					4005")		//help system
+cpp_quote("#define TTPID_GroupAccount			4006")		//Group account record
+cpp_quote("#define TTPID_SystemAccount			4009")		//system account record
+
+cpp_quote("#define TTPID_WTVersion				4100")		//WT version
+cpp_quote("#define TTPID_W2TVersion				4110")		//W2T version
+
+// -------- TeleText Color ID --  Paul ------------------
+cpp_quote("#define TTPID_TELE_DSpreadBid			2208")
+cpp_quote("#define TTPID_TELE_DSpreadAsk			2218")
+
+cpp_quote("#define TTPID_TELE_DNominalRise			2228")
+cpp_quote("#define TTPID_TELE_DNominalFall			2238")
+cpp_quote("#define TTPID_TELE_DNominalUnChg			2248")
+
+cpp_quote("#define TTPID_TELE_DTradeTickers			2258")
+
+cpp_quote("#define TTPID_TELE_DHSIndex				2268")
+cpp_quote("#define TTPID_TELE_DHSFutures			2278")
+
+cpp_quote("#define TTPID_TELE_LHSIndex				2308")
+cpp_quote("#define TTPID_TELE_LHSFutures			2318")
+
+cpp_quote("#define TTPID_TELE_LNominal				2328")
+
+cpp_quote("#define TTPID_TELE_DLargestTrans			2338")
+cpp_quote("#define TTPID_TELE_DFreeText				2348")
+
+cpp_quote("#define TTPID_TELE_LBid					2358")
+cpp_quote("#define TTPID_TELE_LAsk					2368")
+// -------- TeleText Color ID ---  Paul  ---------------
+
+// -------- TeleText Color ID ---  Hope  ---------------
+cpp_quote("#define TTPID_TELE_LWar					2808")
+cpp_quote("#define TTPID_TELE_DWarItem				2828")
+cpp_quote("#define TTPID_TELE_DWarSelected			2838")
+// -------- TeleText Color ID ---  Hope  ---------------
+
+
+// -------- TeleText Color ID --- Kenny --------------------
+cpp_quote("#define TTPID_TELE_DBidFore				2508")
+cpp_quote("#define TTPID_TELE_DAskFore				2528")
+// -------- TeleText Color ID --- Kenny --------------------
+
+// --------- TTUserMng ID ---------------
+cpp_quote("#define TTPID_UserName					2708")
+cpp_quote("#define TTPID_Password					2728")
+cpp_quote("#define TTPID_NewPassword				2738")
+// --------- TTUserMng ID ---------------
+
+//----------TTChartDataProxy ID-----------------
+cpp_quote("#define TTPID_UserID						3108")
+cpp_quote("#define TTPID_SystemID					3118")
+cpp_quote("#define TTPID_ExtSystemID				3128")
+cpp_quote("#define TTPID_ExtSystemIDMask			3138")
+cpp_quote("#define TTPID_Frame247					3148")
+cpp_quote("#define TTPID_SystemFinger				3158")
+cpp_quote("#define TTPID_DataManger					3168")
+cpp_quote("#define TTPID_DataUpdateFile				3178")
+cpp_quote("#define TTPID_MaxInstance				3188")			//windows/ctrl max instance
+//----------TTChartDataProxy ID-----------------
+
+cpp_quote("#define TTPID_ToolBarTip					3248")			//Get a tip of mdi toll bar
+cpp_quote("#define TTPID_LangType					3249")			//language type. short: English(0)/Chinese Simple(1)/Chinese Traditional(2)
+cpp_quote("#define TTPID_ToolBarUI					3250")			//Get the toolbar ui status
+
+//----------Do info
+cpp_quote("#define TTPID_DataObjectDate				5000")			//Get a tip of mdi toll bar
+cpp_quote("#define TTPID_DataSendCritical			5100")			//Data send Critical section
+
+///////////////////////////////////////////////////////////////////////////////
+//Following is the Objects ID in DataProxy Module
+cpp_quote("#define TTPID_DP_TRANS					2601")
+//////////////////////////////////////////////////////////////////////////////
+
+cpp_quote("#define TTPID_ConfigCenter				3300")
+//The MainFrame use this to broadcast the tradeinfo struct, tele will receive the struct
+cpp_quote("#define TTPID_TradeInfo					3301")
+//The cur send trade info to tele
+cpp_quote("#define TTPID_SendTradeInfo				3302")
+//cpp_quote("#define TTPID_SendTradeInfoFutures		3303")
+
+cpp_quote("#define TTPID_RECAL						3304")
+cpp_quote("#define TTPID_ErrorLog						3305")
+cpp_quote("#define TTPID_SETSTS						3306")
+cpp_quote("#define TTPID_DELAYSETTING				3307")
+cpp_quote("#define TTPID_CLEANALLDATA				3308")
+
+cpp_quote("#define TTPID_StrCommand						39355")
+
+cpp_quote("#define TTPID_ALARM_START				3400")
+cpp_quote("#define TTPID_ALARM_STOP				3401")
+cpp_quote("#define TTPID_ALARM_SETUP				3402")
+cpp_quote("#define TTPID_ALARM_MONITOR				3403")
+
+//added by Steven
+cpp_quote("#define TTPID_DataFrame_DOReady				3404")
+cpp_quote("#define TTPID_W2TE_DO_RELOAD				3405")
+
+cpp_quote("#define TTPID_PORTFOLIO_CFG_CHG				3406")//portfolio display config change
+cpp_quote("#define TTPID_PORTFOLIO_CFG_CHG_COLOR		3407")//portfolio display config change
+
+//added by Steven
+//TTCfgObject 取得刚才修改过得属性
+cpp_quote("#define TTPID_CFG_CHANGE				3408")
+
+//------ About Message mine-----
+//当前信息地雷共享结构,broadcast to chartWindow
+cpp_quote("#define TTPID_MsgShowInfo			3409")
+cpp_quote("#define TTPID_MsgMine_Change			3410")
+cpp_quote("#define TTPID_MsgMine_Setting		3411")
+cpp_quote("#define TTPID_ISO_ConType			3412") //ISO connect type,ISO: message mine data object
+cpp_quote("#define TTPID_ISO_ConStatus			3413")//ISO connect status
+
+//added by jansen20051115-----------+
+cpp_quote("#define TTPID_W2T_CONNSTATUS			6000")//W2T CONNECT status...
+cpp_quote("#define TTPID_W2T_CONNSTATUSPROXY	6011")//W2T CONNECT status...
+//end added by jansen20051115-----------+
+
+cpp_quote("#define TTPID_W2T_SERVERMSG			6100")
+cpp_quote("#define TTPID_ES_HisDataSync			6101")//ES his data synchronized
+cpp_quote("#define TTPID_W2T_SERVERNAME			6110")
+cpp_quote("#define TTPID_WorkingPath			7000") // paul, add for groupsmng. ( BSTR )
+cpp_quote("#define TTPID_NotifyExtDataFileChg	7001") // paul, add for groupsmng. ( NULL )
+cpp_quote("#define TTPID_Window_TYPE			7010")
+
+cpp_quote("#define TTPID_IS_SYSTEM_DESKTOP		7050")  //andy check if Current Desktop is system desktop.
+
+cpp_quote("#define TTPID_OptionsFiles			7060")  //johnny add Options file update.
+cpp_quote("#define TTPID_Rerfresh			7061")  //rolle add window refresh
+cpp_quote("#define TTPID_CloseLoginWindow			7062")  //rolle add close login window
+cpp_quote("#define TTPID_CloseOrderWindow			7063")  //rolle add close order window
+
+//+---------------------------------------------------------------------------
+//
+interface ITTObject;
+
+[
+    object,
+    uuid(F763D0E1-6359-11d3-B24E-000000000000),
+    pointer_default(unique),
+    local
+]
+
+interface ITTObject: IUnknown
+{
+	HRESULT InitObject();
+	HRESULT Activate([in]int nState);
+	HRESULT GetState([out, retval]int* pnState);
+	HRESULT GetByID([in]int nID, [in, out]VARIANT** ppVar);
+	HRESULT PutByID([in]int nID, [in] VARIANT* pVar);
+	HRESULT GetByName([in]BSTR strName, [in, out]VARIANT** ppVar);
+	HRESULT PutByName([in]BSTR strName, [in]VARIANT* pVar);
+}
+
+
+//
+//----------------------------------------------------------------------------
+
+cpp_quote("#if ( _MSC_VER >= 800 )")
+cpp_quote("#pragma warning(default:4201) /* Nameless struct/union */")
+cpp_quote("#endif")
