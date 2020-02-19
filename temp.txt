@@ -1,3 +1,114 @@
+VC++6控件简单用法总结
+https://blog.csdn.net/qq805886694/article/details/52078060
+
+其实如何正确运用他人提供的东西来实现自己想要的价值才是真正的高手。
+https://zhidao.baidu.com/question/270635119.html
+
+VC6调节控件的位置和大小
+https://www.evget.com/article/2008/5/14/7933.html
+
+VC6开发ActiveX控件 整套学习资料
+https://download.csdn.net/download/qq506124204/5119677
+
+vc6自定义控件大全源码大全
+https://download.csdn.net/download/u012999524/6632701?utm_source=iteye
+
+VC6有没自带的表格控件？ [问题点数：100分，结帖人ljyit]
+https://bbs.csdn.net/topics/80401340
+
+VC6使用自定义控件的步骤
+http://blog.sina.com.cn/s/blog_49352090010007z9.html
+
+vc6自定义控件大全源码大全
+https://download.csdn.net/download/u012999524/6632701
+
+【转】VC6控件小记
+https://blog.csdn.net/weixin_30570101/article/details/96551107
+
+VC6的CRichEditCtrl控件在那，或添加什么 [问题点数：20分，结帖人chenquangobeijing]
+https://bbs.csdn.net/topics/380258876
+
+使用vc6创建activeX控件步骤 c++代码
+https://download.csdn.net/download/wuchunhudd/4910877
+
+VC6下用控件进行串口通信
+https://download.csdn.net/download/congcong624/4176659
+
+VC6中调整控件布局的工具在哪？ [问题点数：20分，结帖人arthurwu8109]
+https://bbs.csdn.net/topics/70198083?list=lz
+
+vc6 树形控件读取并绘制的问题
+https://ask.csdn.net/questions/200656
+
+VC6中控件成员变量和非控件成员变量什么区别
+https://zhidao.baidu.com/question/1509719579191102100.html
+
+vc++6.0控件使用大全
+https://download.csdn.net/download/lyq880801/5795907
+
+VC++6.0MFC常用控件.docx 5页
+https://max.book118.com/html/2017/0527/109691961.shtm
+
+VC6组件和控件
+https://zhidao.baidu.com/question/173089382.html
+
+VC中Tab control控件的用法详细解析
+https://www.jb51.net/article/41406.htm
+
+VC6，怎么向通过代码创建的窗体加控件 [问题点数：40分，结帖人JiLuoXingRen]
+https://bbs.csdn.net/topics/390334723
+
+VC6.0常用控件常用方法介绍
+https://download.csdn.net/download/jojolovejj/3048831
+
+VC++6.0控件使用方法大全
+https://wenku.baidu.com/view/ec2494ea998fcc22bcd10d03.html
+
+VC6控件解决方法
+http://www.myexception.cn/vc-mfc/1020814.html
+
+如何在VC6下自已定制控件
+http://www.cqvip.com/Main/Detail.aspx?id=15205116
+
+关于在VC++6.0的对话框里增加控件 [问题点数：40分，结帖人krystal727]
+https://bbs.csdn.net/topics/390932939?list=6515742
+
+VC6.的0中控件及按钮的设置和使用.doc 8页
+https://max.book118.com/html/2018/0218/153648360.shtm
+
+vc 6.0常用控件使用方法简单介绍
+http://www.docin.com/p-1375191636.html
+
+VC树形控件控件(基础)
+http://www.360doc.com/content/15/0615/00/24811_478166388.shtml
+
+
+VC6
+http://ishare.iask.sina.com.cn/f/31hKTUo0NwW.html
+
+如何知道vc6里面各个控件的属性方法的详细说明
+https://zhidao.baidu.com/question/75602820.html
+
+VC++ 6.0常用控件使用方法介绍
+https://download.csdn.net/download/jcjssys/3169038
+
+VC++6.0基本控件的使用
+https://wenku.baidu.com/view/64b526a11eb91a37f0115cc1.html
+
+VC++6.0 MFC列表控件的基本使用方法
+https://blog.csdn.net/weixin_40026797/article/details/84257990
+
+vc 6.0常用控件使用方法简单介绍
+http://www.doc88.com/p-1894630165260.html
+
+《VC6用户界面制作实例》普遍认为，使用VC开发界面是痛苦的。这本书讲解了VC常用的一些控件的使用，对于初学者而言，非常值得阅读。...
+http://www.codeforge.cn/article/139033
+
+VC6-Control
+http://www.pudn.com/Download/item/id/2037522.html
+
+百十法(百度十页 v ok)
+
 E:\temp\wendy_work\temp.txt
 
 兵河五四软件出错：不能立即出招。
