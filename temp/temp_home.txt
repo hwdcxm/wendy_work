@@ -1,0 +1,3064 @@
+MFC class 和 Generic class 和Form Class使用详细区别
+https://blog.csdn.net/zdzh1/article/details/17959331
+建立基于MFC的类，比如视图，frame，控件等等,从MFC类库派生,可以在Base class中选择父类。
+Generic class:
+geniric    class就是自己写的类，普通C++类,没有派生始祖，包含头文件后，可以使用任何MFC类。使用
+generic    class，它不选择MFC中的类作为基类，也就是没有基类，或者你手工在Base class中填上父类。输入任何类做基类
+generic    class,是一个一般的类，可以不从mfc的类中继承，也可以从mfc的类中继承，但自己一定要注意亲自加入mfc的 
+头文件，同时不会有消息映射表，这些都要手动添加。   
+Form Class：
+应该是指MFC中带界面资源模板的类，一般都需要选择模板ID，包括CFormView,CRecordView,CDAORecordView和CDialog四种类 
+但是VC会根据实际项目的类型是dialog，SDI,MDI来选择classvizard里面下拉框中的可选类。 
+基于dialog的项目，添加form class 时只显示CDialog，前三种不显示(它认为，那三个view类在对话框中不必要使用) 
+基于SDI或MDI的项目，添加form class 时下拉框显示上述4种类。 
+Form Class是窗口类，一般情况下用这项时，VC会同时为你生成相应的窗口(v ok)
+
+
+
+vc6中，插入 new form 是什么意思，form表单表示的是什么？ [问题点数：20分，结帖人go_hao]
+https://bbs.csdn.net/topics/320089528?locationNum=6&fps=1
+表单通常是指显示数据库数据条目的窗口，不同语言有不同的表现形式。
+VC语言就是通过一个FormView窗口显示的，一般是要继承CFormView。
+
+通过new form插入的类其实可以直接通过new class来操作，只不过在选择基类时选择CFormView即可。
+new form只是将插入表单过程进行一个简单而已。
+
+
+2020.02.29
+
+书本快速快，看即拍。
+
+新闻快速看. 随机应变，做该做的事，加公学娱，程新英. 发有复，半年2次方.
+
+https://www.szrtc.cn/Index.html
+user:手机 pwd:手机+o
+宜停车地点
+
+男子不想上班还想拿工资 谎称妻女患新冠肺炎被拘
+https://news.163.com/20/0222/11/F60417V20001899O.html
+
+2020.02.22
+
+陈一新暗访谈到软服务 王忠林要求"不要藏不要掖"
+https://news.163.com/20/0220/11/F5QUHD6500019B3E.html
+我们等不了、拖不起、慢不得！
+不能让坏人神气，好人受气
+
+VC++6.0 MSDN(精简版)74.exe
+c与c++标准类库及函数.chm
+MFC类库详解.chm
+
+什么是mci设备我的电脑播放声音出了问题
+https://zhidao.baidu.com/question/437622767110928724.html
+MCI全称是Media control interface即多媒体控制接口。说明白点就是程序与多媒体解码器通讯的一个界面。可利用这个接口跳过硬件访问并调用本地的符合MCI规格的多媒体解码驱动。完成对多媒体的回放录制与控制。
+
+MCI详解
+https://wenku.baidu.com/view/8f21a121a5e9856a56126020.html
+
+电脑提示"no mci device open"是什么意思 应该怎么办？ 20
+https://zhidao.baidu.com/question/3344679.html
+所说的mciqtz32.dll就是DirectShow MCI的Driver，这个坏了比较难修复
+https://zhidao.baidu.com/question/3344679.html
+
+Mci的使用方法
+https://wenku.baidu.com/view/d8c8dfa21a37f111f1855bc5.html
+
+mci设备指的是什么啊？
+https://iask.sina.com.cn/b/iRPQ5b2eiOrF.html
+//mciSendString("play c:/1.mp3", "", 0, NULL);
+MCI：媒体控制接口，Media Control Interface
+
+磷酸氯喹上市公司龙头股票 值得重点关注！
+https://www.gucheng.com/hot/2020/3863583.shtml
+目前，磷酸氯喹相关上市公司较多，如下：精华制药002349、众生药业002317、凯普生物300639、白云山600332。除此之外还有昆药集团60042、金陵药业000919、上海医药601607等。疫情期间，这些上市公司股票值得关注。
+
+
+昨天，日本人最担心的一幕出现了
+https://new.qq.com/omn/20200219/20200219A0TEJS00.html
+19日，日本人最担心的一幕出现了。
+从“钻石公主号”上检查结果呈阴性且无症状的500名乘客被允许下船，利用公共交通回家。日本神户大学大学院医学研究科教授岩田健太郎对船上情况的描述，更加剧了很多日本人的恐慌心理。
+
+3天大排查期限已到，武汉15个区交卷！
+https://new.qq.com/omn/20200220/20200220A03RRP00.html?pgv_ref=aio2015&ptlang=2052
+
+
+2020.02.20
+
+VC++6控件简单用法总结
+https://blog.csdn.net/qq805886694/article/details/52078060
+
+其实如何正确运用他人提供的东西来实现自己想要的价值才是真正的高手。
+https://zhidao.baidu.com/question/270635119.html
+
+VC6调节控件的位置和大小
+https://www.evget.com/article/2008/5/14/7933.html
+
+VC6开发ActiveX控件 整套学习资料
+https://download.csdn.net/download/qq506124204/5119677
+
+vc6自定义控件大全源码大全
+https://download.csdn.net/download/u012999524/6632701?utm_source=iteye
+
+VC6有没自带的表格控件？ [问题点数：100分，结帖人ljyit]
+https://bbs.csdn.net/topics/80401340
+
+VC6使用自定义控件的步骤
+http://blog.sina.com.cn/s/blog_49352090010007z9.html
+
+vc6自定义控件大全源码大全
+https://download.csdn.net/download/u012999524/6632701
+
+【转】VC6控件小记
+https://blog.csdn.net/weixin_30570101/article/details/96551107
+
+VC6的CRichEditCtrl控件在那，或添加什么 [问题点数：20分，结帖人chenquangobeijing]
+https://bbs.csdn.net/topics/380258876
+
+使用vc6创建activeX控件步骤 c++代码
+https://download.csdn.net/download/wuchunhudd/4910877
+
+VC6下用控件进行串口通信
+https://download.csdn.net/download/congcong624/4176659
+
+VC6中调整控件布局的工具在哪？ [问题点数：20分，结帖人arthurwu8109]
+https://bbs.csdn.net/topics/70198083?list=lz
+
+vc6 树形控件读取并绘制的问题
+https://ask.csdn.net/questions/200656
+
+VC6中控件成员变量和非控件成员变量什么区别
+https://zhidao.baidu.com/question/1509719579191102100.html
+
+vc++6.0控件使用大全
+https://download.csdn.net/download/lyq880801/5795907
+
+VC++6.0MFC常用控件.docx 5页
+https://max.book118.com/html/2017/0527/109691961.shtm
+
+VC6组件和控件
+https://zhidao.baidu.com/question/173089382.html
+
+VC中Tab control控件的用法详细解析
+https://www.jb51.net/article/41406.htm
+
+VC6，怎么向通过代码创建的窗体加控件 [问题点数：40分，结帖人JiLuoXingRen]
+https://bbs.csdn.net/topics/390334723
+
+VC6.0常用控件常用方法介绍
+https://download.csdn.net/download/jojolovejj/3048831
+
+VC++6.0控件使用方法大全
+https://wenku.baidu.com/view/ec2494ea998fcc22bcd10d03.html
+
+VC6控件解决方法
+http://www.myexception.cn/vc-mfc/1020814.html
+
+如何在VC6下自已定制控件
+http://www.cqvip.com/Main/Detail.aspx?id=15205116
+
+关于在VC++6.0的对话框里增加控件 [问题点数：40分，结帖人krystal727]
+https://bbs.csdn.net/topics/390932939?list=6515742
+
+VC6.的0中控件及按钮的设置和使用.doc 8页
+https://max.book118.com/html/2018/0218/153648360.shtm
+
+vc 6.0常用控件使用方法简单介绍
+http://www.docin.com/p-1375191636.html
+
+VC树形控件控件(基础)
+http://www.360doc.com/content/15/0615/00/24811_478166388.shtml
+
+
+VC6
+http://ishare.iask.sina.com.cn/f/31hKTUo0NwW.html
+
+如何知道vc6里面各个控件的属性方法的详细说明
+https://zhidao.baidu.com/question/75602820.html
+
+VC++ 6.0常用控件使用方法介绍
+https://download.csdn.net/download/jcjssys/3169038
+
+VC++6.0基本控件的使用
+https://wenku.baidu.com/view/64b526a11eb91a37f0115cc1.html
+
+VC++6.0 MFC列表控件的基本使用方法
+https://blog.csdn.net/weixin_40026797/article/details/84257990
+
+vc 6.0常用控件使用方法简单介绍
+http://www.doc88.com/p-1894630165260.html
+
+《VC6用户界面制作实例》普遍认为，使用VC开发界面是痛苦的。这本书讲解了VC常用的一些控件的使用，对于初学者而言，非常值得阅读。...
+http://www.codeforge.cn/article/139033
+
+VC6-Control
+http://www.pudn.com/Download/item/id/2037522.html
+
+百十法(百度十页 v ok)
+
+E:\temp\wendy_work\temp.txt
+
+兵河五四软件出错：不能立即出招。
+天天象棋出错:右上角排名弹屏不能回收，庶当住不能下棋。
+出少一步，小孩好奇，不在小孩前面玩游戏(象棋等)。
+
+#include <mmsystem.h>
+#pragma comment(lib,"Winmm.lib")
+
+void CTestDlgDlg::OnButton1() 
+{
+	// TODO: Add your control notification handler code here
+
+//Mcisendstring播放音乐，配合GetOpenFileName实现播放器
+
+	//mciSendString("play c:/1.mp3", "", 0, NULL);
+
+//mciSendString更多用法（暂停、继续、录音、播放进度控制）
+//GetShortPathName   这是处理长文件路径的
+
+#if 1
+        TCHAR shortPath[MAX_PATH];
+        TCHAR cmd[MAX_PATH+8];
+        GetShortPathName("F:\\1.mp3",shortPath,sizeof(shortPath));
+        wsprintf(cmd, "play %s", shortPath);
+        mciSendString(cmd, "", 0, NULL);
+#endif
+		
+}
+
+
+
+
+广东磷酸氯喹治疗法：128病例93例转阴 26人出院
+https://news.163.com/20/0219/07/F5NV05P60001899N.html
+
+万和热水器 JSQ20-10C53 主板
+
+万和热水器主板/电脑板JSQ2-10C53
+
+60/45个
+https://ask.shejiben.com/wenda/889823.html
+
+万和热水器换一个主板多少钱?
+https://zhidao.baidu.com/question/1760403084601029388.html
+不带人工，一百二三十到两百六七十，都有，型号各个不同。
+
+请问一下万和煤气热水器换一个主板多少钱
+https://zhidao.baidu.com/question/619341205447913812.html
+网上一个70块，修热水器的乱要价200的300看他们心情
+刚换了一个，12升的，主板340，人工费40，同城。
+
+2020.02.19
+
+
+vc6 基本控件(百度)
+
+VC++6控件简单用法总结
+https://blog.csdn.net/qq805886694/article/details/52078060
+对话框宏定义：
+对话框显示的按钮类型：
+#define MB_OK                   0x00000000L     确定
+...
+打开文件对话框和保存文件对话框
+需要导入的头文件#include <commdlg.h>
+...
+要想同时打开多个文件，需要在风格选择加入OFN_ALLOWMULTISELECT
+保存文件对话框用GetSaveFileName来实现，大体相同
+如果需要保存文件覆盖提示怎么办？看看OFN有选项吗？OFN_OVERWRITEPROMPT
+...
+
+
+error LNK2001: unresolved external symbol __imp__mciSendStringA@16
+https://blog.csdn.net/qq1437715969/article/details/103098822
+error LNK2001: unresolved external symbol __imp__mciSendStringA@16
+C语言程序执行build的时候报出error LNK2001: unresolved external symbol __imp__mciSendStringA@16错误应该如何解决？
+在文件头部添加：
+#pragma comment(lib,“Winmm.lib”)
+即可build通过。
+————————————————
+版权声明：本文为CSDN博主「Floating Snow」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq1437715969/article/details/103098822
+
+
+
+武汉病毒研究所陈全姣实名举报所长?真相不寒而栗
+https://news.163.com/20/0218/13/F5M0F9V60001899O.html
+实名举报武汉病毒所的所长王延轶是此次新型冠状病毒疫情的罪魁祸首。
+
+
+火神山医院建完了 农民工的工钱及时拿到了吗？
+https://news.163.com/20/0218/13/F5M0GO0V0001899O.html
+
+湖北：湖北一线医务子女2020中考加10分录取
+https://news.163.com/20/0218/14/F5M3H2920001899O.html
+
+媒体：武汉市武昌医院院长刘智明正在接受抢救
+https://news.163.com/20/0218/01/F5KOQFJO0001899O.html
+
+女子骑50公里回武汉 染病母亲锁家门:你进来我跳楼
+https://news.163.com/20/0218/03/F5KTAFPA0001899O.html
+
+济南：市民每日自测2次体温 全市下架发热咳嗽药
+https://news.163.com/20/0218/04/F5L2AQUP0001899O.html
+
+中疾控报告称超3000医护人员感染 国家卫健委回应
+https://news.163.com/20/0218/04/F5L3BST20001899O.html
+
+湖北新增确诊1807例病亡93例 累计确诊59989例
+https://news.163.com/20/0218/06/F5LA2ID20001899O.html
+
+日本超500人患新冠肺炎 日专家:未来一两周是关键
+https://news.163.com/20/0217/20/F5K7RMMD0001899N.html
+
+2020.02.18
+
+超密切接触！日本举办“万人裸祭”引发疫情扩大担忧(视频)
+https://wxn.qq.com/cmsid/WXN2020021700530500
+
+WIN7中,中文输入法快捷键无法修改的解决方法 (v ok)
+https://wenku.baidu.com/view/ba2dd4fd1611cc7931b765ce05087632311274ee.html
+增加项 00000010
+增加项值等 Key Modifiers 二进制数值 02 c0 00 00
+增加项值等 Target IME 二进制数值 00 00 00 00
+增加项值等 Virtual Key 二进制数值 20 00 00 00
+
+2020.02.17
+ 
+
+涉不雅视频 马克龙盟友退选巴黎市长
+http://www.thecover.cn/news/3593773
+
+上海:企业要正常向隔离者付薪 不得隔离期解除合同
+https://news.163.com/20/0216/12/F5GMVNNL0001899O.html
+
+沙特一架战斗机在也门被击落 遭导弹猎杀全程曝光
+https://news.163.com/20/0216/11/F5GKJ8J40001875O.html
+
+美科技杂志：瑞德西韦可能对抗击新型冠状病毒有用
+https://news.163.com/20/0216/10/F5GI79BE0001899O.html
+
+“威士特丹号”一乘客在马来西亚确诊感染新冠病毒
+https://news.163.com/20/0216/10/F5GIHBOA0001899N.html
+
+广东新增22例新冠肺炎确诊病例 累计确诊1316例
+https://news.163.com/20/0216/09/F5GDSJEJ0001899O.html
+
+日本新冠肺炎确诊达338例 政府或调整疫情应对方案
+https://news.163.com/20/0216/09/F5GDHELI0001899O.html
+
+全国新增确诊2009例死亡142例 累计确诊68500例
+https://news.163.com/20/0216/08/F5GBLPFO0001899O.html
+湖北新增确诊病例1843例（武汉1548例）
+
+武汉社区漏报一例疑似病人信息 患者在家自缢身亡
+https://news.163.com/20/0216/06/F5G3EGRA0001899O.html
+
+广州高层居民楼两户人相继感染 调查过程全程高能
+https://news.163.com/20/0216/01/F5FITU760001899O.html
+
+广州珠江新城写字楼职员确诊 全公司隔离停止办公
+https://news.163.com/20/0215/22/F5F9L9SR00019K82.html
+
+外教误会孩子感染新冠肺炎失声痛哭 网友:娃没听懂
+https://news.163.com/20/0215/21/F5F6H6KV0001899O.html
+
+劝乘客戴口罩被打未还手 公交司机获1000元委屈奖
+https://news.163.com/20/0215/20/F5F24P6M0001899N.html
+
+日本官员：新冠肺炎已在事实上开始在日本流行
+https://news.163.com/20/0215/20/F5F1OVT10001899N.html
+
+纽约两男子为恶搞 倾倒自制"新冠病毒"液体吓乘客
+https://news.163.com/20/0215/20/F5F11L360001899N.html
+
+内蒙古一KTV偷偷营业 少男少女嗨歌庆生无人戴口罩
+https://news.163.com/20/0215/18/F5EQB5QC0001899O.html
+
+
+同济研发疫情防控智能识别系统 如发热将自动报警
+https://news.163.com/20/0215/18/F5EQTVN500018AOR.html
+
+妻子举报！男子隐瞒返鄂过年 确诊后致225人被隔离
+https://news.163.com/20/0215/19/F5ET4JMM0001899O.html
+
+父母都隔离孩子谁来管？江苏省内首个保护意见出台
+https://news.163.com/20/0215/19/F5ETEQTS0001899O.html
+
+多地实行分区分级防控：县域为单元 轻微区可复工
+https://news.163.com/20/0215/19/F5EVCH9G0001899O.html
+
+
+麟龙新一代股票技术分析软件  
+http://ln.024888.net/?cid=7901&czid=790199
+从事证券投资或期货交易，请通过合法证券期货经营机构进行。合法机构名单可到中国证监会网站（www.csrc.gov.cn）查询。
+电话：400-720-1166    地址：沈阳市浑南区白塔二南街18-2号
+Copyright ? 2002-2017 Linlong Corporation, All Rights Reserved
+版权所有：沈阳麟龙投资顾问有限公司    辽ICP备11018762号    辽公网安备 21011202000082号
+此业务由024888.net提供
+
+2020.02.16
+
+实锤！新冠肺炎12月中旬已出现人传人，谁在瞒报？
+https://www.360kuai.com/pc/detail?url=https%3A%2F%2Fwww.toutiao.com%2Fi6787906921681650189%2F&check=1a852b966a5591e6&uid=7206312e79b6a4c1b9f42056d35f3ab3&sign=360_0de6261f&tj_url=91c71b485c5a643cb
+
+
+环球时报9日夜在武汉拍下的这一幕，让中央赴湖北指导组震怒
+https://www.360kuai.com/pc/detail?url=https%3A%2F%2Fwww.toutiao.com%2Fa6792178401747665419%2F&check=1c5301e802384670&uid=7206312e79b6a4c1b9f42056d35f3ab3&sign=360_0de6261f&tj_url=9e0229b18cff4ce7f
+
+武汉数千人大型年会成病毒疯狂派对 传到了4省6市
+https://news.163.com/20/0215/10/F5DV1DU90001875P.html
+
+张家界疾控中心科长到泰国躲疫情被撤职调查
+https://news.163.com/20/0215/09/F5DSEH4V0001899N.html
+
+广东新增确诊病例33例出院54例 累计确诊1294例
+https://news.163.com/20/0215/09/F5DR2O2O0001899O.html
+
+从不生病的七旬健美冠军 没能躲过新冠肺炎
+https://news.163.com/20/0215/09/F5DQ6CI40001899O.html
+
+
+
+2020.02.15
+
+你的棋社号是多少？
+832065
+
+广东资讯近期动态
+http://gd.offcn.com/html/zixun/zuixindongtai/
+
+
+2020年2月14日深圳市新冠肺炎疫情最新消息
+http://gd.offcn.com/html/2020/02/183574.html
+
+截至2月13日24时，深圳累计报告“新冠肺炎”确诊病例400例。2月13日当天全市新增确诊病例9例。
+
+累计报告确诊病例中，男性192例、女性208例。
+
+按照病例管理地区划分，南山区86例、福田区75例、龙岗区68例、宝安区57例、龙华区33例、罗湖区32例、光明区10例、坪山区7例、盐田区6例、大鹏新区2例、其他(指由机场、车站、码头、关口、路卡等直接送往定点医院的)24例。
+
+目前，重症28例、危重症11例，无死亡病例，累计出院94例。
+
+306例确诊病例均在深圳市第三人民医院隔离治疗。
+
+554例密切接触者正在接受医学观察。
+
+深圳市卫生健康委员会
+
+2020年2月14日
+
+
+
+浙江一96岁新冠肺炎患者治愈出院 或全国最高龄
+https://news.163.com/20/0214/11/F5BGQRHV0001899O.html
+
+广东新增新冠肺炎确诊病例20例 累计1261例死亡2例
+https://news.163.com/20/0214/09/F5B7SVMH0001899O.html
+
+一餐团年饭，相邻三桌感染！调查过程堪比侦探小说
+https://3w.huanqiu.com/a/340a94/9CaKrnKpmTQ?p=1&agt=8
+
+医院门口小店老板确诊感染去世 医生千字长文看哭
+http://news.163.com/latest/
+https://news.163.com/20/0214/11/F5BEOQ0I0001899O.html
+
+世卫:中国新增新冠病例多是回溯性报告 非一天新增
+https://news.163.com/20/0214/09/F5B98IEJ0001899O.html
+
+官方同乘查询来了 可查飞机火车患者前后三排
+https://news.163.com/20/0214/09/F5B8DCDF0001899O.html
+
+居民住高楼站窗边用无人机测体温：可避免交叉感染
+https://news.163.com/20/0214/08/F5B6542T0001899N.html
+
+湖北新增病例4823例病亡116例 累计报告51986例
+https://news.163.com/20/0214/07/F5B3BTFS0001899O.html
+
+男子外出遇封路 走20多小时到火车站发现火车停了
+https://news.163.com/20/0213/21/F5A035LA0001899O.html
+
+新加坡新增8例新冠肺炎确诊病例 累计确诊58例
+https://news.163.com/20/0213/19/F59PM8ID0001899O.html
+
+越南首都附近一公社出现7名新冠病例 逾万人被隔离
+https://news.163.com/20/0213/19/F59PM7LO00018AOR.html
+
+上海疫情大爆发一天新增确诊3000多例？警方辟谣
+https://news.163.com/20/0213/18/F59KNBLB0001899O.html
+
+新型冠状病毒疫苗最新进展：已进入动物实验阶段
+https://news.163.com/20/0213/17/F59JU7640001899O.html
+
+2名华人在意大利遭群殴:"你们有病毒 必须离开这里"
+https://news.163.com/20/0213/16/F59GG5PF00018AP1.html
+
+曾光:把湖北这一万四千多病人报出来 我认为是好事
+https://news.163.com/20/0213/16/F59G85E90001899O.html
+
+明知聚餐亲戚得新冠肺炎 一家7口不在意全"中招"
+https://news.163.com/20/0213/16/F59F02AP0001899O.html
+
+疫情下招聘观察：47%用户密集求职 技术人才吃香
+https://news.163.com/20/0213/14/F598QRDA0001899O.html
+
+最新疫情！湖北省新增新冠肺炎确诊病例14840例 累计确诊48206例
+http://gold.cnfol.com/caijingyaowen/20200213/27951545.shtml
+根据湖北卫健委最新通报，2020年2月12日0时-24时，湖北省新增新冠肺炎确诊病例14840例(含临床诊断病例13332例)；
+
+有用!湖北新增确诊病例14840例 6张图看懂疫情数据
+http://news.163.com/20/0213/17/F59HRIN00001899N.html
+
+2020.02.14
+
+上海海昌海洋公园：向全国医护人员免票
+https://news.163.com/20/0213/11/F58UVD3T00018AOR.html
+
+
+又一名高铁保洁员确诊 14天搭乘服务过这15趟车
+https://news.163.com/20/0213/11/F58SLL9L0001899N.html
+
+广东新增新冠肺炎确诊病例22例 累计1241例死亡2例
+https://news.163.com/20/0213/10/F58OTC8F0001899O.html
+
+WHO:确定新冠研究重点 已将试剂盒运送全球实验室
+https://news.163.com/20/0213/09/F58MPMS80001899O.html
+
+全国首个战时管制令颁布背后:疫情很严重?有何特点?
+https://news.163.com/20/0213/08/F58I2H370001899O.html
+
+
+影像记录深陷疫情漩涡中的武汉：每个人都想挣脱
+https://news.163.com/20/0213/07/F58GUR0O0001899O.html
+
+"老鼠打架"照片获年度摄影大奖 网友:分明是在跳舞
+https://news.163.com/20/0213/03/F583UGA50001899O.html
+
+
+112岁老人成全球最长寿男性:喜欢甜食 尤其是红糖
+https://news.163.com/20/0213/03/F581EHR20001899O.html
+
+
+世卫组织专家:一定要永久关闭野生动物交易市场
+https://news.163.com/20/0213/02/F57V6ID2000187R2.html
+
+北京：到药店购买治疗发热、咳嗽类药品要实名登记
+https://news.163.com/20/0213/01/F57RVSMI000187R2.html
+
+
+美国流感死亡人数上万 为何我们更应警惕新冠病毒?
+https://news.163.com/20/0213/00/F57MIF780001899O.html
+
+
+为吃饺子 上海男子藏身汽车后备箱躲避检查进小区
+https://news.163.com/20/0212/21/F57F1TT700018AOR.html
+
+
+浙江驰援武汉女医生:进入ICU我在心里喊了声我的天
+https://news.163.com/20/0212/20/F57BODS70001899N.html
+
+香港金像奖取消实体颁奖礼改为录播 为史上首次
+https://news.163.com/20/0212/18/F573KV7A0001899N.html
+
+关注一线女医护生理期需求 卫生巾也是"战疫"物资
+https://news.163.com/20/0212/18/F572702G0001899O.html
+
+武汉全面摸排实际居住人员 已排查1058.1万人
+https://news.163.com/20/0212/17/F571KLUM0001899O.html
+
+你昨天"立扫帚"了吗?美航天局辟谣:今天也能立起来
+https://news.163.com/20/0212/15/F56OULAC00018AOQ.html
+
+巴西发现神秘的“雅拉病毒” 90%基因从未被记录
+https://news.163.com/20/0212/15/F56NSGIQ0001899N.html
+
+杨安泽退选美国总统:我擅长数学 数字告诉我赢不了
+https://news.163.com/20/0212/11/F56CBCJD0001899O.html
+
+世卫组织最新报告:新冠病毒与菊头蝠冠状病毒有关联
+https://news.163.com/20/0212/11/F56CE39Q0001899O.html
+
+武汉3万月薪招医院保洁员？ 招聘方：数字被篡改
+https://news.163.com/20/0212/13/F56H4B6T0001899O.html
+
+日本名校准教授被捕 涉嫌猥亵10岁陌生女孩
+https://news.163.com/20/0212/14/F56KPGM300018AOR.html
+
+惨烈！叙利亚直升机被击中后空中解体全程
+http://war.163.com/photoview/4T8E0001/2306772.html#p=F568P16B4T8E0001NOS
+
+特朗普介绍说有人特别崇拜自己 俄媒爆料就是他
+https://news.163.com/20/0212/11/F56B7CBQ0001899N.html
+
+深圳一确诊患者活动轨迹公布：曾到酒店火锅店等地
+https://news.163.com/20/0213/10/F58RI9KL0001899O.html
+
+2020.02.13
+
+c6t72e
+1135096332
+
+
+703 997 926
+
+广东新增新冠肺炎确诊病例42例 累计病例1219例
+https://news.163.com/20/0212/09/F563BCOI0001899O.html
+
+河南五部门:除水产品外 野生动物交易活动一律叫停
+https://news.163.com/20/0212/08/F562MPDQ0001899O.html
+
+复工后多地出招：杭州推健康码 南京采集打车信息
+https://news.163.com/20/0212/08/F5624SJJ0001899N.html
+
+"钻石公主号"新增39例新冠肺炎病例 累计174人确诊
+https://news.163.com/20/0212/08/F560O83T0001899O.html
+
+受疫情影响 高铁车站和列车空荡荡 
+http://news.163.com/photoview/00AP0001/2306769.html#p=F55ULBQ300AP0001NOS
+
+方舱医院“跳舞姐”越来越多 仍缺少专业心理医生
+https://news.163.com/20/0212/07/F55TPR800001899O.html
+
+世界卫生组织驻华代表：五个行动阻断疫情传播
+https://news.163.com/20/0212/06/F55R1MG1000187R2.html
+
+擅自将不实信息发至微信群 南宁卫健委官员被撤职
+https://news.163.com/20/0212/04/F55I1QCK0001899O.html
+通报称，2020年2月5日，南宁市卫生健康委员会办公室主任蓝智在开展新型冠状病毒感染肺炎疫情防控工作中，擅自将不实的疫情防控信息，以微信方式发至其家族群和老乡群，导致该信息迅速在网络媒体上传播和扩散，造成严重不良社会影响。2020年2月10日，南宁市纪委监委决定给予蓝智撤销党内职务、政务撤职处分。
+
+男子疫情期间庆生不成 身绑鞭炮浇汽油威胁村委会
+https://news.163.com/20/0212/02/F55D68OP000187R2.html
+
+疫情期间男子向路人吐口水、泼食用油 被警方批捕
+https://news.163.com/20/0212/02/F55CU5NL000187R2.html
+
+
+厅官因防疫不力被撤职:辖区医院被封控 近千人隔离
+https://news.163.com/20/0212/01/F558UO12000187R2.html
+
+南山：新型冠状病毒肺炎疫情有望4月前结束
+https://news.163.com/20/0212/01/F557GME10001899O.html
+
+钟南山回应"潜伏期最长24天":千例样本中仅有1例
+https://news.163.com/20/0212/00/F554CHN40001899O.html
+
+世卫组织：新冠病毒疫苗可能在18个月内完成
+https://news.163.com/20/0211/23/F55329GQ0001899O.html
+
+"消毒屋"被叫停？深圳疾控专家喊话：慎用 不靠谱
+https://news.163.com/20/0211/22/F54VU3TT0001899O.html
+
+儿童刊物称果子狸可吃？武大出版社：全面下架
+https://news.163.com/20/0211/22/F54VLGEA0001899N.html
+
+英国患者传11人 世卫警示无中国旅行史病例
+https://news.163.com/20/0211/22/F54VH1SS0001899O.html
+英国（8例）、西班牙（2例）、马来西亚 （18例）、法国（11例）、澳大利亚 （15例）、 德国 （14例）、印度（3例）、加拿大（5例）、菲律宾（3例）、瑞典（1例）、俄罗斯（2例）、芬兰（1例）、巴西（1例）、柬埔寨（1例）、斯里兰卡（1例）、尼泊尔（1例）、比利时（1例）、意大利（3例）在过去一天没有宣布新增确诊病例。
+
+"致医务人员等117人被隔离"患者出院 已被立案侦查
+https://news.163.com/20/0211/22/F54V189N0001899N.html
+
+博瑞医药：公司已经批量生产出瑞德西韦原料药
+https://news.163.com/20/0211/22/F54UBEB60001899N.html
+
+离开武汉40天后被确诊，会是超长潜伏期吗？
+https://news.163.com/20/0211/20/F54N5R460001899O.html
+
+南宁卫健委办公室主任擅自散布不实疫情信息被撤职
+https://news.163.com/20/0211/20/F54MO5U20001899O.html
+
+2020.02.12
+
+全球卫生专家：准备好用减轻损失策略替代围堵策略
+https://news.163.com/20/0211/09/F53GS98K0001899O.html
+如果疫情在3月下旬后仍继续蔓延，则不仅要考虑对经济的影响，也要考虑民众对现行防控措施的承受力。
+
+
+多地确诊病例核减的"无症状感染者"会成隐形杀手?
+https://news.163.com/20/0211/08/F53FS6Q30001899O.html
+今天(2月10日)，广西与河南披露两例无症状感染者病例，无症状时长分别达到16天和17天。
+截至目前，各地已经出现多起无症状感染者传染多名家人的事件。
+2月9日，黑龙江省卫健委通报，前一天从确诊病例中核减了14例，其中13例为无症状感染者。
+1月27日，全国最早通报的一例无症状感染者，也传染了家人。一女子1月10日从武汉回到河南安阳后，家中5名亲属陆续发病，被确诊为新冠肺炎，而她本人并未出现症状。
+焦点4 无症状感染者会成为“隐形杀手”吗？
+这类感染者病毒量较少，传播力比确诊病例弱，不是主要传播者
+李兴旺在国家卫健委新闻发布会上解释，由于无症状感染者更多是在与病人密切接触中发生的，尤其是家庭聚集现象比较明显，因此如果没有接触感染者，没必要恐慌。这类密切接触者经过隔离和和医学观察，也实现了很好的控制。“病毒量多少与病情轻重有一定相关性，无症状感染者病情偏轻，病毒量也会比较少，因此传播能力会比重病患者要弱一点。另一方面，新冠肺炎主要通过近距离飞沫传播，无症状感染者一般咳嗽较少，所以传播力也不会很强。”
+但是，无症状感染者也有可能出现临床症状，转为确诊患者。国家卫建委第四版防控方案指出，上报的无症状感染者如出现临床表现，要及时订正为“确诊病例”。
+王凌航认为，公众对此不用过分惊慌，也不要掉以轻心。
+国家卫健委高级别专家组组长、中国工程院院士钟南山接受采访时也表示，无症状感染者不是很多，绝大多数与确诊病人接触过，或有武汉接触史。有报道称，个别无症状感染者可以自己治愈，也有个别无症状感染者可以传染给别人。所以只要检测是核酸阳性，就一定要隔离。
+
+武汉发通告：发热患者按就近就医原则不得跨区就诊
+https://news.163.com/20/0211/01/F52LCHVQ00018AOR.html
+
+核酸检测还有啥困难?专家:病毒会变异 有人5次确诊
+https://news.163.com/20/0211/00/F52HLJJ90001899O.html
+
+外地来沪男子蹭热点称感染新冠病毒 警方严肃教育
+https://news.163.com/20/0211/18/F54HE1JA0001899N.html
+
+广州部分企业陆续复工 道路公共交通逐步恢复正常
+https://news.163.com/20/0211/18/F54HBF480001899O.html
+
+陕西两单位拒不执行防疫工作 一国企总经理被拘留
+2020-02-11 18:26:34　来源: 西部网
+https://news.163.com/20/0211/18/F54GUV840001899O.html
+
+
+男子装新冠肺炎病人倒地 吓跑地铁乘客后被捕
+https://news.163.com/20/0211/17/F54FBA610001899N.html
+
+儿子为抗疫十几天的特警爸爸打气 转身泣不成声
+https://news.163.com/20/0211/17/F54F7PLF0001899N.html
+
+单人份化学发光新冠病毒抗体检测试剂盒研制成功
+https://news.163.com/20/0211/16/F54AQPFI0001899N.html
+
+疾控专家：户外开阔处从事农业生产无需担心感染
+https://news.163.com/20/0211/16/F54A03KU0001899N.html
+
+四川多人聚众打牌被查 检讨发朋友圈集20个赞再走
+https://news.163.com/20/0211/14/F5430M090001899O.html
+
+老家被隔离缺口罩 男子竟带女友偷了6000只
+https://news.163.com/20/0211/13/F541FH5N0001899O.html
+
+世卫总干事：担心无中国旅行史感染者引大范围传染
+https://news.163.com/20/0211/13/F53VVGM10001899O.html
+
+日本新生儿数创历史新低 少子化担当大臣这样支招
+https://news.163.com/20/0211/12/F53SRC9P0001899N.html
+
+英国现“超级传播者” 已致三国11人感染新冠肺炎
+https://news.163.com/20/0211/13/F53ULFCL0001899O.html
+
+尼日利亚不明疾病致15死 多人患病后48小时内丧命
+https://news.163.com/20/0211/11/F53NT01K0001899O.html
+
+日媒：日本执政党国会议员每人将向中国捐款318元
+https://news.163.com/20/0211/11/F53PMMR30001899O.html
+
+天津第二位"市管干部" 因疫情防控不力被撤职
+https://news.163.com/20/0211/10/F53M5I180001899O.html
+
+任职不到两年 湖北卫健委书记和主任双双被免职
+https://news.163.com/20/0211/09/F53ITO4T0001899O.html
+
+湖北黄石两名基层干部临阵脱逃 被责令辞职
+https://news.163.com/20/0211/09/F53JK0O80001899O.html
+
+2020.02.11
+
+
+简易计算器
+https://download.csdn.net/download/hui_yan2012/5724243
+
+fatal error C1083: Cannot open source file: 'G:\VC98\MFC\SRC\APPMODUL.CPP': No such file or director
+https://blog.csdn.net/shb8845369/article/details/25509201
+https://blog.csdn.net/amoychc/article/details/7972757
+解决方法：在源程序文件夹里找到以“.dsp”为后缀的文件（比如：test.dsp），用记事本打开；找到SOURCE="D:\(注：具体目录不一定是唯一的)\VC98\MFC\SRC\APPMODUL.CPP"，改成你"APPMODUL.CPP"文件的路径。
+例如：C:\Program  Files\Microsoft  Visual  Studio\VC98\MFC\SRC\APPMODUL.CPP
+
+为什么出现这种错误呢？ 一般来说是因为VC的安装路径改变了。
+
+例如：你用VC写好了一个项目。后来把VC卸载了，又安装到其他文件夹里。再用VC运行该项目，就会报此错误，因为编译系统找不到APPMODUL.CPP。
+
+还有另一种原因：你把别人的项目拿来用，但是你所用电脑上VC所安装的位置和原作者的不一样，也会出现这样的错误。
+
+
+（MFC）查找和替换对话框实例
+https://blog.csdn.net/wangshu214/article/details/51955342
+
+利用MFC编写计算器
+https://blog.csdn.net/cczx139/article/details/80789082
+
+VC6.0的MFC简单计算器制作
+https://blog.csdn.net/baidu_21919557/article/details/41172843
+
+马来西亚扩大限制中国三省人员入境 中使馆提醒
+https://news.163.com/20/0210/09/F511BNJ00001899O.html
+除了中国湖北省，马来西亚扩大限制中国浙江省和江苏省的公民入境马来西亚。
+
+媒体：不让医护人员回小区 超出了正常人的想象
+https://news.163.com/20/0210/09/F510JV800001899O.html
+
+发改委专家:人口流动是SARS时6倍 大城市面临大考
+https://news.163.com/20/0210/09/F50VIB5H0001899O.html
+未来四周，北京、上海、南京、杭州、深圳、广州、成都、重庆、长沙、合肥等，可以说将面临严峻考验。
+
+全国新增确诊3062例 累计确诊40171例死亡908例
+https://news.163.com/20/0210/07/F50PRD6M0001899O.html
+
+手撕减薪联名信董事长：损失5亿 但再苦不会苦员工
+https://news.163.com/20/0210/05/F50H027B0001899O.html
+
+新冠肺炎疫苗攻关进行时 涉及10家上市公司
+https://news.163.com/20/0210/05/F50GQUMN0001899N.html
+
+专家:空气传播和气溶胶传播不一样 气溶胶传播可防
+https://news.163.com/20/0209/21/F4VM71660001899O.html
+
+少年大闹疫情防控卡口称"我爸是县委的" 纪监委介入
+https://news.163.com/20/0209/18/F4VDTBFU0001899O.html
+
+火神山一线实录：医护人员护目镜被汗水模糊
+https://news.163.com/20/0209/18/F4VDBKFB0001899O.html
+
+返程会造成疫情进一步爆发?专家:这种概率几乎没有
+https://news.163.com/20/0209/18/F4VBAHS70001899O.html
+
+人民日报:"应收尽收不漏一人" 就要有这样的决绝
+https://news.163.com/20/0209/17/F4V791890001899O.html
+
+韩国新增2例新型肺炎确诊病例 累计报告27例
+https://news.163.com/20/0209/16/F4V74TBH0001899N.html
+
+专家：别怕！现有措施已考虑气溶胶传播可能性
+https://news.163.com/20/0209/16/F4V70QRR0001899N.html
+虽然气溶胶传播比飞沫传播更远，但相对浓度较低，所以致病力大减。她说，现有防控措施已经考虑到气溶胶传播的可能性，不必恐慌，对于普通人来说，开窗通风利大于弊。
+
+
+专家回应气溶胶传播：空气中一般不会有新冠病毒
+https://news.163.com/20/0209/16/F4V6393C0001899O.html
+
+河北省教育厅：各级各类学校开学不早于3月1日
+https://news.163.com/20/0209/15/F4V38SE3000187R2.html
+
+男子从武汉返回传染2人致84人被隔离 被立案侦查
+https://news.163.com/20/0210/10/F513MMHM0001899O.html
+齐齐哈尔市富拉尔基区居民关某某，男，1月20日从武汉回到富拉尔基区后，先后到人员聚集场所进行洗浴、聚餐，同80余名群众有过密切接触，造成传染2例确诊病例、84名密切接触者被隔离观察的后果。
+
+
+河南一副院长拒戴口罩被停职 连说16个"我不戴"
+https://news.163.com/20/0210/10/F514M3D40001899O.html
+
+
+温州生意人车上15天漂流日记：墓地蜗居 借电煮粥
+https://news.163.com/20/0210/11/F5159LTP0001899N.html
+
+
+上海疫情防控:全市1.3万个小区实现"封闭式管理"
+https://news.163.com/20/0210/11/F5159CK00001899O.html
+
+
+2020.02.10
+
+
+病毒可否在超市里的蔬菜、肉上存活？医生解答来了
+https://news.163.com/20/0208/12/F4S5D57K0001899O.html
+
+广东省新增新冠肺炎确诊病例57例 累计1075例
+https://news.163.com/20/0208/09/F4RPUU9P0001899O.html
+新增确诊病例中，深圳市17例、广州市14例、
+累计报告确诊病例中，深圳市351例、广州市298例、珠海市82例、佛山市60例、东莞市56例、
+
+深圳新增确诊病例23例 4名12岁以下儿童最小2岁
+https://news.163.com/20/0208/08/F4RN589R0001899O.html
+
+内蒙古女子武汉返家超14天无症状 77岁父亲被确诊
+https://news.163.com/20/0207/20/F4QFBH740001899O.html
+
+深圳所有小区封闭管理 确诊病例楼将14天"硬隔离"
+https://news.163.com/20/0207/20/F4QD0QM40001899O.html
+
+列车员发车汉口核酸检测阴性 全家8人确诊2人死亡
+https://news.163.com/20/0207/18/F4Q7GD4K0001899O.html
+
+2020.02.08
+
+1人打麻将致多人感染 乡政府没收600多张幺鸡
+https://news.163.com/20/0207/14/F4PPSDNP0001899O.html
+
+天津宝坻百货大楼194人集中隔离 9200顾客居家隔离
+https://news.163.com/20/0207/13/F4PO1Q7P0001899O.html
+
+广州：全市小区实施封闭管理 抵穗当天必须报告
+https://news.163.com/20/0207/14/F4PODCL50001899O.html
+
+广东全省新冠肺炎确诊人数破千 首次报告死亡病例
+https://news.163.com/20/0207/09/F4P8BNP00001899O.html
+
+全国新增确诊病例3143例 累计31161例死亡636例
+https://news.163.com/20/0207/08/F4P3RNOO0001899O.html
+
+25国发现新冠肺炎治愈率最高非美日 而是这个国家
+https://news.163.com/20/0207/03/F4OKAJ7O0001899O.html
+
+微信群QQ群现新冠肺炎不实信息，天津市网信办致信全市群主
+https://news.163.com/20/0207/00/F4O8A1TJ00018AOR.html
+
+子往身上喷酒精消毒 走进厨房时爆燃被烧伤
+https://news.163.com/20/0206/19/F4NQ5NBS0001899O.html
+
+佩洛西：特朗普撕碎了真相 所以我撕碎了他的讲稿
+https://news.163.com/20/0206/12/F4MVT22500018AOR.html
+
+严惩！新型肺炎防控期间，一卫生健康局局长停职接受调查，3名公职人员被处理、一村书记被免职！
+http://www.sohu.com/a/369431084_120033581
+
+央视：卫健局局长被停职 庸政懒政与防疫不兼容
+http://news.sina.com.cn/c/2020-01-26/doc-iihnzahk6371094.shtml
+
+疫情最新回应!外交部发言人耿爽:武汉已经采取出境离汉人员采取管控措施
+
+#耿爽：中方采取严密措施全面部署，坚决遏制疫情蔓延，但不是限制#
+https://www.bilibili.com/video/av85338495
+
+外交部：政府已对武汉出入人员加强管控，并非全面禁止出入
+http://m.sohu.com/a/368414427_99894714
+
+2020.02.07
+
+Google Chrome
+Google Chrome
+
+2020.02.05
+
+小米绑定账号和设备出现问题，不会解决，求大佬 
+https://www.52pojie.cn/thread-1069355-1-1.html
+
+小米手机绑定账号与设备问题
+http://tieba.baidu.com/p/5604477671
+
+小米8无限重启刷机求救需要解锁，解锁提示设备与账号没有绑定关
+http://tieba.baidu.com/p/6417925679?red_tag=p2495018777
+
+
+帐号与设备没有绑定关系
+小米帐号与设备没有绑定关系
+https://jingyan.baidu.com/article/63f2362878ef3a0208ab3def.html
+在更多设置中，找到开发者选项，点击进入
+在开发者选项中找到设备解锁状态，点击进入
+然后点击最下方的绑定账号和设备如下图所示
+
+线刷包和卡刷包的区别是什么？
+https://zhidao.baidu.com/question/2016393844332863788.html?qbl=relate_question_0
+区别:
+
+（1）卡刷本质是对文件替换过程。他不会重新刷新整个分区，只是替换部分文件。因此整个线刷包里面的内容实际上就是一些文件和目录。
+
+（2）线刷的本质的是对分区的全部内容的替换。原理就和我们安装系统采用GHOTST克隆分区的道理一样的。因此线刷不是将部分文件替换，而是替换整个分区的所有文件。
+
+（3）卡刷包里面的文件通常都是一个一个的img文件（分区映像文件）。
+
+卡刷和线刷都是对手机等便携设备的信息替换的一个过程。
+网上几乎所有卡刷和线刷的区别都没有说到本质，只是说了他的使用方法和表现形式。
+现在我来说说他们真正的区别：
+卡刷本质是对文件替换过程。他不会重新刷新整个分区，只是替换部分文件。因此整个线刷包里面的内容实际上就是一些文件和目录。这个文件和目录里面的内容是原来机器上有的就替换掉原来的文件，如果没有的，就添加进去就行了，因此线刷包的特点是扩展名为zip的一个压缩包，通常是放置到外置SD卡上，通过RECOVERY之类的引导程序在机器操作系统启动之前就将文件替换掉（因为手机系统一旦启动，一些系统文件你就无法替换了，这个和WINDOWS的系统文件替换过程其实类似的）。
+而线刷的本质的是对分区的全部内容的替换。原理就和我们安装系统采用GHOTST克隆分区的道理一样的。因此线刷不是将部分文件替换，而是替换整个分区的所有文件。因此卡刷包里面的文件通常都是一个一个的img文件（分区映像文件）。因此现在你明白了为啥线刷包为啥一般比卡刷包大很多了吧。因为线刷是将整个分区重新替换掉的，相当于重新安装一遍系统，自然系统所必须带的文件全部都必须带上，所以他当然就大了。
+卡刷和线刷有各自的特点和应用场景。通过1,2的原理说明可以看出二者的特点。如果你只是更新部分文件，那么卡刷方式自然是最快捷的。因为他只需要带上替换文件和增量文件即可了。系统原来可以用的文件是不用带的。所以线刷方式通常用在更新或者升级中，这样需要下载的信息量是最少的。但是卡刷往往也是产生问题比较多的方式。因为更新的部分文件是假设你以前的可用文件是符合标准的前提下，但是有些人的系统的文件可能被修改或者替换过，因此采用卡刷方式升级之后，是有可能带来系统不正常的。遇到这样的情况，那么采用线刷就能解决了，因为线刷是连你整个分区全部替换掉，因此你以前那些不标准的文件统统都会被覆盖掉，自然不会带来不一致的问题。因此大部分的正规厂家在修复机器的时候或者想排除你的系统软件故障的时候，通常都会采用线刷方式给你恢复到他们认为的标准状态。当然，线刷之后，你以前的那些修改都会失效了。
+线刷和卡刷是否可以相互替换？当然可以。比如有些系统有线刷包，也有卡刷包。你选任何一种方式都可以。因为线刷的包也可以做成一个比较大的卡刷包（里面包含了所有文件，不管是你有的还是没有的），然后卡刷的过程中会替换你机器上的所有文件。（当然多出来的文件不会删除，这样多出来的文件就成为垃圾文件了，当然他们不会影响系统运行，除了占用一点空间之外）。当然线刷其实也是一样，因为他们会将整个分区的文件全部替换掉。当然，如果你刷之后没有双WIPE的话，系统原来的多出来的文件依然不会给你删除的。
+通常认为卡刷更加可靠，因为他不会和电脑交互。失败的几率比线刷低。因为线刷的时候，电脑，连接线出问题都可能影响到结果。而卡刷只要手机和存储卡不出问题，通常都不会出现失败的情况。当然这种观点仁者见仁了，因为厂家一般还是采用线刷的多，因为比较适合批量处理。现实中，一般小的更新修改采用卡刷多。一般要替换整个系统，大部分还是采用线刷的。
+
+
+
+小米8设备号M1803E1A对应的手机机型和版本
+https://www.tianqijun.com/shouji/audio/7095.html
+小米m1803e1a是小米八型号。作为全球首款实现L1+L5双频GPS手机，它屏幕为6.21英寸的三星AMOLED屏，搭载了骁龙845处理器，具有AI双摄、光学变焦和防抖等功能
+
+
+小米设备号查询：快速查询自己的小米手机机型和版本
+http://www.xianshuabao.com/guide/skill/3711.html
+大家都知道，刷机的时候一定要弄清楚自己的手机型号和版本，否则使用与机型版本不合的刷机包刷机，一般都会刷机失败，导致手机无法正常使用。那么小米的机型要怎么查询呢？可以通过设备号查询。
+如果是电池无法拆卸的一体机，直接看手机背面图中红色标记的地方：
+查到了设备号，接下来您就可以对照下图，查询您的手机型号和版本了：
+
+型号 MI 8 序列号 bc3bcb39
+型号 M1803E1A TD-LTE数字移动电话本
+Android版本 9
+Android安全补丁程序级别 2019-10-01
+处理器 八核最高2.8GHz
+内核版本 4.9.112-perf-g526fc33
+硬件版本 V1
+IMEI 869600041532737
+
+小米8 全网通版 6GB内存 黑色 256GB
+MIUI版本	V11.0.4.0.PEACNXM
+
+https://www.xiaomi.cn/--->
+手机解锁
+http://www.miui.com/unlock/index.html--->
+您已获得解锁资格
+http://www.miui.com/unlock/done.html
+解锁后系统将失去安全保护，导致您的隐私被泄露或财产损失；
+指纹识别、查找手机等对系统安全性依赖性高的功能或服务将变得不可靠。
+请按照以下流程进行操作：
+1.进入“设置 -> 开发者选项 -> 设备解锁状态”中绑定账号和设备；
+2.手动进入Bootloader模式（关机后，同时按住开机键和音量下键）；
+3.通过USB连接手机，点击 “解锁”按钮；
+
+
+自动重启后,查看WIFI关闭操作打开，截屏后自动重启
+
+自动重启后设置语言等，网络还是不行. 查看WIFI打开但无连接，截屏后自动重启
+
+设置--->我的设备--->备份和重置--->清除所有数据(恢复出厂设置) 需要联网输入小米帐号密码
+
+关闭智能助理,手机管家联网，应用商店联网下载微信.SIM和WIFI不能联网。
+
+小米8如何关闭智能助理
+1.点击桌面上的【设置】选项。
+2.在设置界面找到【桌面与最近任务】点击打开此选项。
+3.将【桌面助理】右侧的开关关闭即可。
+
+小米8如何关闭智能助理
+https://jingyan.baidu.com/article/b0b63dbf13dacd4a48307028.html
+在手机的设置页面中，找到“桌面”菜单项，点击该菜单进入桌面设置页面
+在打开的桌面设置页面中，点击打开“开启桌面智能助理”一项右侧的开关
+
+设置--->我的设备--->全部参数--->MIUI版本
+然后多次连续点击MIUI版本这个位置，点击6次后下方就会出现开发者选项的提醒
+--->更多设置--->【开发者选项】
+
+关机睡一觉后开机可以连WIFI了。
+这是刷的ROM不稳定导致的，把SIM卡拿出来几分钟就好了，以后还可能出现类似状况，想彻底解决的话就换个ROM(可能)
+恢复出厂设置，我就是这样做的(可能)
+
+2020.02.04
+
+维修点地址：深圳市龙华新区和平路宝银坊商场L2-53号（龙华地铁站D出口）深圳市龙瑞贸易商行
+售后服务电话：0755-88863922/29560669 预约维修
+区域：广东深圳龙华新区
+营业时间：10:00-18:00（支持周三晚8点服务）
+售后维修产品类型：小米手机维修,小米平板维修,小米笔记本维修,小米扫地机器人,小米全系产品维修
+
+
+
+邮寄地址：
+还剩 29天23小时59分 关单
+广东 深圳市 宝安区 福海街道 塘新路2号怀德翠湖工业园13栋三楼顺丰深圳维修中心
+收货人：何政贤（收）（收）400-100-5678
+
+
+
+刷机包的安装包
+
+小米助手: Recovery 刷机模式下载什么包
+
+小米助手: Recovery 刷机模式 设备无需解锁 刷机过程中保留数据
+
+D:\mi8
+
+E:\mi8
+
+C:\用户目录\下载
+
+同时按开机音量上键和开机键清除数据
+重启后显示本设备已锁定 显示1,激活设备  2,打开wifi设置界面 网络不通都失败
+1激活设备
+插入SIM卡 忘记密码 i.mi.com尝试解锁 ->设备管理，删除设备（晕倒）
+
+miflash_unlock.exe工具->同时按开机音量下键和开机键,进入解锁界面
+解锁失败 帐号与设备没有绑定关系
+
+小米助手: Recovery 刷机模式 设备无需解锁 刷机过程中保留数据
+
+
+QQ18659087001: 迦扣扣号
+
+小米怎么看电脑驱动有没有安装驱动
+https://zhidao.baidu.com/question/748526098833149532.html
+1、准备工作：
+a.驱动下载：来自小米官网页面（http://www.mi.com/service/download/），驱动下载地址为：http://s1.mi.com/images/new816/Driver.rar。下载完毕后解压到一个位置，如E:\Driverb.按住音量+键和电源键，进入fastboot模式，用原装数据线连接到电脑。
+
+2、驱动安装
+a.右击计算机，选择“管理”，选择“设备管理器”，找到未识别的Android设备，如图
+
+
+
+然后同时按住音量键上和电源键～进入recovery后用音量键选择，电源键确认，选择清除数据，清除缓存'清除所有数据，这就是三清。
+
+小米帐号: 1519536877 pwd:794162open
+
+小米8se怎么备份通讯录
+https://zhidao.baidu.com/question/1930254880382313067.html
+1、打开小米8se系统【设置】；
+2、找到【其他高级设置】打开；
+3、打开【备份和重置】；
+4、选择【本地备份】；
+5、在系统备份底部，点击【新建备份】；
+6、选择【通讯录与拨号】，等待备份即可。这样通讯录就保存在手机里了。
+
+
+小米8怎么连接电脑
+https://www.znj.com/news/11291.html
+设置--->我的设备--->全部参数--->MIUI版本
+然后多次连续点击MIUI版本这个位置，点击6次后下方就会出现开发者选项的提醒
+--->更多设置--->【开发者选项】
+返回上一级，找到【更多连接方式】选项，点击进入
+找到【开发者选项】点击进入
+在开发者选项的下边开启USB调试功能。
+然后通过USB数据线将手机连接至电脑，点击“查看照片”或“管理文件”按钮，电脑将自动安装驱动程序。安装完成后，双击电脑中新出现的以手机型号命名的盘符即可进行相关操作。
+
+
+小米手机不能接听电话也不能打电话但能上网
+http://ask.zol.com.cn/x/1988581.html
+这是刷的ROM不稳定导致的，把SIM卡拿出来几分钟就好了，以后还可能出现类似状况，想彻底解决的话就换个ROM
+重刷系统试试，论坛有教程自己卡刷
+恢复出厂设置，我就是这样做的
+你好。
+　1，建议你先备份你的重要数据（方法是打开系统与安全～备份～新建备份）如果没有办法备份，此步跳过。，然后同时按住音量键上和电源键～进入recovery后用音量键选择，电源键确认，选择清除数据，清除缓存'清除所有数据，这就是三清。2，仍然不行。建议进行线刷完整包（推荐你刷到最新开发版或者下载您自己需要使用版本的线刷包，）后再使用查看是否还有您描述的问题。　　请您根据刷机教程进行刷机，其中第六种方式为线刷：http://bbs.xiaomi.cn/thread-3104435-1-1.html　　同时请下载合适的线刷包：http://www.miui.com/thread-790375-1-1.html　　这是米粉制作的刷机视频：http://v.youku.com/v_show/id_XNTEyMjQ1MzI4.html　　线刷完成后建议不要恢复系统的设置，只恢复联系人，短信，便签。软件去应用商店重新下载，尝试可否正常！。　　小米手机刷机不会影响保修，你可以放心的刷机。4，仍然不行或者你不会刷机，或者你去售后很方便，请你前往你附近的小米授权的维修点或者小米之家检测一下。地址和电话查询：http://www.xiaomi.com/c/service/poststation/小米之家工作时间为周二至周日，上午10点到晚上6点。小米的售后原则是非人为损坏的故障：七天之内包退，十五天之内包换，在一年的保修期内，非人为损坏的完全免费。
+
+小米8 不能联网打电话
+https://zhidao.baidu.com/question/1450921097848555580.html?qbl=relate_question_6&word=%D0%A1%C3%D78%20%B2%BB%C4%DC%C1%AA%CD%F8%B4%F2%B5%E7%BB%B0
+我不知道你手机是什么型号的，不过先说说我的手机吧，我的是小米2，不知什么原因突然的不能拨打电话，别人打电话进来也没反映，信息不能发送，也接收不到，也刷过机器，包括稳定版和开发版的都用了，也清除数据了，都不行。中间省略很多。。。。。。重点：在手机拨号界面输入：*#*#4636#*#* 然后会出来：测试：点击第一个：手机信息，打开后拉到最下面，设置首选网络类型，如果你是移动的手机号你就选择：GSM/CDMA auto（PRL） 如果你是联通的你就选择：CDMA/ auto （PRL），然后返回推出，你在试试就可以拨打电话了！希望可以帮助你！这里还有一个检测你手机SIM是否有问题：输入：*#*#64663#*#*可以检测你手机所有的信息和问题检测！
+
+2020.02.03
+
+Visual Studio版本 和 ATL、MFC版本对照
+https://www.cnblogs.com/xiaoCCBlog/p/7536306.html
+Visual Studio版本 和 ATL版本对照
+
+ATL version
+
+Visual C++ version
+
+1.0, 1.1, 2.0
+
+None. Released to Web in Visual C++ 4.x time frame.
+
+3.0
+
+Visual C++ 6.0
+
+7.0
+
+Visual C++ .NET 2002
+
+7.1
+
+Visual C++ .NET 2003
+
+8.0
+
+Visual C++ 2005
+
+9.0
+
+Visual C++ 2008
+
+10.0
+
+Visual C++ 2010
+
+
+
+
+Visual Studio版本 和 MFC版本对照
+
+ 
+
+ 
+
+MFC
+
+Visual C++
+
+MFC version 1.0
+
+Microsoft C/C++ version 7.0
+
+MFC version 2.0
+
+Visual C++ version 1.0
+
+MFC version 2.5
+
+Visual C++ version 1.5
+
+MFC version 3.0
+
+Visual C++ version 2.0
+
+MFC version 3.1
+
+Visual C++ version 2.1
+
+MFC version 3.2
+
+Visual C++ version 2.2
+
+MFC version 4.0
+
+Visual C++ version 4.0
+
+MFC version 4.1
+
+Visual C++ version 4.1
+
+MFC version 4.2
+
+Visual C++ version 4.2
+
+MFC version 4.21 (still mfc42.dll)
+
+Visual C++ version 5.0
+
+MFC version 6.0 (still mfc42.dll)
+
+Visual C++ version 6.0
+
+MFC version 7.0 (mfc70.dll)
+
+Visual C++ .NET 2002
+
+MFC version 7.1 (mfc71.dll)
+
+Visual C++ .NET 2003
+
+MFC version 8.0 (mfc80.dll)
+
+Visual C++ 2005
+
+MFC version 9.0 (mfc90.dll)
+
+Visual C++ 2008
+
+MFC version 10.0 (mfc100.dll)
+
+Visual C++ 2010
+
+file:///D:/Program%20Files/Git/ReleaseNotes.html
+
+C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chrome.exe
+"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+void CHeaderCtrlOptions::OnPaint()
+{
+	
+	return; // wendy test
+
+	CPaintDC dc(this); // device context for painting
+	// TODO: 在此处添加消息处理程序代码
+	// 不为绘图消息调用 CHeaderCtrl::OnPaint()
+	int nColorMode =  m_TTOptions->m_nColorMode;       //  //获取背景颜色
+
+	int width = 0; 
+
+	if( nColorMode == 0 )  //白色
+	{
+		for(int i = 0; i<3;i++) 
+		{ 
+			//根据ListCtrl的位置来设定外部表头的位置，防止错格   Keeping 2014-11-11
+			CRect tRect;
+			GetItemRect(i,&tRect);//得到Item的尺寸
+
+			int R = 230,G = 230,B = 230;
+		
+			CRect nRect(tRect);//拷贝尺寸到新的容器中 
+			nRect.left++;//留出分割线的地方 
+			//绘制背景 
+			
+			for(int j = tRect.top;j<=tRect.bottom;j++) 
+			{ 
+				nRect.bottom = nRect.top+1;
+				
+				CBrush _brush; 
+				_brush.CreateSolidBrush(RGB(R,G,B));//创建画刷 
+				dc.FillRect(&nRect,&_brush); //填充背景 
+				_brush.DeleteObject(); //释放画刷 
+				
+				R-=m_Gradient;G-=m_Gradient;B-=m_Gradient;
+				if (R<0)R = 0;
+				if (G<0)G = 0;
+				if (B<0)B= 0;
+				nRect.top = nRect.bottom; 
+			} 
+			
+			dc.SetBkMode(TRANSPARENT); //DrawText函数的输出方式为透明的
+			CFont nFont ,* nOldFont; 
+			
+			dc.SetTextColor(RGB(0,0,0));
+			nFont.CreateFont(15,0,0,0,0,FALSE,FALSE,0,0,0,0,0,0,_TEXT("宋体"));//创建字体 
+			nOldFont = dc.SelectObject(&nFont);
+			
+			UINT nFormat = 1;
+			
+			TEXTMETRIC metric;
+			dc.GetTextMetrics(&metric);
+			int ofst = 0;
+			ofst = tRect.Height() - metric.tmHeight;
+			tRect.OffsetRect(0,ofst/2);
+			dc.DrawText(this->m_HChar[i],&tRect,nFormat);
+			dc.SelectObject(nOldFont); 
+...}
+
+ATL开发ActiveX控件和MFC应用ActiveX控件
+http://www.360doc.com/content/13/0120/21/7023119_261441518.shtml
+
+ATL和MFC创建ActiveX控件的区别
+https://www.cnblogs.com/huhewei/p/6202804.html
+
+MFC中如何调用ActiveX控件中的窗口类
+
+如何创建和使用ATL控件
+https://zhidao.baidu.com/question/1579067897862235740.html?qbl=relate_question_3&word=mfc%B5%F7%D3%C3atl%BF%D8%BC%FE
+
+如何编写基于对话框的使用 ATL ActiveX 控件
+https://zhidao.baidu.com/question/1496037504048076659.html?qbl=relate_question_1&word=mfc%B5%F7%D3%C3atl%BF%D8%BC%FE
+
+2020.01.14
+
+OOL ret = ::PostThreadMessage(m_pThread.m_nThreadID,evt++, 0,0);//把消息传送到指定ID的线程，不等待线程对消息的处理就会立即返回
+https://blog.csdn.net/skdkjzz/article/details/17072303
+
+FindWindow使用方法
+然后，在调用时使用如下语句：
+hwndCalc = FindWindow(0&, “计算器”)
+这里的0&就表示忽略类名。需要注意的是FindWindow(0&, “计算器”)和FindWindow("", “计算器”)有两种完全不同的含义，前者表示忽略窗口的类，而后者表示窗口的类是个空串。
+————————————————
+版权声明：本文为CSDN博主「lucky7986」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/lucky7986/article/details/87905315
+https://blog.csdn.net/lucky7986/article/details/87905315
+
+MFC在子线程中创建窗口（PostMessage方法）
+::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), TEST_SENDMSG, (WPARAM)TEST_SENDMSG, (LPARAM)cmsg);
+https://www.cnblogs.com/jixiaohua/p/12117147.html
+
+MFC Dialog工程中多线程使用PostMessage发送接收字符串消息并更新界面
+在刚才的Button添加响应事件，写入如下代码
+
+void CTestPostMessage_3Dlg::OnButtonSendMsg()?
+{
+CString *p_str=new CString("Hello EveryBody");
+CWnd *pWnd=CWnd::FindWindow(NULL,"testPostMessage_3");//获取目的窗口对象
+? ? ? ? ?::SendMessage(*pWnd,WM_MY_MESSAGE,(WPARAM)(p_str), 0);
+}
+
+
+
+在创建线程的时候将主窗口句柄作为参数传入线程，就可以用 PostMessage传递消息了
+————————————————
+版权声明：本文为CSDN博主「佳叔」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/jiashu23/article/details/23455821
+https://blog.csdn.net/jiashu23/article/details/23455821
+
+groupcode
+
+VC中使用ATL编写控件
+
+ATL开发dll界面控件
+
+2020.01.08
+
+COM
+https://blog.csdn.net/flyforlove/category_80708.html
+
+class ATL_NO_VTABLE CTTOptions :
+比
+class ATL_NO_VTABLE Ccompositectr : 
+多3
+public IDispatchImpl<_ITTDataProxyEvents,&IID__ITTDataProxyEvents, &LIBID_DATAPROXYLib>,
+public ISupportErrorInfo,
+public ITTObject
+
+BOOL CAtlsuportmfcApp::InitInstance()
+{
+    _Module.Init(ObjectMap, m_hInstance, &LIBID_ATLSUPORTMFCLib);
+    return CWinApp::InitInstance();
+}选支持MFC (v ok)
+
+
+extern "C"
+BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /*lpReserved*/)
+{
+    if (dwReason == DLL_PROCESS_ATTACH)
+    {
+        _Module.Init(ObjectMap, hInstance, &LIBID_ALTCOM3Lib);
+        DisableThreadLibraryCalls(hInstance);
+    }
+    else if (dwReason == DLL_PROCESS_DETACH)
+        _Module.Term();
+    return TRUE;    // ok
+}没选支持MFC项
+
+2020.01.07
+
+vc++6.0查看程序中内存(v ok)
+https://blog.csdn.net/MyLinChi/article/details/52661581
+
+VC6断点调试之内存断点<第六篇> (v ok)
+https://www.dotcpp.com/wp/554.html
+
+一个VC6下设置“数据断点”的问题 [问题点数：40分，结帖人happyjessica2008]
+https://bbs.csdn.net/topics/380187781
+
+2020.01.07
+
+idea: 1,对话框实现单文档 2,atl做ocx有界面控件 3,控制台做MFC程序 4,MFC做控制台程序
+5,WTL 6,
+
+ocx与dll的本质区别，请教大神们 [问题点数：100分，结帖人sowhat_Ah]
+一句话：
+ocx也是dll。ocx通常带有界面，dll则通常没有界面。
+楼主清楚“控件”和“组件”的区别么？控件(control)就是带有界面的组件(component)。ocx之于dll，也就是控件之于组件。
+https://bbs.csdn.net/topics/390196434
+
+[转]COM组件和DLL的区别
+COM分为进程内组件（编译链接成Dll或者Ocx文件,本质上一样，一个无界面另一个有界面）和进程外组件（编译链接成Exe文件），这些组件会提供一些接口供第三方调用。其它有关COM的知识如果要讲起来的话那可是长篇累牍，可以看看相关的书籍。
+https://www.cnblogs.com/lasthelloworld/p/4958282.html
+
+ATL如此显示窗口及对话框
+https://blog.csdn.net/AsongWam/article/details/2505155
+
+使用ATL创建窗口的步骤
+https://blog.csdn.net/gwzz1228/article/details/41643959
+
+而ATL的奇妙之处也正是在此。它采用了thunk机制，即是在执行真正的WndProc回调之前刷改了内存中的机器码，将HWND参数用本窗口类的this指针替换了，然后在执行真正的代码之前再将这个指针转换回来。这样，就将this指针的矛盾巧妙化解了。
+https://blog.csdn.net/titilima/article/details/590874
+
+WTL是对ATL的扩展，所以它的很多代码可以直接拿过来用（当然可能需要一些小小的修改）。
+https://blog.csdn.net/titilima/article/details/622837
+
+ATL的GUI程序设计(前言)
+我想过用MFC，甚至Delphi的VCL。
+如果说MFC和VCL是生长在深宫名门的大家闺秀，那么WTL就可以算是一位浪迹天涯的绝色歌女。
+比起大家闺秀和绝色歌女，ATL则更像是一位温柔贤惠的朴实女子。
+此外，你需要做好准备迎接以下这些使用了ATL以后可能带来的并发症：
+
+向导支持较少。可以说，VC的IDE就是完全为MFC程序设计准备的。它为ATL的支持甚少，似乎只有几个窗口消息处理器可以用。所以，有很多的消息映射可能需要你自己手工完成。
+技术支持有限。毕竟ATL是为COM组件开发准备的，所以关于用ATL进行GUI开发的资料非常少，除了MSDN上的说明和网上寥寥的几篇文章之外，似乎就很难找到了。
+————————————————
+版权声明：本文为CSDN博主「李马」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/titilima/article/details/581610
+
+ATL的GUI程序设计
+https://blog.csdn.net/titilima/category_172505.html
+
+ATL的GUI程序设计(2)
+https://blog.csdn.net/titilima/article/details/587750
+
+ATL的GUI程序设计(1)
+在这一章里，就像所有的入门级教程一样，我也将不能免俗地以一个“Hello, World!”程序开始我的教程。
+https://blog.csdn.net/titilima/article/details/581614
+
+ATL窗口实现
+昨晚看了《MFC程序员的WTL教程》的第一章ATL的窗口实现，有以下感觉：
+https://download.csdn.net/download/clever101/4359848
+
+使用ATL来写个简单的窗口程序
+到此用ATL建立窗口就完成了，那么怎么使用了呢。我们继续
+ATL程序必须有个CComModule类型的 全局变量_Module，记住必须是_Module，不能改名。
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstPrev,
+?????????????????? LPSTR szCmdLine, int nCmdShow)
+{
+??? _Module.Init(NULL, hInst);
+??? _Module.Term();
+}
+main一定是这样 ，需要init和term
+————————————————
+版权声明：本文为CSDN博主「superleolx」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/superleolx/article/details/4896045
+https://blog.csdn.net/superleolx/article/details/4896045
+
+2020.01.05
+
+Ctrl+W或View菜单中的类向导的Class Info 选项卡
+
+afx_msg void OnInitMenuPopup(CMenu*, UINT, BOOL);
+
+D:\softs\MSDN\MFC类库详解.chm
+
+void CMenufloatView::OnAddmenu() 
+{
+	// TODO: Add your command handler code here
+	TRACE("test CMenufloatView::OnAddmenu \r\n");
+	CWnd *pwnd = AfxGetApp()->GetMainWnd();
+	CMenu *pmenu = pwnd->GetMenu();
+	pmenu = pmenu->GetSubMenu(3);
+	pmenu->AppendMenu(MF_SEPARATOR);
+	pmenu->AppendMenu(MF_STRING,ID_POPUPMESSAGE,"弹出消息(&M)");  //ID_POPUPMESSAGE IDS_POPUPMESSAGE
+}
+
+void CMenufloatView::OnPopupmessage() 
+{
+	static int number=0;
+	// TODO: Add your command handler code here
+	TRACE("test CMenufloatView::OnPopupmessage \r\n");
+
+	//AfxMessageBox("动态添加菜单项成功，且再继续添加菜单项");
+	canadd = !canadd;
+	CString str;
+	number++;
+	str.Format(("弹出消息(&M)%d"),number);
+
+	CWnd *pwnd = AfxGetApp()->GetMainWnd();
+	CMenu *pmenu = pwnd->GetMenu();
+	pmenu = pmenu->GetSubMenu(3);
+	pmenu->AppendMenu(MF_SEPARATOR);
+	pmenu->AppendMenu(MF_STRING|MF_MOUSESELECT,ID_POPUPMESSAGE,str);  //ID_POPUPMESSAGE IDS_POPUPMESSAGE "弹出消息(&M)"
+}
+
+void CMenufloatView::OnUpdateAddmenu(CCmdUI* pCmdUI) 
+{
+	// TODO: Add your command update UI handler code here
+	//canadd = !canadd;
+	if (canadd)
+	{
+		pCmdUI->SetText("添加菜单设置文字");
+	}
+	else
+	{
+		pCmdUI->SetText("设置文字添加菜单");
+	}
+}
+
+
+
+AFX
+Application Framework技术团队，名为AFX小组，用以开发C++对象导向工具给Windows应用程序开发人员使用。AFX 的"X"没有什么意义，是比较流行的结尾字符,如activex等。
+https://baike.baidu.com/item/AFX/9835087?fr=aladdin
+
+http://dict.cn/dictionary
+
+http://dict.cn/
+
+QQ 腾讯微云10G 会员7T
+
+百度网盘找资源
+https://pan.baidu.com/mall/home/?from=guanjia&version=6.8.9.1&errno=0&errmsg=Auth%20Login%20Sucess&bduss=&ssnerror=0&traceid=
+内容商城
+
+链接：https://pan.baidu.com/s/1BfgBDCrcm1DqrgTmy_18dQ 
+提取码：g4p3
+
+链接：https://pan.baidu.com/s/1BfgBDCrcm1DqrgTmy_18dQ 
+提取码：g4p3
+
+改变窗口大小吗? -> 空白(v ok)
+
+WM_MENUSELECT
+如何代码给菜单加提示
+MF_MOUSESELECT
+
+MFC中菜单响应事件ON_UPDATE_COMMAND_UI和ON_COMMAND消息区别,OnMenuSelect事件介绍
+https://blog.csdn.net/xueluowutong/article/details/81942613
+
+CString 转 LPCTSTR
+CString 和 LPCTSTR等之间的转换大全
+CString   和   LPCTSTR   可以说通用。
+https://blog.csdn.net/sjgfmqj/article/details/50819877
+
+visual Assist X Options
+Text Editor
+Display comments from source files when available. (v ok)
+
+如何在动态添加菜单项的时候加入一个分隔线...... [问题点数：20分，结帖人shanzhu]
+pMenu->AppendMenu(MF_SEPARATOR);
+https://bbs.csdn.net/topics/20224360
+
+百度: VC6菜单添加分隔线
+WIN32API: AppendMenu
+
+孙鑫VC++深入详解:Lesson6 Part4 ---CMenu 类的应用:添加子菜单项AppendMenu,插入子菜单项InsertMenu,删除菜单DeleteMenu
+https://blog.csdn.net/sergery/article/details/9254351
+
+VC++ MFC 系统菜单添加子菜单 CMENU submenu GetSystemMenu
+MF_SEPARATOR
+https://blog.csdn.net/lanmanck/article/details/52132935
+
+vc6 菜单属性非活动和已变灰的区别
+vc入门宝典(一)(菜单)
+菜单项属性说明：
+ID 标识菜单的唯一常量。
+
+Caption:菜单项标题，“&" 后面的字符为快捷键，在菜单项后的字符将加下划线。
+
+Separator:水平线，其它属性无效。
+
+Pop_up:有子菜单
+
+Grayed: 无效，标题以灰色显示
+
+Inactive: 无效，标题正常显示
+
+Checked:在标题前加一个对钩
+
+break:为None时，使它和它的兄弟们一行或一列显示。
+
+Help:只对最上层菜单项有效，使它及后面的最上层菜单移到窗口的右上角。
+
+Prompt:当鼠标指向它时的提示信息
+————————————————
+版权声明：本文为CSDN博主「软件架构师何志丹」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/he_zhidan/article/details/16997
+https://blog.csdn.net/he_zhidan/article/details/16997
+
+
+360搜索:小程序开发
+
+沈阳麟龙科技股份有限公司
+新一代股票技术分析软件
+http://ln.win-stock.com.cn/?cid=1165&czid=1165148
+
+ATL开发指南（第二版）PDF（带目录）+源码.rar
+https://download.csdn.net/download/mynamefshunj/11203904
+
+ATL开发指南(第二版)高清版.pdf
+有点老，但很清晰
+https://download.csdn.net/download/qiyun996/10792963
+
+ATL开发指南 （第二版）高清版.rar
+https://download.csdn.net/download/qq_36282233/11367775
+
+ATL开发指南(中文版)PDF格式
+https://download.csdn.net/download/shf11111/1285974
+
+ATL开发指南源码.rar 与书本配套的
+https://download.csdn.net/download/xukunssxb/2103912
+
+深入解析ATL.pdf
+https://download.csdn.net/download/juhui_sd/2598968
+
+书
+ATL开发指南(第二版) 
+深入解析ATL
+
+拿到dll，如何判断是com组件还是普通的dll？ [问题点数：20分，结帖人zerotodream]
+简单的方法是看导出函数名称。
+可以尝试注册一下
+Depends
+DllGetClassObject
+楼上的方法不错，可以判断DllRegisterServer有没有导出
+1.com组件的导出函数里包含了一些特别函数如DllRegisterServer ，是不是只要包含了DllRegisterServer 的，就都是com？
+2.如果普通dll也刚好实现了这些函数，那怎么办？
+3.如下面的dumpbin导出，name字段DllRegisterServer = _DllRegisterServer@0表示什么意思呀？普通的dll name字段就是一个符号而已……
+4    3 00001050 DllRegisterServer = _DllRegisterServer@0
+第三点错了，我发现我写的dll，name字段是××=××格式的，但是别人的dll有些没等号的……
+这个，一般应该是告知...或者就用Depends， 如果是那特定的五个函数，
+1）DllMain：Dll的入口函数，完成一些Dll的初始化工作（DirectShow实现的是DllEntryPoint）；
+2）DllGetClassObject：用于获得类工厂指针；
+3）DllCanUnloadNow： 系统空闲时会调用这个函数，以确定是否可以卸载Dll；
+4）DllRegisterServer：将COM组件注册到注册表中；
+5）DllUnregisterServer： 删除注册表中COM组件的注册信息。
+就应该是COM
+depends是什么呀?是指用dumpbin 查看导出函数么？
+原来depends是看dll依赖关系的工具，不过在VS2008中被去除了，只能单独下了……
+下载地址：
+http://www.dependencywalker.com/depends22_x86.zip
+这个讨论没意义，COM只是规范，如果说你要判断是不是依赖Windows系统的COM组件的话，上面的看导出函数的方法是可行的，但是，如整个COM体系都是另一种实现的话，而且你不知道这种实现那就根本没有办法判断。
+说的完全正确.
+openoffice 的COM 就无法这样判断
+regsvr32 youdll.dll  看一下注册提示，如果是普通dll 他肯定会提示找不到 注册入口。
+https://bbs.csdn.net/topics/380080264
+
+这个，一般应该是告知...或者就用Depends， 如果是那特定的五个函数，
+1）DllMain：Dll的入口函数，完成一些Dll的初始化工作（DirectShow实现的是DllEntryPoint）；
+2）DllGetClassObject：用于获得类工厂指针；
+3）DllCanUnloadNow： 系统空闲时会调用这个函数，以确定是否可以卸载Dll；
+4）DllRegisterServer：将COM组件注册到注册表中；
+5）DllUnregisterServer： 删除注册表中COM组件的注册信息。
+就应该是COM
+
+[转]COM组件和DLL的区别
+https://www.cnblogs.com/lasthelloworld/p/4958282.html
+
+vc中调用Com组件的方法详解
+Requirement:
+1.创建myCom.dll,该COM只有一个组件,两个接口IGetRes--方法Hello(),IGetResEx--方法HelloEx()；
+2.在工程中导入组件或类型库
+
+  #import "组件所在目录myCom.dll" no_namespace　或
+  #import "类型库所在目录myCom.tlb"
+  using namespace MYCOM;
+ContractedBlock.gifExpandedBlockStart.gif方式1
+  CoInitialize(NULL);
+  CLSID clsid;
+  CLSIDFromProgID(OLESTR("myCom.GetRes"), //
+                  &clsid);                //
+  CComPtr<IGetRes> pGetRes; // 智能指针
+  pGetRes.CoCreateInstance(clsid);
+  pGetRes->Hello();
+  pGetRes.Release(); // 小心哦，请看最后的“注意”
+  CoUninitialize();
+ContractedBlock.gifExpandedBlockStart.gif方式2
+ CoInitialize(NULL);
+  CLSID clsid;
+  HRESULT hr = CLSIDFromProgID(OLESTR("myCom.GetRes"),
+                               &clsid);
+  IGetRes *ptr = NULL;
+  hr=CoCreateInstance(clsid,
+                      NULL,
+                      CLSCTX_INPROC_SERVER,
+                      __uuidof(IGetRes),
+                      (LPVOID*)&ptr);
+   ptr->Hello();
+   CoUninitialize();
+ 
+ContractedBlock.gifExpandedBlockStart.gif方式3
+  CoInitialize(NULL);
+   HRESULT hr;
+   CLSID clsid;
+   hr = CLSIDFromProgID(OLESTR("myCom.GetRes"),
+                        &clsid);
+   IGetRes* ptr = NULL;
+   IGetResEx* ptrEx = NULL;
+   // 使用CoCreateClassObject创建一个组件(特别是mutilThreads)的多个对象的时候，效率更高.
+   IClassFactory* p_classfactory = NULL;
+   hr=CoGetClassObject(clsid,
+                       CLSCTX_INPROC_SERVER,
+                       NULL,
+                       IID_IClassFactory,
+                       (LPVOID*)&p_classfactory);
+   p_classfactory->CreateInstance(NULL,
+                                  __uuidof(IGetRes),
+                                  (LPVOID*)&ptr);
+   p_classfactory->CreateInstance(NULL,
+                                  __uuidof(IGetResEx),
+                                  (LPVOID*)&ptrEx);
+   ptr->Hello();
+   ptrEx->HelloEx();
+   CoUninitialize();
+ 
+    直接从dll中得到DllGetClassObject，接着生成类对象及类实例（这方法可以使组件不用在注册表里注册,这是最原始的方法,但这样做没什么意义,至少失去了COM对用户的透明性）,不推荐使用。
+  ExpandedBlockStart.gif方式4
+
+ // 定义一个函数指针类型
+   typedef HRESULT (__stdcall * pfnHello)(REFCLSID,REFIID,void**);
+   pfnHello fnHello = NULL; // 创建一个函数指针变量
+   // 将COM组件DLL像一般DLL一样加载，得到DLL句柄
+   HINSTANCE hdllInst = LoadLibrary("*:\*.dll");
+   // 判断DLL加载是否成功
+   if (NULL != hdllInst)
+   {
+       // 取得相应的函数地址
+       fnHello = (pfnHello)GetProcAddress(hdllInst,
+                                          "DllGetClassObject");
+       if (NULL != fnHello)
+       {
+            // 得到类工厂接口指针
+            IClassFactory* pcf = NULL;
+            HRESULT hr = (fnHello)(CLSID_GetRes,
+                                   IID_IClassFactory,
+                                   (void**)&pcf);
+            if (SUCCEEDED(hr) &&
+                (pcf != NULL))
+            {
+                // 得到具体方法接口指针
+                IGetRes* pGetRes = NULL;
+                hr = pcf->CreateInstance(NULL,
+                                         IID_IFoo,
+                                         (void**)&pGetRes);
+                if (SUCCEEDED(hr) &&
+                    (pGetRes != NULL))
+                {
+                   pGetRes->Hello();
+                   pGetRes->Release();
+                }
+                pcf->Release();
+            }
+       }
+       FreeLibrary(hdllInst);
+   }
+------------------------------------方式5 ------------------------------------
+    通过ClassWizard利用类型库生成包装类，不过前提是com组件的接口必须是派生自IDispatch,具体方法：
+    调出添加类向导(.NET中)，选择类型库中MFC类，打开，选择"文件"，选择"myCom.dll"或"myCom.tlb",接下来会出来该myCom中的所有接口，选择你想生成的接口包装类后，向导会自动生成相应的.h文件.这样你就可以在你的MFC中像使用普通类那样使用组件了.（CreateDispatch("myCom.GetRes") 中的参数就是ProgID通过Clsid在注册表中可以查询的到）
+   CoInitialize(NULL);
+   CGetRes getRest;
+   if (getRest.CreateDispatch("myCom.GetRes") != 0)
+   {
+       getRest.Hello();
+       getRest.ReleaseDispatch();
+   }
+   CoUninitialize();
+------------------------------------ 注意------------------------------------
+    COM中的智能指针实际上是重载了->的类，目的是为了简化引用记数，不需要程序员显示的调用AddRef()和Release()，但是为什么我们在Method 1中pGetRes.Release()，问题在于，我们的智能指针pGetRes生命周期的结束是在CoUninitialize()之后，CoInitialize所开的套间在CoUninitialize()后已经被关闭，而pGetRes此时发生析构，导致了程序的崩溃，解决这个问题的另一个方法是：
+ContractedBlock.gifExpandedBlockStart.gif代码
+   CoInitialize(NULL);
+   CLSID clsid;
+   CLSIDFromProgID(OLESTR("myCom.GetRes"),
+                   &clsid);
+   CComPtr<IGetRes> pGetRes; // 智能指针
+   pGetRes.CoCreateInstance(clsid);
+   pGetRes->Hello();
+   // pGetRes.Release(); // 将其注释掉
+   CoUninitialize();
+--------------------------------------------------------------------
+以上就是COM的5中方法，当然具体怎么使用还是要根据具体情况而定。
+转载于:https://www.cnblogs.com/rogee/archive/2010/10/03/1841680.html
+https://blog.csdn.net/weixin_34062329/article/details/94681105
+
+
+COM组件调试
+COM技术虽然已经不被Microsoft推荐，我还是简单记录一下怎样调试COM组件。
+
+跟调试普通的dll差不多，有一点区别。
+
+1. 创建COM组件
+
+现在利用VS去创建COM组件是很容易的，可以利VC++中调用C#.Net生成的COM组件的实现
+1、导入类型库tlb
+ #import “TestCOM.tlb”
+2、初始化COM以及产生智能指针
+ (一般是在需要调用COM组件中提供的方法时就需要产生指向该接口的智能指针)
+CoInitialize(NULL);//初始化COM
+TestCOM::IMyDllPtr p((__uuidof(TestCOM::MyDll)));
+//名字空间：：接口Ptr p((__uuidof(名字空间：：类)))
+TestCOM::IMyDll * Test=p;
+//名字空间：：接口 指向接口的智能指针
+3、调用COM中的方法
+ _bstr_t m_string=”World!”; //传入参数
+ _bstr_t str=Test-> Hello(m_string);//调用Hello方法
+4、释放环境
+ CoUninitialize()
+分类: VS.Net
+https://www.cnblogs.com/MichaelLu/archive/2005/11/08/271821.html
+
+用C++/VC++ 或者C#，淡然C#去编写COM组件还是比较少的，本例用VC++编写。
+
+2. 创建客户端调用COM组件。
+
+我们在创建COM组件之后，往往是为了给第三方去调用的，这个时候客户端没有我们的code，只有我们的dll和使用说明。这时候第三方在调用COM组件的时候可能有特殊的case，需要我们去定位问题或者修改bug.
+
+3. 调试COM组件
+
+在第三方客户端反馈给我们问题的时候，我们需要今天code 调试，通过下面方式进行简单的调试，
+
+3.1 编译一个debug version COM组件，并进行注册，
+
+3.2 运行Client的application 或者自己编写的模拟client,
+
+3.3 利用VS 打开COM组件的Code,
+
+3.4 attach COM project 到client(模拟)，如果是C#要打开 support native debug.
+
+这样在客户端在调用COM的时候就会进入code,可以进行调试。
+
+如果是客户端启动时就需要调用COM， 则在VS里面 在debug下面设置外部启动程序，设置成client的路径，然后直接F5启动调试。
+
+从以上的步骤看出，COM组件调试和普通的dll调试基本一致，除了注册一步。
+————————————————
+版权声明：本文为CSDN博主「泉水老叮当」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/SpringDou/article/details/79697892
+https://blog.csdn.net/SpringDou/article/details/79697892
+
+COM技术内幕--调试接口与自动化
+https://blog.csdn.net/zang141588761/article/details/53760745
+
+理解COM和DLL技术
+最近由于需要做一个Visual Studio的插件，所以看了《ATL开发指南》，对COM技术有一个简单的了解，稍作记录，资励。
+DLL中导出一个需要提供给第三方使用的类，函数，数据等
+对于DLL技术的缺陷，COM技术能够做的比DLL更好。
+COM技术看起来挺复杂的，如果我并不想跨语言，只要DLL接口设计的好，应该也能够很好的完成模块化的开发任务吧。
+https://blog.csdn.net/tom06/article/details/77966615
+
+GUID:全局唯一标识。 
+CLSID 或 ProgID :唯一地表示一个组件服务程序，那么根据这些ID，就可以加载运行组件，并为客户端程序提供服务了。
+IID :唯一的表示接口ID。
+COM 组件是运行在分布式环境中的。比如，你写了一个组件程序（DLL或EXE），那么使用者可能是在本机的某个进程内加载组件（INPROC_SERVER）；也可能是从另一个进程中调用组件的进程（LOCAL_SERVER）；也可能是在这台计算机上调用地球那边计算机上的组件（REMOTE_SERVER）
+https://blog.csdn.net/weixin_33862041/article/details/85616120
+
+COM组件和一般DLL 的区别
+1，lib和dll的区别
+lib静态链接库，作为库代码的一部分，在编译时被链接
+dll动态链接库有两种加载方式，一种是静态加载，即在应用程序启动时被夹在；
+ 一种是动态加载，在该动态链接库被使用时才被应用程序加载
+2.DLL和COM组件的区别
+动态链接库的表现形式只能是.dll,
+COM组件的表现形式可以是dll也可以是.exe
+动态链接库的生成与编译器和系统相关，在windows/linux下需要分别编译才可以使用
+COM组件是二进制编码，在windows和linux系统下可以直接使用，不需要重新编译
+COM组件是按照COM规范实现的dllhuozheexe,动态链接库是一个可以导出函数的函数集合
+动态链接库仅支持在本机调用，COM组件可以分布式调用
+参考：www.360doc.com/content/17/0925/09/1489589_689859230.shtml
+https://blog.csdn.net/qq_36616692/article/details/88049222
+
+五档可闪电买进或卖出 F9 F12 列表整齐无边框线字体主要有红绿白色
+
+D:\new_gxzq_v704目录下278个dll 10M以上4个48,608K重复.5M以上4个7,131K 8,091K
+1M-5M有71个 39K-987K有199个
+D:\new_gxzq_v704\*.dll有32个
+D:\new_gxzq_v704\Update\*.dll有205个
+D:\new_gxzq_v704\chrome\*.dll有7个
+D:\new_gxzq_v704\GNPlugins\*.dll有5个
+D:\new_gxzq_v704\QHPlugins\*.dll有9个
+D:\new_gxzq_v704\TCPlugins\*.dll有20个
+
+D:\softs\Stock_Soft\通达信
+Q 23465028 bir+o+321
+2020.01.01
+
+CMenufloatView::OnAddmenu() v
+CMenufloatApp::OnAddmenu() v
+CMenufloatDoc::OnAddmenu() v
+CMainFrame::OnAddmenu() v
+CAboutDlg::OnAddmenu() no
+
+我的下载，积分明细.
+
+谢桂源:
+但这开发效率来讲，目前效率很高。
+
+谢桂源:
+关键是夸平台
+
+谢桂源:
+不用维护多个代码副本
+
+APICloud 编辑
+APICloud是柚子(北京)科技有限公司创建的低代码开发平台，总部位于北京, 通过生产力工具与混合开发技术，为企业与开发者构建高效的IT环境； [1] 
+https://baike.baidu.com/item/APICloud/15823658?fr=aladdin
+
+百度网盘
+hwdcxm
+name+year(交行) or birthday(建)
+
+win32编程API参考大全,MSDN,WinAPI.chm,WinSock.chm,WIN32.HLP,Win32 API大全.chm,Win32API大全+(中文版).chm,WIN32_API,win32hlp_big,网站查找了一圈，很多都是残缺不全的且要分，拉开抽屉拿出移动硬盘,插上USB线连上电脑查找win32,.把以前收藏的相关WIN32帮助找出来.....本以为今生再无缘份再写WIN程序，但....既然缘分都到了这份上，不妨共享出来，希望能帮到有缘人。
+
+https://www.csdn.net/
+hixi2007 name+o+123
+
+MSDN 中文版
+
+2019.12.29
+
+VC中TRACE（）的用法，终于学会了点皮毛，好累！
+https://blog.csdn.net/adriano119/article/details/2680564
+
+系统提供一系列特殊的函数或者宏来处理Debug版本相关的信息，如下：
+宏名/函数名	说明
+TRACE	使用方法和printf完全一致，他在output框中输出调试信息
+ASSERT	它接收一个表达式，如果这个表达式为TRUE，则无动作，否则中断当前程序执行。对于系统中出现这个宏 导致的中断，应该认为你的函数调用未能满足系统的调用此函数的前提条件。例如，对于一个还没有创建的窗口调用SetWindowText等。
+VERIFY	和ASSERT功能类似，所不同的是，在Release版本中，ASSERT不计算输入的表达式的值，而VERIFY计算表达式的值。
+————————————————
+版权声明：本文为CSDN博主「libaineu2004」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/libaineu2004/article/details/46495493
+
+
+TRACE()宏一般是用在mfc中的，用于将调试信息输出到vs的输出窗口中(这是关键), 这在使用vs作为开发工具的时候，是非常方便的。
+然而在开发一般c++程序时，却貌似无法获得这样的便利，其实只要经过几个步骤同样可以实现：
+一：#include<atltrace.h>        //此头文件包含ATLTRACE宏，而其实MFC做的就是#define TRACE ATLTRACE
+二：使用ATLTRACE("error");
+三：包含atl链接库：atlsd.lib （ debug ）或者 atls.lib
+trace详细教程：
+   TRACE宏对于VC下程序调试来说是很有用的东西，有着类似printf的功能；该宏仅仅在程序的DEBUG版本中出现，当RELEASE的时候该宏就完全消息了，从而帮助你调式也在RELEASE的时候减少代码量。
+https://blog.csdn.net/younibugudano/article/details/71172584
+
+2019.12.28
+
+Linux :通信就是说进程之间传递数据。常见的方法有 pipe（管道），FIFO（命名管道），socket（套接字），SysVIPC 的 shm（共享内存）、msg queue（消息队列）。
+
+windows下的进程同步和通讯主要靠各种内核对象（互斥，信号，事件，文件影射），比较有特色的是窗口消息，dde/ole/com也可以使用rpc机制进行进程间通讯。同步和通讯的目的是一样的，实现进程间数据共享，同步只是为了做到处理协同。共享内存在Win9X平台上是有的，在NT内核以后就没有这一说了，因为进程地址空间不再有共用部分
+
+Windows进程间各种通信方式浅谈
+https://blog.csdn.net/jiangqin115/article/details/47975833
+2.1 文件映射
+2.2 共享内存
+2.3 匿名管道
+2.4 命名管道  
+2.5 邮件槽 
+2.6 剪贴板
+2.7 动态数据交换  
+2.8 对象连接与嵌入  
+2.9 动态连接库  
+2.10 远程过程调用  
+2.11 NetBios函数
+2.12 Sockets 
+2.13 WM_COPYDATA消息
+https://www.cnblogs.com/Bonker/p/4011216.html
+
+win32下进程间通信(共享内存)实例分析
+https://blog.csdn.net/weixin_39345003/article/details/81263740
+
+dde
+裁剪版
+dcom
+sock
+命名管道
+共享内存
+RPC
+
+转:进程 线程 协程 管程 纤程 概念对比理解
+https://www.cnblogs.com/dasn/articles/6824774.html
+
+VC创建不规则窗口
+https://blog.csdn.net/mfcing/article/details/32732233
+创建不规则窗口的三种方法：通过区域相关API设置窗口的区域SetWindowRgn；通过SetLayeredWindowAttributes来指定特殊的透明颜色，让背景图的部分位置全透从而实现窗口的“不规则”；通过UpdateLayeredWindow来指定特殊颜色透明或者根据图片的ALPHA值来设置窗口全透。
+————————————————
+版权声明：本文为CSDN博主「疯狂-的-蜗牛」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/mfcing/article/details/32732233
+
+
+第五部分 组件对象模型
+
+com中的线程模式（转）
+https://blog.csdn.net/wishfly/article/details/3389557
+
+COM组件中的线程模式
+https://blog.csdn.net/iBreathe/article/details/8429
+提及COM的线程模式，实际上指的是两个方面，一个是客户程序的线程模式，一个是组件所支持的线程模式。客户程序的线程模式只有两种，单线程公寓(STA)和多线程公寓(MTA)。组件所支持的线程模式有四种：Single(单线程)、Apartment(STA)、Free(MTA)、Both(STA+MTA)。
+————————————————
+版权声明：本文为CSDN博主「iBreathe」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/iBreathe/article/details/8429
+
+COM中的可连接对象与连接点机制及其MFC程序实现
+https://blog.csdn.net/tofy/article/details/44793
+
+vc中调用Com组件的方法详解
+https://blog.csdn.net/blacet/article/details/50696109
+
+COM组件的三种调用机制
+https://blog.csdn.net/joyce5008/article/details/48494173
+
+1,简述COM的概念，并分析这种编程模型的优缺点.
+
+3,COM编程中如何实现代码重用(code reuse)
+怎么实现代码的重用性？
+https://blog.csdn.net/zsyoung/article/details/52813689
+
+(总结)C++中实现代码重用的手段----继承和聚合
+https://blog.csdn.net/LYXAICLR/article/details/7402838
+
+dcom配置方法及dcom并行计算程序的构建.doc
+https://wenku.baidu.com/view/f516cfba2dc58bd63186bceb19e8b8f67c1cefae.html
+
+用VC++编写DCOM程序以及DCOM的配置方法
+http://ishare.iask.sina.com.cn/f/bytgzxZO7rP.html
+
+DCOM配置
+https://blog.csdn.net/weixin_43939712/article/details/103403269
+
+dcom配置
+https://blog.csdn.net/zxl603059/article/details/6739034
+
+第六部分 网络编程
+
+#10回复
+select模型我不熟悉，没用过，具体就不清楚了。
+我只会iocp模型。
+
+使用一个线程处理多个用户的请求（使用非阻塞式网络编程）
+https://blog.csdn.net/qq_45085954/article/details/99549737
+
+使用NIO实现非阻塞Socket通信
+
+代码还可以，但基本是按照http://www.51cto.com/art/200806/76626.htm来编写的，不值5个资源积分
+
+http://www.vckbase.com/module/articleContent.php?id=1215
+
+COM 组件设计与应用（五）——用 ATL 写第一个组件
+http://www.vckbase.com/module/articleContent.php?id=1215
+
+COM 组件设计与应用
+http://www.vckbase.com/vckbase/columnist/yangfeng/
+
+
+深圳市社会保险基金管理局 黄明济绑定社康医院
+https://sipub.sz.gov.cn/hspms/logonDialog.jsp
+huangwending Hwd+birthday
+
+I:\E\移动硬盘\B\old_disk\F\编程
+
+是ATL吧
+ATL,Active Template Library活动模板库，是一种微软程序库，支持利用C++语言编写ASP代码以及其它ActiveX程序。通过活动模板库，可以建立COM组件，然后通过ASP页面中的脚本对COM对象进行调用。这种COM组件可以包含属性页、对话框等等控件。
+就是一套C++类库，实现COM组件很方便
+VC 中 ALT 是什么
+https://zhidao.baidu.com/question/586195027.html
+
+COM组件三部曲（COM原理及应用、COM本质论、COM技术内幕）
+
+我总结的几种简单的调用Com组件的方法
+https://blog.csdn.net/peirenlei/article/details/2507932
+
+COM组件学习
+https://blog.csdn.net/xiaominggunchuqu/article/details/72139747
+
+COM组件开发知识重点——COM原理与应用篇（二）
+COM采用LPC(本地过程调用)和RPC(远程过程调用)的方法进行进程之间的通信，LPC用于在同一机器上的不同进程之间进行通信，而RPC用于在不同机器上的进程之间进行通信。
+https://blog.csdn.net/guoduhua/article/details/51097126
+3.4 COM库
+    COM库初始化函数：CoInitialize
+    COM库终止函数：CoUninitialize
+
+【COM组件】开发以及调用
+https://blog.csdn.net/u012370255/article/details/38555369
+转：http://blog.csdn.net/zxdu721/article/details/7785277
+开发工具：Visual Studio 2008，Eclipse3.7 Indigo，Visual C++ 6.0
+C:\用户目录\我的文档\Visual Studio 2008\Projects\MyCom\MyCom
+
+Com学习
+我实现的这个组件向外提供了一个接口ICompTest,里面只有一个函数helloworld()，功能为返回一个整数89。
+实现了自注册功能。下面贴出代码，希望对刚开始学习COM的朋友有所帮助。
+https://blog.csdn.net/sunshinewave/article/details/8303965
+
+
+ATL COM开发学习
+https://blog.csdn.net/xundh/article/details/78671858
+
+VS2010 简单ATL COM开发（下）
+https://blog.csdn.net/wangwenjing90/article/details/8772376
+
+通过ATL开发COM_1概述
+https://blog.csdn.net/hongjiqin/article/details/4460078
+
+COM组件简介
+https://blog.csdn.net/anderslu/article/details/2786227
+在COM标准中，一个组件程序也被称为一个模块，它可以是一个动态连接库(DLL), 被称为进程内组件(in-of-process component)也可以是一个可执行程序(EXE)，被称为进程外组件(out-of-process component).
+OLE技术以COM规范为基础，OLE充分发挥了COM标准的优势，使Windows操作系统上的应用程序具有极强的可交互性。如果没有OLE的支持，Windows操作系统则会逊色很多。
+COM标准包括规范和实现两大部分，规范部分定义了组件和组件之间通信的机制，这些规范不依赖于任何特定的语言和操作系统，只要按照该规范，任何语言都可以使用; COM标准的实现部分是COM库，COM库为COM规范的具体实现提供了一些核心服务
+只要系统中含有这类COM对象的信息，并包括COM对象所在的模块文件(DLL或EXE文件)以及COM对象在代码中的入口点，客户程序就可以由此CLSID来创建COM对象。
+接口描述语言IDL
+COM规范在采用OSF的DCE规范描述远程调用接口IDL的基础上，进行扩展形成了COM接口的描述语言。
+COM规定，支持自注册的进程外组件必须支持两个命令行参数/RegServer和/UnregServer，以便完成注册或注销操作。
+Class Factory 组件程序需要提供一个标准的入口函数DLLGetObjectClass，用于提供本组程序的组件信息。
+因为类厂本身也是个COM对象，它被用于其它COM对象的创建过程，那么类厂对象又由谁来创建呢？答案是DLLGetClassObject引出函数。DLLGetClassObject函数并不是COM库的函数，而是由组件程序实现的引出函数，我们先看一下DLLGetClassObject函数的原型：
+在COM库中，有三个API函数可用于对象的创建，它们分别是CoGetClassObject, CoCreateInstance和CoCreateInstanceEx。通常情况下，客户程序调用其中之一完成对象的创建，并返回对象的初始接口指针。COM库与类厂也通过这三个函数进行交互。 
+
+
+COM结合MTS,就是COM+, 是DCOM的高级版本,提供了更为强大和安全的分布式COM服务, 
+DCOM运行在不同的机器上 用proxy和stub来实现远程接口的本地映射 二者从执行速度来
+说 二者相差无几 但是启动速度DLL要比COM快！
+https://blog.csdn.net/witsky2008/article/details/84608799
+com英文为Component Object Model（组件对象模型），是微软生产软件组件的标准。
+它是构造二进制兼容软件组件的规范，不管组件应用何种语言编写只要遵循com规范就可以相互直接通信。提出com规范主要是为了满足：
+
+
+COM组件和DLL的区别
+https://blog.csdn.net/yeluoyunfei/article/details/38565319
+
+如何判断是com组件还是普通的dll？
+这个，一般应该是告知...或者就用Depends， 如果是那特定的五个函数，
+1）DllMain：Dll的入口函数，完成一些Dll的初始化工作（DirectShow实现的是DllEntryPoint）；
+2）DllGetClassObject：用于获得类工厂指针；
+3）DllCanUnloadNow： 系统空闲时会调用这个函数，以确定是否可以卸载Dll；
+4）DllRegisterServer：将COM组件注册到注册表中；
+5）DllUnregisterServer： 删除注册表中COM组件的注册信息。
+就应该是COM
+
+
+COM
+https://blog.csdn.net/hongjiqin/category_581851.html
+
+
+自己装了VS2019专业版，可正常使用
+
+之后安装VS2013专业版，VS2019就用不了了
+
+重新安装VS2019，发现VS2013和VS2019都可以使用了
+
+vs各版本下载：
+
+vs2010：
+链接：https://pan.baidu.com/s/1d7MnIxWww6aejfjzn034eQ
+提取码：k5oo
+
+vs2013：
+链接：https://pan.baidu.com/s/18ud1MaqrXwp6YVARBwxDug
+
+提取码：o42i
+
+vs2015：
+链接：https://pan.baidu.com/s/18QrIqdO0taKxLtnaP-A93g
+
+提取码：amcw
+
+vs2017：
+链接：https://pan.baidu.com/s/1pW9ZJdyglEV0VTn7RXgeqg
+
+提取码：dkyf
+————————————————
+版权声明：本文为CSDN博主「快乐的小疯子zhaozhao」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_27081181/article/details/99738232
+
+
+2017版本，一般安装unity都会自带vs
+C++是一门编程语言。 VC全名是Microsoft Visual C++是微软出的一个集成的c,c++开发环境，比较经典版本是97年出的 Microsoft Visual C++ 6.0，不过目前最好还是用VS2008以上的版本中的VC了。 VS全名是Microsoft Visual Studio目前已经出到2017了，是很大的一个开发环境，包含很多高级语言的开发环境，VC只是VS其中的一个开发环境。 vc版本与vs版本对应关系如下所示： Visual Studio 6 ： vc6 Visual Studio 2003 ： vc7 Visual Studio 2005 ： vc8 Visual Studio 2008 ： vc9 Visual Studio 2010 ： vc10 Visual Studio 2012 ： vc11 Visual Studio 2013 ： vc12 Visual Studio 2015 ： vc14 Visual Studio 2017 ： vc15
+
+C++编程工具，用VS哪个版本好
+理论上来说越高版本越好，但是也有些问题，一个是安装包变大，一个是对环境要求变高。我个人推荐2008和2012，2013，我平时就用这三个版本
+https://zhidao.baidu.com/question/2079569313955299828.html?qbl=relate_question_2&word=vs%D3%D0%C4%C4%D0%A9%B0%E6%B1%BE
+
+https://github.com/woniu201/WnStock
+开源地址
+蜗牛股票软件源码已经开源道GitHub上，地址：蜗牛股票软件源码
+欢迎大家一起开发，一起技术交流或加我QQ：731342182 进一步交流，如有不足请指出，如对您有帮助请在GitHub上给我加星。
+https://blog.csdn.net/woniu211111/article/details/77097047
+
+魔兽争霸3的核心引擎部分是用c++编写的,因为c++语言相对于其他语言来讲,具有很好的高效性和可扩展性.
+魔兽争霸3的3d引擎是用directX SDK和OpenGL SDK函数库编写的,这样能充分利用上显卡的硬件加速.
+魔兽争霸3的脚本引擎,比如地图和关卡编辑器等是用Lua语言编写的,这是一种脚本语言,但是具有很c++很好的兼容性,并且它的执行效率也很高.
+星际比较早了 使用C语言编的
+https://zhidao.baidu.com/question/89869115.html
+
+看明白了吗？那堆动辄几十 G 的游戏里占据绝大部分空间的是资源文件。按大小排序的话，是视频、音乐（尤其是主机游戏，丧心病狂地用无损）、纹理、模型。程序反而是很小的。早年 FC 游戏几十 KB 就能做出游戏性良好的程序，从中便可见一斑。编写单机 PC/主机游戏现在都是 C++ 加上一个脚本语言（比如 Lua，这地方不需要脚本引擎多么高性能，够用就好）。游戏的架构是引擎 + 游戏逻辑，两者代码量是引擎远远大于游戏逻辑。商业游戏往往引擎是重用多于自研，所以那些大型游戏的代码也不是全部都是一行一行敲出来的——很可能其中许多内容是买来的。网游服务端则一般是自研，这个真是一行一行敲了。网游 EVE 的服务器完全是照着超算的标准修的，算法也完全是超算的算法。
+作者：Belleve
+链接：https://www.zhihu.com/question/22202405/answer/20637186
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+https://www.zhihu.com/question/22202405/answer/20611510
+
+C++，一定的，用的是OPENGL和DX图形库
+
+不用猜了,语言是c++,编译工具是vc++6.0,团队开发工具用的是VSS6.0,我有证据的.
+各位把猜的时间用在打星际上,岂不美哉?
+https://bbs.csdn.net/topics/70045911
+
+各位老大，这里边应该有游戏程序员吧。 
+
+一般来说，写游戏引擎是用C/C++，可能还会用到OPENGL，98年的时候，估计DX还没有占优势，所以多数人选择用OPENGL，也可能是他们自己开发的底层。游戏编程，现在主要用C++，没用到VC多少，用的只是个编译器。至于C#,性能还差很多，所以没有公司会考虑用它。 
+
+至于浏览器上的游戏，我估计，多数是用WEB3D(DX的插件)开发的，JS还没有这么强大。 
+
+重要的不是用什么语言写游戏，游戏的精髓在于：图形引擎，物理引擎（碰撞检测），数学引擎（图形变换），网络模块，I/0..................... 
+
+
+正好这几天在看游戏相关的。。呵呵
+-----------------------------------------------------------------
+你搞清楚什么是opengl什么是dx没？
+opengl是开放的图形程序接口
+dx是DirectX并不是一个单纯的图形API，它是由微软公司开发的用途广泛的API，它包含有Direct Graphics(Direct 3D+Direct Draw)、Direct Input、Direct Play、Direct Sound、Direct Show、Direct Setup、Direct Media Objects等多个组件，它提供了一整套的多媒体接口方案。
+至于你说的WEB3D(DX的插件)更是无稽之谈,directx压根就没包含这个API，你所谓WEB3D可能是新一代互联网3D图形的标准X3D。
+请搞清楚了再回帖。免得惹笑话。 
+https://bbs.csdn.net/topics/190167300
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python38-32
+
+https://www.cocos.com/
+http://cocos2d-x.org/filedown/cocos2d-x-v4.0
+
+https://v.youku.com/v_show/id_XNjY0MjEzNzI0.html
+
+cocos2dx游戏开发简单入门视频教程 （cocos2d-x）- 第1天
+https://blog.csdn.net/iteye_264/article/details/82567537
+
+Cocos从入门到精通--《Cocos引擎在Windows平台上的搭建》
+https://blog.csdn.net/wocacaaa/article/details/47781665
+
+cocos2dx高级开发视频教程
+http://www.manew.com/special/zt5.html
+
+总结一下：
+1. 如果你编程基础一般，想快速做出一款游戏而不纠结于技术，选unity
+2. 开发app或者其他软件已经有一定经验，希望转到手游领域做一款商业化产品，同时个人或者团队的资金实力一般，选cocos2d
+3. 想学习业界主流的游戏开发流程，不想局限于某个游戏平台或者2D还是3D，选unity
+4. 不属于上面3种情况的，建议都上手试验再做判断
+
+u3d工具更成熟一些做3d游戏会比cocos2d方便。但是因为这2年棋牌火，所以cocos2d热度也被带起来了，cocos2d已经沦陷为棋牌专用引擎了，当然还有其他游戏用的cocos2d做的(比如最近的卡牌怪兽虽然感觉游戏有3d效果，其实是用cocos2d做的)。而且之前很多公司都向u3d过渡了。
+所以从公司来看u3d前景会好一些。但是开发2d游戏还是cocos2d会开发快一些，而且招聘因为棋牌原因看见cocos2d招聘的也比较多。
+如果个人想开发的话建议从cocos creator入手吧，毕竟3d模型什么的不好找，2d的资源相对容易一些。而且cocos creator开发模式就是仿照u3d来的，后面再学习u3d会容易一些。
+以上纯手打，希望对你有帮助。
+
+1,
+在职期间，主要从事软件程序编程,C/C++程序语言,C++STL标准模板库,熟练数据结构链表及算法,精通C语言指针变量及函数指针,深刻理解面向对象编程及设计模式等.
+C/C++，VC++，Win32 SDK编程，封装Win32Api的MFC类库编程，Win消息原理机制，MFC控件自绘，数据库，Socket网络编程，日志log信息调试，断点堆栈查看,断点堆栈查看,java安卓编程.
+带领团队做高通QSC1110电信通讯项目，按领导或客户的需求做UI界面，功能增加等工作，顺利完成死机调试原因，网络连网协议调试，解决功耗过大问题等功能工作。
+
+2,
+在职期间，在职期间，主要从事MTK、Via、高通QSC1110,1105平台。高通QSC1110电信通讯项目，主要任务是攻关创新软件，按领导或客户的需求评估项目，做攻克技术难关调试等工作，顺利完成了大字体功能，归属地查询功能，死机调试原因，内存不够优化，儿童手表界面开发，语聊功能开发，网络连网协议调试等功能工作。
+
+3,
+追求进步，热爱学习，工作效率高，诚实稳重，和蔼友善，善于沟通总结，坚持耐心，乐于思考，承担责任，喜欢积累和分享。
+离职原因: 前公司老板听不进大家建议和其它一些原因导致公司倒闭。
+
+4,
+帮朋友做微信公众号，微信小程序。单片机Keil编程与Proteus模拟器调试，做unity3d游戏……
+
+追求进步，热爱学习，工作效率高，诚实稳重，和蔼友善，善于沟通总结，坚持耐心，乐于思考，承担责任，喜欢积累和分享。
+
+软件,程序,编程,C/C++程序语言,程序设计模式,熟练数据结构链表及算法,精通C语言指针变量及函数指针,深刻理解面向对象编程及设计模式等.
+
+C/C++，VC++，Win32 SDK编程，封装Win32Api的MFC类库编程，Win消息原理机制，MFC控件自绘，数据库，Socket网络编程，日志log信息调试，断点堆栈查看，网络维护，MTK、Via、高通QSC1110,1105平台。
+
+程序设计模式->C++STL标准模板库
+
+MTK、Via、高通QSC1110,1105平台。
+
+软件,程序,编程,C/C++程序语言,C++STL标准模板库,熟练数据结构链表及算法,精通C语言指针变量及函数指针,深刻理解面向对象编程及设计模式等.
+
+C/C++，VC++，Win32 SDK编程，封装Win32Api的MFC类库编程，Win消息原理机制，MFC控件自绘，数据库，Socket网络编程，日志log信息调试，断点堆栈查看
+
+
+追求进步，热爱学习，工作效率高，诚实稳重，和蔼友善，善于沟通总结，坚持耐心，乐于思考，承担责任，喜欢积累和分享。
+或许你会疑惑我这般年纪了还在找编程工作,原因是前公司老板听不进建议,前公司倒闭。
+
+在职期间，主要从事软件程序编程,C/C++程序语言,C++STL标准模板库,熟练数据结构链表及算法,精通C语言指针变量及函数指针,深刻理解面向对象编程及设计模式等.
+C/C++，VC++，Win32 SDK编程，封装Win32Api的MFC类库编程，Win消息原理机制，MFC控件自绘，数据库，Socket网络编程，日志log信息调试，断点堆栈查看,java安卓编程.
+带领团队做高通QSC1110电信通讯项目，按领导或客户的需求做UI界面，功能增加等工作，顺利完成死机调试原因，网络连网协议调试，解决功耗过大问题等功能工作。
+
+在职期间，主要从事MTK、Via、高通QSC1110,1105平台。高通QSC1110电信通讯项目，主要任务是攻关创新软件，按领导或客户的需求评估项目，做攻克技术难关调试等工作，顺利完成了大字体功能，归属地查询功能，死机调试原因，内存不够优化，儿童手表界面开发，语聊功能开发，网络连网协议调试等功能工作。
+
+http://c.biancheng.net/unity3d/
+第1章 Unity 3D简介
+1.Unity 3D是什么
+2.Unity 3D的应用
+3.Unity 3D下载安装教程
+4.Unity 3D创建项目
+5.Unity 3D游戏发布
+6.Unity 3D游戏发布到PC平台
+7.Unity 3D游戏发布到WEB平台
+8.Unity 3D游戏发布到Android平台
+第2章 Unity 3D视图界面
+1.Unity 3D界面布局
+2.Unity 3D Hierarchy视图
+3.Unity 3D Project视图
+4.Unity 3D Inspector视图
+5.Unity 3D Scene View视图
+6.Unity 3D Game View视图
+7.Unity 3D菜单栏及快捷键详解
+8.Unity 3D工具栏和常用工具简介
+9.Unity 3D创建简单的几何模型
+10.Unity 3D Assets游戏资源目录管理
+11.Unity 3D导入资源包
+12.Unity 3D导出资源包
+13.Unity 3D资源下载
+第3章 Unity 3D脚本开发基础
+1.Unity 3D脚本
+2.Unity 3D JavaScript脚本基础
+3.Unity 3D C#脚本基础
+4.如何在Unity 3D中编写脚本？
+5.Unity 3D脚本应用实例演示
+
+Java 是 Android 平台的主要开发语言，搞 Android 开发的读者肯定具备了 Java 基础，所以这里就不再讲解 Java 开发环境（JDK）的下载与安装了，不了解的读者请移步到：
+JDK下载与安装教程
+Java JDK环境变量配置
+http://c.biancheng.net/view/2645.html
+
+Unity 3D教程，超详细的Unity3D自学教程
+http://c.biancheng.net/unity3d/
+
+3) 资源导入
+项目可以自动导入资源，并根据资源的改动自动更新。Unity 3D 支持几乎所有主流的三维格式，如 3ds Max、Maya、Blender 等，贴图材质自动转换为 U3D 格式，并能和大部分相关应用程序协调工作。
+
+5) 脚本语言
+Unity 3D 集成了 MonoDeveloper 编译平台，支持 C#、JavaScript 和 Boo 3 种脚本语言，其中 C# 和 JavaScript 是在游戏开发中最常用的脚本语言。
+
+Unity 3D 的发展
+2004 年，Unity 3D 诞生于丹麦的阿姆斯特丹。
+
+Unity 3D 下载教程
+要安装 Unity 3D 游戏引擎的最新版，可以访问 Unity 官方网站 https://unity3d.com/cn/，如下图所示。
+
+进入 Unity 官网，单击右上角的“获取 Unity”进入下载页面。
+
+
+零基础学习Unity3D引擎软件
+https://huke88.com/route/u3d.html?sem=baidu&kw=105654&product=xinxizhenlie_longsublink&renqun_youhua=1872178&bd_vid=7953521357476217209
+
+https://mp.weixin.qq.com/
+2429877674@qq.com mingmingopen321(服务号)
+1679914789@qq.com yiwaiopen321(企业号)
+2346528@qq.com 23465028open(小程序)
+hixi@21cn.com hixiopen(订阅号)
+879057524@qq.com 879057524open(订阅号) 440202198102010667
+
+微信小程序源码及教程链接：https://pan.baidu.com/s/1rURvjS83f8It0GzItFLS4g 提取码：29gf
+微信小程序源码微商城带后台完整版PHP后台商城...
+卖家：四而店  四钻卖家(959点信誉值)
+金额：18.00元
+订单号：157605190550
+
+微信小程序开发教程--从零开始
+https://huke88.com/course/26116.html
+
+http://mp.weixin.qq.com
+微信公众平台(gh_3c819bdc5fef)
+https://mp.weixin.qq.com/
+hixi@21cn.com hixiopen
+
+https://mp.weixin.qq.com/wxamp/home/guide?token=256637499
+https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html
+
+微信小程序(wx1c54fc86d255ff92)
+2346528@qq.com 23465028open
+
+
+当年做空香港，朱镕基是怎么打败索罗斯的？
+http://www.sohu.com/a/256969167_100266201
+
+索罗斯
+http://www.360doc.com/content/18/0528/17/982189_757742597.shtml
+
+开窍，上心.
+进取心强和自制力弱的矛盾。
+成才欲望和厌学心理的矛盾
+
+张总，网上找了下, 搜索到以上这些相关资料。帮忙看下元器件名称是否错误的?
+
+NXP LPC4337开发板电路+示例程序+开发资料等
+http://www.chiphome.com/designdetail/1703.html
+
+NXP LPC1788-开发环境搭建
+https://jingyan.baidu.com/article/20b68a8882504f796cec62ce.html
+工具/原料
+KEIL MDK
+NXP LPC1788
+
+LPC4337工欲善其事必先利其器之LPC_Link
+http://www.nxpic.org/module/forum/forum.php?mod=viewthread&tid=608019&page=1
+
+NXPLPC4337原理图
+http://www.elecfans.com/soft/22/163/2017/20170606522035.html
+
+CMX7241/CMX7341 PMR/LMR Common Platform Processors
+https://www.sekorm.com/news/100000000810843.html
+
+
+CMX994：100MHz－600MHz直接变换接收解决方案
+https://tech.hqew.com/fangan_743129
+
+CML CMX994 100-600MHz直接变换接收器解决方案
+https://www.docin.com/p-1932011911.html
+ 
+DVSI公司 AMBE-3000 声码器
+http://detail.net114.com/chanpin/1006445879.html
+ 
+基于AMBE-3000声码器的语音通信系统设计
+https://wenku.baidu.com/view/45779d8dc1c708a1284a4469.html
+
+
+
+，AVR的编译软件不像51那样是KEIL的天下，常用的有ICC AVR，Code Vision AVR（CVAVR），GUN GCC AVR，Embedded Workbench。对于这些软件当然也各有利弊，IAR Embedded Workbench（MSP430主流编译器）出自于大公司，代码效率高，但是资料少上手难度大些而且价格昂贵，国内公司使用的不是很多；ICCAVR网上的资料多，用户也是国内使用者最多的编译器，完全支持标准的ANSI C，支持32位的长度整数和32位的单精度浮点数运算，可以生成用于AVR stido源码级调试的目标文件，缺点是几乎完全不支持位寻址；CVAVR和ICC基本类似，优点是可以通过手动设置自动生成需要的代码并可以进行位操作，此项功能对于提高编程效率实在很有意义;GUN GCC AVR是免费软件，用户也比较多，但技术支持和资料却不好找。
+http://www.51hei.com/bbs/forum.php?mod=viewthread&tid=92181&page=1#pid351799
+http://www.51hei.com/bbs/dpj-92181-1.html
+
+常用单片机使用的编译软件
+https://wenku.baidu.com/view/ecd30f503c1ec5da50e270da.html
+https://wenku.baidu.com/view/2048017f59f5f61fb7360b4c2e3f5727a4e9240b.html
+
+基于DMR通信协议与数字对讲机基带模块设计
+http://www.elecfans.com/tongxin/123/20111008220281.html
+
+C:\Users\Administrator\AppData\Local\Temp
+
+https://www.tmtpost.com/3886060.html
+
+?今天的最高成交价39.9元,在哪个时间点发生的呢？F1一个一个查找都找不到。有哪位高手请指教下？
+
+婚姻的难处，在于我们是和对方的优点谈恋爱；却和他的缺点生活在一起。 ——彼得狄雄
+
+婚姻失败的原因，因人而异，各不相同，可每段失败的婚姻里，都自始至终响彻着噼里啪啦的算盘声，各自有理，自问无愧，而将对方对自己与家庭的亏欠列出的清单，堪比懒婆娘的裹脚布，又臭又长。
+
+
+仗义每多屠狗辈，负心多是读书人
+
+不杀无辜农民
+
+开发电商平台用PHP语言和JAVA语言有什么区别？哪种语言更好？
+https://www.cnblogs.com/zq924/p/11639895.html
+
+https://baike.baidu.com/item/%E7%BD%91%E4%B8%8A%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0/2738577?fr=aladdin
+
+https://bbs.csdn.net/topics/390367520?list=lz
+
+看看现在大型网站都是用什么语言写的 ？
+
+不排除一个网站用多种技术！如淘宝是Java + php，底层是java，表现层是php。新浪，网易，腾讯应该也是用了多种技术。
+
+据说是这样的：php， 新浪，雅虎等用php较多。淘宝，腾讯用java较多。一般的部署是这样的：php，.net做前端视图的调用，和简单逻辑应用。像雅虎前cto说的那 样，能用php的地方我们尽量用php。对性能要求稍高，逻辑复杂，维护量大，更改频繁的地方一般用java，因为java可维护性强。如果对性能要求极 高或涉及底层开发的一般要用c/c++做服务。
+
+今天闲来没事，找了几个网站看看，发现PHP还是很强势的，java在大型网站和银行，还有学校的网站用的多。
+
+其实php也可以做大型网站，看怎么运用了。
+
+
+PHP：51job，智联，中关村在线，大街，猪八戒网，赶集网, 凤凰网, 乐视网
+
+ASP：当当，京东商城，csdn, 58同城, 凡客 
+
+JSP： 人人，网易，亚马逊，搜狐，珍爱网，天涯，各种银行，还有垃圾的12306（算不上大网站）
+
+
+
+
+宏基笔记本电脑怎么输入*
+ 我来答 分享 举报 浏览 103 次
+1个回答 #热议# 小朋友之间发生矛盾，家长该不该插手？
+匿名用户 
+2016-10-16
+　切换方法：
+1、按住Fn键后，点一下Num键即可把主键盘区右侧变成数字键。再按一次，即可切换回正常的字母键。
+2、按“Fn+Num Lk”关闭数字键盘就可以了；
+3、如果要常时间使用小数字键就再按“Fn+Num Lock”开启数字键盘；不用时再组合按一次就可以关闭。
+4、按组合键“Fn”+ 与Fn字体印刷颜色一样符号键就显示与Fn字体印刷颜色一样符号的作用。
+https://zhidao.baidu.com/question/266893386203818085.html
+
+扬杰科技
+
+您好，上火导致的扁桃体炎是比较普遍存在的，一般会有咽喉疼痛的症状表现，
+建议您选择清热解毒、利咽消肿的药物进行消炎治疗，如蓝芩口服液，
+另外，建议您进食败火的食物，如苦瓜，丝瓜等，注意休息，多喝水，
+增加一些体育锻炼，提高机体免疫力，希望我的建议对您有所帮助，祝您早日康度！
+
+且听风吟
+
+楚狼天歌
+
+似水如风
+
+独臂大虾
+
+很飘很皮
+
+颠倒的身影
+
+送葬者
+
+素衣风尘叹
+
+淡冩曾经
+
+
+
+白衣不染尘
+
+冷血男神
+
+top℃..雨
+
+悲魂曲
+
+灭世
+
+春晓寒冬
+
+恨所、欲狂
+
+孤单独影
+
+心醉了无痕
+
+尤安
+
+醉扶月
+
+云遮断孤独
+
+男神傲骨
+
+夜无眠
+
+千魂弑
+
+冷却残酷
+
+花花花、男子
+
+
+
+默写年华
+
+残情
+
+寂寞远去
+
+花剑↘泪
+
+super灬小布
+
+沐羽晨
+
+弑魂
+
+show丿尘封
+
+曙光划破星空
+
+龍魂
+
+与君长诀
+
+踏入地狱
+
+淡墨无殇
+
+smile||云
+
+排骨君
+
+灰色涟漪
+
+魂stay
+
+永久丶帝王
+
+笑渣霸
+
+苍穹の醉
+
+凉心骚年
+
+狼少
+
+印画少年
+
+独夜无伴
+
+沧海佚夫
+
+ヅ云狂
+
+浅暮流殇
+
+枪影
+
+天降幽鬼
+
+幻、梦
+
+流星シ沦落
+
+活得比天狂
+
+陌路狂花
+
+苍南
+
+冷风浮
+
+帅气潮男
+
+www.ew45.com
+http://www.mfav88.com
+http://www.mfav88.com
+
+D:\new_gxzq_v704\T0002\export
+
+第一种?
+?
+
+
+夏商与西周??
+东周分两段??
+春秋和战国??
+一统秦两汉??
+三分魏楚吴??
+二晋前后沿??
+南北朝并立??
+隋唐五代传??
+宋元明清后??
+皇朝至此完
+
+
+
+私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3096175441 23:52:27]对你说:诳插长发黑丝女仆 满身大汗 发情小搔货 国语对白 搜索关注微信公众号【music660000】是搜索微信公众号，不然查不到。每晚准时免费发放福利
+
+
+
+http://www.1895ys.com/
+
+https://tv.6461.cn/
+https://dianying.2345.com/
+
+不得不说，喉咙痛是非常痛苦的，喉咙痛让我们的生活工作出现了很多问题，严重影响到我们的工作生活。我们常常会听到老一辈的爷爷奶奶说喉咙痛喝盐水。那么，喉咙痛喝盐水有用吗?喉咙痛怎么治疗呢?接下来，小编就为大家详细介绍一下。
+
+喉咙痛喝盐水有用吗
+
+1，一般来讲喉咙痛的话是要看程度是不是严重才能决定是不是喝盐水就可以了的，要是严重的话建议还是到医院去看一下，避免因为发炎而引起其他的身体症状，一般来说，喝盐水是可以缓解的。
+
+2，虽然说喝盐水可以缓解喉咙痛，但是在冲盐水的时候一定不要放盐过量了，过量了会影响喉痛的健康的，一般是淡盐水就可以了的，这样就可以达到缓解喉咙痛的效果了的，记得要是温水才好。
+
+3，另外，在喉咙痛的时候喝盐水之外，建议最好是去药店买一下润喉的含片回来吃，或者是到药店让医生帮你开一些喷剂，这样可以比价快的解决喉咙疼的问题，但是要注意在用药的时候不要过量和小心一些不要碰伤咽喉。
+
+喉咙痛怎么治疗
+
+1、咽喉疼痛，不妨口服风油精2～4滴，慢慢吞下，且不用水送服。一般咽喉疼痛，试服5次，当天见效，较重者多服几天。
+
+2、将食醋和清水各半混合，漱口，每日数次。
+
+3、将适量的西瓜霜吹咽部，每日3次。
+
+4、将食盐炒熟研末，吹入咽部，吐出涎水，可消炎止痛。
+
+5、新鲜石榴可止痛消肿，消除口干咽燥，促进溃疡愈合，还可减轻口臭。将鲜石榴1～2只取石榴子捶研，开水浸泡，待冷却后取汁，每日含漱10次以上。
+
+6、将生丝瓜250克切碎后挤汁，分2～3次服完，每天1剂。
+
+7、增加室内的湿度，才不会因嘴巴呼吸而吸入干燥空气，造成疼痛。
+
+以上便是小编为大家介绍的关于喉咙痛喝盐水有用吗的一些内容，希望对大家有所帮助哦。由此看来，喉咙痛喝盐水是有用的。喉咙痛的人们应该清淡饮食，多吃蔬菜水果，多喝温水。不要吃太多燥热东西。
+
+在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3053780495】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网站有毒，木马盗钱网站
+私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 23:46:41]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 23:57:03]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 00:02:30]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043
+
+在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 23:14:56]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 23:26:01]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 23:30:40]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 23:42:07]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1780410480 23:46:22]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 23:46:41]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 23:57:03]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 00:02:30]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 00:13:18]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 00:18:56]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1780410480 00:23:15]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3531326044 00:29:07]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 00:35:08]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 00:45:01]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 00:51:00]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1780410480 00:58:40]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3531326044 01:01:12]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 01:06:45]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 01:16:22]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 01:23:03]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 01:32:36]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1780410480 01:35:33]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 01:38:24]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 01:47:39]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 01:54:09]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 02:02:58]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1780410480 02:09:14]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 02:10:12]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 02:18:30]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 02:26:17]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 02:35:12]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 02:43:00]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1780410480 02:46:44]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3531326044 02:51:30]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 02:59:07]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 03:07:41]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 03:15:31]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 03:23:05]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1780410480 03:25:50]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 03:30:22]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 03:36:36]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 03:43:39]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 03:48:51]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 03:55:15]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1780410480 03:57:45]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3531326044 04:00:29]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:06:26]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 04:11:27]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:16:05]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 04:21:17]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1780410480 04:23:23]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[1371784081 04:25:24]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 04:30:26]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:33:55]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 04:39:07]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:42:41]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1780410480 04:44:05]对你说:私密电影·免费看　　　 　　M461.СΟМ　　　 　用QQ号的都是骗子　　　　　M461.СΟМ　　　　　　私密电影·免费看　　　　 　M461.СΟМ
+[3531326044 04:47:27]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:50:48]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 04:54:50]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 04:58:32]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:02:39]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:06:22]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:09:55]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:13:16]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1371784081 05:13:37]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:16:36]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[3531326044 05:17:03]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:20:22]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1371784081 05:20:49]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:23:45]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[3531326044 05:24:13]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:27:32]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[1371784081 05:27:59]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:30:52]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:34:38]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:37:07]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:40:56]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:43:25]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:47:18]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:49:45]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:53:38]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 05:56:06]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 05:59:57]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 06:02:24]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 06:06:19]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 06:08:46]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 06:12:43]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 06:15:10]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 06:19:11]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 06:21:35]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+[1371784081 06:25:29]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3043380133】高清无马 妹妹一人在家无聊,什么都可以看哦,包射哟~~~免费网站是骗子,木马盗钱,小心~
+[3531326044 06:27:54]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3291303085】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网
+
+星光夜视高清usb行车记录仪安卓大屏导航专用记录仪摄像头ADAS
+https://item.taobao.com/item.htm?ft=t&id=566274693634
+http://item.jd.com/29450471798.html
+TF卡槽
+
+锌合金高清USB记录仪 gst-007
+udisk2->udvr.apk (uCarDvr.apk) 高清行车记录仪
+
+安卓系统大屏导航专用行车记录仪USB摄像头隐藏式前视高清车载
+
+D:\QQ\23465028\FileRecv
+
+你在哪里英文
+
+1954898353 
+
+1679914789
+
+
+A debugger has been found running in your system.
+Please, unload it from memory and restart your program.
+---------------------------
+确定   
+---------------------------
+
+
+
+
+金庸逝世 享年94岁
+http://sh.qihoo.com/pc/detail?realtime&url=http%3A%2F%2Ffawen.news.so.com%2F35331dd4e1cbd9a7e89bbe30646c63ca&check=e62a31b6b0a9a797&sign=360_b4ea816d
+
+
+已预约 （请携带相关材料、证件和复印件于2018-11-16 09:00-12:00到宝安区政务局窗口提交申请）
+
+https://wenku.baidu.com/view/f46b5c4a2af90242a895e5c8.html
+
+�http://so.downcc.com/cse/search?q=%E6%8B%B3&p=1&s=1857934071635813916&nsid=
+
+三角洲8终极目标 中文版
+http://www.downcc.com/soft/302544.html
+
+三角洲8终极目标是三角洲系列里面最强大的版本。有标枪导弹，单兵携带迫击炮（可带10发炮弹），可以驾驶各类飞机（阿帕奇等），坦克，快艇，气垫船，越野摩托车，悍马，甚至还有推土机，叉车等增加了几乎所有的武器。
+
+三角洲特种部队8
+
+游戏指令
+更新秘技
+
+在游戏中按下“~”之后你便可以输入以下这些密码了：
+
+labrady 获得5颗AP雷及额外的一、两种武器
+
+LAPOSTAL 增加武器、弹药和体力
+
+LACDS 开启超级地图模式
+
+LAMAXOUT 所有物品全满
+
+LAUNLOCK 物品全满
+
+LAREDLITE 冻结敌人
+
+laimlame 无敌模式
+
+LARANDY 武器全满
+
+LASKIP 完成任务
+
+LADATA 坐标信息
+
+LABUG 昆虫模式
+
+三角洲8
+
+更新秘技二
+
+在游戏中按下“~”，然后你便可以输入以下密码了：
+
+iwillsurvive：无敌模式；
+
+raindropskeepfallingonmyhead：可呼叫5次炮击（重复输入便可反复呼叫）；
+
+takeittothelimit：装填弹药；
+
+hitmewithyourbestshot：电脑对手战力增强；
+
+closetoyou：隐形模式；
+
+sky：取消天空云彩等效果以加快游戏速度；
+
+letmego：选关；
+
+chiliburger：痊愈；
+
+biggulp：补给；
+
+gamma xxx：调整Gamma值(128为正常)；
+
+turbo：跑动加快。
+
+
+[3201902892 01:44:03]对你说:诳插长发黑丝女仆 满身大汗 发情小搔货 国语对白 搜索关注微信公众号【music660000】是搜索微 信公众号，不然查不到。每晚准时免费发放福利
+[2805159019 02:03:33]对你说:在线观看上万部精选极品AV 萝莉人/兽/御姐等20种类型+QQ【3054774394】高清无马，妹妹一人在家无聊，什么都可以看，包射哟~~~免费网站有毒，木马盗钱网站
+
+
+
+更新亮点
+坐于悍马.50得机枪塔上扫除抵抗武装乾扰搭载黑鹰直升机利用机载MP3航空机枪为地面部队火力支持。在战队之刃的任务关中，新增加的武器和~交~通工具来填充你的军械库。
+
+这个版本你不仅可以玩黑鹰坠落的16个关卡任务，还有全新的11个关卡任务等着你。令人窒息的战斗场面，黑鹰坠落+战队之刃的结晶！！新的冲突，新的任务，更多战斗 你从战争破坏的索马里市区重新部署到哥伦比亚和伊朗去消除新的威胁，从索巴里到波斯湾遥远的岛屿，N个单独战役的N个任务。
+
+
+
+大鱼吃小鱼2 绿色中文版
+http://www.downcc.com/soft/18201.html
+
+大鱼吃小鱼游戏下载
+
+个人小汽车增量指标申请表 
+（本市户籍人员）
+申请编码：4952101966279
+
+天剑绝刀之独孤九剑 
+
+刘锡明
+
+申请编码：4952101966279
+
+个人小汽车增量指标申请表 
+（本市户籍人员）申请编码：4952101966279 申请状态： 审核通过 申请人姓名：黄文定  性 别： 男 出生日期：1979 年 04 月 06 日 
+申请类型： 普通小汽车竞价 竞价平台 
+证件类型：居民身份证 
+证件号码： 440229197904063512  
+申请日期：2018年03月30日 
+本人名下是否有在本市登记的小汽车： 没有车或仅有一辆在2016年7月31日前使用原电动小汽车增量指标购买的小汽车或者仅有一辆纯电动小汽车  
+申请驾照时使用的证件类型：居民身份证 
+机动车驾驶证证号：440229197904063512 
+机动车驾驶证档案编号：440305065139 
+准驾车型：小型汽车(C1) 
+是否本地驾照： 是  
+手机号码：13926527671 
+固定电话： 
+电子邮箱：23465028@qq.com 
+在深居住地址：深圳市宝安区石岩街道顺太路羊台苑一期2A栋209房 
+邮    编：518108  
+提示：1、申请人在本系统注册登记的账户是深圳市小汽车指标调控管理中心对小汽车指标 
+
+
+
+
+三星Note4电池专用座充
+
+深圳车牌竞价报价技巧 网友亲身分享竞价经验
+http://jt.sz.bendibao.com/news/2016329/762739.htm
+
+电影天堂
+淡看江湖 20:10:55
+FEATURE_SALESTRACKER
+淡看江湖 20:11:06
+看下这个宏，这个就是销售跟踪的。
+黄文定 20:12:08
+哦
+淡看江湖 20:14:04
+#ifdef FEATURE_VERSION_C316
+    case SMS_TRACKER_TOW:
+return GetMobileTrackertowSms();
+case SMS_TRACKER_THREE:
+return GetMobileTrackerthreeSms();
+#endif
+淡看江湖 20:14:53
+
+
+
+更新一下驱动，注意从官方网站下载，宏碁笔记本一定要记得安装hotkey和powermanage
+
+开发小程序的第一步，你需要拥有一个小程序帐号，通过这个帐号你就可以管理你的小程序。
+https://developers.weixin.qq.com/miniprogram/dev/index.html
+
+bdkw:微信小程序 开发工具
+
+cvirte.dll
+
+A100001A803760
+
+为什么3-7岁孩子爱撒谎？
+http://www.sohu.com/a/208709056_100029164
+
+3-6岁孩子说谎，聪明幼师这么做
+http://www.qbaobei.com/chengzhang/690107.html
+
+孩子为什么会“说谎”
+http://learning.sohu.com/s2013/lie/
+
+5―6岁儿童说谎行为分析及其对家庭教育的启示
+http://www.xzbu.com/7/view-1628928.htm
+
+越聪明的孩子，就越容易说谎
+http://www.sohu.com/a/73135502_126223
+
+小孩子为什么那么爱说假话？如何纠正？
+https://baobao.baidu.com/question/dc5f4df3f6a5eda596aaf0c13828f101.html
+
+
+孩子经常撒谎怎么办？
+https://jingyan.baidu.com/article/7f766dafad20e54101e1d02c.html?qq-pf-to=pcqq.group
+
+
+孩子说假话怎么办 4个步骤让孩子不再说假话
+来源链接:http://www.qbaobei.com/jiaoyu/389361.html
+著作权归分享者所有。
+
+
+
+5、IOS App发送语音按语音输入框相应太慢或无响应
+
+7、在IOS App中播放其他设备语音，语音播放完毕后波浪仍然动态显示
+
+8、手表发送语音过短或过长加提示语（目前过短0秒都可发送，过长无法生成语音）
+
+10、最新软件出现一次死机（显示蓝色背景代码）
+
+11、待机界面接受到语音消息自动调到微聊界面时接收到的那条语音消息波浪显示不全
+
+12、长连接时在待机界面收到语音概率性会弹回微聊界面,但有收不到语音消息
+
+13、手表微聊界面按住语音输入栏概率性弹不回来、概率性生成不了语音消息
+
+14、手表进入微聊退出后概率性出现手表按键音消失
+
+黄工，这是手表微聊测到的问题
+
+
+全混车型由于技术复杂、专利壁垒较高，所以主要是日系、美系的合资品牌在玩，代表车型为丰田卡罗拉/雷凌双擎、本田雅阁/CR-V锐混动以及通用旗下的君越、迈锐宝XL混动版；
+
+插混车型技术门槛较低，且能够享受国家、地方政府补贴以及限行城市送牌，所以自主品牌主要走这一路线，代表车型包括比亚迪秦、唐、荣威e550、ei6及奇瑞艾瑞泽7e等
+
+https://chejiahao.autohome.com.cn/info/2117668
+
+
+深圳金环怡投资有限公司
+http://dealer.bitauto.com/100034882/?leads_source=p036001
+
+
+深圳金环怡投资有限公司
+http://www.qiche4s.cn/100034882/
+
+
+深圳共有11家比亚迪1.龙南比亚迪，在龙华清湖路口那里2.恒泰昌比亚迪，在龙华汽车站对面3.盛世开元比亚迪，在坂田4.湛宝比亚迪，在龙岗信义汽车城，地铁荷坳站5.泽然浩比亚迪，在南联地铁站附近6.盛世开元比亚迪，福田卓越世纪中心一楼7.金环怡比亚迪，在西乡固戍村8.粤迪比亚迪，在南山嘉进隆汽车城内9.东盛比亚迪，在松岗107国道上159号10.三维都灵比亚迪，在香蜜湖联合汽车城内11.浩迪比亚迪，在坪山比亚迪路上以上均属于正规4S店，大家可放心购买
+https://zhidao.baidu.com/question/1693399855042080988.html
+
+
+比亚迪经销商
+http://dealer.bitauto.com/shenzhen/bydauto/?WT.mc_id=bdaldd
+
+
+长安逸动PHEV配置曝光 10月19日正式上市
+http://auto.qq.com/a/20171019/004279.htm
+
+
+第五名：逸动PHEV
+http://www.sohu.com/a/155005946_383172
+
+
+插电式混合动力汽车（Plug-in hybrid electric vehicle，简称PHEV）是新型的混合动力电动汽车。
+https://baike.baidu.com/item/%E6%8F%92%E7%94%B5%E5%BC%8F%E6%B7%B7%E5%90%88%E5%8A%A8%E5%8A%9B%E6%B1%BD%E8%BD%A6/1401595?fr=aladdin
+
+
+
+授权经销商：
+
+深圳金环怡（地址：深圳市宝安区西乡街道107国道固戍路口）
+
+深圳粤迪（地址：深圳市南山区月亮湾大道新濠汽车广场B1号）
+
+龙南汽车贸易（地址：宝安区龙华镇龙观大道清湖路口加油站左侧）
+
+深圳恒泰昌（地址：深圳市龙华汽车站对面）
+
+都灵三维（地址：深圳市福田区香蜜湖联合华鹏汽车交易广场B3-2） 
+
+
+
+
+小编简单介绍纯电动汽车和一般汽车的区别：
+　　1.行驶里程，电动汽车理论上一次充电行驶150KM左右；而一般汽车1次加油的可以行驶300KM
+　　2.极速充电需要30分钟；加油站加油只需要5分钟
+　　3.电价便宜，使用成本低；油价较高，使用成本高
+　　4.充电站不足；加油站很多
+　　5．电动汽车无排放污染；一般汽车排出有害气体
+　　6.在有政府补贴的前提下，同一款汽车电动版还是普遍都比普通版贵 
+http://bbs.szhome.com/470-470010-detail-172379718-2163499-0-1.html
+
+石岩街道邮政区码518108
+
+宏碁笔记本电脑字母键怎么变成数字键了？
+切换，按fn加f11键。
