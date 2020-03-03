@@ -98,6 +98,8 @@ protected:
 	int GetIndex;
 	int GetIndex_bak;
 
+	BOOL InitClistGetHead;
+
 	CPoint m_indexOfCell;
 
 	NM_LISTVIEW*   dlg_pNMListView;

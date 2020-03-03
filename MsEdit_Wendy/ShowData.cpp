@@ -12,6 +12,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define FUNC_DECL(factory_name) DECL_##factory_name
+
 /////////////////////////////////////////////////////////////////////////////
 // CShowData dialog
 
@@ -37,7 +39,6 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 
 	GetIndex = 0;
 	GetIndex_bak = 0;
-
 	
 	memset(string,0,sizeof(char)*25);
 	memset(GroupCodeString,0,sizeof(char)*3);
@@ -50,6 +51,8 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 	//memset(StatusBar_fileinfo,0,sizeof(char)*128);
 
 	m_filesize = 0;
+
+	InitClistGetHead = FALSE;
 
 }
 
@@ -122,6 +125,20 @@ int CShowData::op_TransCode(_tagTTDataFrame *pStFrame)
 	}
 }
 
+void FUNC_DECL(FactoryA) (void)
+{
+	int i, j;
+	i = 0;
+	j = 1;
+}
+
+void FUNC_DECL(FactoryB) (void)
+{
+	int i, j;
+	i = 0;
+	j = 1;
+}
+
 int CShowData::op_time(_tagTTDataFrame *pStFrame)
 {
 	int strtime_count = pME_WD->m_time.GetLength();
@@ -187,6 +204,9 @@ int CShowData::op_time(_tagTTDataFrame *pStFrame)
 
 int CShowData::op_delay(_tagTTDataFrame *pStFrame)
 {
+	DECL_FactoryA();
+	DECL_FactoryB();
+	
 	if (pME_WD->m_delay.GetLength() == 0)
 	{
 		noselcode = TRUE;
@@ -211,6 +231,12 @@ void CShowData::OnTimer(UINT nIDEvent)
 	TRACE("SetTimer...\n");
 
 	WaitForSingleObject(g_hEvent, INFINITE);
+
+	if (InitClistGetHead == FALSE)
+	{
+		ps = mCListDataFrame.GetHeadPosition();  // wendy
+		InitClistGetHead = TRUE;
+	}
 
 	frame_e_count = mCListFrame_e.GetCount();
 	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
@@ -392,8 +418,6 @@ BOOL CShowData::OnInitDialog()
 
 	pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
 	
-	ps = mCListDataFrame.GetHeadPosition();
-
 	SetTimer( 1, 1000, NULL ) ;
 
 	frame_e_count = mCListFrame_e.GetCount();
@@ -538,13 +562,13 @@ void CShowData::OnMenuitemInfo()
 void CShowData::OnMenuitemCopy() 
 {
 	// TODO: Add your command handler code here
-		char strCellText[100];
-		strCellText[0] = NULL;
-		m_list_data.GetItemText(m_indexOfCell.x,m_indexOfCell.y,strCellText,100);
-		m_ctrlEditCell.SetWindowText(_T(strCellText));//取得指定单元格里的数据，显示在编辑框里
-		m_ctrlEditCell.ShowWindow(FALSE);
-		m_ctrlEditCell.SetSel(0,-1);
-		m_ctrlEditCell.Copy();
+	char strCellText[100];
+	strCellText[0] = NULL;
+	m_list_data.GetItemText(m_indexOfCell.x,m_indexOfCell.y,strCellText,100);
+	m_ctrlEditCell.SetWindowText(_T(strCellText));//取得指定单元格里的数据，显示在编辑框里
+	m_ctrlEditCell.ShowWindow(FALSE);
+	m_ctrlEditCell.SetSel(0,-1);
+	m_ctrlEditCell.Copy();
 }
 
 void CShowData::OnBtnTimer() 
