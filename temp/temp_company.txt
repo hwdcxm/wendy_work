@@ -1,3 +1,459 @@
+const关键字及其作用（用法），C语言const详解
+http://c.biancheng.net/view/217.html
+说 const 定义的是变量，但又相当于常量；说它定义的是常量，但又有变量的属性，所以叫常变量。用 const 定义常变量的方法很简单，就在通常定义变量时前面加 const 即可，如：const  int  a = 10;
+const 和变量类型 int 可以互换位置，二者是等价的，即上条语句等价于：
+int  const  a = 10;
+
+用 const 定义的变量的值是不允许改变的，即不允许给它重新赋值，即使是赋相同的值也不可以。所以说它定义的是只读变量。这也就意味着必须在定义的时候就给它赋初值。用 const 修饰的变量，无论是全局变量还是局部变量，生存周期都是程序运行的整个过程。
+
+我们知道，局部变量存储在栈中，静态变量存储在静态存储区中，而经过 const 修饰过的变量存储在内存中的“只读数据段”中。只读数据段中存放着常量和只读变量等不可修改的量。const定义的是变量，而define定义的是常量。define定义的宏在编译后就不存在了，它不占用内存，因为它不是变量，系统只会给变量分配内存。但const定义的常变量本质上仍然是一个变量，具有变量的基本属性，有类型、占用存储单元。可以说，常变量是有名字的不变量，而常量是没有名字的。有名字就便于在程序中被引用，所以从使用的角度看，除了不能作为数组的长度，用const定义的常变量具有宏的优点，而且使用更方便。所以编程时在使用const和define都可以的情况下尽量使用常变量来取代宏。
+
+
+C语言中const用法解析
+https://blog.csdn.net/he__yuan/article/details/81607804
+一、修饰局部变量
+二、常量指针与指针常量
+常量指针说的是不能通过这个指针改变变量的值，但是还是可以通过其他的引用来改变变量的值的。
+int a=5;
+const int* n=&a;
+a=6;
+(常量指针指向的值不能改变x)，但是这并不是意味着指针本身不能改变，常量指针可以指向其他的地址。
+int a=5;
+int b=6;
+const int* n=&a;
+n=&b;
+指针常量是指指针本身是个常量，不能在指向其他的地址，写法如下：
+int *const n;
+需要注意的是，指针常量指向的地址不能改变，但是地址中保存的数值是可以改变的，可以通过其他指向改地址的指针来修改。
+int a=5;
+int *p=&a;
+int* const n=&a;
+*p=8;
+区分常量指针和指针常量的关键就在于星号的位置，我们以星号为分界线，如果const在星号的左边，则为常量指针，如果const在星号的右边则为指针常量。如果我们将星号读作‘指针’，将const读作‘常量’的话，内容正好符合。int const * n；是常量指针，int *const n；是指针常量。
+
+是以上两种的结合，指针指向的位置不能改变并且也不能通过这个指针改变变量的值，但是依然可以通过其他的普通指针改变变量的值。
+const int* const p;
+三、修饰函数的参数
+四、修饰函数的返回值
+五、修饰全局变量
+
+
+int main(int argc,char*argv[])中argc/argv怎么填写 [问题点数：40分，结帖人zoueryu]
+https://bbs.csdn.net/topics/390939712
+在IDE中：
+VC6：
+ 工程、设置、Debug、U程序变量：填写命令行参数。
+VS20XX：
+ 项目、属性、配置属性、调试、命令参数：填写命令行参数。
+
+在使用时：
+cmd窗口中执行命令：
+cd /d 你的程序所在盘符和目录
+你的程序 参数1 参数2 "参数 3"
+
+快捷方式、属性、目标：你的程序 参数1 参数2 "参数 3"
+
+相关注册表项：你的程序 参数1 参数2 "参数 3"
+
+百里挑一
+
+关于int main( int argc, char* argv[] ) 中arg和argv参数的解析及调试
+https://blog.csdn.net/dgreh/article/details/80985928
+一、argc、argv的具体含义 
+        argc和argv参数在用命令行编译程序时有用。main( int argc, char* argv[], char **env ) 中 
+        第一个参数，int型的argc，为整型，用来统计程序运行时发送给main函数的命令行参数的个数，在VS中默认值为1。 
+        第二个参数，char*型的argv[]，为字符串数组，用来存放指向的字符串参数的指针数组，每一个元素指向一个参数。各成员含义如下： 
+        argv[0]指向程序运行的全路径名 
+        argv[1]指向在DOS命令行中执行程序名后的第一个字符串 
+        argv[2]指向执行程序名后的第二个字符串 
+        argv[3]指向执行程序名后的第三个字符串 
+        argv[argc]为NULL 
+        第三个参数，char**型的env，为字符串数组。env[]的每一个元素都包含ENVVAR=value形式的字符串，其中ENVVAR为环境变量，value为其对应的值。平时使用到的比较少。
+#include <stdio.h>
+using namespace std;
+int main(int argc, char ** argv)
+{
+    int i;
+    for (i = 0; i < argc; i++)
+        printf("Argument %d is %s\n", i, argv[i]);
+    return 0;
+}
+
+
+C语言中的可变参数函数 三个点“…”
+https://www.cnblogs.com/sticker/p/9988237.html
+问题：运行时才确定的参数 
+　　有没有办法写一个函数，这个函数参数的具体形式可以在运行时才确定？ 
+　　答案与分析： 
+　　目前没有"正规"的解决办法，不过独门偏方倒是有一个，因为有一个函数已经给我们做出了这方面的榜样，那就是main()，它的原型是: 
+int main(int argc,char *argv[]); 
+函数的参数是argc和argv。 
+
+C语言学习小结--参数个数可变的函数
+https://blog.csdn.net/mr_bean_1031/article/details/75912050
+观察printf函数的原型，除了一个指向字符型常量地址（刚好是字符串常量的类型）的指针外，还有一个省略号，问题就出在这里。
+与可变参数表相关的头文件是标准C库头文件”stdarg.h”，表示standard arguments（标准参数），找到里面几个用到的宏：
+
+宏名称	描述	兼容
+va_list	创建一个va_list类型变量	C89
+va_start(v,l)	使va_list指向起始的参数	C89
+va_arg(v,l)	检阅参数	C89
+va_end(v,l)	释放va_list	C89
+va_copy(v,s)	拷贝va_list的内容	C99
+设一个可变参数表函数void func(int a, ...)。在使用可变参数表前，必须用va_list定义一个变量（假设变量名为ap），然后调用va_start(v,l)令ap指向该参数表的起始地址，va_start的第一个参数是va_list类型的变量ap，第二个参数是省略号前最后一个变量的变量名，初始化完成后就可以调用va_arg(v,l)依次检索参数了。va_arg的第一个参数是va_list类型的变量ap，第二个参数是将要检索的变量的类型名（如int，其本质是在内存中截取int长即2字节的数据赋给返回值后ap指向2字节以后的地址）。在检索完所有的参数后必须调用va_end(v)，使ap指向NULL（空指针），避免越界访问的问题。C99提供额外的宏”va_copy”，它能够复制va_list。而va_copy(v ,s)函数作用为拷贝s到v。
+
+#include <stdio.h>
+#include <stdarg.h>
+/*用于测试可变参量表的打印函数，仅调用了putchar(int)函数*/
+void print_test(char *string, ...);
+/*将整数转换成字符串，value为输入的整形变量，s保存转换结果，radix = 10表示十进制，其他输出NULL*/
+static char* inter2string(int value, char *s, int radix);
+int main()
+{
+    int a = -67;
+    char st[6];
+    inter2string(a, st, 10);
+    printf("%s\n", st);
+    print_test("Tell me %s teleph%cne number:-n153 1418 %d-r188-n", "your", 'o', 1234);
+    return 0;
+}
+/*--------------------------------------
+  examples:
+  print_test("%d.Sunny-r-nHello", inter);
+---------------------------------------*/
+void print_test(char *string, ...)
+{
+    int a;   //用来接收整形变量 
+    char iTos[6];  //用来存放字符串型整数 
+    char *c = string;  //避免直接使用string，导致string指向的地址发生变化 
+    const char *s;  //用来指向指针常量，即字符串 
+    va_list ap;  //定义一个va_list类型变量ap
+    va_start(ap, string);  //初始化va，使va指向string的下一个地址 
+    while(*c != '\0')
+    {
+        if(*c == '-')  //'-'，自定义的转义字符起始符 
+        {
+            switch(*++c)
+            {
+                case 'n':
+                    putchar('\n');
+                    break;
+                case 'r':
+                    putchar('\r');
+            }
+        } 
+        else if(*c == '%')  //格式控制符 
+        {
+            switch(*++c)
+            {
+                case 'd':
+                    a = va_arg(ap, int);  //检索变量
+                    inter2string(a, iTos, 10);
+                    for(s = iTos; *s != '\0'; s++)
+                        putchar(*s);
+                    break;
+                case 'c':
+                    a = va_arg(ap, char);
+                    putchar(a);
+                    break;
+                case 's':
+                    s = va_arg(ap, const char*);
+                    while(*s != '\0')
+                        putchar(*s++); 
+            }
+        }
+        else
+        {
+            putchar(*c);
+        }
+        c++;  //指向下一个地址 
+    }
+    va_end(ap);   //不要忘记关闭ap
+}
+
+谁能详细讲解一下参数数量可变的函数 [问题点数：100分，结帖人earlier]
+https://bbs.csdn.net/topics/60179018
+我来抛砖引玉^_^
+va_list是一种用来保存宏va_start,va_arg,va_end需要信息的数据类型，也就说要调用这几个宏就必须先申请一个va_list类型的数据
+void va_start( va_list ap, argN ),该宏要在访问被省略的参数(就是...代表的部分啦)前调用，这样就初始化了ap，供后面的va_arg,va_end使用，而argN就是...之前的哪个参数啦
+va_arg( va_list ap, type ),这个宏就是从被省略的部分的第一参数开始往后去参数，每调用一次就取得一个参数，ap就是va_start初始化的ap，type就是取得参数的类型，如果type与函数调用提供的参数类型不一致，结果不可预知
+
+const
+
+想睡时，动脑筋？
+
+C 可变参数
+https://www.runoob.com/cprogramming/c-variable-arguments.html
+请注意，函数 func() 最后一个参数写成省略号，即三个点号（...），省略号之前的那个参数是 int，代表了要传递的可变参数的总数。为了使用这个功能，您需要使用 stdarg.h 头文件，该文件提供了实现可变参数功能的函数和宏。
+定义一个函数，最后一个参数为省略号，省略号前面可以设置自定义参数。
+在函数定义中创建一个 va_list 类型变量，该类型是在 stdarg.h 头文件中定义的。
+使用 int 参数和 va_start 宏来初始化 va_list 变量为一个参数列表。宏 va_start 是在 stdarg.h 头文件中定义的。
+使用 va_arg 宏和 va_list 变量来访问参数列表中的每个项。
+使用宏 va_end 来清理赋予 va_list 变量的内存。
+
+
+C语言_宏定义
+https://blog.csdn.net/qq_41865229/article/details/86746707
+#ifndef xxx //如果没有定义xxx
+#define xxx //定义xxx
+#endif //结束如果
+“##”是一种分隔连接方式，它的作用是先分隔，然后进行强制连接。
+宏参数中若包含另外的宏，那么宏参数在被代入到宏体之前会做一次完全的展开，除非宏体中含有#或##。
+
+有如下宏定义：
+
+#define A(y) X_##y
+#define B(y) A(y)
+#define SIZE 1024
+#define S SIZE
+1
+2
+3
+4
+A(S)会被展开成X_S。因为宏体中含有##，宏参数直接代入宏体。
+B(S)会被展开成X_1024。因为B(S)的宏体是A(S)，并没有#或##，所以S在代入前会被完全展开成1024，然后才代入宏体，变成X_1024。
+
+BOOL CLog::RawLogExt( LPCTSTR pszFormat, ... ) 
+{
+    char buf[1024*2] = "" ;
+	va_list arglist;
+	va_start(arglist, pszFormat);
+    _vsnprintf( buf, 2048, pszFormat, arglist);
+	va_end(arglist);
+
+	return RawLog( buf ) ;
+	
+}
+
+C语言中宏定义的使用
+https://blog.csdn.net/imgosty/article/details/81901183#1-%E5%BC%95%E8%A8%80
+C 语言提供的预处理功能有三种,分别为==宏定义==、文件包含和条件编译。
+在 C 语言中,宏分为 有参数和无参数两种。无参宏的宏名后不带参数,其定义的一般形式为:
+// 不带参数的宏定义
+#define MAX 10
+/*带参宏定义*/
+#define M(y) y*y+3*y
+/*宏调用*/
+k=M(5);
+宏定义只有在定义所在文件，或引用所在文件的其它文件中使用。 而全局变量可以在工程所有文件中使用，只要再使用前加一个声明就可以了。换句话说，宏定义不需要extern。
+使用带参数的宏定义可完成函数调用的功能，又能减少系统开销，提高运行效率。
+宏定义可完成简单的操作，但复杂的操作还是要由函数调用来完成，而且宏定义所占用的目标代码空间相对较大。
+宏的定义很容易产生二义性，如：定义==#define S(a) (a)*(a)==，代码==S(a++)==，宏展开变成==(a++)*(a++)==这个大家都知道，在不同编译环境下会有不同结果。
+函数体内有Bug，可以在函数体内打断点调试。如果宏体内有Bug，那么在执行的时候是不能对宏调试的，即不能深入到宏内部。
+C++中宏不能访问对象的私有成员，但是成员函数就可以。
+内联函数和宏的区别在于，==宏是由预处理器对宏进行替代 #80001e==，而==内联函数是通过编译器控制来实现的 #80000f==。而且内联函数是真正的函数，只是在需要用到的时候，内联函数像宏一样的==展开==，所以取消了函数的参数压栈，减少了调用的开销。可以象调用函数一样来调用内联函数，而不必担心会产生于处理宏的一些问题。
+
+内联函数也有一定的局限性。就是函数中的执行代码不能太多了，如果，内联函数的函数体过大，一般的编译器会放弃内联方式，而采用普通的方式调用函数。这样，内联函数就和普通函数执行效率一样了。
+对宏体和给引用的每个参数加括号，就能避免这问题。
+通过==do{…}while(0) #80001e==能够解决上述问题
+ 宏参数重复调用
+有如下宏定义：
+
+#define min(X, Y)  ((X) < (Y) ? (X) : (Y))
+1
+当有如下调用时==next = min (x + y, foo (z));==，宏体被展开成==next = ((x + y) < (foo (z)) ? (x + y) : (foo (z)));==，可以看到，foo(z)有可能会被重复调用了两次，做了重复计算。更严重的是，如果foo是不可重入的(foo内修改了全局或静态变量)，程序会产生逻辑错误。
+对自身的递归引用
+有如下宏定义：
+
+#define foo (4 + foo)
+1
+按前面的理解，==(4 + foo)==会展开成==(4 + (4 + foo))==，然后一直展开下去，直至内存耗尽。但是，预处理器采取的策略是只展开一次。也就是说，foo只会展开成==4 + foo==，而展开之后foo的含义就要根据上下文来确定了。
+
+对于以下的交叉引用，宏体也只会展开一次。
+
+#define x (4 + y)
+#define y (2 * x)
+1
+2
+x展开成(4 + y) -> (4 + (2 * x))，y展开成(2 * x) -> (2 * (4 + y))。
+
+注意，这是极不推荐的写法，程序可读性极差。
+在宏体中，如果宏参数前加个#，那么在宏体扩展的时候，宏参数会被扩展成字符串的形式。如：
+#include <stdio.h>
+
+
+#define PSQR(x) printf("the square of "#x" is %d.\n",((x)*(x)))
+
+#define PSQR2(x) printf("the square of %s is %d.\n",#x,((x)*(x)))
+
+
+int main() 
+{
+    
+int R=5;
+
+    
+PSQR(R);  //the square of R is 25.
+    
+PSQR2(R); // the square of R is 25.
+
+    
+return 0;
+
+}
+
+#include "stdafx.h"
+#define PSQR(x) printf("the square of #x is %d.\n",((x)*(x)))
+#define PSQR2(x) printf("the square of %s is %d.\n",#x,((x)*(x)))
+#define WARN_IF(EXPR)\
+do {\
+    if (EXPR)\
+        fprintf(stderr, "Warning: EXPR \n");\
+} while(0)
+
+int main(int argc, char* argv[])
+{
+	int R=5;
+	printf("Hello World!\n");
+	PSQR(R);  //the square of R is 25.
+    	PSQR2(R); // the square of R is 25.
+	WARN_IF(R>0);
+ 	return 0;
+}
+
+可变宏：… 和_VA_ARGS
+有些函数(如==prinft() #06906d==)可以接受可变数量的参数。
+
+  int __cdecl printf(const char * __restrict__ _Format,...);
+1
+实现思想就是在宏定义中参数列表的最后一个参数作为省略号（三个句号）。这样，预定义宏_VA_ARGS就可以被用在替换部分中，以表明省略号代表什么，
+
+可变数量的参数
+
+   __FUNTION__  获取当前函数名 
+    __LINE__ 获取当前代码行号 
+    __FILE__ 获取当前文件名 
+    __DATE__ 获取当前日期 
+    __TIME__ 获取当前时间
+    __STDC_VERSION__
+
+
+易中天：别望子成龙，要望子成人 
+https://www.sohu.com/a/60126055_356623
+第二是善良。善良不是说要你到街头去做什么义工，或者学雷锋的那天去扶老太太过街。善良的底线是恻隐之心。恻隐之心就是不忍之心，不忍心人家受到
+
+无辜的伤害，包括对小动物。所以不但不能行凶杀人，也不能虐待小动物。我们要在法律上保证公民的恻隐之心不受伤害。
+第四个就是快乐。快乐是非常重要的。在孔夫子那里，做人的最高境界是仁，做事的最高境界是权（权衡），治学的最高境界是乐。知之者不如好之者，好之者不如乐之者，快乐是最高的境界。其实人很简单，成功不成功，是否出人头地，是否光宗耀祖，都不重要，重要的是你是否快乐。
+比方说现在为什么千军万马过独木桥，大家都要去考公务员呢？我非常同情大学生毕业以后挤破脑袋去考公务员，虽然我不赞成，但是我非常理解非常同情，他缺乏的是安全感。
+有一个农村来的孩子就这样对记者说的，我也不想考公务员，但是我爸我妈让我考。我爸我妈说，孩子，你要考上公务员，咱在村里就不受欺负了。他要的就是一个安全感。
+所以我们的社会应该给每个公民提供足够的安全感，让每个公民有足够的尊严，不管他从事哪个职业，不管他在哪个岗位上，他都是一个安全的、有尊严的人，这样他才能快乐。
+
+美卫生局局长说戴口罩会增加普通人感染风险，呼吁民众停止购买
+https://new.qq.com/omn/20200303/20200303A021A300.html?pgv_ref=aio2015&ptlang=2052
+
+source insight的特定变量,宏定义等黑色,怎么办
+//public:  //注释掉这个关键字即可.
+或 隔离public 十个空白行以上即可(v ok)
+
+微信娱乐看太多，影响计划看书.
+
+2020.03.03
+
+C语言中宏定义的使用
+https://blog.csdn.net/imgosty/article/details/81901183?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+
+C语言中宏定义的使用
+https://blog.csdn.net/imgosty/article/details/81901183
+
+
+C语言宏定义的几个坑和特殊用法
+https://blog.csdn.net/qq997843911/article/details/62042697
+宏体换行需要在行末加反斜杠\
+宏名之后带括号的宏被认为是宏函数。
+展开后的代码有利于CPU cache的利用和指令预测，速度快。缺点是可执行代码体积大。
+
+C语言宏的特殊用法和几个坑
+https://blog.csdn.net/miaomao1989/article/details/77481981
+AFTERX(BUFSIZE)会被展开成X_BUFSIZE。因为宏体中含有##，宏参数直接代入宏体。
+XAFTERX(BUFSIZE)会被展开成X_1024。因为XAFTERX(x)的宏体是AFTERX(x)，并没有#或##，所以BUFSIZE在代入前会被完全展开成1024，然后才代入宏体，变成X_1024。
+
+
+如下解决在在source insight中，一般即使鼠标点在函数或者变量处，context windows窗口就会显示其定义信息。
+其中绿色的变量或者函数，鼠标一点击，就能看到其定义。黑色的则看不到的问题(v ok)
+
+D:\Program Files\Source Insight 3\C.tom
+; wendy add
+FUNC_DECL(factory_name) DECL_##factory_name
+
+E:\wendy_work\MsEdit_Wendy\ShowData.cpp
+#define FUNC_DECL(factory_name) DECL_##factory_name
+...
+void FUNC_DECL(FactoryA) (void)
+{
+	int i, j;
+	i = 0;
+	j = 1;
+}
+
+void FUNC_DECL(FactoryB) (void)
+{
+	int i, j;
+	i = 0;
+	j = 1;
+}
+...
+int CShowData::op_delay(_tagTTDataFrame *pStFrame)
+{
+	DECL_FactoryA();
+	DECL_FactoryB();
+...
+}
+
+Source Insight解析Linux内核的c.tom文件内容
+https://blog.csdn.net/nust20/article/details/46486947?locationNum=4
+在C:\Documents and Settings\XXXX\My Documents\Source Insight目录下的C.tom文件中增加如下内容（需要不断完善，碰到不能解析的宏时添加进来）。
+添加后，关闭SourceInsight工程，重新打开，重新同步。
+
+
+source insight宏定义函数名显示问题 [问题点数：50分]
+https://bbs.csdn.net/topics/392500161
+本义是一套代码工程内，有多个模块功能类似，但是函数名不同，为了便于快速批量修改函数名，增加了这个宏定义。
+这样修改函数名，只需要修改FUNC_DECL宏就行了，即针对T模块，把FUNC_DECL改成： FUNC_DECL(name) T_##name
+这样改，编译是通过了，但是在source insight里面，显示不出函数名，如何才能显示出函数名全称，即能够包含模块名称的？
+Source Insigh目录，其中有一个C.tom文件。修改该文件，在其中增加一行：
+FUNC_DECL
+试试
+
+Source Insight 不能识别变量定义怎么解决？ [问题点数：40分，无满意结帖，结帖人Swordsemperor]
+https://bbs.csdn.net/topics/392276081?page=1
+解决了，因为类声明后面加了个宏定义 SHIT
+
+source insight的特定变量,宏定义等黑色,怎么办
+//public:  //注释掉这个关键字即可.(v ok)
+
+/*
+!% 
+!?CChartingGroup.m_groupCode		[.] 类CChartingGroup属性: 市场代码
+*/
+	BYTE			m_groupCode ;	
+
+https://zhidao.baidu.com/question/572897720.html
+菜单中选择 Project -> Rebuild Project -> Re-Create the whole project from scratch -> OK
+然后再看看是否好了.
+
+在source insight中黑色变量的解决办法
+https://blog.csdn.net/sishuirensheng66/article/details/35280513
+在source insight中，一般即使鼠标点在函数或者变量处，context windows窗口就会显示其定义信息。
+如下图所示，其中绿色的变量或者函数，鼠标一点击，就能看到其定义。
+黑色的则看不到，可是我的这里面黑色的占了很大一部分比重.
+解决方法：
+没有同步文件，在“项目”（Project）->“同步文件”（Synchronize Files）。并勾1、2和4项，然后OK。就可以了
+
+
+source insight 里的函数有时候会突然变黑
+https://blog.csdn.net/chen_chuang_/article/details/48462615?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+找到原因了方法自然就有了：project -> add and remove project files 重新把整个工程的代码添加下，然后同步。ok。
+
+2020.03.02
+
+天眼查
+https://www.tianyancha.com/?jsid=SEM-BAIDU-PZ2001-SY-000001
+浙江省义乌市廿三里街道通宝路1341号附近公司
+实缴资本	100万人民币
+法定代表人：杨秋兴 注册资本：100万人民币成立日期：2012-03-13
+翁易华
+
+
 开机黑屏只有鼠标,小编教你电脑开机黑屏只有鼠标箭头怎么解决
 http://www.xiaobaixitong.com/win10jiaocheng/25651.html
 电脑黑屏是比较容易出现的现象，尤其在一些较老的电脑或组装电脑中。如果你的电脑开机出现了黑屏，但是鼠标箭头可以动，那么可能就是explorer.exe系统文件造成的问题。
