@@ -1,3 +1,751 @@
+MsEditDlg.cpp
+
+#include "ReadMds.h"
+#include "log.h"
+#include "Master.h"
+#include "DataFile.h"
+
+BOOL g_SendFilePause = FALSE;
+CLog g_Log;
+Master g_Master;
+extern CString logstr;
+
+stdafx.h
+https://baike.baidu.com/item/stdafx.h/10326842?fr=aladdin
+stdafx的英文全称为：Standard Application Framework Extensions（标准应用程序框架的扩展）。 [1]
+编译器通过一个头文件stdafx.h来使用预编译头文件。stdafx.h这个头文件名是可以在project的编译设置里指定的。编译器认为，所有在指令#include "stdafx.h"前的代码都是预编译的，它跳过#include "stdafx. h"指令，使用projectname.pch编译这条指令之后的所有代码。
+因此，所有的MFC实现文件第一条语句都是：#include "stdafx.h"。在它前面的所有代码将被忽略，所以其他的头文件应该在这一行后面被包含。否则，你将会得到“No such file or directory”这样让你百思不得其解的错误提示。 [2] 
+
+名称的英文全称为：Standard Application Fram Extend 
+stdafx的英文全称为：Standard Application Framework Extensions（标准应用程序框架的扩展）。 [1]
+
+可以看到有3个选项：【创建预编译头】、【使用预编译头】和【不使用预编译头】。
+
+stdafx.cpp肯定选择的是【创建预编译头】
+
+============================================================================
+
+再右击Test.cpp文件，选择【属性】-【C/C++】-【预编译头】-【创建/使用预编译头】
+
+可见，它选择的是【使用预编译头】，下面选的文件是StdAfx.h文件，最下面指明的是pch文件的路径
+
+
+请问c++中的#include "stdafx.h"是什么意思？
+https://blog.csdn.net/lijun5635/article/details/13090341/
+编译器认为，所有在指令#include "stdafx.h"前的代码都是预编译的，它跳过#include "stdafx. h"指令，使用projectname.pch编译这条指令之后的所有代码。 因此，所有的MFC实现文件第一条语句都是：#include "stdafx.h"。
+当VisualC++编译随后的每个.cpp文件时，它阅读并使用它刚生成的.pch文件。VisualC++不再分析Windowsinclude文件，除非你又编辑了stdafx.cpp或stdafx.h。 
+这个技术很精巧，你不这么认为吗？(还要说一句，Microsoft并非是首先采用这种技术的公司，Borland才是。)在这个过程中你必须遵守以下规则： 
+当我们使用AppWizard来自动生成某些项目的时候,系统会自动把所需要include的头文件在stdafx.h中先include一下,这样,我们只需要直接include这个stdafx.h文件即可
+4 与stdio.h的区别
+我们一般用TC或vc编译C程序的时候都要首先包含这个stdio.h头文件，这个头文件里面包含了scanf和printf函数的定义，如果我们不在程序开头include这个文件，那么你调用上面这两个函数就不会成功，它其实和c++中的iostream.h文件的作用差不多的，它们一般都已经在stdafx.h文件中被包含。
+
+stdafx.h
+所谓头文件预编译，就是把一个工程(Project)中使用的一些MFC标准头文件(如Windows.H、Afxwin.H)预先编译，以后该工程编译时，不再编译这部分头文件，仅仅使用预编译的结果。这样可以加快编译速度，节省时间。
+预编译头文件，把不太变的头文件包含进去，这样以后编译的时候只用编译一次，不变化就不需要重新编译了
+如果你的项目设置了“使用预编译头(/Yu)”选项，那么项目中的任何cpp文件的最开头必须要#include stdafx.h，否则编译会出错的，你可以试试
+我发现自己养成了一个比较好的习惯，有关编程的事情，一定知其然知其所以然
+
+D:\softs\VC6免安装绿色版\VC6\Common\MSDev98\Bin\MSDEV.EXE (英文版)
+
+Standard Application Fram Extend  
+https://blog.csdn.net/mengxiangying504/article/details/4729413
+1.你编写的任何.cpp文件都必须首先包含stdafx.h。
+1.afxwin.h是MFC编程的必需文件，其中包含如CString，CEdit类运行所必需的头文件，最好保证该句在头文件首行；它还会调用windows.h，改头文件包含有数据类型的定义、API入口点定义和其它有用的参数信息；
+3.#define WIN32_LEANAND_MEAN，在windows的头文件中拒绝接受MFC类库，以加速编译时间；
+4.afx - afx中的af指的是Application Frame的缩写，曾经有一个技术开发团队专门作Application Frame，后来给这个团队命名用afx，x本身没有含义，只不过构成一个响亮的口号，后来就一直沿用下来。
+
+Fram Extend
+FRAM扩展
+
+stdio.h是什么意思？
+https://www.php.cn/faq/416714.html
+在C语言或C++中，会把用#include的文件的扩展名叫 .h，称其为头文件，stdio.h就是standard input output.header，也就是“标准输入输出头文件”。
+stdio.h文件的内容就是一些基本输入输出函数的声明，比如scanf()和printf()函数，你包含了stdio.h，就相当于声明了这些函数，所以你才可以在自己的程序中使用它们。
+stdio 就是指 “standard input & output"（标准输入输出）
+所以，源代码中如用到标准输入输出函数时，就要包含这个头文件。
+
+
+include stdafx.h 是什么意思
+https://zhidao.baidu.com/question/435733299951089524.html
+stdafx.h
+1名称的英文全称为：Standard Application Fram Extend
+
+#include "ReadMds.h"
+#include "DataFile.h"
+
+class CMsEditDlg : public CDialog
+{
+// Construction
+public:
+	CMsEditDlg(CWnd* pParent = NULL);	// standard constructor
+
+	ReadMds* readdlg;
+	DataFile* loaddlg;
+...
+CListBox	m_loglist;
+...
+	afx_msg void OnReadmds();
+	afx_msg void OnLoaddat();
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnDestroy();
+}
+
+CMsEditApp theApp;
+
+/////////////////////////////////////////////////////////////////////////////
+// CMsEditApp initialization
+
+BOOL CMsEditApp::InitInstance()
+{...
+	CMsEditDlg dlg;
+	m_pMainWnd = &dlg;
+	int nResponse = dlg.DoModal();
+...}
+
+
+MS.cpp (msedit):CMSApp theApp;
+MsEdit.cpp (msedit):CMsEditApp theApp;
+
+MsEdit.dsp
+
+*dlg *.dsp
+
+动手调试 E:\wen_test\hanota2 书写会理解得更好
+
+Please Input Num(>0) of Hanoto: Nun = 1
+main call hanoi at step cnt = 1
+Over cnt = 1 run_time=0.000571us
+
+Please Input Num(>0) = 2
+main call hanoi at step cnt = 2
+Over cnt = 3 run_time=0.000656us
+
+Please Input Num(>0) = 29
+main call hanoi at step cnt = 268435456
+Over cnt = 536870911 run_time=17.245971us
+
+Please Input Num(>0) = 30
+main call hanoi at step cnt = 536870912
+Over cnt = 1073741823 run_time=34.540466us
+
+Please Input Num(>0) = 35
+main call hanoi at step cnt = 17179869184
+Over cnt = 34359738367 run_time=1099.520271us
+
+Please Input Num(>0) = 36
+main call hanoi at step cnt = 34359738368
+Over cnt = 68719476735 run_time=2450.936066us
+
+Please Input Num(>0) =
+
+数位顺序表
+https://baike.baidu.com/item/%E6%95%B0%E4%BD%8D%E9%A1%BA%E5%BA%8F%E8%A1%A8/10065233?fr=aladdin
+正 10的四十次方
+载 10的四十四次方
+极 10的四十八次方
+恒河沙 代表的是10的五十二次方
+阿僧袛 代表的是10的五十六次方
+那由它 代表的是10的六十次方
+不可思议 代表的是10的六十四次方
+无量 代表的是10的六十八次方
+大数 代表的是10的七十二次方
+古戈尔 代表的是10的一百次方
+
+
+个十百千万是什么单位
+https://zhidao.baidu.com/question/1754804273950261028.html
+个十百千万是计数单位。
+我们常用的是十进制计数法，所谓“十进制”就是每相邻的两个计数单位之间的关系是：一个大单位等于十个小单位，也就是说它们之间的进率是“十”。
+
+计数单位依次为 个、十、百、千、万、十万、百万、千万、亿、十亿、百亿、千亿 、兆、十兆、百兆、千兆、京、十京、百京、千京、垓、十垓、百垓、千垓、秭、十秭、百秭、千秭、穰、十穰、百穰、千穰、沟、十沟、百沟、千沟、涧、十涧、百涧、千涧、正、十正、百正、千正、载、
+十载、百载、千载、极、十极、百极、千极、恒河沙、十恒河沙、百恒河沙、千恒河沙、阿僧祗、十阿僧祗、百阿僧祗、千阿僧祗、那由他、十那由他、百那由他、千那由他、不可思议、十不可思议、百不可思议、千不可思议、 无量大海、十无量大海、百无量大海、千无量大海、大数、十大数、百大数、千大数。
+
+个十百千万后面是什么
+https://zhidao.baidu.com/question/43316805.html
+个、十、百、千、万、十万、百万、千万、亿后面接着是十亿、百亿、千亿……
+数位表：
+兆：代表的是10的十二次方。
+
+京：代表的是10的十六次方。
+
+垓：代表的是10的二十次方。
+
+杼：代表的是10的二十四次方。
+
+穰：代表的是10的二十八次方。
+
+沟：代表的是10的三十二次方。
+
+涧：代表的是10的三十六次方。
+
+无量：代表的是10的六十八次方。
+
+大数：代表的是10的七十二次方。
+
+
+解决typedef unsigned long long DDWORD; 在VC下编译不过问题。
+C/C++的64位整型
+https://blog.csdn.net/scholety/article/details/22876417
+在C/C++中，64为整型一直是一种没有确定规范的数据类型。现今主流的编译器中，对64为整型的支持也是标准不一，形态各异。一般来说，64位整型的定义方式有long long和__int64两种(VC还支持_int64)，而输出到标准输出方式有printf(“%lld”,a)，printf(“%I64d”,a)，和cout << a三种方式。
+本文讨论的是五种常用的C/C++编译器对64位整型的支持，这五种编译器分别是gcc(mingw32)，g++(mingw32)，gcc(linux i386)，g++(linux i386)，Microsoft Visual C++ 6.0。可惜的是，没有一种定义和输出方式组合，同时兼容这五种编译器。为彻底弄清不同编译器对64位整型，我写了程序对它们进行了评测，结果如下表。
+
+
+vc6.0下64位整数_Int64的应用
+https://blog.csdn.net/abchcd/article/details/4552004
+vc6.0下是不能编译通过long long 的,
+欲用64位整型,可以加以下宏
+#if defined (_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS  >=  64
+typedef signed?? __int64??? int64; 
+typedef unsigned  __int64 uint64; 
+#else 
+#error  __int64?? type?? not?? supported?
+#endif 
+以下为输出
+printf("%I64d",test);
+
+
+_INTEGRAL_MAX_BITS
+
+C++编译器的预定义宏（WINDOWS版、LINUX版）
+http://www.sunyuping.cn/?p=121
+
+Visual C++从入门到实践(配光盘1张)
+作者: 葛亮
+
+Visual C++从入门到实践本书源文件
+https://download.csdn.net/download/u010565021/6566023
+
+2020.03.06
+
+计算64层汉诺塔需要多长时间？
+https://www.zhihu.com/question/48015041
+java,最下边有源码圆盘10  移动了1023次    结束时间-开始时间的毫秒数:  0(0-1之间)圆盘20  移动了1048575次   结束时间-开始时间的毫秒数:  2圆盘25  移动了33554431次  结束时间-开始时间的毫秒数:  39圆盘30  移动了1073741823次  结束时间-开始时间的毫秒数:  1386圆盘35  移动次数超出int最大值...(34359738367)  结束时间-开始时间的毫秒数:  38315圆盘40没有尝试,按照这个规律恐怕是在10分钟以上
+
+作者：天子第一号
+链接：https://www.zhihu.com/question/48015041/answer/917571616
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+对于汉诺塔问题最快的计算机需要多长时间？ [问题点数：20分，结帖人wangmin_yjitx]
+https://bbs.csdn.net/topics/30322935
+移动次数是2^64-1，约为16*10^18次。
+就算一次移动只需1个机器时间，按目前的万亿次计算机来算（当然啦！这种计算机你是没机会用的。），需要16*10^6秒，（一万亿是十的12次方），所以只要半年就可以了。
+
+但按慢的算，假如用P4 2.4GHz的CPU，每3个指令周期计算一步（访问一次内存就得3个指令周期），则需要2*10^10秒（2.4G/3是8*10^8），也就是634年。
+
+你说的10^9年（你记错了吧？应该是10^11年）是指僧侣搬盘子，按每秒搬一次计算，假如一天24小时，一年365天，不停地搬，需要5.85*10^11年。
+
+
+把google的分布式系统拿过来算这个，他们的速度可以达到10万亿亿次每秒（当然要改程序啦），30年大概可以计算10的31次方，所以可以计算100阶
+https://bbs.csdn.net/topics/60495261
+
+汉诺塔：移动64块需要多少时间
+在汉诺塔中，如果要移动60块的，至少要移动多少次才能完成，还有如果假设是一秒移动一次，那需要多少时间来完成？
+https://zhidao.baidu.com/question/562976303.html
+准确的来说是2的64次方减一次，584,942,417,355年26天7小时15秒
+移64层的汉诺塔需2^64 -1=18,446,744,073,709,551,615步
+如果是一秒一次的话，那么就是18,446,744,073,709,551,615秒。
+
+error C2632: 'long' followed by 'long' is illegal
+https://blog.csdn.net/shine1998/article/details/78701483
+原因：
+
+因为 VC6中所使用的编译器是C90标准的，而?long long 型是在C99中新加入的
+
+
+（longlong int双长整型是C 99扩充的数据类型，同时扩充的还有float_complex，double_complex，long
+
+long_complex，bool等），
+故无法实现编译。（——此答案搜索于百度）
+
+
+
+解决办法：
+
+将long long 用 _int64 进行替换。
+
+unsigned _int64 cnt;
+
+
+怎样定义较大的整数，比如1亿 [问题点数：100分]
+https://bbs.csdn.net/topics/392392631?page=1	
+定义longlong a,b,c.
+unsigned long long的最大值：1844674407370955161
+long long的最大值：9223372036854775807
+最小取值则是负数
+
+
+
+c语言中，int型数据，能表示的最大十进制数是多少
+https://zhidao.baidu.com/question/554665214323167252.html
+除了int类型之外，还有short、long、long long类型可以表示整数。
+
+
+c语言测试程序执行时间
+https://blog.csdn.net/qiuchenl/article/details/8276994
+
+C语言中如何看运行时间 [问题点数：20分]
+https://bbs.csdn.net/topics/320067672
+GetTickTime  该函数返回系统启动的时间,精确到毫秒
+
+C语言测试程序运行时间——高精度
+https://blog.csdn.net/ysz171360154/article/details/88086328
+
+C语言 计算/测程序运行时间（精确到微秒）
+https://blog.csdn.net/lizehao1973/article/details/85456872
+#include<stdio.h>
+#include <Windows.h>
+int main() {
+	int a[10002];
+	int i = 0;
+	double run_time;
+	LARGE_INTEGER time_start;	//开始时间
+	LARGE_INTEGER time_over;	//结束时间
+	double dqFreq;		//计时器频率
+	LARGE_INTEGER f;	//计时器频率
+	QueryPerformanceFrequency(&f);
+	dqFreq=(double)f.QuadPart;
+	QueryPerformanceCounter(&time_start);	//计时开始
+	for( i = 1; i <= 10000; i++)a[i]=i;	//要计时的程序
+	QueryPerformanceCounter(&time_over);	//计时结束
+	run_time=1000000*(time_over.QuadPart-time_start.QuadPart)/dqFreq;
+	//乘以1000000把单位由秒化为微秒，精度为1000 000/（cpu主频）微秒
+	printf("\nrun_time：%fus\n",run_time);
+	return 0;
+}
+
+
+我想知道我的一段C语言代码执行了多长时间(精确到0.01豪秒) [问题点数：50分，结帖人yyttrr2007]
+https://bbs.csdn.net/topics/350239336
+可以采取多次循环求平均
+#include<stdio.h>
+#include<time.h> 
+clock_t start = clock();
+for(int i = 0; i< 1000; i++)
+{
+.... yourfunction();
+}
+clock_t end = clock();
+
+yourtime = (end - start)/1000;
+这个肯定能精确到0.01ms
+
+
+ao3同文网站用本名写黄文
+肖战粉丝举报ao3 那些把同人当黄文的,
+写黄文的是肖战粉丝，阅读传播的是肖战粉丝，举报的是肖战粉丝，倒霉的是ao3
+https://bbs.hupu.com/32795021.html
+
+上百度查下就知道了，发的同人文章又黄又恶心，毒害青少年@阿文
+
+备注：AO3是全世界文人交流的平台，不做任何思想限制，随意发挥创作的一个平台，被称为文学界里面最后的乌托邦。
+H文我给大家推荐少妇白洁和《金鳞岂是池中物》，
+
+对于递归有没有什么好的理解方法？
+https://www.zhihu.com/question/31412436
+用数学代入法来理解就好。
+很简单，把式子展开即可：
+f(6)
+=> 6 * f(5)
+=> 6 * (5 * f(4))
+=> 6 * (5 * (4 * f(3)))
+=> 6 * (5 * (4 * (3 * f(2))))
+=> 6 * (5 * (4 * (3 * (2 * f(1)))))
+=> 6 * (5 * (4 * (3 * (2 * 1))))
+=> 6 * (5 * (4 * (3 * 2)))
+=> 6 * (5 * (4 * 6))
+=> 6 * (5 * 24)
+=> 6 * 120
+=> 720
+看到递归了吗？
+先递进，再回归——这就是「递归」。
+以上是 SICP 原文（有删改）。
+编辑于 2019-07-07
+https://www.zhihu.com/question/31412436/answer/738989709
+
+
+// hanota.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+//
+//int main(int argc, char* argv[])
+//{
+//	printf("Hello World!\n");
+//	return 0;
+//}
+
+#include <iostream>
+#include <cstdio>
+using namespace std;
+ 
+int cnt;
+ 
+void move(int id, char from, char to) // 打印移动方式：编号，从哪个盘子移动到哪个盘子
+{
+    printf ("step %d: move id=%d from %c->%c\n", ++cnt, id, from, to);
+}
+ 
+void hanoi(int n, char x, char y, char z)
+{
+    if (n == 0)
+        return;
+    hanoi(n - 1, x, z, y);
+    move(n, x, z);
+    hanoi(n - 1, y, x, z);
+}
+ 
+int main()
+{
+    int n;
+    cnt = 0;
+	printf ("Please Input Num(>0) of Hanoto: Nun = ");
+    scanf ("%d", &n);
+	while(n > 0)
+	{
+		hanoi(n, 'A', 'B', 'C');
+
+		printf ("\nPlease Input Num(>0) = ");
+		scanf ("%d", &n);
+		cnt = 0;
+	}
+    return 0;
+}
+
+
+陈情令
+
+肖战名下工作室均已注销, 代言产品遭网友抵制, 这是怕要凉凉啊!
+http://k.sina.com.cn/article_7132918298_1a927b21a00100m4ns.html
+
+肖战227事件怎么回事？王一博肖战著名711事件是什么
+http://www.hxnews.com/news/yule/202003/04/1867604.shtml
+
+
+肖战怎么了？全程回顾“227事件”，看他因何从顶红流量变成全民公敌？
+https://new.qq.com/omn/20200304/20200304A0D0V900.html
+事情至此，欧美、日韩、动漫、同人文、耽美等等圈子的创作者们揭竿而起，反对肖战粉丝举报创作平台，本来大家的圈地自萌，因为肖战粉丝按下的“举报”键，平衡彻底被打破，一场227圣战的起义，已经在各圈点燃火炬。
+
+
+汉诺塔问题——递归（时隔9个月，终于懂了）
+https://blog.csdn.net/qq_41705423/article/details/82025409
+
+汉诺塔
+https://baike.baidu.com/item/%E6%B1%89%E8%AF%BA%E5%A1%94/3468295?fr=aladdin
+
+2020.03.05
+
+C语言怎么把自定义头文件添加到函数库中
+https://zhidao.baidu.com/question/757998494001014524.html
+你可以把你的头文件复制到 stdio.h 所在的文件夹，并 修改 编译器自带的 stdio.h，
+在 stdio.h 的 尾部 加一句 #include 你开发的头文件名 即可。以后，凡使用 stdio.h 就自动有了 你开发的头文件了。
+这个操作很简单，但你要有管理员特权，才能修改stdio.h。
+如果 可以自己 写 #include ...; 你可以 把自己开发的 头文件写在 自己 的 一个文件夹。把自己的文件夹路径 加入到 环境变量 INCLUDE 中。例如文件夹路径是 d:\my_head 用 命令：
+set INCLUDE=%INCLUDE%;d:\my_head
+就可加入。 使用头文件 用 #include <my_some.h>
+my_some.h 是你开发的头文件之一，存放在 d:\my_head\ 下面。
+
+c语言中如何将自定义库导入到标准库中？ 100
+https://zhidao.baidu.com/question/385485520.html
+我没试过，这是从别的地方粘过来的，你试试看
+1,写文件“*.h”，文件“*.c”，文件.c中为函数实现；文件.h中为文件声明；
+2，把该函数编译为.dll的一个入口函数;
+3，提供*.lib,*.dll,*.h，三个文件；
+4，把*.dll放到Path目录下；
+5，把*.lib包含入工程，*.h，include到工程；
+6，可以使用你写的函数；
+什么编程软件？如果是Tc的话，把自定义的库放入库includ目录中，然后再程序中直接引用就成了，很简单.
+直接放到标准库所在的目录即可
+
+C语言中怎样把用户自定义的函数添加到标准函数库中？
+https://zhidao.baidu.com/question/11615498.html
+把你写的函数保存成*.h文件，用的时候再include
+找到系统标准函数库,在其中添加你的函数,当然这不是真的标准函数STDIO.H了
+
+C语言自定义库函数
+C 语言自定义库
+c语言中如何将自定义库导入到标准库中？
+用户函数加入到库函数
+
+常见排序算法
+https://baike.baidu.com/item/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/5399605#4
+
+各种排序算法性能比较
+https://www.cnblogs.com/alamps/p/8473815.html
+
+各种排序算法比较
+https://www.cnblogs.com/lizr-ithouse/p/5839384.html
+
+总结5种比较高效常用的排序算法
+https://blog.csdn.net/hl_java/article/details/72499914
+
+为什么快速排序比堆排序要快？
+https://blog.csdn.net/nawuyao/article/details/52729518
+
+八种排序算法效率比较
+https://blog.csdn.net/m372897500/article/details/51478136
+
+用cl工具编译MFC程序
+https://blog.csdn.net/weixin_34015860/article/details/91974225
+
+VC的编译器是cl.exe，这就是说调试器叫什么名字
+http://m.myexception.cn/vc-mfc/1313437.html
+调试器是devenv.exe。可以在命令行下使用，举例：Devenv.exe /debugexe MyApplication.exe
+其实devenv.exe也是IDE，devenv是开发环境的缩写
+两者没有分开
+
+使用cl.exe在windows控制台下编译C++程序
+https://blog.csdn.net/a10929/article/details/78171483?utm_source=blogxgwz1
+工具
+cl.exe 是控制 Microsoft C 和 C++ 编译器与链接器的 32 位工具。编译器将.cpp编译，生成中间代码目标文件(.obj)。链接器将目标文件链接，产生可执行文件 (.exe) 或动态链接库文件 (DLL)。
+
+link.exe 是将目标文件和库链接起来以创建 32 位可执行 (.exe) 文件或动态链接库 (DLL) 的 32 位工具。
+
+rc.exe 是将windows资源文件(.rc)编译成资源文件(.res),从而与目标文件链接，一般用于设置exe文件的图标和属性或者dll包含的资源。
+
+lib.exe是将目标文件链接生成静态库文件(.lib)，也可以用于生成dll的lib文件。
+
+环境配置
+那么这4个exe文件在哪个目录下呢？我的vs装在了E盘，然后我在 E:\vs2013\VC\bin 目录下找到了cl.exe，link.exe，lib.exe，但是没找到rc.exe，于是我在C盘看了看，结果在C:\Program Files (x86)\Windows Kits\8.1\bin\x64 目录下找到了，后来我又发现这些exe似乎不止一份，在很多目录下都有，真奇怪。。。好吧，找到了后把所在目录加入Path环境变量就可以了。
+
+光这样还不行，还得把一些头文件和lib库也加入环境变量，目录如下：
+
+//这4个加入INCLUDE环境变量
+E:\vs2013\VC\include;
+C:\Program Files (x86)\Windows Kits\8.1\include\shared 
+C:\Program Files (x86)\Windows Kits\8.1\include\um 
+C:\Program Files (x86)\Windows Kits\8.1\include\winrt
+
+//这2个加入LIB环境变量
+E:\vs2013\VC\lib
+C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64
+
+使用
+以生成dll为例：
+
+先用cl命令将.cpp编译成.obj，-c选项的作用：只编译不链接，不然cl还会试图链接生成exe，但dll工程根本没有main函数，没法生成exe，所以就会出错了。
+cl -c dllmain.cpp dllclass.cpp
+如果有资源文件(.rc)，那么用rc.exe将.rc编译成.res
+rc dllsource.rc
+用link命令将.obj .rc等文件 链接，生成dll文件及对应的.lib .exp
+link -dll dllmain.obj dllclass.obj dllsource.res
+
+gcc 和VC++有什么区别呢，VC++编译时用的编译器 相当于gcc的是什么东西 
+https://zhidao.baidu.com/question/241197025937086524.html
+vc的编译器是CL 当还有其他的 clang 神马 你没必要搞清楚 你只要知道 vc好用易用 但是要钱买 ，express版、d版除外
+gcc 不要钱 、开源、你感觉自己够强了可以去 研究其源代码
+
+VC++和DEV都是集成开发环境，VC++是Windows平台最权威的开发工具，而dev就是新手练手用的。至于Gcc是Gun的一个项目，它是一个编译器，主要用在Linux中，它是跨平台的
+
+C/C++ 开发环境和工具
+https://www.iteye.com/blog/yanguz123-2178510
+
+15 款最好的 C/C++ 编译器和集成开发环境
+https://www.cnblogs.com/lonelyxmas/p/9083296.html
+
+C/C++开发者必备：十款免费集成开发环境IDE
+https://blog.csdn.net/dj0379/article/details/52451837
+集成开发环境（IDE，Integrated Development Environment）
+
+
+
+Visual Studio c++语言特点：
+Visual Studio c++是由Microsoft启动的开发环境。Visual Studio c++可用于在Windows平台上创建Windows应用程序和网络应用程序，以及创建网络服务、智能设备应用程序和Office插件。Visual Studio是最流行的Windows平台应用程序开发环境。
+Visual Studio c++6.0之后包括各种增强功能，例如Visual Designer（加速开发使用）。NET Framework 3.5），对Web开发工具的实质性改进，以及语言增强，可以加速所有类型数据的开发和处理。Visual Studio 为开发人员提供了所有相关的工具和框架支持，以帮助创建引人注目、令人印象深刻且支持Ajax的Web应用程序。
+
+开发人员可以使用这些富客户端和服务器端框架轻松构建以客户端为中心的Web应用程序。这些应用程序可以集成任何后端数据提供程序，在任何当前浏览器中运行，并且可以完全访问ASP NET应用程序服务和Microsoft平台。
+
+
+
+vc6.0中的dsp,dsw,ncb,opt,clw,plg,aps等文件的简单说明
+https://blog.csdn.net/qq_35583007/article/details/81947906
+
+.CLW   文件是VC   Class   Wizard信息文件。存放了Class   Wizard的信息。 
+
+.NCB   文件是分析器信息文件，是由系统自动产生的。 
+
+.OPT   文件是IDE的Option文件。 
+
+.APS   文件是资源文件的二进制版本。 
+
+ 
+
+.clw   支持ClassWizard 
+
+.ncb   支持ClassView 
+
+.opt   保存工作空间的配置 
+
+.aps   支持ResourceView
+
+.bsc   浏览器信息文件 
+
+.dsp   项目文件 
+
+.dsw   工作空间文件 
+
+.mak   外部的创建文件 
+
+.plg   建立日志文件 
+
+ 
+
+.opt 工程关于开发环境的参数文件。如工具条位置等信息；
+
+.aps (AppStudio File),资源辅助文件,二进制格式,一般不用去管他.
+
+.clw ClassWizard信息文件,实际上是INI文件的格式,有兴趣可以研究一下.有时候ClassWizard出问题,手工修改CLW文件可以解决.如果此文件不存在的话,每次用ClassWizard的时候绘提示你是否重建.
+
+.dsp (DeveloperStudio Project):项目文件,文本格式,不过不熟悉的话不要手工修改.DSW(DeveloperStudio Workspace)是工作区文件,其他特点和DSP差不多.
+
+.plg 是编译信息文件,编译时的error和warning信息文件（实际上是一个html文件）,一般用处不大.在Tools->Options里面有个选项可以控制这个文件的生成.
+
+.hpj (Help Project)是生成帮助文件的工程,用microsfot Help Compiler可以处理.
+
+.mdp (Microsoft DevStudio Project)是旧版本的项目文件,如果要打开此文件的话,会提示你是否转换成新的DSP格式.
+
+.bsc 是用于浏览项目信息的,如果用Source Brower的话就必须有这个文件.如果不用这个功能的话,可以在Project Options里面去掉Generate Browse Info File,可以加快编译速度.
+
+.map 是执行文件的映像信息纪录文件,除非对系统底层非常熟悉,这个文件一般用不着.
+
+.pch (Pre-Compiled File)是预编译文件,可以加快编译速度,但是文件非常大.
+
+.pdb (Program Database)记录了程序有关的一些数据和调试信息,在调试的时候可能有用.
+
+.exp 只有在编译DLL的时候才会生成,记录了DLL文件中的一些信息.一般也没什么用.
+
+.ncb 无编译浏览文件(no compile browser)。当自动完成功能出问题时可以删除此文件。build后会自动生成。
+
+
+
+vc6.0中dsp,dsw,ncb,opt,clw,plg,aps等文件的简单说明
+https://blog.csdn.net/alongwilliam/article/details/27205701
+
+.CLW文件
+
+VC Class Wizard信息文件，存放了Class Wizard的信息。 ClassWizard信息文件，实际上是INI文件的格式,有兴趣可以研究一下。有时候ClassWizard出问题,手工修改CLW文件可以解决。如果此文件不存在的话,每次用ClassWizard的时候会提示你是否重建。
+
+.NCB文件
+
+无编译浏览文件(no compile browser)，当自动完成功能出问题时可以删除此文件。build后会自动生成。
+
+.OPT文件
+
+IDE的Option文件，工程关于开发环境的参数文件，如工具条位置等信息，保存工作空间的配置 。
+
+.APS文件
+
+资源文件的二进制版本，资源辅助文件，一般不用去管他。
+
+.clw文件
+
+支持ClassWizard。
+
+.ncb文件
+
+支持ClassView。
+
+.aps文件
+
+支持ResourceView。
+
+.bsc文件
+
+浏览器信息文件，用于浏览信息文件，如果用Source Brower的话就必须有这个文件。如果不用这个功能的话,可以在Project Options里面去掉Generate Browse Info File，可以加快编译速度。
+
+.dsp文件
+
+DeveloperStudio Project，项目文件，文本格式，不过不熟悉的话不要手工修改。
+
+.dsw文件
+
+DeveloperStudio Workspace，是工作区文件，其他特点和DSP差不多。
+
+.mak文件
+
+这是MFC项目的项目文件，这也是与NMAKE兼容的文件。如果选择了External make文件可选项，则可人工对它编辑，但不能利用Visual C++许多项目编辑特性。
+
+.plg文件
+
+建立日志文件，是编译信息文件，编译时的error和warning信息文件（实际上是一个html文件），在Tools->Options里面有个选项可以控制这个文件的生成。
+
+.hpj文件
+
+Help Project，是生成帮助文件的工程，用microsfot Help Compiler可以处理。
+
+.mdp文件
+
+Microsoft DevStudio Project，是旧版本的项目文件，如果要打开此文件的话，会提示你是否转换成新的DSP格式。
+
+.map文件
+
+是执行文件的映像信息纪录文件，除非对系统底层非常熟悉，这个文件一般用不着。
+
+.pch文件
+
+Pre-Compiled File，是预编译文件，可以加快编译速度，但是文件非常大。
+
+.pdb文件
+
+Program Database，记录了程序有关的一些数据和调试信息，在调试的时候可能有用。
+
+.exp文件
+
+只有在编译DLL的时候才会生成，记录了DLL文件中的一些信息。
+
+转自：http://lang.9sssd.com/vcpp/art/1455
+
+
+
+Source Insight 中文注释为乱码解决办法（完美解决，一键搞定）
+Source Insight中文注释为乱码解决办法
+https://www.cnblogs.com/jing1617/p/7525823.html
+我网上查了一堆解决办法，但是都是2017年以前的，并且都是针对于source insight 3.5及以下版本的解决方案，软件版本都到4.0了，应该有新方法出现。
+干货：Source Insight 4 的解决办法(source insight 3.5 及以下版本就到其他地方看看吧)
+【解决办法】：
+
+单个文件乱码解决办法：
+
+      菜单栏中【File】 > 【Reload As Encoding...】 > 【Chinese Simplified (GB18030)】 > 选择后，点击load，问题解决！！！
+
+所有文件乱码解决办法：
+
+    我的理解，在做下面操作的时候，先设置，然后关闭所有打开的文件，然后再打开文件即可
+
+    菜单栏中 【Options】 > 【Preferences】 >File标签中，最下面的“Default encod-ing” ：改成System Default(Windows ANSI)
+    或者Chinese Simplified(GB2312) CP:936，点击确定，问题解决！！！
+
+
+source insight 中文乱码的解决方案
+https://jingyan.baidu.com/article/ae97a646a5e499bbfc461d54.html
+
+source insight中文注释乱码问题的解决方案
+https://cloud.tencent.com/developer/article/1417198
+解决方案如下：
+一、单个文件转换
+对于单个文件，好说，只要将非ANSI码格式的文件转换成ANSI码格式即可，方法如下：
+ 1、将文件用ultraEdit32打开，选择 文件->转换->UTF-8到ANSI， 然后保存。重新用source insight打开就好了。
+或者使用记事本打开非ANSI格式的源代码文件，另存为，在保存选项对话框中，在编码格式一栏中发现是UTF-8，选择ANSI一项，保存，再用Source Insight打开就可以正常显示中文注释了。具体可参考百度经验的一篇文章：source  insight 中文乱码的解决方案。(v ok)
+
+access密码忘了怎么办
+
+https://www.xiazaizhijia.com/news/20171006/132153_all.html
+简易APV密码查看.zip
+https://dl.pconline.com.cn/download/2283680.html
+https://dl.pconline.com.cn/download/2283680-1.html
+
+今天推荐个电视剧给大家，《安家》，孙俪，海清出演(阿文_黄文敏)
+
+公路美人 换一批
+https://zhidao.baidu.com/question/749936665102364652.html
+《公路美人》作为一部公路题材的纯爱电影，开篇就必须要有一个极大的矛盾冲突，才会使这群人上路，而本片的开场却让人使料未及，以一档名叫《爱上你》的相亲节目开始，美女作家安东妮为了推销新书假装单身参加电视相亲，并与相恋三年的男友曾浩签署了协议。然而安东妮为了追求对浪漫不切实际的憧憬，在节目中违背协议与藏族摄影师秀巴牵手，并且非常任性的选择了不辞而别。一次偶然的劈腿，打开了一条追爱之路。
+
+2020.03.04
+
+怎样查看git本地仓库所有文件目录
+盘符根目录下查找 gitk.cache
+
 const关键字及其作用（用法），C语言const详解
 http://c.biancheng.net/view/217.html
 说 const 定义的是变量，但又相当于常量；说它定义的是常量，但又有变量的属性，所以叫常变量。用 const 定义常变量的方法很简单，就在通常定义变量时前面加 const 即可，如：const  int  a = 10;
