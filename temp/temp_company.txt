@@ -1,3 +1,803 @@
+Compiling...
+Log.cpp
+E:\wendy_work\MsEdit_Wendy\Log.cpp(23) : error C2653: 'CWrapperPath' : is not a class or namespace name
+E:\wendy_work\MsEdit_Wendy\Log.cpp(23) : error C2065: 'GetExtPath' : undeclared identifier
+E:\wendy_work\MsEdit_Wendy\Log.cpp(90) : error C2653: 'CWrapperPath' : is not a class or namespace name
+E:\wendy_work\MsEdit_Wendy\Log.cpp(90) : error C2065: 'SpitePath' : undeclared identifier
+E:\wendy_work\MsEdit_Wendy\Log.cpp(217) : error C2653: 'CWrapperPath' : is not a class or namespace name
+
+
+也不用百里挑一， 看懂就过。
+
+#ifndef #define #endif 防止头文件被重复引用
+https://www.cnblogs.com/limera/p/5658466.html
+其实“被重复引用”是指一个头文件在同一个cpp文件中被include了多次，这种错误常常是由于include嵌套造成的。比如：存在a.h文件#include "c.h"而此时b.cpp文件导入了#include "a.h" 和#include "c.h"此时就会造成c.h重复引用。
+头文件被重复引用引起的后果：
+有些头文件重复引用只是增加了编译工作的工作量，不会引起太大的问题，仅仅是编译效率低一些，但是对于大工程而言编译效率低下那将是一件多么痛苦的事情。
+有些头文件重复包含，会引起错误，比如在头文件中定义了全局变量(虽然这种方式不被推荐，但确实是C规范允许的)这种会引起重复定义。
+
+
+c++ 防止头文件重复include问题
+https://zhidao.baidu.com/question/112685790.html
+#ifndef的方式依赖于宏名字不能冲突，这不光可以保证同一个文件不会被包含多次，也能保证内容完全相同的两个文件不会被不小心同时包含。当然，缺点就是如果不同头文件的宏名不小心“撞车”，可能就会导致头文件明明存在，编译器却硬说找不到声明的状况
+#pragma once则由编译器提供保证：同一个文件不会被包含多次。注意这里所说的“同一个文件”是指物理上的一个文件，而不是指内容相同的两个文件。带来的好处是，你不必再费劲想个宏名了，当然也就不会出现宏名碰撞引发的奇怪问题。对应的缺点就是如果某个头文件有多份拷贝，本方法不能保证他们不被重复包含。当然，相比宏名碰撞引发的“找不到声明”的问题，重复包含更容易被发现并修正。
+方式一由语言支持所以移植性好，方式二 可以避免名字冲突。
+
+
+
+如何防止头文件被重复包含或引用?
+https://blog.csdn.net/sharp_up/article/details/71971184
+// Test1.h
+#ifndefine ?TEST1_H
+#defineTEST1_H
+...
+#endif
+
+// Test2.h
+#pragma once
+...
+
+// Test.cpp
+#include "Test1.h"// line 1
+#include "Test1.h"// line 2
+#include "Test2.h"// line 3
+#include "Test2.h"// line 4 这里的Test2.h是同一物理文件
+
+预处理器在执行这四句的时候，先打开Test1.h然后发现里面的宏TEST1_H没有被定义，所以会包含这个文件，
+第二句的时候，同样还是会打开Test1.h的发现宏已定义，就不包含该文件按了。
+第三句时，发现之前没有包含Test2,h则会把该文件包含进来，
+执行第四句的时候，发现该文件已经被包含了，所以不用打开就直接跳过了
+二、条件编译
+#include"a.h"
+#include"b.h"
+看上去没什么问题。如果a.h和b.h都包含了一个头文件x.h。那么x.h在此也同样被包含了两次，只不过它的形式不是那么明显而已。
+多重包含在绝大多数情况下出现在大型程序中，它往往需要使用很多头文件，因此要发现重复包含并不容易。要解决这个问题，我们可以使用条件编译。如果所有的头文件都像下面这样编写:
+#ifndef _HEADERNAME_H
+#define _HEADERNAME_H
+
+由于工程中的每个.c文件都是独立的解释的，即使头文件有
+#ifndef _TEST_H_ #define _TEST_H_ .... #enfif
+在其他文件中只要包含了test.h就会独立的解释,然后每个.c文件生成独立的标示符。
+在编译器链接时，就会将工程中所有的符号整合在一起，由于文件中有重名变量，于是就出现了重复定义的错误。
+
+解决方法:
+在.c文件中定义变量，然后再建一个头文件(.h文件)，在所有的变量声明前加上extern，注意这里不要对变量进行的初始化。
+然后在其他需要使用全局变量的.c文件中包含.h文件。编译器会为.c生成目标文件，然后链接时，
+如果该.c文件使用了全局变量，链接器就会链接到定义变量的.c文件?
+
+问题扩展：?变量的声明有两种情况:
+(1) 一种是需要建立存储空间的(定义、声明)。例如：int a在声明的时候就已经建立了存储空间。?
+(2) 另一种是不需要建立存储空间的(声明)。例如：extern int a其中变量a是在别的文件中定义的。
+前者是"定义性声明(defining declaration)"或者称为"定义(definition)",而后者是"引用性声明(referncingdeclaration)"。
+从广义的角度来讲声明中包含着定义，但是并非所有的声明都是定义，例如:int a它既是声明，同时又是定义。
+然而对于extern a来讲它只是声明不是定义。一般的情况下我们常常这样叙述，把建立空间的声明称之为"定义"，
+而把不需要建立存储空间称之为"声明"。很明显我们在这里指的声明是范围比较窄的，也就是说非定义性质的声明。
+
+extern int A; //这是个声明而不是定义，声明A是一个已经定义了的外部变量
+                 //注意：声明外部变量时可以把变量类型去掉如：extern A;
+
+用static来声明一个变量的作用有二：
+    (1) 对于局部变量用static声明，则是为该变量分配的空间在整个程序的执行期内都始终存在
+    (2) 外部变量用static来声明，则该变量的作用只限于本文件模块
+
+另外一个好处是减小类A的大小
+前置声明解决两个类的互相依赖
+前置声明只能作为指针或引用，不能定义类的对象，自然也就不能调用对象中的方法了。
+
+
+
+#define #if #ifdef #ifndef 作用和区别
+https://blog.51cto.com/12104971/1857992
+如果#ifndef…#endif在头文件中，千万不要忽略了头件的中的#ifndef，这是一个很关键的东西。
+比如你有两个C文件，这两个C文件都include了同一个头文件。
+而编译时，这两个C文件要一同编译成一个可运行文件，于是问题来了，大量的声明冲突。 
+
+
+#ifndef 与 #if !define区别
+https://blog.csdn.net/u011642774/article/details/71729148
+我们要检查a是否定义（假设我们已经记不着这点了）,或者我们要给a一个不同的值，就加入如下句子 
+#if defined a 
+#undef a 
+#define a 200 
+#endif 
+#error XXXX 
+是用来产生编译时错误信息XXXX的，一般用在预处理过程中； 
+
+
+"#if define A" 与 "#if defined A" 的区别 [问题点数：60分，结帖人zhaoxuxing]
+https://bbs.csdn.net/topics/380226986
+1/" #if define ABC " 这是一种错误的写法
+2/" #elif define ABC " 这是一种错误的写法
+这两种写法可能 能通过编译器，但执行的结果却是错误的！！！ 既然是错误的怎样改正呢？往下看
+3/" #ifdef ABC " == " #if defined ABC " 这才是正确的写法 
+
+
+#if、#ifdef、#if defined之间的区别
+https://www.iteye.com/blog/quanminchaoren-1870977
+#if的使用说明
+#if的后面接的是表达式
+
+#if (MAX==10)||(MAX==20)
+ code...
+#endif
+它的作用是：如果(MAX==10)||(MAX==20)成立，那么编译器就会把其中的#if 与 #endif之间的代码编译进去（注意：是编译进去，不是执行！！）
+
+#if defined的使用
+#if后面接的是一个宏。
+
+#if defined (x)
+    ...code...
+#endif
+这个#if defined它不管里面的“x”的逻辑是“真”还是“假”它只管这个程序的前面的宏定义里面有没有定义“x”这个宏，如果定义了x这个宏，那么，编译器会编译中间的…code…否则不直接忽视中间的…code…代码。
+
+另外 #if defined(x)也可以取反，也就用 #if !defined(x)
+
+#ifdef的使用
+#ifdef的使用和#if defined()的用法一致
+#ifndef又和#if !defined()的用法一致。
+
+最后强调两点：
+第一：这几个宏定义只是决定代码块是否被编译！
+第二：别忘了#endif
+
+
+使用#if defined()组成复杂的预编译控制指令
+https://blog.csdn.net/david_xtd/article/details/12652197
+#ifdef只能判断单一的宏是否定义，而#if defined()可以组成复杂的判别条件；
+
+
+对于单一的宏AAA来说，#ifdef AAA和#if defined(AAA)是完全相同的。
+
+
+而要组成复杂的判别条件，用#if defined()就灵活方便了，比如：#if defined(AAA) && (BBB >= 10)
+
+如果改用#ifdef则没法表示条件BBB>=10了。
+
+#ifndef 与 #if !defined有区别吗？该怎么解决
+https://www.cnblogs.com/lycrfx/articles/5766103.html
+基本上一样，不过后者的应用范围更大，可以支持多个预编译变量的检查： 
+#if (!defined(_DEBUG) && defined(USE_MYLIB)) 
+.......... 
+#endif 
+
+这种情况用前一种方式就只能写一个嵌套的条件判断： 
+#ifndef _DEBUG 
+#ifdef USE_MYLIB 
+................ 
+#endif 
+#endif
+
+
+闰年的定义？？
+https://zhidao.baidu.com/question/167039572.html
+①、普通年能被4整除且不能被100整除的为闰年。（如2004年就是闰年,1901年不是闰年）地球公转示意图
+②、世纪年能被400整除的是闰年。(如2000年是闰年，1900年不是闰年) 
+③、对于数值很大的年份能整除3200,但同时又能整除172800则又是闰年.(如172800年是闰年，86400年不是闰年）
+闰年
+https://baike.baidu.com/item/%E9%97%B0%E5%B9%B4/27098
+闰年是怎么定义的
+https://zhidao.baidu.com/question/28992622.html
+
+白增多
+https://baike.baidu.com/item/%E7%99%BD%E5%B8%A6%E8%BF%87%E5%A4%9A/7716427?fr=aladdin
+先查后做(v ok)
+
+#ifdef #if defined #ifndef和#if !defined区别
+https://blog.csdn.net/tmd_mcu/article/details/78140229
+预处理指令包含了以下内容：
+　　1，宏定义   #define
+　　2，文件包含 #include
+　　3，条件编译 #if
+　　#ifdef
+　　#ifndef
+　　#if defined
+　　#if !defined
+　　#elif
+　　#else
+　　#endif
+　　#undef
+　　指令都是以#开始的
+宏可以带参数，也是常说的宏函数
+　　#define 标识符（x1,x2...） 替换列表
+　　特别注意的是标识符和(之间不能有空格，圆括号是必须的。
+　　还可以写得更复杂一点，比如我们来写一个宏函数，用它来验证一个日期是否合法
+　　#define ISLEAP(y) ((y)%4==0&&(y)%100!=0||(y)%400==0)
+　　#define ISSMALL(m) ((m)==4||(m)==6||(m)==9||(m)==11)
+　　#define NORMAL(m) (ISSMALL(m)?30:31)
+　　#define DAYS(y,m) ((m)==2?28+ISLEAP(y):NORMAL(m))
+　　#define IN(x, from,to) ((x)>=(from)&&(x)<=(to))
+　　#define VALID(y,m,d) ((y)>1600&&IN(m,1,12)&&IN(d,1,DAYS(y,m)))
+
+　　#if (comdition)
+　　{//语句##；}
+　　#endif
+
+　#if  常量表达式
+　　常量表达式为0时，预处理器删除#if 和#endif中间的代码
+　　#if 会把没有定义过的标准符视做为0，　如果没有定义DEBUG, 则
+　　测试#if DEBUG 会失败，但#if !DEBUG会成功。
+
+　　可以用宏来定义文件名：
+　　#if define(IA32)
+　　#define CPU_FILE “ia32.h”
+　　#elif defined(IA64)
+　　#deifine CPU_FILE “ia64.h”
+　　#elif defined(AMD64)
+　　#define CPU_FILE “amd64.h”
+　　#endif
+　　#include CPU_FILE
+
+　　#if defined VALUE              // 检验VALUE是否被定义 ，如果被定义
+　　#undef VALUE            // 解除语句定义
+　　#define VALUE 1000            //  重新定义VALUE 为1000
+　　#endif
+
+　　如果检验没有定义，可以这样写：
+　　#ifndef VALUE               // 如果VALUE没有被定义
+　　#define VALUE 1000          //  定义VALUE 为1000
+　　#endif
+
+　　#undef为解除定义;
+　　#ifndef是if not defined的缩写，也可以写成#if !defined 即如果没有定义;
+　　#ifdef是if defined的缩写，也可以写成#if defined 即检查是否定义过;
+
+总结：
+#ifdef只能判断单一的宏是否定义，而#if defined()可以组成复杂的判别条件；
+对于单一的宏AAA来说，#ifdef AAA和#if defined(AAA)是完全相同的。
+而要组成复杂的判别条件，用#if defined()就灵活方便了，比如：#if defined(AAA) && (BBB >= 10)
+如果改用#ifdef则没法表示条件BBB>=10了。
+
+
+C:\Users\Wendy\Desktop\temp\temp.txt
+--->
+E:\wendy_work\temp\temp_company.txt
+
+军事管制
+
+意料之外，预料之中
+https://news.sina.cn/gn/2020-02-09/detail-iimxxstf0024695.d.html
+李文亮是在1月8日接诊一位82岁的病人时感染新冠病毒的
+
+幽螺莎星爆珠丸 幽门螺杆菌（简称HP）。
+加上价格也很赞，一盒里面有30粒，只要39.9元，现在还有买一送一的活动，也就是39.9元到手60粒，简直不要太划算！
+口气清新，你我更亲近！
+两盒只要39.9元
+买三送一，59.9元/4盒
+买五送三，99.9元/8盒
+
+湖北省卫健委书记被免职 昨日还在参加防治工作会
+https://news.163.com/20/0211/10/F53LSRO70001899O.html
+
+湖北省卫健委两名主要官员被免职
+https://www.sohu.com/a/372114557_123753
+
+湖北省衛健委書記、主任被免職，疫情的黃金防控期為何會錯過？
+https://news.fx168.com/opinion/column/gwzj/2002/3614068.shtml
+
+湖北省卫健委两官员被免职！预计武汉所有疑似患者检测今日清零
+https://3g.163.com/news/article/F541BCGE0517BMJU.html
+
+湖北省卫健委党组书记、主任同时被免：还会有谁被问责？
+http://blog.sina.cn/dpool/blog/s/blog_537368000102yrwf.html?md=gd&wm=3049_0007
+而在武汉、湖北以外，据有关报道，除了黄冈市卫健委女主任唐某某被指一问三不知被免职外，2月10日，呼和浩特市已经被公示拟提升为副厅级的卫健委女主任也被免职。而2月11日一早被公开的“湖北省卫健委党组书记主任双双被免职”，恐怕是到目前为止，被问责职务最高的了。
+
+专访卫健委派武汉第二批专家：为何没发现人传人？
+http://finance.sina.com.cn/wm/2020-02-26/doc-iimxxstf4577235.shtml
+
+20天，湖北换了3个卫健委主任！
+https://news.sina.cn/gn/2020-02-21/detail-iimxyqvz4703931.d.html?from=wap
+
+湖北被免职卫健委女主任：管理学教授 曾在高校任教15年
+http://news.ifeng.com/c/7txNnFZqVWD
+据央视新闻，2月10日，湖北省委常委会决定：免去张晋的省卫生健康委员会党组书记职务；免去刘英姿的省卫生健康委员会主任职务；上述两职务，由新到任的省委常委王贺胜同志兼任
+
+湖北省卫健委书记被免职 昨日还在参加防治工作会
+https://news.163.com/20/0211/10/F53LSRO70001899O.html
+据央视报道，2月10日，湖北省委常委会决定，省委常委王贺胜兼任湖北省卫健委党组书记和主任。
+免去张晋、刘英姿湖北省卫生健康委员会党组书记和主任职务。
+您可透過資訊瀏覽器，優惠價享用tt18.com及tt28.com 所提供之網上資訊服務，內容品種繁多，其中有：
+
+港信软件(深圳)有限公司
+https://xin.baidu.com/company_detail_31982401048121
+
+捷利港信软件(深圳)有限公司
+https://www.11467.com/qiye/27552884.htm
+
+E:\wen_test\dlgtest1\dlgtest1Dlg.cpp(119) : error C2065: 'printf' : undeclared identifier
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\Include\AFX.H
+// Other includes from standard "C" runtimes
+#ifndef _INC_STRING
+	#include <string.h>
+#endif
+#ifndef _INC_STDIO
+	//#include <stdio.h>
+#endif
+
+眼镜架结构详解 眼镜框各部分的功能介绍
+https://www.maigoo.com/goomai/108147.html
+一副眼镜架通常由镜圈、鼻托、桩头和镜脚等主要部分构成，除上述部件外，还有脚套、托叶螺丝、铰链螺丝等。
+
+2020.03.11
+
+---- stdio.h Matches (15 in 13 files) ----
+Afx.h (vc98\mfc\include):	#include <stdio.h>
+Atlbase.h (vc98\atl\include):#include <stdio.h>
+Cstdio (vc98\include): #include <stdio.h>
+Cstdio (vc98\include): #include <stdio.h>
+Dprintf.h (vc98\include):#include <stdio.h>
+Edk.h (vc98\include):#include <stdio.h>
+Edkdebug.h (vc98\include):#include <stdio.h>
+Isapi.cpp (vc98\mfc\src):#include <stdio.h>
+Resapi.h (vc98\include):#include "stdio.h"
+Snados.h (vc98\include):/* Echo the format of the ifdefs that stdio.h uses */
+Stdio.h (vc98\include):*stdio.h - definitions/declarations for standard I/O routines
+Stdiostr.h (vc98\include):#include <stdio.h>
+Utassert.h (vc98\include):#include <stdio.h>
+Wchar.h (vc98\include):*       Note: keep in sync with ctype.h, stdio.h, stdlib.h, string.h, time.h.
+Wchar.h (vc98\include):/* also declared in stdio.h */
+
+
+
+
+Find Source PRINTF.C.
+
+printf源码
+http://blog.chinaunix.net/uid-24567872-id-87686.html
+
+E:\wendy_work\MsEdit_Wendy\StdAfx.h
+
+// wendy 2020.03.10
+#include "Datadef.h"
+#include "Resource.h"
+
+指数ETF或行业ETF
+
+我自认为没本事能给大家推荐股票保证稳赢，所以我推荐指数ETF或行业ETF，至少不会被坑（不停牌，不暴雷，寿与天齐）
+
+又一个被训诫的女医生（艾芬）浮出水面
+http://www.cbfau.com/cbf-201585990.html
+
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;   // windows message
+	UINT nCode;      // control code or WM_NOTIFY code
+	UINT nID;        // control ID (or 0 for windows messages)
+	UINT nLastID;    // used for entries specifying a range of control id's
+	UINT nSig;       // signature type (action) or pointer to message #
+	AFX_PMSG pfn;    // routine to call (or special value)
+#ifdef _AFXDLL
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	const AFX_MSGMAP* PASCAL theClass::_GetBaseMessageMap() \
+		{ return &baseClass::messageMap; } \
+	const AFX_MSGMAP* theClass::GetMessageMap() const \
+		{ return &theClass::messageMap; } \
+	AFX_COMDAT AFX_DATADEF const AFX_MSGMAP theClass::messageMap = \
+	{ &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0] }; \
+	AFX_COMDAT const AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
+	{ \
+
+#define ON_COMMAND(id, memberFxn) \
+	{ WM_COMMAND, CN_COMMAND, (WORD)id, (WORD)id, AfxSig_vv, (AFX_PMSG)&memberFxn },
+
+
+#define END_MESSAGE_MAP() \
+		{0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
+	}; \
+
+#define PASCAL      __stdcall
+
+struct AFX_MSGMAP
+{
+#ifdef _AFXDLL
+	const AFX_MSGMAP* (PASCAL* pfnGetBaseMap)();
+#else
+	const AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+d:\Program Files\Microsoft Visual Studio\VC98\MFC\Include\AFXWIN.H
+#ifdef _AFXDLL
+#define DECLARE_MESSAGE_MAP() \
+private: \
+	static const AFX_MSGMAP_ENTRY _messageEntries[]; \
+protected: \
+	static AFX_DATA const AFX_MSGMAP messageMap; \
+	static const AFX_MSGMAP* PASCAL _GetBaseMessageMap(); \
+	virtual const AFX_MSGMAP* GetMessageMap() const; \
+
+#else
+
+BOOL CMsEdit_WendyApp::InitApplication() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	
+#ifdef _AFXDLL
+	int i;
+#else
+	asdfadf
+#endif
+	return CWinApp::InitApplication();
+}
+
+
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\SRC\APPMODUL.CPP
+extern int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPTSTR lpCmdLine, int nCmdShow);
+
+extern "C" int WINAPI
+_tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LP InModalStateTSTR lpCmdLine, int nCmdShow)
+{
+	// call shared/exported WinMain
+	return AfxWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+}
+--->
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\SRC\WINMAIN.CPP
+int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPTSTR lpCmdLine, int nCmdShow)
+{
+	ASSERT(hPrevInstance == NULL);
+
+	int nReturnCode = -1;
+	CWinThread* pThread = AfxGetThread();
+	CWinApp* pApp = AfxGetApp();
+
+	// AFX internal initialization
+	if (!AfxWinInit(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
+		goto InitFailure;
+
+	// App global initializations (rare)
+	if (pApp != NULL && !pApp->InitApplication())
+		goto InitFailure;
+
+	// Perform specific initializations
+	if (!pThread->InitInstance())
+	{
+		if (pThread->m_pMainWnd != NULL)
+		{
+			TRACE0("Warning: Destroying non-NULL m_pMainWnd\n");
+			pThread->m_pMainWnd->DestroyWindow();
+		}
+		nReturnCode = pThread->ExitInstance();
+		goto InitFailure;
+	}
+	nReturnCode = pThread->Run();
+
+InitFailure:
+...
+	AfxWinTerm();
+	return nReturnCode;
+}
+
+
+
+D:\Program Files\Microsoft Visual Studio\Common\MSDev98\BIN
+--->> *.dll 复制缺少的dll动态库文件过去
+D:\softs\VC6免安装绿色版\VC6\Common\MSDev98\Bin
+(v ok)
+
+用C++的时候，运行的时候总出现SHSQL,DLL 必需的文件不能加载，请重新安装Microsoft Visual C++
+https://zhidao.baidu.com/question/386513237.html
+你是不是安装的绿色版VC？一般完全安装的VC不会出现这个提示。
+绿色版的VC有可能安装的位置（比如D盘）和它自己默认的位置（比如C盘）不一致，导致一些关键的DLL找不到（文件存在，但是它没找到）
+可以按照以下方法解决：
+点击VC主窗口中的“TOOLS（工具）”—>“Option（选项）”— >“Directories（目录）”重新设置“Excutable Fils、Include Files、Library Files、Source Files”这4个路径。正常情况可能就改个盘符。然后所有硬盘搜索SHSQL.DLL，找到后放进已安装的vc->common->MSDev98->Bin下就可以了。如果没找到，那就在网上搜一个下载，应该很好解决~
+
+VC++6.0 Project Settings --> 选择"Link"属性页
+Project Options中将/subsystem:console改成/subsystem:window， 这个选项在哪里？我是中文版的， 找了半天没有啊！！！
+
+关于不同的程序入口，main(), _tmain()，WinMain()，wmain()？
+https://blog.csdn.net/camel20/article/details/8481442
+我读了MSDN里面的讲解才弄出点眉目了，其实我们以前所写的以main()函数开始的程序都是一个半成品，剩下的也是与系统息息相关的工作由编译器帮我们代劳了。怎么回事呢？编译器是如何帮我们代劳的呢？那么程序被系统加载时，准确的说是被系统中的加载器加载时又是如何知道编译器在我们写的程序上做了手脚呢？难道编译器和加载器之间有什么协定吗？这一些列的问题，做为刚入行的你是否在心里问过自己没有！？
+
+???我们以前写的程序在编译器编译成为一个模块（可能是obj文件或其他形式），然后链接器会将一些所需要的库文件和刚才编译器生成的文件进行链接，最终生成一个exe文件，在所链接的库文件中就包含CRT运行时库，这就是我们今天谈论的主角。在运行时库里面有好一个已经定义如下的函数函数：
+
+（1）mainCRTStartup（或wmainCRTStartup）???????//使用/SUBSYSTEM:CONSOLE 的应用程序
+
+（2）WinMainCRTStartup（或 wWinMainCRTStartup） //使用/SUBSYSTEM:WINDOWS 的应用程序
+
+（3）_DllMainCRTStartup????????????????????????//调用 DllMain（如果存在），DllMain 必须用 __stdcall 来定义
+
+其中w开头的函数时unicode版本的,分割符‘//’后面的是入口点函数匹配的subsystem(msdn中查看subsystem)属性设置。
+
+如果未指定 /DLL 或 /SUBSYSTEM （也就是subsystem选项）选项，则链接器将根据是否定义了 main 或WinMain 来选择子系统和入口点。 函数 main、WinMain 和 DllMain 是三种用户定义的入口点形式。
+
+在默认情况下，如果你的程序中使用的是main()或_main()函数，这链接器会将你的使用（1）中的函数连接到你的exe中；如果你的函数是以WinWain（）函数开始的则连接器使用（2）中的函数连接进exe中；如果我们写的是DLL程序这连接进DLL的是（3）中的函数。
+
+???用我们写的程序最终生成的exe执行时，一开始执行的就是上面的函数之一，而不是我们程序所写的main或WinMain等。那么链接器为什么要这样做呢？这就是因为我们写的程序必须要使用到各种各样的运行时库函数才能正常工作，所有在执行我们自己写程序之前必须要先准备好所需要的一切库，噢，明白了吧，之所以要链接它们是因为他们肩负着很重要的使命，就是初始化好运行时库，准备在我们的程序执行时调用。
+...
+修改入口点方法：proerties->Linker->Advanced->EntryPoint
+
+如果函数与链接器的SubSystem的属性要一致的：
+
+proerties->Linker->System->SubSystem
+
+如果未指定 /DLL 或 /SUBSYSTEM 选项，则链接器将根据是否定义了 main 或 WinMain来选择子系统和入口点。 函数 main、WinMain 和 DllMain 是三种用户定义的入口点形式。
+
+程序入口点
+https://blog.csdn.net/H002399/article/details/46339877
+WinMain()是WINDOWS的GUI程序入口,
+wmain()是UNICODE版本的main(),
+_tmain()是个宏,如果是UNICODE则他是wmain()否则他是main()
+ ...
+
+有关WinMainCRTStartup() 函数 [问题点数：0分]
+https://bbs.csdn.net/topics/10406514
+这个我好象见过有个程序是用汇编写的,最小有500多bytes吧,具体的忘记了,不好意思
+WinMainCRTStartup其实是Windows 下 C Run-time 的入口点。
+如果您的VC在安装时选择了C Run-time 的sourcecode，
+那您可以在vc的目录中找到C Run-time 完整的sourcecode。
+如果您觉得整个sourcecode过于庞大，您也可以选择一个小些的
+C Run-time 的sourcecode进行阅读例如 tinylib。
+tinylib更具体的说明请参考下面资料： 
+http://www.microsoft.com/msj/defaulttop.asp?page=/msj/archive/s569.htm
+
+
+关于main(),wmain(),winMain(),wWinMain(),_tmain(),_tWinMain()的理解。
+https://blog.csdn.net/weixin_42732867/article/details/90202174
+一般情况下，我们并不知道当前编译环境是否为unicode，这时候我们可以用_tmain()或_tWinMain()来代替main()/wmian()或者winMain()/wWinMain()，因为_tmain()和_tWinMain()函数会根据当前编译环境来决定调用对应的入口函数，比如用_tmain(),这样编译器会根据当前的编译环境是否为unicode来决定调用main()或者wmain(),如果编译器环境是unicode,则调用wmain(),否则调用main()函数。
+
+? ? ?实际上，_tmain和_tWinMain都是宏定义，代码可以简单理解如下：
+
+#ifdef _UNICODE
+   #define _tmain     wmain
+   #define _tWinMain  wWinMain
+#else
+   #define _tmain     main
+   #define _tWinMain  winMain
+ #endif
+     这样编译器会自己根据当前编译环境是否为unicode来决定调用哪个入口函数，这样也是为了能够兼容unicode编译环境。
+     注：以上为个人理解，如果有什么地方理解错误或者需要改进，希望各位大神不吝赐教！谢谢！ 
+
+
+void CShowData::OnMenuitemInfo() 
+{
+	// TODO: Add your command handler code here
+
+	pEINFO =  new CEINFO;
+
+	m_list_data.GetItemText(m_indexOfCell.x,3,pEINFO->strTime,100);
+	m_list_data.GetItemText(m_indexOfCell.x,4,pEINFO->strItemCode,100);
+
+	pEINFO->Create(IDD_E_INFO);
+	pEINFO->ShowWindow(SW_SHOW);
+	
+}
+
+void CEINFO::OnClose() 
+{
+	// TODO: Add your message handler code here and/or call default
+	CDialog::OnClose();
+	DestroyWindow();
+}
+
+void CEINFO::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CDialog::PostNcDestroy();
+	if (AfxGetMainWnd()->IsWindowEnabled())
+	{
+		delete this;
+	}
+}
+(v ok)
+
+
+高信:
+不会玩
+
+awendy:
+斗地主？象棋？ 
+
+
+高信:
+多年没玩了
+
+
+awendy:
+哦，那还是学习好吧，玩游戏没有进步的。玩个一百年一千年都是一个鸟样的。
+
+
+awendy:
+学习进步不同，一天一个样，学得多想法就多，业务门路就多.....
+
+
+高信:
+主要是没有那个闲情逸致
+
+
+
+void CMsEdit_WendyDlg::OnRead() 
+{...
+	pShowData =  new CShowData;
+	pShowData->Create(IDD_SHOWDATA);
+	pShowData->ShowWindow(SW_SHOW);
+...}
+
+void CShowData::OnCancel() 
+{
+	// TODO: Add extra cleanup here
+	
+	CDialog::OnCancel();  //  availd for domodal dialog
+	DestroyWindow();
+}
+
+void CShowData::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CDialog::PostNcDestroy();
+	if (AfxGetMainWnd()->IsWindowEnabled())
+	{
+			delete this;
+	}
+}
+(v ok)
+
+void CShowData::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	// //InModalState()
+	//GetWindowWord(hWnd, GWW_HWNDPARENT);
+	//GetParent(); ->IsWindowEnabled()
+	//GetParent()->IsWindowEnabled(); v  GetOwner() AfxGetMainWnd()  this->GetParent()
+	//或者也可以直接 ::FindWindow( )获取到对话框句柄 ，再::FromHandle( );  if (FromHandle(GetSafeHwnd())->IsWindowEnabled())
+	//	if (!((CMsEdit_WendyDlg *)AfxGetMainWnd())->pShowData->IsWindowEnabled())
+	if (AfxGetMainWnd()->IsWindowEnabled()) // (v ok)
+	{
+			delete this;
+	}
+	CDialog::PostNcDestroy();
+}
+
+
+vc 怎样取得一个模式对话框的指针
+https://zhidao.baidu.com/question/554607433533632772.html
+这要根据你打开对话框的方式了
+比如
+CMyDialog* dlg=new CMyDialog();
+dlg->DoModal(); //dlg就是模态对话框的指针
+或者也可以直接 ::FindWindow( )获取到对话框句柄 ，再::FromHandle( );
+BOOL CWnd::IsWindowEnabled() const
+{
+	ASSERT(::IsWindow(m_hWnd)); 模式状态为真，非模式状态为假出错。
+...}
+void CShowData::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	//GetWindowWord(hWnd, GWW_HWNDPARENT);
+	//GetParent(); ->IsWindowEnabled()
+	//GetParent()->IsWindowEnabled(); v  GetOwner() AfxGetMainWnd()  this->GetParent()
+	//或者也可以直接 ::FindWindow( )获取到对话框句柄 ，再::FromHandle( );  if (FromHandle(GetSafeHwnd())->IsWindowEnabled())
+	if (!((CMsEdit_WendyDlg *)AfxGetMainWnd())->pShowData->IsWindowEnabled())
+	{
+			delete this;
+	}
+
+
+MFC获得主窗体和父窗体指针
+https://www.cnblogs.com/cxchanpin/p/7306144.html
+  MFC编程中经常遇到子窗体向父窗体传递參数的情况，这就须要获得父窗体的指针。
+        例：主对话框CMyMainDlg通过buttonButtonA进入对话框CMyParentDlg。CMyParentDlg在通过buttonButtonB进入对话框CMyChildDlg。如今须要在CMyChildDlg分别訪问CMyParentDlg和CMyMainDlg的内容。须要在CMyChildDlg中增加下面两条语句：
+        CMyMainDlg    *pMMD = (CMyMainDlg*)AfxGetMainWnd();     //获取主窗体指针
+        CMyParentDlg *pMPD = (CMyParentDlg*)this->GetParent();   //获取父窗体指针
+
+        当中，this代表当前窗体指针，指向CMyChildDlg。pMMD和pMPD便是指向主窗体和父窗体的指针。
+
+vc 中如何获得最顶端得窗口指针（也许不是激活状态）
+vc 中如何获得最顶端得窗口指针（也许不是激活状态）在vc中的GetForegroundWindow（）可以得到最顶端而且激活的窗口。而我现在需要得到最顶端但不激活的窗口（比如FlashGet的悬浮条）的窗口指针。
+
+vc中如何获得当前窗口句柄 [问题点数：20分，结帖人hbtsm]
+https://bbs.csdn.net/topics/20026627
+this->m_hWnd;
+m_hWnd;
+this->GetSafeHwnd
+
+VC中获取窗体句柄的各种方法
+https://www.cnblogs.com/mfrbuaa/p/3839822.html
+
+VC父窗口和子窗口
+https://blog.csdn.net/rankun1/article/details/51425869
+AfxGetMainWnd获取自身窗体句柄
+
+HWND hWnd = AfxGetMainWnd()->m_hWnd;
+GetTopWindow
+函数功能：该函数检查与特定父窗体相联的子窗体z序（Z序：垂直屏幕的方向，即叠放次序），并返回在z序顶部的子窗体的句柄。
+函数原型：HWND GetTopWindow（HWND hWnd）；
+參数：
+　　hWnd:被查序的父窗体的句柄。假设该參数为NULL，函数返回Z序顶部的窗体句柄。
+返回值：
+    假设函数成功，返回值为在Z序顶部的子窗体句柄。假设指定的窗体无子窗体，返回值为NULL。
+
+GetForegroundWindow
+函数功能：该函数返回当前系统的前台窗体的窗体句柄。
+函数原型：HWND GetForegroundWindow（VOID）　　
+返回值：函数返回前台窗回的句柄。
+
+GetActiveWindow
+函数功能：该函数能够获得与调用该方法的线程的消息队列相关的活动窗体的窗体句柄（就是取得当前进程的活动窗体的窗体句柄）。
+函数原型：HWND GetActiveWindow（VOID）
+返回值：返回值是与调用线程的消息队列相关的活动窗体的句柄。否则，返回值为NULL。
+
+GetSafeHwnd
+函数功能：获取某个窗体对象（CWnd的派生对象）指针的句柄（HWND）时，最安全的方法是使用GetSafeHwnd()函数。
+
+IsWindowVisible
+函数功能：该函数获得给定窗体的可视状态。
+
+IsWindow：
+函数功能：该函数确定给定的窗体句柄是否标示一个已存在的窗体。
+
+FindWindow：
+HWND FindWindow(LPCSTR lpClassName,LPCSTR lpWindowName );
+參数：
+lpClassName
+　　指向一个以null结尾的、用来指定类名的字符串或一个能够确定类名字符串的原子。
+
+SetWindowText：
+至于窗体标题的改变，我们能够通过SetWindowText来实现
+
+InModalState
+https://baike.baidu.com/item/InModalState/10114789?fr=aladdin
+示例编辑
+/****************************************************
+演示函数原型：pFrame->InModalState();
+程序功能说明：将框架设为模式状态。
+****************************************************/
+//如果框架处于非模式状态
+if(!pFrame->InModalState())
+{ //获得框架最顶级父窗体
+CWnd *pTemp=pFrame->GetTopLevelParent();
+BOOL bEnabled=pTemp->IsWindowEnabled();
+//如果最顶级父窗体不为活动状态
+if(!bEnabled)
+{
+//将框架设为模式状态
+pFrame->BeginModalState();
+//激活最顶级父窗体
+pTemp->EnableWindow(TRUE);
+}
+}
+
+2020.03.10
+
+请问如何判断已经显示的窗体是否是模态的? [问题点数：200分，结帖人sonic_andy]
+https://bbs.csdn.net/topics/340050646
+没有父窗口的模式窗口和非模式窗口还是有区别的
+其实真正的模式窗口并非只父窗口被禁用，而是线程内的所有窗口都被禁用
+一般情况下，判断某个窗口是否为模式窗口可以这样测试
+if iswindowenabled（ Getwindow(hwnd,gw_owner）） ＝0 then 某窗口为模式窗口
+
+其实模态并不是窗口的状态。
+
+模态窗口是这样一组操作的集合：
+1 设置调用窗口为主窗口的子窗口
+2 将主窗口的Enable设置为False
+3 显示调用窗口
+你可以用这个思路，获得当前窗口的父窗口，判断它是否Enable。
+
+
+生粉 编辑 讨论
+生粉是食谱中常出现的名词，多是用来勾芡用的，在大陆和台湾使用的生粉是马铃薯粉，在香港使用的生粉为玉米粉。生粉在中式烹调上除了勾芡使食物产生滑润的口感之外，亦常用来做为软化肉质的腌肉料之一。生粉的用途很广，可以作炒菜时的调料，也可以做凉粉，还可以用来摊煎饼，最主要用于肉类原料加工时上浆、勾芡等。
+在中餐里就是指淀粉，炒菜时用于勾芡、上浆等， 有多种多样，比如红薯淀粉，川菜中使用的水豆粉，以及玉米淀粉等。生粉就是淀粉，可以有很多种，一般指玉米淀粉。
+勾芡的学术概念是：借助淀粉在遇热糊化的情况下，具有吸水、粘附及光滑润洁的特点，在菜肴接近成熟时，将调好的粉汁淋入锅内，使卤汁稠浓，增加卤汁对原料的附着力，从而使菜肴汤汁的粉性和浓度增加，改善菜肴的色泽和味道。
+
+面粉是一种由小麦磨成的粉末。按面粉中蛋白质含量的多少，可以分为高筋面粉、中筋面粉、低筋面粉及无筋面粉。面粉（小麦粉）是中国北方大部分地区的主食。以面粉制成的食物品种繁多，花样百出，风味迥异 。
+
+蓝牙电脑适配器
+蓝牙适配器 台式机电脑
+
+羊UDJ J->最简单的没试?
+
+都不是好友，哪里存在黑
+---言多必失
+
+你家牛会抽烟不?
+许君聪:你有病,你家牛会呀!
+那就是着火了
+
+2020.03.09
+
+submit commit
+
 MsEditDlg.cpp
 
 #include "ReadMds.h"
