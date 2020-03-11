@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "MsEdit_Wendy.h"
 #include "MsEdit_WendyDlg.h"
+#include "log.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -11,6 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+CLog g_Log;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
@@ -131,7 +133,8 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
 	// TODO: Add extra initialization here
-
+	g_Log.Init("ReadMds.log",1024*1024);
+	g_Log.Log("==========================Start==========================");
 	g_hEvent = CreateEvent(NULL, FALSE, FALSE, "Data_CListCtr");
 	if (g_hEvent) 
 	{ 
@@ -238,6 +241,9 @@ extern CListFrame_e mCListFrame_e;
 void CMsEdit_WendyDlg::OnRead() 
 {
 	// TODO: Add your control notification handler code here
+
+	#if 1  // wendy test
+
 	counts = 0;
 	memset(&g_Master.m_itemdesk,0,sizeof(Master::OutItem));
 	int m_count ;
@@ -258,6 +264,7 @@ void CMsEdit_WendyDlg::OnRead()
 
 	char szTemp[256];
 	CStringArray files ;
+
 
 	if (m_count != m_precount)
 	{
@@ -332,6 +339,8 @@ void CMsEdit_WendyDlg::OnRead()
 		SetEvent(g_hEvent);
 	}
 
+#endif // wendy test
+
 	//OnCancel();
 	pShowData =  new CShowData;
 	pShowData->Create(IDD_SHOWDATA);
@@ -361,5 +370,7 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 		g_Master.m_pDataSrc_TTFrameFile = NULL;
 	}
 
+	g_Log.Log("===========================End===========================");
+	g_Log.Close();
 	return CDialog::DestroyWindow();
 }

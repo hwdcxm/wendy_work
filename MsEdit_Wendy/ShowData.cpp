@@ -418,6 +418,7 @@ BOOL CShowData::OnInitDialog()
 
 	pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
 	
+#if 1  // wendy test
 	SetTimer( 1, 1000, NULL ) ;
 
 	frame_e_count = mCListFrame_e.GetCount();
@@ -445,6 +446,8 @@ BOOL CShowData::OnInitDialog()
 	
 	enable_timer = false;
 	GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);
+	
+#endif // wendy test
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -605,7 +608,9 @@ void CShowData::OnCancel()
 void CShowData::PostNcDestroy() 
 {
 	// TODO: Add your specialized code here and/or call the base class
-	
 	CDialog::PostNcDestroy();
-	delete this;
+	if (AfxGetMainWnd()->IsWindowEnabled())
+	{
+			delete this;
+	}
 }

@@ -1,11 +1,12 @@
 // MsEdit_WendyDlg.h : header file
 //
 
-#include "ShowData.h"
+
 
 #if !defined(AFX_MSEDIT_WENDYDLG_H__9D89B960_275B_4ECE_9150_C385110DAFA2__INCLUDED_)
 #define AFX_MSEDIT_WENDYDLG_H__9D89B960_275B_4ECE_9150_C385110DAFA2__INCLUDED_
 
+#include "ShowData.h"
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000

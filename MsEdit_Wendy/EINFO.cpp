@@ -38,6 +38,7 @@ void CEINFO::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CEINFO, CDialog)
 	//{{AFX_MSG_MAP(CEINFO)
 	ON_WM_TIMER()
+	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -141,4 +142,21 @@ void CEINFO::OnTimer(UINT nIDEvent)
 	}
 
 	CDialog::OnTimer(nIDEvent);
+}
+
+void CEINFO::OnClose() 
+{
+	// TODO: Add your message handler code here and/or call default
+	CDialog::OnClose();
+	DestroyWindow();
+}
+
+void CEINFO::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CDialog::PostNcDestroy();
+	if (AfxGetMainWnd()->IsWindowEnabled())
+	{
+		delete this;
+	}
 }

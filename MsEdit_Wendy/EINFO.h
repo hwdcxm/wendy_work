@@ -40,6 +40,7 @@ public:
 	//{{AFX_VIRTUAL(CEINFO)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -49,6 +50,7 @@ protected:
 	//{{AFX_MSG(CEINFO)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnClose();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

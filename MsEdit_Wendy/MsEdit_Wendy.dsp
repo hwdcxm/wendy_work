@@ -116,6 +116,10 @@ SOURCE=.\MsEdit_WendyDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PathAPI.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ShowData.cpp
 # End Source File
 # Begin Source File
@@ -153,6 +157,14 @@ SOURCE=.\lock.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Log.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Log.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Master.h
 # End Source File
 # Begin Source File
@@ -162,6 +174,10 @@ SOURCE=.\MsEdit_Wendy.h
 # Begin Source File
 
 SOURCE=.\MsEdit_WendyDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PathAPI.h
 # End Source File
 # Begin Source File
 
