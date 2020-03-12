@@ -12,12 +12,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CLog g_Log;
-/////////////////////////////////////////////////////////////////////////////
-// CAboutDlg dialog used for App About
-
 Master g_Master;
 HANDLE g_hEvent;
+CLog g_Log;
+CString logstr;
+
+/////////////////////////////////////////////////////////////////////////////
+// CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialog
 {
@@ -82,6 +83,7 @@ void CMsEdit_WendyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMsEdit_WendyDlg)
+	DDX_Control(pDX, IDC_LOG, m_loglist);
 	DDX_Control(pDX, IDC_LIST1, m_filelist);
 	DDX_Text(pDX, IDC_TRANSCODE, m_TransCode);
 	DDX_Text(pDX, IDC_ITEM, m_item);
@@ -99,6 +101,7 @@ BEGIN_MESSAGE_MAP(CMsEdit_WendyDlg, CDialog)
 	ON_BN_CLICKED(IDC_ADDFILE, OnAddfile)
 	ON_BN_CLICKED(IDC_DELFILE, OnDelfile)
 	ON_BN_CLICKED(IDC_READ, OnRead)
+	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -134,13 +137,15 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	
 	// TODO: Add extra initialization here
 	g_Log.Init("ReadMds.log",1024*1024);
-	g_Log.Log("==========================Start==========================");
+	logstr.Format("Start Application");
+	SetTimer(1, 300, NULL) ; 
+	
 	g_hEvent = CreateEvent(NULL, FALSE, FALSE, "Data_CListCtr");
 	if (g_hEvent) 
 	{ 
 		if (ERROR_ALREADY_EXISTS == GetLastError()) 
 		{ 
-			TRACE( "the instance is exist! \n");			
+			TRACE( "ER: Event Data_CListCtr ALREADY_EXISTS ! \n");			
 		} 
 	}
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -353,24 +358,68 @@ void CMsEdit_WendyDlg::OnRead()
 BOOL CMsEdit_WendyDlg::DestroyWindow() 
 {
 	// TODO: Add your specialized code here and/or call the base class
-	
-	if (mCListDataFrame.IsEmpty() == 0)
+	try
 	{
-		mCListDataFrame.RemoveAll();
-	}
-	
-	if (mCListFrame_e.IsEmpty() == 0)
-	{
-		mCListFrame_e.RemoveAll();
-	}
-	
-	if (g_Master.m_pDataSrc_TTFrameFile)
-	{
-		delete g_Master.m_pDataSrc_TTFrameFile;
-		g_Master.m_pDataSrc_TTFrameFile = NULL;
-	}
+		if (mCListDataFrame.IsEmpty() == 0)
+		{
+			mCListDataFrame.RemoveAll();
+		}
+		
+		if (mCListFrame_e.IsEmpty() == 0)
+		{
+			mCListFrame_e.RemoveAll();
+		}
+		
+		if (g_Master.m_pDataSrc_TTFrameFile)
+		{
+			delete g_Master.m_pDataSrc_TTFrameFile;
+			g_Master.m_pDataSrc_TTFrameFile = NULL;
+		}
 
-	g_Log.Log("===========================End===========================");
+		KillTimer(1);
+	}
+	catch (CMemoryException* e)
+	{
+		CString str;
+		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
+		CString errlog;
+		errlog.Format("MemoryException %d,%s",GetLastError(),str);
+		g_Log.Log(errlog);
+	}
+	catch (CFileException* e)
+	{
+		CString str;
+		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
+		CString errlog;
+		errlog.Format("FileException %d,%s",GetLastError(),str);
+		g_Log.Log(errlog);
+	}
+	catch (CException* e)
+	{
+		CString str;
+		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
+		CString errlog;
+		errlog.Format("Exception %d,%s",GetLastError(),str);
+		g_Log.Log(errlog);
+	}
+	
+	g_Log.Log("End Application");
 	g_Log.Close();
 	return CDialog::DestroyWindow();
+}
+
+void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent) 
+{
+	// TODO: Add your message handler code here and/or call default
+	if (logstr.GetLength())
+	{
+		if (m_loglist.GetCount()>10)
+		{
+			m_loglist.DeleteString(0);
+		}
+		m_loglist.AddString(logstr);
+		g_Log.Log(logstr);
+		logstr="";
+	}
+	CDialog::OnTimer(nIDEvent);
 }

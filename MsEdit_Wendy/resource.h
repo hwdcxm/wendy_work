@@ -25,6 +25,7 @@
 #define IDC_EDIT2                       1015
 #define IDC_BTN_TIMER                   1015
 #define IDC_EDIT3                       1016
+#define IDC_LOG                         1016
 #define IDC_EDIT4                       1017
 #define IDC_EDIT5                       1018
 #define IDC_EDIT6                       1019
@@ -41,7 +42,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -24,6 +24,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CMsEdit_WendyDlg)
 	enum { IDD = IDD_READMDS };
+	CListBox	m_loglist;
 	CListBox	m_filelist;
 	CString	m_TransCode;
 	CString	m_item;
@@ -53,6 +54,7 @@ protected:
 	afx_msg void OnAddfile();
 	afx_msg void OnDelfile();
 	afx_msg void OnRead();
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
