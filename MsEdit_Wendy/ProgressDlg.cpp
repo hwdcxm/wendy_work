@@ -39,7 +39,7 @@ BEGIN_MESSAGE_MAP(CProgressDlg, CDialog)
 	//{{AFX_MSG_MAP(CProgressDlg)
 	ON_MESSAGE(WM_PROGRESS_MESSAGE, OnUpdateProgress )
 	ON_WM_CLOSE()
-	ON_MESSAGE(WM_PROGRESS_END, OnClose)
+	ON_MESSAGE(WM_PROGRESS_END, OnEndDlg)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -105,4 +105,10 @@ void CProgressDlg::PostNcDestroy()
 	{
 		delete this;
 	}
+}
+
+LRESULT CProgressDlg::OnEndDlg(WPARAM wParam, LPARAM lParam)
+{
+	OnClose();
+	return NULL;
 }

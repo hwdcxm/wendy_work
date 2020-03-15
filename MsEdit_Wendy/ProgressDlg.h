@@ -14,6 +14,7 @@ class CProgressDlg : public CDialog
 {
 // Construction
 public:
+	LRESULT OnEndDlg( WPARAM wParam, LPARAM lParam );
 	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
 
 	CStatic* m_pStatic_Read;
