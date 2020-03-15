@@ -222,41 +222,44 @@ int CShowData::op_delay(_tagTTDataFrame *pStFrame)
 void CShowData::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
-	m_lock.Lock();
 	int i = 0;
 	//POSITION ps;
-
+	
 	TRACE("OnTimer...\n");
 	KillTimer(1);
 	TRACE("SetTimer...\n");
-
-	WaitForSingleObject(g_hEvent, INFINITE);
-
-	if (InitClistGetHead == FALSE)
+	
+#if 1  // wendy test
+	DWORD retEvent = WaitForSingleObject(g_hEvent, 0); //INFINITE
+	if (retEvent == WAIT_OBJECT_0)
 	{
-		ps = mCListDataFrame.GetHeadPosition();  // wendy
-		InitClistGetHead = TRUE;
-	}
-
-	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-	ListIndex = m_list_data.GetItemCount();
-	int HandlDataCount = DataCount; // - DataCount_bak;
-
-	Datainterval = HandlDataCount / 10000;
-	if (Datainterval <= 0) 
-	{
-		Datainterval = 100;
-	}
-
-
+		
+		m_lock.Lock();
+		if (InitClistGetHead == FALSE)
+		{
+			ps = mCListDataFrame.GetHeadPosition();  // wendy
+			InitClistGetHead = TRUE;
+		}
+		
+		frame_e_count = mCListFrame_e.GetCount();
+		DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+		ListIndex = m_list_data.GetItemCount();
+		int HandlDataCount = DataCount; // - DataCount_bak;
+		
+		Datainterval = HandlDataCount / 10000;
+		if (Datainterval <= 0) 
+		{
+			Datainterval = 100;
+		}
+		
+		
 		ListIndex_bak = ListIndex;
 		
 		// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
 		// ps = mCListDataFrame.GetHeadPosition()
 		for(i=0; (ps && i<1000) ; mCListDataFrame.GetNext(ps))  //mCListDataFrame.GetNext(ps)
 		{
-
+			
 			mStFrame = mCListDataFrame.GetAt(ps);
 			//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
 			if (op_TransCode(&mStFrame)&&op_item(&mStFrame)&&op_time(&mStFrame))
@@ -287,13 +290,21 @@ void CShowData::OnTimer(UINT nIDEvent)
 				ListIndex++;
 				i++;
 			}
-
+			
 			if (noselitem && noselcode && noseltime)
 			{
-				GetIndex = GetIndex + Datainterval*100;
+
+
+				//GetIndex = GetIndex + Datainterval*100;
 				time_t t;
 				srand((unsigned) time(&t));
-				GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
+				//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
+
+				GetIndex = GetIndex + rand()%100;
+				if (i>=100)
+				{
+					GetIndex = DataCount;
+				}
 
 				if (GetIndex >= DataCount)
 				{
@@ -303,71 +314,80 @@ void CShowData::OnTimer(UINT nIDEvent)
 				ps = mCListDataFrame.FindIndex(GetIndex);
 				
 			}
-
+			
 			GetIndex ++;
 			if (GetIndex >= DataCount)
 			{
 				GetIndex = DataCount;
 			}
 		}
-
-	DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
+		
+		DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
+		
+		if (GetIndex < DataCount)
+		{
+			if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
+			{
+				TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
+				GetIndex ++;
+				if (GetIndex >= DataCount)
+				{
+					GetIndex = DataCount;
+				}
+			}
+			
+			GetIndex_bak = GetIndex;
+			static int search = 0;
+			SetTimer( 1, 30, NULL ) ;
+			//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+			strsearch = "Search";
+			for(int j =0; j < search; j++)
+			{
+				strsearch = strsearch + '.';
+			}
+			
+			for(int k =0; k < 6-search; k++)
+			{
+				strsearch = strsearch + ' ';
+			}
+			
+			search ++;
+			
+			if (search > 6)
+			{
+				search = 0;
+			}
+			
+			StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+			m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
+			
+			if (enable_timer ==  false)
+			{
+				GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
+				enable_timer = true;
+			}
+		}
+		else
+		{
+			TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+			StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+			m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
+			
+			enable_timer = false;
+			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);
+		}
+#endif 
+		SetEvent(g_hEvent);
+		m_lock.UnLock();
+	}
+	else if (retEvent ==WAIT_TIMEOUT)
+	{
+		SetTimer( 1, 130, NULL ) ;
+	}
 	
+	//SetTimer( 1, 30, NULL ) ;	// wendy test
 	CDialog::OnTimer(nIDEvent);
-	if (GetIndex < DataCount)
-	{
-		if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
-		{
-			TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
-			GetIndex ++;
-			if (GetIndex >= DataCount)
-			{
-				GetIndex = DataCount;
-			}
-		}
-
-		GetIndex_bak = GetIndex;
-		static int search = 0;
-		SetTimer( 1, 30, NULL ) ;
-		//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-		strsearch = "Search";
-		for(int j =0; j < search; j++)
-		{
-			strsearch = strsearch + '.';
-		}
-
-		for(int k =0; k < 6-search; k++)
-		{
-			strsearch = strsearch + ' ';
-		}
-		
-		search ++;
-
-		if (search > 6)
-		{
-			search = 0;
-		}
-		
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-		m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
-		
-		if (enable_timer ==  false)
-		{
-			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
-			enable_timer = true;
-		}
-	}
-	else
-	{
-		TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-		m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
-
-		enable_timer = false;
-		GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);
-	}
-	SetEvent(g_hEvent);
-	m_lock.UnLock();
+	
 }
 
 //struct _tagTTDataFrame{

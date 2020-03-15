@@ -5,12 +5,18 @@
 #include "stdafx.h"
 #include "MsEdit_Wendy.h"
 #include "Master.h"
+#include "GroupsMng.h"
+#include "GroupsMng_i.c"
+#include "WTTCommon_i.c"
+#include "log.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
+extern CLog w_Log;
+extern CString s_Log;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -33,6 +39,48 @@ void Master::Play()
 		m_pDataSrc_TTFrameFile->Play() ;
 	}
 //	m_procTTFrame.Play() ;
+}
+
+
+BOOL Master::CreateGroupsMng()
+{
+	if( m_pGroupsMng!=NULL )
+		return TRUE ;
+	
+	HRESULT ret = CoCreateInstance( CLSID_TTGroupsMng, 
+		NULL, CLSCTX_ALL,
+		IID_IUnknown, (LPVOID*)&m_pGroupsMng );
+	int n=GetLastError();
+	if( ret!=S_OK || m_pGroupsMng==NULL )
+	{
+		m_pGroupsMng = NULL ;
+		//g_Log.Log("Groupmng.dll load fail!");
+		s_Log.Format("Groupmng.dll load fail!");
+		return  FALSE ;
+	}
+	
+	//g_Log.Log("Groupmng.dll Ok.");
+	s_Log.Format("Groupmng.dll Ok.");
+	CComQIPtr<ITTObject,&IID_ITTObject> pObj(m_pGroupsMng);
+	
+	// ?? no set systemObject ??
+	// ...
+	
+	try
+	{
+		int nRet = pObj->InitObject() ;
+		//Johnny add 2014.12.24///////////////////////////////
+		//RewriteNightTINI(m_pGroupsMng);
+		
+		//Johnny add 2014.12.24///////////////////////////////
+	}
+	catch(...)
+	{
+		
+	}
+	
+	return TRUE ;
+	
 }
 
 void Master::Stop() 

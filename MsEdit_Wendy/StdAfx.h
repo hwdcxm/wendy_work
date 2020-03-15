@@ -24,4 +24,7 @@
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#define WM_PROGRESS_MESSAGE WM_USER+1
+#define WM_PROGRESS_END		WM_USER+2
+
 #endif // !defined(AFX_STDAFX_H__7F56FA79_04FF_4E46_8DCB_071E5581A387__INCLUDED_)

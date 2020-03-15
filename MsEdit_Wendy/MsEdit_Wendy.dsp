@@ -120,6 +120,10 @@ SOURCE=.\PathAPI.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ProgressDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ShowData.cpp
 # End Source File
 # Begin Source File
@@ -178,6 +182,10 @@ SOURCE=.\MsEdit_WendyDlg.h
 # Begin Source File
 
 SOURCE=.\PathAPI.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ProgressDlg.h
 # End Source File
 # Begin Source File
 

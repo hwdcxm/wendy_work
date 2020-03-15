@@ -7,6 +7,8 @@
 #define AFX_MSEDIT_WENDYDLG_H__9D89B960_275B_4ECE_9150_C385110DAFA2__INCLUDED_
 
 #include "ShowData.h"
+#include "ProgressDlg.h"
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -21,6 +23,9 @@ public:
 	CMsEdit_WendyDlg(CWnd* pParent = NULL);	// standard constructor
 
 	CShowData * pShowData;
+
+	BOOL InitCreateGroupsMng;
+	
 // Dialog Data
 	//{{AFX_DATA(CMsEdit_WendyDlg)
 	enum { IDD = IDD_READMDS };
@@ -55,6 +60,7 @@ protected:
 	afx_msg void OnDelfile();
 	afx_msg void OnRead();
 	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnDblclkLog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

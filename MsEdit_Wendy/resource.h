@@ -10,6 +10,7 @@
 #define IDD_SHOWDATA                    129
 #define IDR_MENU1                       130
 #define IDD_E_INFO                      131
+#define IDD_PROGRESS                    132
 #define IDC_LIST1                       1000
 #define IDC_READ                        1001
 #define IDC_ADDFILE                     1002
@@ -28,8 +29,11 @@
 #define IDC_LOG                         1016
 #define IDC_EDIT4                       1017
 #define IDC_EDIT5                       1018
+#define IDC_PROGRESS1                   1018
 #define IDC_EDIT6                       1019
+#define IDC_STATIC_SIZE                 1019
 #define IDC_EDIT7                       1020
+#define IDC_STATIC_READ                 1020
 #define IDC_EDIT8                       1021
 #define IDC_EDIT9                       1022
 #define IDC_EDIT10                      1023
@@ -40,9 +44,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
+#define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

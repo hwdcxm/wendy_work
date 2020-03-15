@@ -25,6 +25,8 @@ public:
 	//void ReInit();
 	BOOL m_hStop;
 	//void Init();
+	BOOL CreateGroupsMng();
+	IUnknown*	m_pGroupsMng ;
 
 	struct OutItem 
 	{

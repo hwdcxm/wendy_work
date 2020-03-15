@@ -1,0 +1,101 @@
+// GroupsMng.idl : IDL source for GroupsMng.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (GroupsMng.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\Common\WTTCommon.idl";
+
+////////////////////////// Define Parameter ID ///////////////////////////////
+cpp_quote("#define ItemID_ItemCode		0")		// item code.
+cpp_quote("#define ItemID_Lang1Descrip	1")		// item's english name .
+cpp_quote("#define ItemID_Lang2Descrip	2")		// item's traditional Chinese name.
+cpp_quote("#define ItemID_Lang3Descrip	3")		// item's sample Chinese name.
+cpp_quote("#define ItemID_SecurityTypes	4")		// item的类别,	BYTE[3]
+cpp_quote("#define ItemID_EarnPerShare	5")		// 每股赢利.
+cpp_quote("#define ItemID_DividPerShare	6")		// 每股分红.
+cpp_quote("#define ItemID_CorrStockCode	7")		// 正股代码.
+cpp_quote("#define ItemID_SubscripUnit	8")		// 可认股数,	float
+cpp_quote("#define ItemID_SubscripPrice 9")		// 行使价,		float.
+cpp_quote("#define ItemID_LotSize		10")	// 每手股数.
+cpp_quote("#define ItemID_CurrencyCode	11")	// 货币单位.
+cpp_quote("#define ItemID_PriceType		12")	
+cpp_quote("#define ItemID_NonBasketWarrData		13")	// get non-basket warrant data, fmt: iNumb+data.
+cpp_quote("#define ItemID_BasketWarrData		14")	// get basket warrant data, fmt: iNumb+data.
+cpp_quote("#define ItemID_IsBasketWarr			15")	// is basket warrant data?
+cpp_quote("#define ItemID_WarrItemsNumb			16")	// get warrant items' number.
+cpp_quote("#define ItemID_CorrItemCode			17")	// get warrant items' CorrItemCode.
+cpp_quote("#define ItemID_ExpiryDate	18")	// 到期日.
+cpp_quote("#define ItemID_TradeSessionNumber	19")	// 有几个交易时间段. unsigned short.
+cpp_quote("#define ItemID_TradeSessions			20")	// 交易时间段. unsigned short的数组[TradeSessionNumber*2].
+cpp_quote("#define ItemID_CurrencyUnit			21")	// CurrencyUnit, unsigned short
+cpp_quote("#define ItemID_AccruInterest			22")	// AccruInterest, float
+cpp_quote("#define ItemID_FixInterestCode		23")	// AccruInterest, short
+cpp_quote("#define ItemID_SuspensionFlag		24")	// SuspensionFlag, BYTE
+cpp_quote("#define ItemID_ShortSell				25")	// ShortSell, BYTE
+cpp_quote("#define ItemID_CCASS					26")	// CCASS, BYTE
+cpp_quote("#define ItemID_MessureUnit			27")	// unit of messure, char[10]
+cpp_quote("#define ItemID_SpTradeSessions		28")	// 真实交易段信息,	TradeSessionEx
+cpp_quote("#define ItemID_ListingDate			29")	// listing date,	long 
+cpp_quote("#define ItemID_HisTradeSessions		30")	// 历史交易段信息,	TradeSessionEx
+	[
+		object,
+		uuid(C0DF3111-8A7B-11D3-AED6-00A0CC23E698),
+		dual,
+		helpstring("ITTGroupsMng Interface"),
+		pointer_default(unique)
+	]
+	interface ITTGroupsMng : IDispatch
+	{
+		[ id(1) ] HRESULT FindItem([in]BYTE cGroupCode,  [in,size_is(8)]BYTE* pszItemCode, [out,retval]long* pEchoID );
+		[ id(2) ] HRESULT FindItemByID([in]BYTE cGroupCode, [in]int nItemCode, [out,retval]long* pEchoID);
+		[ id(3) ] HRESULT FindFirstItem([in]BYTE cGroupCode, [out,retval]long* pEchoID);
+		[ id(4) ] HRESULT FindLastItem([in]BYTE cGroupCode, [out,retval]long* pEchoID);
+		[ id(5) ] HRESULT FindPreItem([in]long lItemID, [out,retval]long* pEchoID);
+		[ id(6) ] HRESULT FindNextItem([in]long lItemID, [out,retval]long* pEchoID);
+		[ id(7) ] HRESULT SelectItem([ in,out,size_is(9) ]BYTE* pEchoBuf);
+		[ id(8) ] HRESULT GetItemPara([in]long lItemID,  int nParaID, [ out,size_is(BufLen) ]BYTE* pBuf, [in]int BufLen);
+		[ id(9) ] HRESULT GetGroupsTotal( [out,retval]long* pEchoGroupsTotal );
+		[ id(10)] HRESULT GetGroupCode( [in]long lGroupID, [out,size_is(1)]BYTE* pBuf );
+		[ id(11)] HRESULT GetItemsTotalOfGroup( [in]BYTE cGroupCode, [out,retval]long* pEchoItemsTotal );
+		[ id(12)] HRESULT FindMatchItem([in]BYTE cGroupCode,  [in,size_is(8)]BYTE* pszItemCode, [out,retval]long* pEchoID );
+		[ id(13)] HRESULT GetGroupName( long lGroupID, long lLangType, BYTE* pBuf );
+		[ id(14)] HRESULT PutItemPara([in]long lItemID,  int nParaID, [ out,size_is(BufLen) ]BYTE* pBuf, [in]int BufLen);
+
+		[ id(15)] HRESULT BlockMng();
+		[ id(16)] HRESULT CSSMng(IUnknown* pCSS);
+		[ id(17)] HRESULT GetGroupArray( [in]short iFlag , [out]BYTE* piPrivCount , [out,retval]BYTE* pStrArray );//0:public , 1:private , 2:both
+		[ id(18)] HRESULT GetBlockArray( [in]short iFlag , [in]BYTE* pszGroup , [out,retval]BYTE* pStrArray );
+		[ id(19)] HRESULT GetItemArray(  [in]short iFlag , [in]BYTE* pszGroup , [in]BYTE* pszBlock , [in]int* pAutolinkwarrants , [out,retval]BYTE* pStrArray );
+		[ id(20)] HRESULT GetGroupNameByLang([in]short iFlag , [in]short iLangType , [in]BYTE* pszGroup , [out,retval]BYTE* pszValue);
+		[ id(21)] HRESULT GetBlockNameByLang([in]short iFlag , [in]short iLangType , [in]BYTE* pszGroup , [in]BYTE* pszBlock , [out,retval]BYTE* pszValue);
+		[ id(22)] HRESULT SelectBlock([out]short* piFlag , [out]BYTE* pszGroup , [out]BYTE* pszBlock ,[out]BYTE* pszEchoGroup , [out]BYTE* pszEchoBlock);
+		[ id(23)] HRESULT GetDefaultBlock( [out]BYTE* pszEchoGroup , [out]BYTE* pszEchoBlock );
+
+		[ id(24)] HRESULT GetExtData( BYTE* pszFieldName, BYTE* pBuf, int* pBufLen );
+		[id(25), helpstring("method HouseKeeping")] HRESULT HouseKeeping(DWORD date);
+
+	};
+
+[
+	uuid(284B09A6-85C3-11D3-AECF-00A0CC23E698),
+	version(1.0),
+	helpstring("GroupsMng 1.0 Type Library")
+]
+library GROUPSMNGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(C0DF3112-8A7B-11D3-AED6-00A0CC23E698),
+		helpstring("TTGroupsMng Class")
+	]
+	coclass TTGroupsMng
+	{
+		[default] interface ITTGroupsMng;
+		interface ITTObject;
+	};
+};

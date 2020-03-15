@@ -14,8 +14,10 @@ static char THIS_FILE[] = __FILE__;
 
 Master g_Master;
 HANDLE g_hEvent;
-CLog g_Log;
-CString logstr;
+CLog w_Log;
+CString s_Log;
+CProgressDlg *g_pProDlg;
+DWORD g_fileSize;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
@@ -77,6 +79,7 @@ CMsEdit_WendyDlg::CMsEdit_WendyDlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	InitCreateGroupsMng = FALSE;
 }
 
 void CMsEdit_WendyDlg::DoDataExchange(CDataExchange* pDX)
@@ -102,6 +105,7 @@ BEGIN_MESSAGE_MAP(CMsEdit_WendyDlg, CDialog)
 	ON_BN_CLICKED(IDC_DELFILE, OnDelfile)
 	ON_BN_CLICKED(IDC_READ, OnRead)
 	ON_WM_TIMER()
+	ON_LBN_DBLCLK(IDC_LOG, OnDblclkLog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -134,11 +138,11 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	
+	m_loglist.SetHorizontalExtent(1200);  //HorizontalScorllbar
 	// TODO: Add extra initialization here
-	g_Log.Init("ReadMds.log",1024*1024);
-	logstr.Format("Start Application");
-	SetTimer(1, 300, NULL) ; 
+	w_Log.Init("ReadMds.log",1024*1024);
+	s_Log.Format("==========================Start Application==========================");
+	SetTimer(1, 10, NULL) ;  // 350
 	
 	g_hEvent = CreateEvent(NULL, FALSE, FALSE, "Data_CListCtr");
 	if (g_hEvent) 
@@ -203,6 +207,7 @@ HCURSOR CMsEdit_WendyDlg::OnQueryDragIcon()
 void CMsEdit_WendyDlg::OnAddfile() 
 {
 	// TODO: Add your control notification handler code here
+
 	CFileDialog fdlg(true, NULL, NULL, OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR, "(*.mds)|*.mds|All Files (*.*)|*.*||", NULL);
 	if(fdlg.DoModal()==IDOK)
 	{
@@ -295,7 +300,7 @@ void CMsEdit_WendyDlg::OnRead()
 
 	if (m_needreadfs || !mCListDataFrame.GetCount())
 	{
-		
+		g_fileSize = 0;
 		if(g_Master.m_MSCEType != MSCE_TYPE_PROXY)
 		{
 			g_Master.m_pDataSrc_TTFrameFile = new CDataSrc_TTFrameFile() ;
@@ -334,22 +339,46 @@ void CMsEdit_WendyDlg::OnRead()
 			mCListFrame_e.RemoveAll();
 		}
 
+		WIN32_FIND_DATA fileInfo;
+		HANDLE hFind;
+		for( int i=0;i<g_Master.m_pDataSrc_TTFrameFile->m_files.GetSize();i++ )
+		{
+			DWORD fileSize;
+			hFind = FindFirstFile(g_Master.m_pDataSrc_TTFrameFile->m_files[i] ,&fileInfo);
+			if(hFind != INVALID_HANDLE_VALUE)
+			{
+				fileSize = fileInfo.nFileSizeLow;
+			}
+			FindClose(hFind);
+			g_fileSize = g_fileSize + fileSize;		
+		}
+
 		ResetEvent(g_hEvent);
-		
+
+		pShowData =  new CShowData;
+		pShowData->Create(IDD_SHOWDATA);
+		pShowData->ShowWindow(SW_SHOW);
+
+		g_pProDlg = new CProgressDlg();
+		g_pProDlg->Create(CProgressDlg::IDD, NULL );
+		g_pProDlg->ShowWindow( SW_SHOW );
+
 		TRACE("Read Files.... \n");
 		g_Master.Play();
 	}
 	else
 	{
 		SetEvent(g_hEvent);
+		pShowData =  new CShowData;
+		pShowData->Create(IDD_SHOWDATA);
+		pShowData->ShowWindow(SW_SHOW);
 	}
 
 #endif // wendy test
 
 	//OnCancel();
-	pShowData =  new CShowData;
-	pShowData->Create(IDD_SHOWDATA);
-	pShowData->ShowWindow(SW_SHOW);
+
+
 	
 	//CShowData mCShowData;  //dlg.DoModal();
 	//mCShowData.DoModal();
@@ -358,6 +387,10 @@ void CMsEdit_WendyDlg::OnRead()
 BOOL CMsEdit_WendyDlg::DestroyWindow() 
 {
 	// TODO: Add your specialized code here and/or call the base class
+	
+	CString str;
+	CString errlog;	
+
 	try
 	{
 		if (mCListDataFrame.IsEmpty() == 0)
@@ -380,46 +413,83 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 	}
 	catch (CMemoryException* e)
 	{
-		CString str;
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
-		CString errlog;
 		errlog.Format("MemoryException %d,%s",GetLastError(),str);
-		g_Log.Log(errlog);
+		w_Log.Log(errlog);
 	}
 	catch (CFileException* e)
 	{
-		CString str;
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
-		CString errlog;
 		errlog.Format("FileException %d,%s",GetLastError(),str);
-		g_Log.Log(errlog);
+		w_Log.Log(errlog);
 	}
 	catch (CException* e)
 	{
-		CString str;
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
-		CString errlog;
 		errlog.Format("Exception %d,%s",GetLastError(),str);
-		g_Log.Log(errlog);
+		w_Log.Log(errlog);
 	}
 	
-	g_Log.Log("End Application");
-	g_Log.Close();
+	w_Log.Log("===========================End Application===========================");
+	w_Log.Close();
 	return CDialog::DestroyWindow();
 }
 
 void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
-	if (logstr.GetLength())
+	
+	if (s_Log.GetLength())
 	{
-		if (m_loglist.GetCount()>10)
+
+//		if (m_loglist.GetCount()>10)
+//		{
+//			m_loglist.DeleteString(0);
+//		}
+
+//		m_loglist.AddString(s_Log);
+//		w_Log.Log(s_Log);
+//		s_Log="";
+
+		w_Log.Log(s_Log);
+		char *token;
+//		CString bb="APEC 2001  \n   Shang Hai china";
+		CString str[10];
+		char seps[] = "\n";
+		int count = s_Log.GetLength();
+		
+		token = strtok(s_Log.GetBuffer(count), seps);
+		
+		str[0].Format("%s", token);
+		//TRACE("%s", str[0]);
+		m_loglist.AddString(str[0]);
+		int i = 1;
+		while(1)
 		{
-			m_loglist.DeleteString(0);
+			token = strtok(NULL, seps);
+			if(token == NULL)
+				break;
+			str[i].Format("%s", token);
+			//TRACE("%s\n", str[i]);
+			m_loglist.AddString(str[i]);
+			i++;
 		}
-		m_loglist.AddString(logstr);
-		g_Log.Log(logstr);
-		logstr="";
+		s_Log="";
+
 	}
+
+	if (InitCreateGroupsMng == FALSE)
+	{
+		InitCreateGroupsMng = TRUE;
+		g_Master.CreateGroupsMng();
+	}
+
 	CDialog::OnTimer(nIDEvent);
 }
+
+void CMsEdit_WendyDlg::OnDblclkLog() 
+{
+	// TODO: Add your control notification handler code here
+	m_loglist.ResetContent();
+}
+
