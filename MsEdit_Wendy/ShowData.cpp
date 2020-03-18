@@ -6,6 +6,8 @@
 #include "ShowData.h"
 #include "MsEdit_WendyDlg.h"
 
+#include "log.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -13,6 +15,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define FUNC_DECL(factory_name) DECL_##factory_name
+
+extern CLog w_eLog;
 
 /////////////////////////////////////////////////////////////////////////////
 // CShowData dialog
@@ -43,6 +47,7 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 	memset(string,0,sizeof(char)*25);
 	memset(GroupCodeString,0,sizeof(char)*3);
 	memset(CStrnLength,0,sizeof(char)*6);
+	memset(CStrnKey,0,sizeof(char)*6);
 	memset(CStrItemCode,0,sizeof(char)*10);
 	memset(CStrTransCode,0,sizeof(char)*3);
 	//memset(&CStrnTransDataLength,0,sizeof(CString));
@@ -77,13 +82,14 @@ BEGIN_MESSAGE_MAP(CShowData, CDialog)
 	ON_COMMAND(ID_MENUITEM_INFO, OnMenuitemInfo)
 	ON_COMMAND(ID_MENUITEM_COPY, OnMenuitemCopy)
 	ON_BN_CLICKED(IDC_BTN_TIMER, OnBtnTimer)
+	ON_BN_CLICKED(IDC_WRITE_SEARCH, OnWriteSearch)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CShowData message handlers
 	
-_tagTTDataFrame mStFrame;
+_Frame_e mStFrame; //_tagTTDataFrame
 extern HANDLE g_hEvent;
 
 int CShowData::op_item(_tagTTDataFrame *pStFrame)
@@ -101,7 +107,15 @@ int CShowData::op_item(_tagTTDataFrame *pStFrame)
 		{
 			pME_WD->m_item = pME_WD->m_item + ' ';
 		}
-		if (memcmp(&(pStFrame->arItemCode),pME_WD->m_item,sizeof(char)*8)==0)
+		pME_WD->m_item.MakeUpper();
+		
+		CString cstrItem = pStFrame->arItemCode;
+		cstrItem.MakeUpper();
+//		int ret = -2;
+//		ret = cstrItem.Find(pME_WD->m_item,0); 
+		
+		//if (memcmp(&(pStFrame->arItemCode),pME_WD->m_item,sizeof(char)*8)==0)		
+		if (memcmp(cstrItem,pME_WD->m_item,sizeof(char)*8)==0) //if (ret>=0)
 			return 1;
 		else
 			return 0;
@@ -219,6 +233,134 @@ int CShowData::op_delay(_tagTTDataFrame *pStFrame)
 	}
 }
 
+int CShowData::op_item_e(_Frame_e *pStFrame)
+{
+	int strcount = pME_WD->m_item.GetLength();
+	if (strcount == 0)
+	{
+		noselitem = TRUE;
+		return 1;
+	}
+	else
+	{
+		noselitem = FALSE;
+		for(int i = 0; i< 8-strcount; i++)
+		{
+			pME_WD->m_item = pME_WD->m_item + ' ';
+		}
+		pME_WD->m_item.MakeUpper();
+
+		CString cstrItem = pStFrame->arItemCode;
+		cstrItem.MakeUpper();
+//		int ret = -2;
+//		ret = cstrItem.Find(pME_WD->m_item,0); 
+		
+		//if (memcmp(&(pStFrame->arItemCode),pME_WD->m_item,sizeof(char)*8)==0)		
+		if (memcmp(cstrItem,pME_WD->m_item,sizeof(char)*8)==0) //if (ret>=0)
+
+			return 1;
+		else
+			return 0;
+	}
+}
+
+int CShowData::op_TransCode_e(_Frame_e *pStFrame)
+{
+	if (pME_WD->m_TransCode.GetLength() == 0)
+	{
+		noselcode = TRUE;
+		return 1;
+	}
+	else
+	{
+		noselcode = FALSE;
+		if (memcmp(&(pStFrame->btTransCode),pME_WD->m_TransCode,sizeof(BYTE))==0)
+			return 1;
+		else
+			return 0;
+	}
+}
+
+int CShowData::op_time_e(_Frame_e *pStFrame)
+{
+	int strtime_count = pME_WD->m_time.GetLength();
+	int strtime_end_count = pME_WD->m_time_end.GetLength();
+	if (strtime_count == 0 && strtime_end_count == 0)
+	{
+		noseltime = TRUE;
+		return 1;
+	}
+	else
+	{
+		noseltime = FALSE;
+		long ltime = 0, ltime_end=0;
+		if (strtime_count>0)
+		{
+			ltime = atol(pME_WD->m_time);
+		}
+
+		if (strtime_end_count>0)
+		{
+			ltime_end = atol(pME_WD->m_time_end);
+		}
+
+		if (strtime_count >0 && strtime_end_count> 0)
+		{
+			if (pStFrame->lTime >= ltime &&  pStFrame->lTime <= ltime_end)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else if ( strtime_count >0 )
+		{
+			if (pStFrame->lTime == ltime)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else if ( strtime_end_count >0 )
+		{
+			if (pStFrame->lTime == ltime_end)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
+	}
+}
+
+int CShowData::op_delay_e(_Frame_e *pStFrame)
+{
+	DECL_FactoryA();
+	DECL_FactoryB();
+	
+	if (pME_WD->m_delay.GetLength() == 0)
+	{
+		noselcode = TRUE;
+		return 1;
+	}
+	else
+	{
+		noselcode = FALSE;
+		return 1;
+	}
+}
+
 void CShowData::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
@@ -237,12 +379,12 @@ void CShowData::OnTimer(UINT nIDEvent)
 		m_lock.Lock();
 		if (InitClistGetHead == FALSE)
 		{
-			ps = mCListDataFrame.GetHeadPosition();  // wendy
+			ps = mCListFrame_e.GetHeadPosition();  // wendy
 			InitClistGetHead = TRUE;
 		}
 		
 		frame_e_count = mCListFrame_e.GetCount();
-		DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+		DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
 		ListIndex = m_list_data.GetItemCount();
 		int HandlDataCount = DataCount; // - DataCount_bak;
 		
@@ -257,12 +399,12 @@ void CShowData::OnTimer(UINT nIDEvent)
 		
 		// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
 		// ps = mCListDataFrame.GetHeadPosition()
-		for(i=0; (ps && i<1000) ; mCListDataFrame.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+		for(i=0; (ps && i<1000) ; mCListFrame_e.GetNext(ps))  //mCListDataFrame.GetNext(ps)
 		{
 			
-			mStFrame = mCListDataFrame.GetAt(ps);
+			mStFrame = mCListFrame_e.GetAt(ps);
 			//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
-			if (op_TransCode(&mStFrame)&&op_item(&mStFrame)&&op_time(&mStFrame))
+			if (op_TransCode_e(&mStFrame)&&op_item_e(&mStFrame)&&op_time_e(&mStFrame))
 			{
 				itoa(ListIndex+1,string,10);
 				m_list_data.InsertItem(ListIndex,string,0);
@@ -270,10 +412,14 @@ void CShowData::OnTimer(UINT nIDEvent)
 				memcpy(GroupCodeString,&mStFrame.btGroupCode,1);
 				m_list_data.SetItemText(ListIndex,1, GroupCodeString);
 				
-				_itoa(mStFrame.nLength, CStrnLength, sizeof(int)*4); // sizeof(int)  4
-				m_list_data.SetItemText(ListIndex,2, CStrnLength);
+				//_itoa(mStFrame.nLength, CStrnLength, sizeof(int)*4); // sizeof(int)  4
+				//m_list_data.SetItemText(ListIndex,2, CStrnLength);
+
+				_itoa(mStFrame.Key, CStrnKey, sizeof(int)*4); // sizeof(int)  4
+				m_list_data.SetItemText(ListIndex,2, CStrnKey);
+	
 				
-				CStrlTime.Format("%ld",mStFrame.lTime);
+				CStrlTime.Format("%ld",mStFrame.TradeTime); // wendy lTime
 				m_list_data.SetItemText(ListIndex,3, CStrlTime);
 				
 				memcpy(CStrItemCode,(char *)&(mStFrame.arItemCode[0]),sizeof(char)*8);
@@ -309,9 +455,9 @@ void CShowData::OnTimer(UINT nIDEvent)
 				if (GetIndex >= DataCount)
 				{
 					GetIndex = DataCount-1;
-					DataCount = mCListDataFrame.GetCount();
+					DataCount = mCListFrame_e.GetCount();
 				}
-				ps = mCListDataFrame.FindIndex(GetIndex);
+				ps = mCListFrame_e.FindIndex(GetIndex);
 				
 			}
 			
@@ -374,7 +520,15 @@ void CShowData::OnTimer(UINT nIDEvent)
 			m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 			
 			enable_timer = false;
-			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);
+			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);	
+			if (noselitem && noselcode && noseltime)
+			{
+				GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
+			}
+			else
+			{
+				GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
+			}
 		}
 #endif 
 		SetEvent(g_hEvent);
@@ -429,7 +583,7 @@ BOOL CShowData::OnInitDialog()
 	
 	m_list_data.InsertColumn(0,"NO", LVCFMT_LEFT, 80);
 	m_list_data.InsertColumn(1,"Group", LVCFMT_LEFT, 60);
-	m_list_data.InsertColumn(2,"Length", LVCFMT_LEFT, 70);
+	m_list_data.InsertColumn(2,"Key", LVCFMT_LEFT, 70);
 	m_list_data.InsertColumn(3,"Time", LVCFMT_LEFT, 110);
 	m_list_data.InsertColumn(4,"ItemCode", LVCFMT_LEFT, 100);
 	m_list_data.InsertColumn(5,"TransCode", LVCFMT_LEFT, 90);
@@ -442,7 +596,7 @@ BOOL CShowData::OnInitDialog()
 	SetTimer( 1, 1000, NULL ) ;
 
 	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
 	StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
 	m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 	
@@ -466,6 +620,7 @@ BOOL CShowData::OnInitDialog()
 	
 	enable_timer = false;
 	GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);
+	GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
 	
 #endif // wendy test
 
@@ -574,6 +729,7 @@ void CShowData::OnMenuitemInfo()
 
 	pEINFO =  new CEINFO;
 
+	m_list_data.GetItemText(m_indexOfCell.x,2,pEINFO->strKey,100);
 	m_list_data.GetItemText(m_indexOfCell.x,3,pEINFO->strTime,100);
 	m_list_data.GetItemText(m_indexOfCell.x,4,pEINFO->strItemCode,100);
 
@@ -598,7 +754,7 @@ void CShowData::OnBtnTimer()
 {
 	// TODO: Add your control notification handler code here
 	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
 	StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
 	m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 
@@ -606,12 +762,12 @@ void CShowData::OnBtnTimer()
 	if (entimer)
 	{
 		KillTimer(1);
-		GetDlgItem(IDC_BTN_TIMER)->SetWindowText("¼ÌÐø");
+		GetDlgItem(IDC_BTN_TIMER)->SetWindowText("Resume");
 	}
 	else
 	{
 		SetTimer( 1, 1000, NULL ) ;
-		GetDlgItem(IDC_BTN_TIMER)->SetWindowText("ÔÝÍ£");
+		GetDlgItem(IDC_BTN_TIMER)->SetWindowText("Pause");
 	}
 	entimer = !entimer;
 	
@@ -631,6 +787,62 @@ void CShowData::PostNcDestroy()
 	CDialog::PostNcDestroy();
 	if (AfxGetMainWnd()->IsWindowEnabled())
 	{
-			delete this;
+		delete this;
 	}
+}
+
+void CShowData::OnWriteSearch() 
+{
+	// TODO: Add your control notification handler code here
+	POSITION ps_e;
+	_Frame_e mFrame_e;
+	CString s_eLog;
+	GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
+	w_eLog.EmptyLog();
+	
+	for(ps_e = mCListFrame_e.GetHeadPosition(); (ps_e) ; mCListFrame_e.GetNext(ps_e))
+	{
+		mFrame_e = mCListFrame_e.GetAt(ps_e);
+		
+		if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
+		{
+
+			CString CStrItemCode_log;
+			memcpy(CStrItemCode,(char *)&(mFrame_e.arItemCode[0]),sizeof(char)*8);
+			CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+			
+			CString Cstrdwval;
+			Cstrdwval.Format("dwval:%d,",mFrame_e.dwVal);
+			
+			CString CstrBrokerNo;
+			CstrBrokerNo.Format("BrokerNo:%d,",mFrame_e.BrokerNo);
+			
+			CString CstrTradeTime;
+			CstrTradeTime.Format("Time:%d,",mFrame_e.TradeTime);
+			
+			CString CstrTradeTime2;
+			CstrTradeTime2.Format("Time2:%d,",mFrame_e.TradeTime2);		
+			
+			CString CstrKey;
+			CstrKey.Format("Key:%d,",mFrame_e.Key);
+			
+			
+			CString CstrPrice;
+			CstrPrice.Format("Price:%f,",mFrame_e.Price);
+			
+			
+			CString CstrQuantity;
+			CstrQuantity.Format("Quantity:%d,",mFrame_e.Quantity);
+			
+			
+			CString CstrTradeType;
+			CstrTradeType.Format("TradeType:%d",mFrame_e.TyadeType);
+			
+			s_eLog = CStrItemCode_log + Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
+			w_eLog.Log(s_eLog);
+		}
+		
+	}
+	
+	GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
 }

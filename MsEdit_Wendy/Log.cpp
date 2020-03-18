@@ -23,7 +23,7 @@ CLog::CLog()
 	CWrapperPath::GetExtPath( path ) ;
 
 	m_szFileName.Format( "%slog.txt", path ) ;
-	m_nMaxFileSize = 1024*1024 ;
+	m_nMaxFileSize = 1024*1024*1024 ;			// wendy 1024*1024
 	m_bKeepFileOpen = FALSE ;
 
 }
@@ -45,7 +45,7 @@ void CLog::Close()
 
 }
 
-BOOL CLog::Init( const char* pszFileName, int nMaxFileSize, BOOL	bKeepFileOpen )
+BOOL CLog::Init( const char* pszFileName, DWORD nMaxFileSize, BOOL	bKeepFileOpen )  // wendy int
 {
 	if( pszFileName==NULL || strlen(pszFileName)<=0 )
 		return FALSE ;
@@ -133,7 +133,7 @@ BOOL CLog::Log( const char* pMsg )
 	GetLocalTime(&sysTime);
 
 	char temp[1024*3] ;
-	sprintf( temp, "%d-%02d-%02d %02d:%02d:%02d(%d), %s\r\n", sysTime.wYear, sysTime.wMonth, 
+	sprintf( temp, "%d-%02d-%02d %02d:%02d:%02d(%d),%s\n", sysTime.wYear, sysTime.wMonth, 
 		sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond, ::GetCurrentTime(), pMsg ) ;
 	WriteLog( temp ) ;
 
@@ -273,4 +273,32 @@ BOOL CLog::LogFrame( const char* pName, const char* pMsg )
 	}
 	return TRUE ;
 	
+}
+
+BOOL CLog::EmptyLog()
+{
+	// open file.
+	if( m_pFile!=NULL )
+	{
+	   if( fclose(m_pFile))
+	   {
+		   return FALSE ;	
+	   }
+	}
+	
+	m_pFile = fopen( m_szFileName, "w" );
+	if( m_pFile==NULL )
+	{
+		return FALSE ;			
+	}
+
+	if( m_bKeepFileOpen==FALSE )
+	{
+		if(fclose( m_pFile ))
+		{
+			return FALSE ;
+		}
+		m_pFile = NULL ;
+	}
+	return TRUE ;
 }

@@ -56,7 +56,7 @@ LRESULT CProgressDlg::OnUpdateProgress( WPARAM wParam, LPARAM lParam )
 
 	m_progressCtrl.SetPos( SetNum );
 
-	getstr.Format("已读取: %d KB",nProgress);
+	getstr.Format("Read: %d KB",nProgress);
 	m_pStatic_Read->SetWindowText(getstr);
 
 	if( SetNum >= 100 )
@@ -81,7 +81,7 @@ BOOL CProgressDlg::OnInitDialog()
 	CString getstrUpper;
 //	m_progressCtrl.GetRange(nLower, nUpper);
 
-	getstrUpper.Format("文件大小: %d KB ", g_fileSize / 1024);
+	getstrUpper.Format("FilesSize: %d KB ", g_fileSize / 1024);
 	m_pStatic_Size->SetWindowText(getstrUpper);
 
 

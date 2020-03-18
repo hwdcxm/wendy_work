@@ -15,9 +15,16 @@ static char THIS_FILE[] = __FILE__;
 Master g_Master;
 HANDLE g_hEvent;
 CLog w_Log;
+CLog w_eLog;
 CString s_Log;
+CString s_eLog;
 CProgressDlg *g_pProDlg;
 DWORD g_fileSize;
+
+extern CListDataFrame mCListDataFrame;
+extern CListFrame_e mCListFrame_e;
+CStringArray pre_files ;
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
@@ -76,10 +83,11 @@ CMsEdit_WendyDlg::CMsEdit_WendyDlg(CWnd* pParent /*=NULL*/)
 	m_time = _T("");
 	m_delay = _T("");
 	m_time_end = _T("");
+	InitCreateGroupsMng = FALSE;
+	m_needreadfs = 0;
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	InitCreateGroupsMng = FALSE;
 }
 
 void CMsEdit_WendyDlg::DoDataExchange(CDataExchange* pDX)
@@ -105,7 +113,6 @@ BEGIN_MESSAGE_MAP(CMsEdit_WendyDlg, CDialog)
 	ON_BN_CLICKED(IDC_DELFILE, OnDelfile)
 	ON_BN_CLICKED(IDC_READ, OnRead)
 	ON_WM_TIMER()
-	ON_LBN_DBLCLK(IDC_LOG, OnDblclkLog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -115,9 +122,7 @@ END_MESSAGE_MAP()
 BOOL CMsEdit_WendyDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	// Add "About..." menu item to system menu.
-
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -138,9 +143,12 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	m_loglist.SetHorizontalExtent(1200);  //HorizontalScorllbar
+
 	// TODO: Add extra initialization here
-	w_Log.Init("ReadMds.log",1024*1024);
+
+	m_loglist.SetHorizontalExtent(1200);  //HorizontalScorllbar
+	w_Log.Init("ReadMds.log",1024*1024*1024);  // wendy 1024*1024
+	w_eLog.Init("eOfMds.log",1024*1024*1024);  // wendy 1024*1024
 	s_Log.Format("==========================Start Application==========================");
 	SetTimer(1, 10, NULL) ;  // 350
 	
@@ -152,6 +160,7 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 			TRACE( "ER: Event Data_CListCtr ALREADY_EXISTS ! \n");			
 		} 
 	}
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -208,45 +217,68 @@ void CMsEdit_WendyDlg::OnAddfile()
 {
 	// TODO: Add your control notification handler code here
 
+	CString cstrPathName,cstrFileName;
 	CFileDialog fdlg(true, NULL, NULL, OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR, "(*.mds)|*.mds|All Files (*.*)|*.*||", NULL);
-	if(fdlg.DoModal()==IDOK)
+	int nRetDlgDoMo = fdlg.DoModal();
+	if(nRetDlgDoMo==IDOK)
 	{
 	
-		for (int i=0;i<m_filelist.GetCount();i++)
+		//for (int i=0;i<m_filelist.GetCount();i++) //wendy test
 		{
-			if (m_filelist.FindString(0,fdlg.GetPathName())>=0)
+			if (m_filelist.FindString(-1,fdlg.GetPathName())>=0) // wendy nStartAfter=0 LB_ERR
 			{
 				AfxMessageBox("Already add this file.");
 				return;
 			}
 		}
-		m_filelist.AddString(fdlg.GetPathName());
+		cstrPathName.Format("%s",fdlg.GetPathName());
+		m_filelist.AddString(cstrPathName);
+
+		cstrFileName.Format("%s",fdlg.GetFileName());
+
 	}
+	else if (nRetDlgDoMo == IDCANCEL)
+	{
+		cstrFileName.Format("No Select File");
+	}
+
+	s_Log.Format("OnAddfile FileName = %s",cstrFileName);
+
+
+
+	SetBtnReadOrSearch(1);
 }
 
 void CMsEdit_WendyDlg::OnDelfile() 
 {
 	// TODO: Add your control notification handler code here
-		int i,iState;
 		
 	int nItemSelected=m_filelist.GetCurSel();
 	if(nItemSelected < 0)
 	{
-		MessageBox("请选择需要删除的文件(choose item).");
+		MessageBox("Please choose file to delete.");
 		return ;
 	}
+
+	CString DelFile;
+	m_filelist.GetText(nItemSelected,DelFile);
+	char drive[_MAX_DRIVE];
+	char dir[_MAX_DIR];
+	char fname[_MAX_FNAME];
+	char ext[_MAX_EXT];
+	
+	_splitpath( DelFile, drive, dir, fname, ext );
+	CString DelFileName = fname;
+	DelFile = DelFileName + ext;
+
+	s_Log.Format("OnDelfile DelFile = %s ",DelFile);
 
 	m_filelist.DeleteString(nItemSelected);
 
 	m_filelist.SetFocus();
+	
+	SetBtnReadOrSearch(2);
 }
-
-extern int counts;
-
-CStringArray pre_files ;
-
-extern CListDataFrame mCListDataFrame;
-extern CListFrame_e mCListFrame_e;
 
 void CMsEdit_WendyDlg::OnRead() 
 {
@@ -254,15 +286,16 @@ void CMsEdit_WendyDlg::OnRead()
 
 	#if 1  // wendy test
 
-	counts = 0;
 	memset(&g_Master.m_itemdesk,0,sizeof(Master::OutItem));
 	int m_count ;
 	m_count = m_filelist.GetCount();
 	int m_precount = pre_files.GetSize();
-	int m_needreadfs = 0;
+
+	m_needreadfs = 0;
+
 	if (m_count==0)
 	{
-		AfxMessageBox("请先添加文件(Please add files).");
+		AfxMessageBox("Please add files to list.");
 		return;
 	}
 	UpdateData(TRUE);
@@ -294,11 +327,10 @@ void CMsEdit_WendyDlg::OnRead()
 			}
 		}
 	}
-
 	
 	TRACE("m_needreadfs=%d. \n",m_needreadfs);
 
-	if (m_needreadfs || !mCListDataFrame.GetCount())
+	if (m_needreadfs || !mCListFrame_e.GetCount())
 	{
 		g_fileSize = 0;
 		if(g_Master.m_MSCEType != MSCE_TYPE_PROXY)
@@ -365,6 +397,10 @@ void CMsEdit_WendyDlg::OnRead()
 
 		TRACE("Read Files.... \n");
 		g_Master.Play();
+		if (m_needreadfs == 1)
+		{
+			GetDlgItem(IDC_READ)->SetWindowText("(Search)");
+		}
 	}
 	else
 	{
@@ -376,12 +412,6 @@ void CMsEdit_WendyDlg::OnRead()
 
 #endif // wendy test
 
-	//OnCancel();
-
-
-	
-	//CShowData mCShowData;  //dlg.DoModal();
-	//mCShowData.DoModal();
 }
 
 BOOL CMsEdit_WendyDlg::DestroyWindow() 
@@ -432,6 +462,7 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 	
 	w_Log.Log("===========================End Application===========================");
 	w_Log.Close();
+	w_eLog.Close();
 	return CDialog::DestroyWindow();
 }
 
@@ -441,19 +472,8 @@ void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent)
 	
 	if (s_Log.GetLength())
 	{
-
-//		if (m_loglist.GetCount()>10)
-//		{
-//			m_loglist.DeleteString(0);
-//		}
-
-//		m_loglist.AddString(s_Log);
-//		w_Log.Log(s_Log);
-//		s_Log="";
-
 		w_Log.Log(s_Log);
 		char *token;
-//		CString bb="APEC 2001  \n   Shang Hai china";
 		CString str[10];
 		char seps[] = "\n";
 		int count = s_Log.GetLength();
@@ -487,9 +507,90 @@ void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CMsEdit_WendyDlg::OnDblclkLog() 
+int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 {
-	// TODO: Add your control notification handler code here
-	m_loglist.ResetContent();
+	m_needreadfs = 0;
+	int m_count = m_filelist.GetCount();
+	int m_precount = pre_files.GetSize();
+
+	if (m_count != m_precount)
+	{
+		m_needreadfs = 1;
+	}
+	else if (m_precount > 0)
+	{
+		for (int i=0;i<pre_files.GetSize();i++)
+		{
+			if (m_filelist.FindString(-1,pre_files.GetAt(i))>=0)  // wendy nStartAfter=0 LB_ERR
+			{
+				TRACE("Already read this file(%d). \n",i+1);
+			}
+			else
+			{
+				m_needreadfs = 1;
+			}
+		}
+	}
+	else if (m_precount == 0)
+	{
+		m_needreadfs = 1;
+	}
+	
+	TRACE("SetBtnReadOrSearch m_needreadfs=%d. \n",m_needreadfs);
+
+	if (m_needreadfs == 1)
+	{
+		GetDlgItem(IDC_READ)->SetWindowText("(Start Read)");
+	}
+	else
+	{
+		GetDlgItem(IDC_READ)->SetWindowText("(Search)");
+	}
+
+	return m_needreadfs;
 }
 
+
+
+void CMsEdit_WendyDlg::OnWRITELog() 
+{
+	// TODO: Add your control notification handler code here
+	
+	POSITION ps_e;
+	_Frame_e g_mFrame_e;
+	for(ps_e = mCListFrame_e.GetHeadPosition(); (ps_e) ; mCListFrame_e.GetNext(ps_e))
+	{
+		g_mFrame_e = mCListFrame_e.GetAt(ps_e);
+		
+		CString Cstrdwval;
+		Cstrdwval.Format("dwval:%d,",g_mFrame_e.dwVal);
+		
+		CString CstrBrokerNo;
+		CstrBrokerNo.Format("BrokerNo:%d,",g_mFrame_e.BrokerNo);
+		
+		CString CstrTradeTime;
+		CstrTradeTime.Format("Time:%d,",g_mFrame_e.TradeTime);
+		
+		CString CstrTradeTime2;
+		CstrTradeTime2.Format("Time2:%d,",g_mFrame_e.TradeTime2);		
+		
+		CString CstrKey;
+		CstrKey.Format("Key:%d,",g_mFrame_e.Key);
+		
+		
+		CString CstrPrice;
+		CstrPrice.Format("Price:%f,",g_mFrame_e.Price);
+		
+		
+		CString CstrQuantity;
+		CstrQuantity.Format("Quantity:%d,",g_mFrame_e.Quantity);
+		
+		
+		CString CstrTradeType;
+		CstrTradeType.Format("TradeType:%d ",g_mFrame_e.TyadeType);
+		
+		s_eLog = Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
+		w_eLog.Log(s_eLog);
+		
+	}				
+}

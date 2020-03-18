@@ -41,6 +41,14 @@ public:
 	int op_time(_tagTTDataFrame *pStFrame);
 	
 	int op_delay(_tagTTDataFrame *pStFrame);
+
+	int op_item_e(_Frame_e *pStFrame_e);
+	
+	int op_TransCode_e(_Frame_e *pStFrame_e);
+	
+	int op_time_e(_Frame_e *pStFrame_e);
+	
+	int op_delay_e(_Frame_e *pStFrame_e);
 	
 	BOOL noselitem, noselcode, noseltime, nosetdelay;
 	
@@ -94,6 +102,8 @@ protected:
 	CString CStrnTransDataLength;
 	CString CStrpTransData;
 
+	char CStrnKey[6];
+
 	int ListIndex_bak;
 	int GetIndex;
 	int GetIndex_bak;
@@ -116,6 +126,7 @@ protected:
 	afx_msg void OnMenuitemCopy();
 	afx_msg void OnBtnTimer();
 	virtual void OnCancel();
+	afx_msg void OnWriteSearch();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

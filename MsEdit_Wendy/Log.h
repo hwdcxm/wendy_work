@@ -34,7 +34,7 @@ public:
 !% 
 !?CLog.Init()		[.] 类CLog成员函数: 初始化
 */
-	BOOL	Init( const char* pszFileName, int nMaxFileSize=1024*500, BOOL	bKeepFileOpen=FALSE ) ; 
+	BOOL	Init( const char* pszFileName, DWORD nMaxFileSize=1024*1024*500, BOOL	bKeepFileOpen=FALSE ) ;  // wendy int  1024*500
 
 /*
 !% 
@@ -66,6 +66,7 @@ public:
 protected:
 	BOOL	WriteEachFrame( const char* fileName, const char* pszMsg ) ;
 public:
+	BOOL EmptyLog();
 
 /*
 !% 
@@ -83,7 +84,7 @@ public:
 !% 
 !?CLog.m_nMaxFileSize	[.] CLog属性: log文件最大文件大小
 */
-	int			m_nMaxFileSize ;	
+	DWORD			m_nMaxFileSize ;	// wendy int
 
 /*
 !% 

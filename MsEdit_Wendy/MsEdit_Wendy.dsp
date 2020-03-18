@@ -116,6 +116,10 @@ SOURCE=.\MsEdit_WendyDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MyListBox.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\PathAPI.cpp
 # End Source File
 # Begin Source File
@@ -178,6 +182,10 @@ SOURCE=.\MsEdit_Wendy.h
 # Begin Source File
 
 SOURCE=.\MsEdit_WendyDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MyListBox.h
 # End Source File
 # Begin Source File
 

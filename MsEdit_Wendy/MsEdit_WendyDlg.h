@@ -13,6 +13,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "MyListBox.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CMsEdit_WendyDlg dialog
 
@@ -20,16 +22,18 @@ class CMsEdit_WendyDlg : public CDialog
 {
 // Construction
 public:
+	int SetBtnReadOrSearch(int Flag=0);
 	CMsEdit_WendyDlg(CWnd* pParent = NULL);	// standard constructor
 
 	CShowData * pShowData;
 
 	BOOL InitCreateGroupsMng;
+	int m_needreadfs;
 	
 // Dialog Data
 	//{{AFX_DATA(CMsEdit_WendyDlg)
 	enum { IDD = IDD_READMDS };
-	CListBox	m_loglist;
+	CMyListBox	m_loglist;  //CListBox
 	CListBox	m_filelist;
 	CString	m_TransCode;
 	CString	m_item;
@@ -60,7 +64,7 @@ protected:
 	afx_msg void OnDelfile();
 	afx_msg void OnRead();
 	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnDblclkLog();
+	afx_msg void OnWRITELog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

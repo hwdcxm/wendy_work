@@ -20,6 +20,7 @@ public:
 	char strItemCode[100];
 	char strTime[100];
 	char strLength[100];
+	char strKey[100];
 
 	_Frame_e mFrame_e;
 
@@ -27,6 +28,7 @@ public:
 
 	int cmp_time(_Frame_e *pFrame_e);
 
+	int cmp_key(_Frame_e *pFrame_e);
 
 // Dialog Data
 	//{{AFX_DATA(CEINFO)
