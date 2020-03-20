@@ -505,6 +505,27 @@ void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent)
 		g_Master.CreateGroupsMng();
 	}
 
+	MEMORYSTATUS stat;
+	static DWORD m_whileCount = 0;
+	m_whileCount ++;
+	if(m_whileCount % 100*1000 ==0 )  // SetTimer(1, 10, NULL) ;  // 350
+	{
+		static DWORD percentVirMem=100,pre_percent = 0;
+
+		 GlobalMemoryStatus (&stat);
+		 percentVirMem = (stat.dwAvailVirtual/1024)*100 /(stat.dwTotalVirtual/1024);
+		 TRACE("CMsEdit_WendyDlg %ld percent of memory is in use.\n", stat.dwMemoryLoad);
+		 TRACE ("CMsEdit_WendyDlg There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
+		 
+		  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10)
+			{
+			 TRACE("Because pre_percent(%d) > Now(%d), So Do Something..? \n", pre_percent,stat.dwMemoryLoad);
+			}
+		pre_percent = stat.dwMemoryLoad;
+		
+	}
+
+
 	CDialog::OnTimer(nIDEvent);
 }
 

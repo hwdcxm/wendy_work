@@ -1,3 +1,2209 @@
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+50 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are 1572784 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 3901144 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are  1fe604 free Kbytes of virtual memory.
+My There are 1fff80 total Kbytes of virtual memory.
+My There are 1fe604 free Kbytes of virtual memory.
+p1=-681164800,p2=2140672000,My percentVirMem=1
+
+p1=-681164800 *100后溢了数值.
+
+#define DIV 1024
+char *divisor = "K";
+#define WIDTH_MY 7
+
+MEMORYSTATUS stat;
+static DWORD m_whileCount = 0;
+if(m_whileCount % 1024*1024 ==0 )
+{
+	static DWORD pre_percent = 0;
+	
+	GlobalMemoryStatus (&stat);
+	TRACE("The MemoryStatus structure is %ld bytes long.\n",stat.dwLength);
+	TRACE("It should be %d.\n", sizeof (stat));
+	TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
+	
+	if (pre_percent > stat.dwMemoryLoad && stat.dwMemoryLoad >90)
+		{
+			m_nThreadStatu = -1 ;
+		TRACE("Because pre_percent(%d) > Now(%d), So EndThread m_nThreadStatu = -1.\n", pre_percent,stat.dwMemoryLoad);
+		}
+	pre_percent = stat.dwMemoryLoad;
+	
+	TRACE ("There are %*lx total %sbytes of virtual memory.\n",
+	        WIDTH_MY, stat.dwTotalVirtual/DIV, divisor);
+	TRACE ("There are %*lx free %sbytes of virtual memory.\n",
+	        WIDTH_MY, stat.dwAvailVirtual/DIV, divisor);
+}
+
+
+93 percent of memory is in use.
+There are  1fff80 total Kbytes of virtual memory.
+There are   76c9c free Kbytes of virtual memory.
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+87 percent of memory is in use.
+There are  1fff80 total Kbytes of virtual memory.
+There are   72d5c free Kbytes of virtual memory.
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+
+
+93 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are  202396 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 2457220 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are   6acd0 free Kbytes of virtual memory. 437456  20%
+The thread 0x16D8 has exited with code 0 (0x0).
+The thread 0x1F4C has exited with code 0 (0x0).
+The thread 0x2224 has exited with code 0 (0x0).
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+89 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are  344220 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 2437268 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are   63a50 free Kbytes of virtual memory.
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+
+
+There are  1fff80 total Kbytes of virtual memory.  2097024
+There are    43e0 free Kbytes of virtual memory. 17376
+
+Loaded 'C:\Windows\System32\normaliz.dll', no matching symbolic information found.
+Loaded 'C:\Windows\System32\iertutil.dll', no matching symbolic information found.
+Loaded 'C:\Windows\System32\SearchFolder.dll', no matching symbolic information found.
+SetBtnReadOrSearch m_needreadfs=1. 
+m_needreadfs=1. 
+Read Files.... 
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+46 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are 1688764 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 3981240 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are  1d9708 free Kbytes of virtual memory.
+...
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+93 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are  202396 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 2457220 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are   6acd0 free Kbytes of virtual memory.
+The thread 0x16D8 has exited with code 0 (0x0).
+The thread 0x1F4C has exited with code 0 (0x0).
+The thread 0x2224 has exited with code 0 (0x0).
+...
+The MemoryStatus structure is 32 bytes long.
+It should be 32.
+74 percent of memory is in use.
+There are 2097151 total Kbytes of physical memory.
+There are  790936 free Kbytes of physical memory.
+There are 4194303 total Kbytes of paging file.
+There are 2029532 free Kbytes of paging file.
+There are  1fff80 total Kbytes of virtual memory.
+There are    43e0 free Kbytes of virtual memory.
+First-chance exception in MsEdit_Wendy.exe (KERNELBASE.DLL): 0xE06D7363: Microsoft C++ Exception.
+
+
+主要修改: 1,ClistCtrl显示的时间为time2十进制. 2,文件列表取消自动排序便于看后加文件. 3,优化代码逻辑以事务码e分流等. 4,做完一次缓存,多次和无缓存稍后做.
+
+状态栏，大文件.
+
+e XHIFC   
+
+如何判断CString　中的某一个字符是否为指定字符？简单问题郁闷一天了。谢谢！ [问题点数：20分，
+https://bbs.csdn.net/topics/40136271
+if(sl.GetAt(n)=='x')
+
+MSDEV.EXE
+Microsoft Visual C++ 6.0
+VC6
+Git
+Source Insight
+....
+一步一步熟悉精通.(如 VC6  每日提示：你知道吗... 启动时显示提示(S) 下一条(N) 关闭(C))
+
+class CShowData : public CDialog
+{
+// Construction
+public:
+	int test_test_classwizard_add_var;
+..}
+
+计算机\Developer Studio Components
+计算机\Registered ActiveX Controls
+
+先用VC6-->工程-->添加到工程-->组件和控件
+然后打开
+D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Gallery 进入
+选中其中一个点属性 点打开文件位置即得上面二个目录路径.
+
+vc6 group by access 
+vc6按访问分组
+public:
+protected:
+private:
+
+vc6有AddtoGallery把带对话框的类从一个工程转到另一个工程,vc++.net怎么实现? [问题点数：20分]
+https://bbs.csdn.net/topics/220060111
+1、打开对话框工程,在classview中，右键对话框对应的类，选择Addtogallery；2、在新工程中，选择project菜单下的addtoproject--〉componentsandcontrols，插入1即可。
+D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Gallery\MsEdit_Wendy\Show Data.ogx
+
+逻辑先简单到复杂，先大模块到小模块等。及时记录和进入状态等，不拖拉。
+
+昨晚明济自己冲凉了。
+
+别像永泰的播放控件换肤按钮滑动条等找不到了。
+
+2020.03.20
+
+C:\Users\Wendy\Downloads
+
+cmd.exe 一些常见的启动参数介绍
+https://www.jb51.net/article/99001.htm
+cmd [{/c | /k}] [/s] [/q] [/d] [{/a | /u}] [/t:FG] [/e:{on | off}] [/f:{on | off}] [/v:{on | off}] [String]
+
+参数
+/c
+
+执行 String 指定的命令，执行完后停止，会退出。例如：
+/k
+
+执行 String 指定的命令并继续，运行完会保持当前运行窗口及环境变量。例如：
+
+
+ShellExecuteEx调用第三方程序
+https://blog.csdn.net/mpp_king/article/details/80194563
+调用第三方程序有很多方法, 包括system , WinExec , CreateProcess, ShellExecute, ShellExecuteEx。对比这几个启动进程的函数, 总结下来功能完善而且好用的就是
+另外ShellExecuteEx执行cmd命令的时候, 命令行参数要加入/c 来让命令行执行完成后关闭自身。否则命令行进程会一直存在, WaitForSingleObject会一直等待。
+
+比如:?ShellRun(L"cmd.exe", L"/c sc start UlogReport"); 启动一个服务。
+
+VC下MFC程序自删除（自杀）几种方法的实践与探讨
+https://blog.csdn.net/a316586261/article/details/5287495
+在VC下做了个MFC的程序，想让他运行后，自动删除自己。在网上看了些资料，方法也有一些，都实践了一下，感觉对MFC的程序，使用cmd.exe可能更合适一些。其他的方法也蛮好，蛮经典的，不过我感觉用在MFC程序上就不太合适了。
+
+[推荐] 应用程序启动后修改自身EXE文件或自删除EXE文件（附VC++6.0源码） [问题点数：40分]
+https://bbs.csdn.net/topics/390506828
+也是重写应用程序，但将使用次数写入到应用程序文件里面，每使用一次，就更新一下应用程序文件里的计数。
+
+　　这种方案想来有几个问题：1.如果运行应用程序前做了备份，则每当使用次数完后，还可以用备份应用程序运行；2.我们知道，一个应用程序运行后，是不能修改自身EXE文件的。因此这个方案也只是想想而已，并不实用。但是要实现这种方案还是需要一定的技术，我闲来无事，就写了一个DEMO。
+
+　　每2个问题，如何在应用程序运行时候修改自身EXE文件？答案也很简单，应用程序运行时加载另一个应用程序，自己退出，让另一个应用程序来修改EXE文件。既然应用程序运行时可以修改本身EXE文件，那么删除自身的EXE文件也是可以的，因此这种方法还可以用于卸载软件中，卸载软件时，可以使用此方法删除卸载软件本身。
+
+　　好了，我们把目标明确一下：
+
+　　1.第三方软件为SourceExe.exe，为了演示，我们还是自己模块第三方，自己写；
+
+　　2.加载的应用程序为ExePackage.exe；
+
+　　3.修改ExePackage.exe的程序为ExeHelper.exe。
+
+　　将SourceExe.exe和ExeHelper.exe以资源形式加载进ExePackage.exe。启动ExePackage.exe时，ExePackage.exe并不显示界面，只将SourceExe.exe和ExeHelper.exe释放到临时目录，然后启动ExeHelper.exe，并告诉ExeHelper.exe一些必要的信息（DEMO中通过参数传递）。
+
+　　ExeHelper.exe启动时，首先等待ExePackage.exe结束，这样才能修改ExePackage.exe文件。然后从ExePackage.exe文件末尾读取16个字节，测试是否匹配我们指定的数据（以区别这些数据是EXE文件本身的数据，还是我们添加的数据），这16个字节的最后4个字节保存的是使用次数，这样我们就可得到使用次数了，使用一次后，再将数据更新到EXE文件，最后就可以启动SourceExe.exe了。
+
+　　原理很简单，但用到的技术还是不少的：
+
+　　1.子进程等待父进程结束再处理事务（应用程序的自删除）；
+
+　　2.父进程将句柄等信息传递给子进程；
+
+　　3.将EXE中加载的资源释放为本地文件。
+
+　　下面就开始上代码，代码很简单，就不一一解释了，只在需要说明的地方说明一下：
+
+　　首先是SourceExe.exe的源码，作为第三方工具，代码很简单，就不多说了。
+
+　　SourceExe.cpp：
+C/C++ code
+
+SetFilePointer(hFile, -16, NULL, FILE_END);
+
+
+
+一个exe程序，如何保存数据到自身的可执行文件? 
+https://bbs.csdn.net/topics/350038917
+A.exe程序启动后，把自己复制一个副本A_COPY.exe出来，然后在运行过程中，把要记录的数据更新到副本中。
+退出的时候，生成一个批处理，不断的删除A.exe，然后把A_COPY.exe改名为A.exe。最后程序退出了，批处理会执行成功
+你自己菜了就不要乱说
+#pragma comment(linker,"/SECTION:节名称,RWS") 
+
+
+如何直接修改exe文件
+https://blog.csdn.net/ly131420/article/details/8742839
+ ?在以前学习的时候，无法想象在没有源码的时候如何对exe文件添加功能，觉得简直不可思议，在了解汇编和反编译的一些知识后，原来这种想法是可以实现的。我们需要对exe文件进行直接修改，把我们的代码直接写入exe文件，这样就能实现我们的功能了。
+????当然，要想直接对exe文件进行直接修改必须有较好的汇编基础，对反汇编技术有一定的基础。否则会很茫然的。
+????一般有两种方法可以对exe文件添加我们需要的功能。
+????第一种是利用页面的对齐机制，因为一般来说，每节的最后一页多少都有空余的空间，也就是说最后一页一般不会被用完，由于下一个节开始的时候是要对齐页面的，所以这中间就由多余的空间让我们写代码了。我们可以利用工具直接把内存虚拟和文件偏移地址进行转换来得到文件偏移位置，这个位置就是我们最终要把机器码写入的地方。
+????第二种是我们自己在exe文件种添加一个节，这个节专门用来写我们的代码。这样做好处更多，因为我们可以任意指定这个节的大小，而上一种方法是利用节之间的空隙来写我们的代码，如果代码较多的时候我们能就不好办了，所以第二种方法更具有通用性，但相对来说第一种更容易些。这里大家要注意一下，如果我们直接增加节的话，最好把节分配的空间设置为页面大小的整数倍，文件中分配空间的大小也分配成和虚拟空间的大小一样即可，一般文件的块对齐大小比页面的块对齐尺寸更小。
+????还要注意的一点就是，如果我们对exe文件增加节以后，可能会出现exe文件无法运行的情况，这时候一般我们对exe文件进行重建就可以了。
+
+
+VC 快速读取大文件的方法 
+http://blog.sina.com.cn/s/blog_93491c750101hm8x.html
+
+vc读取大文件的高效的方法
+
+一个简单的更改.exe 文件里面的 函数（新手初始试，高手勿喷）
+https://blog.csdn.net/liumeng305/article/details/24529325
+
+分段读取大文件解决方案
+http://www.myexception.cn/vc-mfc/333308.html
+
+就正常保养机油机油滤芯空气滤芯我车首保之后都在外面做保养用美孚半合成机油性价比挺费用概300
+https://club.m.autohome.com.cn/bbs/thread/9edaae870d42d1c3/84804279-1.html
+
+49 percent of memory is in use. Count_BreakCList=83886080 
+49 percent of memory is in use. Count_BreakCList=84934656 
+49 percent of memory is in use. Count_BreakCList=85983232 
+48 percent of memory is in use. Count_BreakCList=87031808 
+48 percent of memory is in use. Count_BreakCList=88080384 
+48 percent of memory is in use. Count_BreakCList=89128960 
+The thread 0x1A60 has exited with code 0 (0x0).
+No SetTimer DataCount=856703,Datainterval=85,ListIndex=100,GetIndex=856703
+Already read this file(1). 
+m_needreadfs=0. 
+
+2020.03.19
+
+书和操作分开
+
+m_needreadfs=1. 
+Read Files.... 
+54 percent of memory is in use. Count_BreakCList=1048576 
+55 percent of memory is in use. Count_BreakCList=2097152 
+56 percent of memory is in use. Count_BreakCList=3145728 
+58 percent of memory is in use. Count_BreakCList=4194304 
+59 percent of memory is in use. Count_BreakCList=5242880 
+60 percent of memory is in use. Count_BreakCList=6291456 
+62 percent of memory is in use. Count_BreakCList=7340032 
+The thread 0x24D4 has exited with code 0 (0x0).
+63 percent of memory is in use. Count_BreakCList=8388608 
+64 percent of memory is in use. Count_BreakCList=9437184 
+66 percent of memory is in use. Count_BreakCList=10485760 
+67 percent of memory is in use. Count_BreakCList=11534336 
+69 percent of memory is in use. Count_BreakCList=12582912 
+70 percent of memory is in use. Count_BreakCList=13631488 
+71 percent of memory is in use. Count_BreakCList=14680064 
+73 percent of memory is in use. Count_BreakCList=15728640 
+74 percent of memory is in use. Count_BreakCList=16777216 
+76 percent of memory is in use. Count_BreakCList=17825792 
+77 percent of memory is in use. Count_BreakCList=18874368 
+78 percent of memory is in use. Count_BreakCList=19922944 
+80 percent of memory is in use. Count_BreakCList=20971520 
+81 percent of memory is in use. Count_BreakCList=22020096 
+83 percent of memory is in use. Count_BreakCList=23068672 
+84 percent of memory is in use. Count_BreakCList=24117248 
+86 percent of memory is in use. Count_BreakCList=25165824 
+86 percent of memory is in use. Count_BreakCList=26214400 
+88 percent of memory is in use. Count_BreakCList=27262976 
+The thread 0x1C28 has exited with code 0 (0x0).
+89 percent of memory is in use. Count_BreakCList=28311552 
+90 percent of memory is in use. Count_BreakCList=29360128 
+92 percent of memory is in use. Count_BreakCList=30408704 
+93 percent of memory is in use. Count_BreakCList=31457280 
+80 percent of memory is in use. Count_BreakCList=32505856 
+The thread 0x22A4 has exited with code 0 (0x0).
+The thread 0x17C8 has exited with code 0 (0x0).
+The thread 0x237C has exited with code 0 (0x0).
+The thread 0x13C0 has exited with code 0 (0x0).
+75 percent of memory is in use. Count_BreakCList=33554432 
+75 percent of memory is in use. Count_BreakCList=34603008 
+75 percent of memory is in use. Count_BreakCList=35651584 
+75 percent of memory is in use. Count_BreakCList=36700160 
+75 percent of memory is in use. Count_BreakCList=37748736 
+75 percent of memory is in use. Count_BreakCList=38797312 
+75 percent of memory is in use. Count_BreakCList=39845888 
+75 percent of memory is in use. Count_BreakCList=40894464 
+75 percent of memory is in use. Count_BreakCList=41943040 
+75 percent of memory is in use. Count_BreakCList=42991616 
+75 percent of memory is in use. Count_BreakCList=44040192 
+The thread 0x24F4 has exited with code 0 (0x0).
+75 percent of memory is in use. Count_BreakCList=45088768 
+75 percent of memory is in use. Count_BreakCList=46137344 
+First-chance exception in MsEdit_Wendy.exe (KERNELBASE.DLL): 0xE06D7363: Microsoft C++ Exception.
+
+
+  MEMORYSTATUS stat;
+  GlobalMemoryStatus (&stat);
+  TRACE("The MemoryStatus structure is %ld bytes long.\n",stat.dwLength);
+  TRACE("It should be %d.\n", sizeof (stat));
+  TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
+
+
+
+//  Sample output:
+//  c:\>global
+//  The MemoryStatus structure is 32 bytes long.
+//  It should be 32.
+//  78 percent of memory is in use.
+//  There are   65076 total Kbytes of physical memory.
+//  There are   13756 free Kbytes of physical memory.
+//  There are  150960 total Kbytes of paging file.
+//  There are   87816 free Kbytes of paging file.
+//  There are  1fff80 total Kbytes of virtual memory.
+//  There are  1fe770 free Kbytes of virtual memory.
+
+#include <windows.h>
+
+// Use to change the divisor from Kb to Mb.
+
+#define DIV 1024
+// #define DIV 1
+
+char *divisor = "K";
+// char *divisor = "";
+
+// Handle the width of the field in which to print numbers this way to
+// make changes easier. The asterisk in the print format specifier
+// "%*ld" takes an int from the argument list, and uses it to pad and
+// right-justify the number being formatted.
+#define WIDTH 7
+
+void main(int argc, char *argv[])
+{
+  MEMORYSTATUS stat;
+
+  GlobalMemoryStatus (&stat);
+
+  printf ("The MemoryStatus structure is %ld bytes long.\n",
+          stat.dwLength);
+  printf ("It should be %d.\n", sizeof (stat));
+  printf ("%ld percent of memory is in use.\n",
+          stat.dwMemoryLoad);
+  printf ("There are %*ld total %sbytes of physical memory.\n",
+          WIDTH, stat.dwTotalPhys/DIV, divisor);
+  printf ("There are %*ld free %sbytes of physical memory.\n",
+          WIDTH, stat.dwAvailPhys/DIV, divisor);
+  printf ("There are %*ld total %sbytes of paging file.\n",
+          WIDTH, stat.dwTotalPageFile/DIV, divisor);
+  printf ("There are %*ld free %sbytes of paging file.\n",
+          WIDTH, stat.dwAvailPageFile/DIV, divisor);
+  printf ("There are %*lx total %sbytes of virtual memory.\n",
+          WIDTH, stat.dwTotalVirtual/DIV, divisor);
+  printf ("There are %*lx free %sbytes of virtual memory.\n",
+          WIDTH, stat.dwAvailVirtual/DIV, divisor);
+}
+
+
+
+
+单读文件大小:88,724 KB
+MsEdit_Wendy.exe 118,088 KB
+
+读文件大小:428,300 KB
+MsEdit_Wendy.exe 595,716 KB
+
+再加文件88,725KB 时，先释放到40几M。
+
+读文件大小:339,575 KB
+MsEdit_Wendy.exe 482,292 KB 
+
+正常
+MsEdit_Wendy.exe 1,504 KB 未读数据时.
+
+Clist_Break1.png 1,819,328 KB
+Clist_Break2.png 2,91G
+Clist_Break3.png 1,780,216 KB
+....
+Count_BreakCList:44040192 
+Count_BreakCList:45088768 
+The thread 0x17E0 has exited with code 0 (0x0).
+Count_BreakCList:46137344 
+First-chance exception in MsEdit_Wendy.exe (KERNELBASE.DLL): 0xE06D7363: Microsoft C++ Exception.
+First-chance exception in MsEdit_Wendy.exe (MFC42D.DLL): 0xC0000005: Access Violation.
+The program 'E:\wendy_work\MsEdit_Wendy\Debug\MsEdit_Wendy.exe' has exited with code 0 (0x0).
+
+
+Count_BreakCList:48234496 
+First-chance exception in MsEdit_Wendy.exe (KERNELBASE.DLL): 0xE06D7363: Microsoft C++ Exception.
+
+char szTmp[100];
+OutputDebugString(szTmp);
+
+char temp[10] ;
+	TRACE( "%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, TyadeType:%c, BrokerNo:%d\r\n", 
+			temp, TradeTime,TradeTime2, Key, Price, Quantity, TyadeType, BrokerNo ) ;
+
+
+目前这个e才4万多条，最多的时候一天有80万条
+
+主要修改 1,详情菜单修改时间和增加key搜索 2,加大数据文件1M到1024M和清空功能 3,显示信息添加右键菜单复制和清空功能 4,中文改为英文 5,优化日志,操作界面显示,优化搜索,添加写数据文件功能等
+6,优化数据处理函数HandleFrame_e
+
+
+今后还是会读其它帧的
+
+q key改为10进制， time改为显示time2
+
+
+C语言将字符串转换成对应的数字(十进制、十六进制)【转】
+https://yq.aliyun.com/articles/363504
+问题1：讲一个十进制数字的字符串表示转换成对应的整数。举例：将“1234”转换成整数1234.
+C代码  收藏代码
+/*将字符串s转换成相应的整数*/  
+int atoi(char s[])  
+{  
+    int i;  
+    int n = 0;  
+    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)  
+    {  
+        n = 10 * n + (s[i] - '0');  
+    }  
+    return n;  
+}  
+ 
+        问题2：将一个十六进制数的字符串表示形式转换成对应的整数。所谓的十六进制数的字符串形式是指字符串只包含'0'-'9'或者'a'-'z'或者'A'-'Z'，前导“0x”或者“0X”是否出现都可以。
+        要解决这个问题，还需要一个将大写字母转换成小写字母的工具函数：
+C代码  收藏代码
+/*将大写字母转换成小写字母*/  
+int tolower(int c)  
+{  
+    if (c >= 'A' && c <= 'Z')  
+    {  
+        return c + 'a' - 'A';  
+    }  
+    else  
+    {  
+        return c;  
+    }  
+}  
+ 
+        下面是转换函数：
+C代码  收藏代码
+//将十六进制的字符串转换成整数  
+int htoi(char s[])  
+{  
+    int i;  
+    int n = 0;  
+    if (s[0] == '0' && (s[1]=='x' || s[1]=='X'))  
+    {  
+        i = 2;  
+    }  
+    else  
+    {  
+        i = 0;  
+    }  
+    for (; (s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'z') || (s[i] >='A' && s[i] <= 'Z');++i)  
+    {  
+        if (tolower(s[i]) > '9')  
+        {  
+            n = 16 * n + (10 + tolower(s[i]) - 'a');  
+        }  
+        else  
+        {  
+            n = 16 * n + (tolower(s[i]) - '0');  
+        }  
+    }  
+    return n;  
+}  
+
+
+十六进制数的字符串转换成对应的整数的函数
+
+16进制的字符串转换整数的功能
+
+int CEINFO::cmp_key(_Frame_e *pFrame_e)
+{
+	long lkey = atol(strKey);
+
+	if (pFrame_e->Key == lkey) // wendy lTime
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
+
+q 还是先只管e ，时间，key ，price， quantity ，tradetype
+
+q 回车关闭了对话框
+
+2020.03.18
+
+Cove  16:44:55
+交易代码一般都是A\B\X xxxxx类型的，数字型的是股票，HIFC和HIZ18 这种纯英文或中英混合的大部分都是期权
+
+Cove  16:45:33
+当然也有少部分会是股票，不过都比较特殊
+
+awendy  16:45:38
+高手。
+
+Cove  16:45:52
+你可以看IGPEditor，这里面是有描述的
+
+awendy  16:46:03
+
+
+
+
+
+
+Processing ..\common\WTTCommon.idl
+WTTCommon.idl
+fatal error C1083: Cannot open source file: '..\common\WTTCommon.idl': No such file or directory
+midl : command line error MIDL1003 : error returned by the C preprocessor (2)
+执行 midl.exe 时出错.
+
+TTDataFrame.dll - 1 error(s), 0 warning(s)
+
+
+#include <stdlib.h>
+ 
+int main(void)
+{
+	FILE *file;
+	file = fopen("test.txt","w");//清空当前文件夹下的test.txt文件
+	return 0;
+
+}
+
+ftruncate
+
+很简单，在打开时指定打开方式为w就可以了。
+比如，fp = fopen( "a.txt", "w" );
+close(fp),这样文件就清空了。
+当然，打开方式为"a"也可以。
+删除文件用remove（"a.txt")函数。
+
+
+
+q Key值不对，应该是递增的。
+
+Andy  13:34:12
+对了，界面的上字都用英文，中文如果给香港用都是乱码
+
+awendy  13:35:30
+哦。好的。
+
+Andy  13:35:33
+我用记事本打开还是有空行
+
+q 我用记事本打开还是有空行
+q 对了，界面的上字都用英文，中文如果给香港用都是乱码
+
+C++中char字符串可以和CString比较吗？
+https://zhidao.baidu.com/question/1668129209224613907.html
+char* xx="efgh";
+CString str=xx;
+CString xxx="abdd";
+if(str==xxx)
+
+要怎么比较CString类型和Char类型两个字符串是否一样我用strcmp()这个函数不行啊
+https://zhidao.baidu.com/question/556028055.html
+#include<stdio.h>
+#include<string.h>
+#include<afx.h>
+void main()
+{
+CString a("123");
+char b[]={"123"};
+if(strcmp(a,b)==0)
+printf("2");
+}
+可以用啊。
+CString src;
+src="abcd";
+char s[255]="abcd";
+if(strcmp(src.GetBuffer(src.GetLength()),s)==0)
+    AfxMessageBox("=");
+你可以先把他们转换为同样的类型，再比较
+用CString的Compare函数试试
+
+
+
+q3,读这个文件读到一半就退出了
+
+Andy 2020/3/17 星期二 10:08:16
+读这个文件读到一半就退出了
+
+awendy 2020/3/17 星期二 10:10:56
+好的，我的也是一样。文件太大，我知道原因了。 STL标准库链表溢出了。
+
+
+
+是HIFC 的e
+
+	BOOL	Init( const char* pszFileName, DWORD nMaxFileSize=1024*1024*500, BOOL	bKeepFileOpen=FALSE ) ;  // wendy int  1024*500
+
+!?CLog.m_nMaxFileSize	[.] CLog属性: log文件最大文件大小
+*/
+	DWORD			m_nMaxFileSize ;	// wendy int
+
+BOOL CLog::Init( const char* pszFileName, DWORD nMaxFileSize, BOOL	bKeepFileOpen )  // wendy int
+{
+	if( pszFileName==NULL || strlen(pszFileName)<=0 )
+		return FALSE ;
+
+	m_szFileName = pszFileName ;
+	m_nMaxFileSize = max( 1024, nMaxFileSize ) ;
+	m_bKeepFileOpen = bKeepFileOpen ;
+
+	return TRUE ;
+
+}
+
+CLog::CLog()
+{
+	m_pFile = NULL ;
+
+	CString path ;
+	CWrapperPath::GetExtPath( path ) ;
+
+	m_szFileName.Format( "%slog.txt", path ) ;
+	m_nMaxFileSize = 1024*1024*1024 ;			// wendy 1024*1024
+	m_bKeepFileOpen = FALSE ;
+
+}
+
+	w_Log.Init("ReadMds.log",1024*1024*1024);  // wendy 1024*1024
+	w_eLog.Init("eOfMds.log",1024*1024*1024);  // wendy 1024*1024
+
+
+修改日志信息显示为未选中文件
+void CMsEdit_WendyDlg::OnAddfile() 
+{
+	// TODO: Add your control notification handler code here
+
+	CString cstrPathName,cstrFileName;
+	CFileDialog fdlg(true, NULL, NULL, OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR, "(*.mds)|*.mds|All Files (*.*)|*.*||", NULL);
+	int nRetDlgDoMo = fdlg.DoModal();
+	if(nRetDlgDoMo==IDOK)
+	{	
+		//for (int i=0;i<m_filelist.GetCount();i++) //wendy test
+		{
+			if (m_filelist.FindString(-1,fdlg.GetPathName())>=0) // wendy nStartAfter=0 LB_ERR
+			{
+				AfxMessageBox("Already add this file.");
+				return;
+			}
+		}
+		cstrPathName.Format("%s",fdlg.GetPathName());
+		m_filelist.AddString(cstrPathName);
+
+		cstrFileName.Format("%s",fdlg.GetFileName());
+
+	}
+	else if (nRetDlgDoMo == IDCANCEL)
+	{
+		cstrFileName.Format("未选中文件");
+	}
+	s_Log.Format("OnAddfile FileName = %s",cstrFileName);
+	SetBtnReadOrSearch(1);
+}
+
+
+
+xq1,为什么list里只有3个？ log那么多？log按搜索条件写 item 也写到log里
+
+q2,这里有个问题， ‘X’帧你没解 ， 'X'是夜市帧，里面包含了普通帧， 比如‘A' ，'L' ，'e'
+
+数据库，多媒体(音视)，网络，软件，其它。点到线，线到面，.....
+文件数据处理:读写文件，STL，表格，日志，输入和生成各种文件等.
+
+2020.03.17
+
+CString类型字符串，怎样全部转为大写？？ [问题点数：20分，结帖人tohell]
+https://bbs.csdn.net/topics/60172612
+CString str = "abc";
+str.MakeUpper();
+
+如何使用CListBox的复选功能？GetSelItems() [问题点数：50分，结帖人NsKen]
+https://bbs.csdn.net/topics/41964
+int n = GetSelCount();
+int *p = new int[n];
+GetSelItems(n, p);
+for(i = 0; i < n; i++)
+{
+  // do something with the selected item whose index is i
+}
+delete[] p;
+
+CListBox控件如何让它支持 选择复制功能 [问题点数：10分，结帖人yang_fujiang]
+https://bbs.csdn.net/topics/280024618
+之后调用onCopy()：
+CString source ="";
+int iIndex =0;
+iIndex = m_List_Msg.GetCurSel();
+m_List_Msg.GetText(iIndex,source); //获取选择项内容
+if(OpenClipboard()) 
+{ 
+HGLOBAL clipbuffer; 
+char *buffer; 
+EmptyClipboard(); 
+clipbuffer=GlobalAlloc(GMEM_DDESHARE,source.GetLength()+1); 
+buffer=(char *)GlobalLock(clipbuffer); 
+strcpy(buffer,LPCSTR(source)); 
+::GlobalUnlock(clipbuffer);
+SetClipboardData(CF_TEXT,clipbuffer); 
+CloseClipboard(); 
+}// 将内容粘贴到剪切板上 1029 OK！！！
+
+
+读取变搜索.
+
+git checkout --help
+file:///D:/Program%20Files/Git/mingw32/share/doc/git-doc/git-checkout.html
+
+MFC子类化控件
+https://blog.csdn.net/xuanyuanlei1020/article/details/52979738
+子类化有两种类型: 实例子类化（instance subclassing）和全局子类化（global subclassing）。实例子类化是子类化一个窗口中的单一实例，全局子类化是把整个窗口子类化为一个特殊的类型。这里我们仅讨论单一实例子类化。
+
+MFC窗口子类化
+https://www.cnblogs.com/aishangxue/p/3531774.html
+1）最简单的方法，可以通过传递GWL_WNDPROC调用SetWindowLong来改变窗口过程，可是这个函数还需要窗口句柄作为参数，而句柄只有在窗口创建成功后才合法，所以这种做法只能当不用改变默认WM_CREATE行为（以及一些窗口创建过程中的动作）的时候才适用。
+2）窗口过程是在窗口类注册时确定的，要改变窗口函数就需要注册一个新类（参考DuiLib中的Edit空控件实现）：
+首先调用系统API获得窗口类的详细信息，结果放在lpwcx指向的内存区中。
+3）我们也可以用一种更柔和的方法，使用系统钩子布置好陷阱，然后静等窗口自投罗网。
+首先在窗口创建之前（当然可以在应用程序对象 InitInstance过程中）安置一个系统钩子，钩子类型可以设为WH_CALLWNDPROC，这个钩子会在系统调用窗口过程之前调用，还可以设置线程ID为目标窗口创建线程。
+钩子函数里我们主要工作就是筛选目标窗口（因为目标线程的所有窗口过程调用都会提前通知我们定义的钩子过程）。
+
+筛选方式可以参考一下步骤：
+
+实现子类化的一般方法
+http://www.cppblog.com/aaxron/archive/2015/08/10/211517.aspx
+实现子类化的一般方法
+从上面可以看出，子类化主要使用几个API函数，这几乎是所有实现子类化相同的方法。相关API说明如下：
+1、 WINUSERAPI LONG WINAPI GetWindowLongA(HWND hWnd, int nIndex);
+WINUSERAPI LONG WINAPI GetWindowLongW(HWND hWnd,int nIndex);
+2、 SetWindowLong 与 CallWindowProc 函数这不再列出来了，都是粉容易的！
+使用 ComCtl32.dll version 6 实现窗口子类化
+Windows XP 带的ComCtl32.dll version 6 提供了4个可以让创建子类化更简单，并且可以消除前面提到的缺陷的函数。这些新的函数封装了对多组参考数据（multiple sets of reference data）的管理操作，使得开发者能将精力集中到具体的程序特性而不是对子类的管理上。这些新的函数为：
+SetWindowSubclass
+GetWindowSubclass
+RemoveWindowSubclass
+DefSubclassProc
+下面是对这些函数的描述。
+
+【C++】DDX_Control、SubclassWindow和SubclassDlgItem的区别
+https://blog.csdn.net/ssslpk/article/details/12174223
+Subclass(子类化)是MFC中最常用的窗体技术之一。子类化完成两个工作：一是把窗体类对象attach到一个windows窗体实体中（即把一个窗体的hwnd赋给该类）。
+另外就是把该类对象的消息加入到消息路由中，使得该类可以捕获消息。
+而通常我们会碰到DDX_Control、SubclassWindow、SubclassDlgItem等，不同的子类化方法。首先先看下面的代码：
+我们发现 DDX_Control()函数中调用了SubclassWindow()，再看SubclassWindow()里写了什么：
+很显然，SubclassWindow()中调用了Attach()函数和reSubclassWindow()函数，由于SubclassWindow()函数是不可重载的，而PreSubclassWindow()函数是可重载的，所以我们经常重载PreSubclassWindow()函数，以致于窗口被子类化之前进行其它的必要的子类化，看下它原来的声明：
+CWnd::PreSubclassWindow
+virtual void PreSubclassWindow( );
+而SubclassWindow又与SubclassDlgItem有什么区别？前者用于一切具有HWND的窗体，后者只限定于对话框控件
+用法：在OnInitDialog中调用SubclassDlgItem将派生类的控件对象与对话框中的基类控件相连接，则这个基类控件对象变成了派生控件对象
+
+
+MFC学习（五）DDX_Control关联资源
+https://blog.csdn.net/sunnzhongg/article/details/56282825
+DDX_Control函数管理着在对话框、表格视或控件视中被子类化的控件与对话框、
+表格视或控件视的CWnd数据成员之间的数据交换。
+其实说白了，就是将资源（如按钮）与类对象（CButton）关联在一起，也就是绑定起来。
+DDX_Control的使 用：
+在对话框类头文件中定义m_btnOK对象
+CButton m_btnOK;
+然后在DoDataExchange函数中添加以下语句
+DDX_Control(pDX, IDOK, m_btnOK);
+上边说了DDX_Control的用法，其实DDX_Control的原理很简单就是
+获取控件ID的HWND句柄，然后调用Attach(hWnd)，将句柄绑定到对象上，最后初始化
+对象，即调用对象类中重载的PreSubclassWindow()函数,之后再做一些显示工作。
+原理很简单，接下来我用一段代码来代替DDX_Control语句，以便大家理解
+在OnInitDialog()函数中添加以下语句，即可实现DDX_Control做的工作。(v ok)
+HWND hWndCtrl;
+GetDlgItem(IDOK, &hWndCtrl);
+m_btnOK.SubclassWindow(hWndCtrl);
+上边的代码关键在SubclassWindow函数，SubclassWindow是基类CWnd中的函数主要做的就是
+Attach(hWnd)以及调用对象类中重载的PreSubclassWindow()方法,并做一些显示工作。
+
+DDX_Control(pDX, IDC_LOG, m_loglist); 	m_loglist.SubclassDlgItem(IDC_LOG,this)	;
+不能同时使用，二选一。
+
+
+命令行语法格式中常用符号的含义
+https://www.cnblogs.com/uakora/p/11809501.html
+在描述命令行参数的时候，对其格式有些约定俗成的写法，各系统之间也有差别。一般采用的格式如下：
+
+　　命令 <必选参数1|必选参数2> [-option {必选参数1|必选参数2|必选参数3}] [可选参数…] {(默认参数)|参数|参数}
+
+ 
+
+命令格式中常用的几个符号含义如下：
+
+　　尖括号< >：必选参数，实际使用时应将其替换为所需要的参数
+
+　　大括号{ }：必选参数，内部使用，包含此处允许使用的参数
+
+　　方括号[ ]：可选参数，在命令中根据需要加以取舍
+
+　　小括号( )：指明参数的默认值，只用于{ }中
+
+　　竖线|：用于分隔多个互斥参数，含义为“或”，使用时只能选择一个
+
+　　省略号…：任意多个参数
+
+ 
+
+说明：
+
+大括号和尖括号的区别为：大括号中只能选择所列举的必选参数（或之一），尖括号中却需要根据实际替换必选参数
+
+示例一：
+
+　　命令语法：git help <name>
+
+　　实际使用：git help config 或 git help branch 或 ...  (name被替换为实际的内容)
+
+示例二：
+
+　　命令语法：git stash {apply | pop}
+
+　　实际使用：git stash apply 或 git stash pop (只能在必选参数apply或pop中选一个)
+
+
+
+Git branch && Git checkout常见用法
+https://www.cnblogs.com/qianqiannian/p/6011404.html
+
+2. Git checkout
+
+　　　　1. 操作文件  2. 操作分支
+
+　　　　2.1 操作文件
+
+　　　　　　2.1.1 git checkout filename 放弃单个文件的修改
+
+　　　　　　2.1.2 git checkout . 放弃当前目录下的修改
+
+　　　　2.2 操作分支
+
+　　　　　　2.2.1 git checkout master 将分支切换到master
+
+　　　　　　2.2.2 git checkout -b master 如果分支存在则只切换分支，若不存在则创建并切换到master分支，repo start是对git checkout -b这个命令的封装，将所有仓库的分支都切换到master，master是分支名，
+
+　　　　2.3 查看帮助
+
+　　　　　　git checkout --help
+
+　　　　　　当然git checkout还有许多命令，但这些已经能满足我们日常开发所需
+
+学习无他法，唯有持之以恒
+
+
+
+Git 命令行的各种退出方式
+https://blog.csdn.net/weixin_41287260/article/details/89813851
+2.1 保存并退出：
+
+（1）按 Esc 键退出编辑模式，英文模式下输入 :wq ，然后回车(write and quit)。
+
+
+（2）按 Esc 键退出编辑模式，大写英文模式下输入 ZZ?，然后回车。(v ok)
+
+2.2 
+不保存退出：
+
+按 Esc 键退出编辑模式，英文模式下输入 :q! ，然后回车。
+
+
+按 Esc 键退出编辑模式，英文模式下输入 :qa! ，然后回车。
+
+
+git reset 使用及回滚
+https://blog.csdn.net/edric1261234/article/details/82796506
+目录
+
+一、git reset 参数
+
+1. --soft ?
+
+2.? --mixed ?
+
+3.? --hard ?
+
+二、 如何回滚文件
+
+1.?修改完，还未执行git add?
+
+2.使用git add 提交到暂存区，还未commit之前
+
+3.已经git commit，还未git push
+
+4.已经git push??
+--mixed  
+是reset的默认参数,移动head指针，改变暂存区内容，但不会改变工作区 
+如何回滚文件
+1. 修改完，还未执行git add 
+git checkout .
+使用暂存区的文件覆盖工作区，所以执行完git add .之后，再执行该命令是无效的  
+git checkout .和git add .是一对反义词
+2.使用git add 提交到暂存区，还未commit之前
+git reset  先用Head指针覆盖当前的暂存区内容
+git checkout . 再用暂存区内容覆盖工作区内容
+或者使用
+git reset --hard 直接使用head覆盖当前暂存区和工作区
+3.已经git commit，还未git push
+git reset --hard origin/master (v ok)
+从远程仓库把代码取回来，然后覆盖本地仓库、本地暂存区和工作区  
+或者使用
+git reset --hard last_commit_id
+覆盖本地仓库、暂存区和工作区，其中查看last_commit_id命令为
+git log
+  或者使用
+git reset --mixed last_commit_id  
+覆盖本地的暂存区，再执行
+git checkout . 覆盖本地工作区
+4.已经git push  
+  那就没办法了
+
+
+Your branch is ahead of 'origin/master' by 2 commits.
+https://www.cnblogs.com/ckAng/p/10640770.html
+遇到这种问题，表示在你之前已经有2个commit而没有push到远程分支上，所以需要先git push origin **将本地分支提到远程仓库。
+也可以直接git reset --hard HEAD~x解决 ,这里的x表示的就是在这之前已经有多少次的提交，这句命令的意思就是直接回退到x 个commit之前（这两次提交所改动的代码都没有了，慎用）
+
+
+在git提交环节，存在三大部分：working tree, index file, commit
+https://blog.csdn.net/lksodit_yiyi/article/details/8767150
+这三大部分中：
+working tree：就是你所工作在的目录，每当你在代码中进行了修改，working tree的状态就改变了。
+index file：是索引文件，它是连接working tree和commit的桥梁，每当我们使用git-add命令来登记后，index file的内容就改变了，此时index file就和working tree同步了。
+commit：是最后的阶段，只有commit了，我们的代码才真正进入了git仓库。我们使用git-commit就是将index file里的内容提交到commit中。
+总结一下：
+git diff：是查看working tree与index file的差别的。
+git diff --cached：是查看index file与commit的差别的。
+git diff HEAD：是查看working tree和commit的差别的。（你一定没有忘记，HEAD代表的是最近的一次commit的信息）
+git status
+#很明显可以知道：
+Changes to be committed表示已经存在于index file里，但尚未提交。
+Changed but not updated表示在working tree已经做修改，但还没有使用git add登记到index file里。
+
+
+交际: 1,不讲敏感话题(黄文男女孩). 2,不聊利益事(杨秋兴囤货疫情). 3,注意频率节奏不能过（年年有余细卫哥). 4,久不聊一聊相关(黄新明相片)
+5,微Q少聊色暴注意频率. 6,sln转换dsw对比.c.h.r等文件. 7,
+awendy:
+学习才是硬道理。
+
+高信:
+牛逼
+
+
+awendy:
+将以前的： 股票都能做好，还有什么不能做好呢？
+
+
+awendy:
+改为：学习(编程)都能做好，还有什么不能做好呢？
+
+
+高信:
+niubility
+
+8,愿有送皮带一天. 9,看懂,控件,200个类,算法...java,android. 10,早上急下楼梯差点摔因口罩雾气.
+
+
+<<<<<<< HEAD
+		m_loglist.AddString(s_Log);
+		w_Log.Log(s_Log);
+		s_Log="";
+=======
+		s_Log="";
+
+>>>>>>> 6a982e05c2ea58ca638a64ccadb6fe3283b33350
+
+merge失败，you need to resolve
+
+commit no push
+
+git did not exit cleanly (exit code 1) (4321 ms @ 2020/3/16 星期一 8:11:37)
+
+
+2020.03.16
+
+CListBox的AddString 排序问题
+https://blog.csdn.net/robinson_911/article/details/20701273
+CListBox默认对各项进行排序，在属性中把sort改为false就解决问题了，或者用InsertString()，而不是 AddString()。InsertString() 不会导致 LBS_SORT 清单进行排序
+
+WM_DRAWITEM，DrawItem的一些总结
+原创woshiyuanlei 最后发布于2015-06-05 13:45:01 阅读数 2040  收藏
+展开
+1、
+
+? ? 当在MFC中要对某个控件自绘时，就需要重写DrawItem或者OnDrawItem函数，要实现重绘：
+
+? ? 首先要允许重绘:
+
+? ?1）可以在控件属性中设置（网上很多，自己搜吧）?
+
+? ? 2）在控件类中实现，
+
+? ? 比如我实现了class CMyButton:public ?CButton自己的按钮类，然后在CMyButton中重写PreSubclassWindow函数
+
+? ? 然后添加__super::PreSubclassWindow();SetButtonStyle(GetButtonStyle()|BS_OWNERDRAW);
+
+? ?其次要实现重绘:
+
+? ?当然就要重载DrawItem了(listbox控件重载OnDrawItem)
+
+?? 需要注意的是:
+
+? ?重载DrawItem后不能再有WM_PAINT或WM_ERABKGND(好像是这样拼写的)消息映射，否则，DrawItem函数将不会运行(具体为什么可以网上搜搜，MFC绘图的顺序就知道了)
+
+
+
+2、
+
+? 当在win32实现控件自绘时，需要在WndProc中相应WM_DRAWITEM消息，而相应的这个消息是在总的消息循环中，当自控件有自己的消息循环时，不管WndProc还是子空间自己的消息循环都不能相应WM_DRAWITEM消息，因此要响应此消息，则子控件默认使用跟窗体一样的消息处理函数WndProc
+
+
+
+符:
+
+设置子控件自己的消息循环:?SetWindowLong(hSubWnd,GWL_WNDPROC,(LONG)ButtonProc);
+————————————————
+版权声明：本文为CSDN博主「woshiyuanlei」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/woshiyuanlei/article/details/46375701
+
+
+MFC-自绘控件（CStatic与CEdit）
+https://blog.csdn.net/wyansai/article/details/50985319
+主要是在主窗口中的OnCtlColor函数中进行自绘
+HBRUSH CSelfDrawDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	// TODO:  在此更改 DC 的任何特性
+	if (nCtlColor == CTLCOLOR_STATIC) {
+		pDC->SetBkMode(TRANSPARENT);
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC1) {
+			pDC->SetTextColor(RGB(200, 200, 100));
+		}
+		return (HBRUSH)GetStockObject(NULL_BRUSH);
+	}
+	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
+	return hbr;
+}
+二、check box 与 radio box
+
+改变背景透明
+HBRUSH CSelfDrawDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	if (nCtlColor == CTLCOLOR_BTN || nCtlColor == CTLCOLOR_STATIC) {
+		pDC->SetBkMode(TRANSPARENT);
+		hbr = (HBRUSH) ::GetStockObject(NULL_BRUSH);
+ 
+		UINT id = pWnd->GetDlgCtrlID();
+		if (id == IDC_RADIO1 || id == IDC_CHECK1)
+		{
+			CRect rc;
+			pWnd->GetWindowRect(&rc);
+			ScreenToClient(&rc);
+			CDC* dc = GetDC();
+			//把父窗口背景图片先画到按钮上
+			pDC->BitBlt(0, 0, rc.Width(), rc.Height(), dc, rc.left, rc.top, SRCCOPY);
+			ReleaseDC(dc);
+			return hbr;
+		}
+		if (nCtlColor == CTLCOLOR_STATIC) {
+			pDC->SetTextColor(RGB(255, 200, 0));
+		}
+		return hbr;
+	}
+	
+	return hbr;
+}
+三、CEdit
+
+主要是继承CEdit这个类，简单的自绘一下边框的颜色
+
+CSkinEdit.h
+
+#pragma once
+#include "afxwin.h"
+class CSkinEdit :
+	public CEdit
+{
+public:
+	CSkinEdit();
+	~CSkinEdit();
+	DECLARE_DYNAMIC(CSkinEdit)
+protected:
+	DECLARE_MESSAGE_MAP()
+public:
+	BOOL m_bTracking;
+	BOOL m_bHover;
+	BOOL m_bFocus;
+	CBrush m_ClientBrush;
+	CBrush m_hOrderBrush;
+	CBrush m_HotOrderBrush1;
+	CBrush m_HotOrderBrush2;
+public:
+	LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
+	LRESULT OnMouseHover(WPARAM wParam, LPARAM lParam);
+	void OnMouseMove(UINT nFlags, CPoint point);
+	void OnSetFocus(CWnd* pOldWnd);
+	void OnKillFocus(CWnd* pNewWnd);
+	void OnNcPaint();
+	void OnPaint();
+	void DrawBorder();
+};
+ 
+CSkinEdit.cpp
+#include "stdafx.h"
+#include "SkinEdit.h"
+ 
+IMPLEMENT_DYNAMIC(CSkinEdit, CEdit)
+ 
+CSkinEdit::CSkinEdit()
+{
+	m_bTracking = m_bHover = m_bFocus = FALSE;
+	m_ClientBrush.CreateSolidBrush(RGB(0,0,200));
+	m_hOrderBrush.CreateSolidBrush(RGB(0, 100, 200));
+	m_HotOrderBrush1.CreateSolidBrush(RGB(255, 255, 0));
+	m_HotOrderBrush2.CreateSolidBrush(RGB(255, 200, 0));
+}
+ 
+CSkinEdit::~CSkinEdit()
+{
+	DeleteObject(m_ClientBrush);
+	DeleteObject(m_hOrderBrush);
+	DeleteObject(m_HotOrderBrush1);
+	DeleteObject(m_HotOrderBrush2);
+}
+ 
+ 
+BEGIN_MESSAGE_MAP(CSkinEdit, CEdit)
+	ON_WM_NCPAINT()
+	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+	ON_MESSAGE(WM_MOUSEHOVER, OnMouseHover)
+	ON_WM_MOUSEMOVE()
+	ON_WM_SETFOCUS()
+	ON_WM_KILLFOCUS()
+END_MESSAGE_MAP()
+ 
+ 
+ 
+// CSkinEdit 消息处理程序
+void CSkinEdit::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (!m_bTracking)
+	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(tme);
+		tme.hwndTrack = m_hWnd;
+		tme.dwFlags = TME_LEAVE | TME_HOVER;
+		tme.dwHoverTime = 50;
+		m_bTracking = (bool)_TrackMouseEvent(&tme);
+	}
+ 
+	CEdit::OnMouseMove(nFlags, point);
+}
+LRESULT CSkinEdit::OnMouseLeave(WPARAM wParam, LPARAM lParam)
+{
+	m_bTracking = FALSE;
+	m_bHover = FALSE;
+	DrawBorder();
+	return 0;
+}
+ 
+LRESULT CSkinEdit::OnMouseHover(WPARAM wParam, LPARAM lParam)
+{
+	m_bHover = TRUE;
+	DrawBorder();
+	return 0;
+}
+void CSkinEdit::OnSetFocus(CWnd* pOldWnd)
+{
+	CEdit::OnSetFocus(pOldWnd);
+	m_bFocus = TRUE;
+	DrawBorder();
+}
+ 
+void CSkinEdit::OnKillFocus(CWnd* pNewWnd)
+{
+	CEdit::OnKillFocus(pNewWnd);
+	m_bFocus = FALSE;
+	DrawBorder();
+}
+void CSkinEdit::OnNcPaint()
+{
+	CEdit::OnNcPaint();
+	DrawBorder();
+}
+void CSkinEdit::OnPaint()
+{
+	CEdit::OnPaint();
+	DrawBorder();
+}
+ 
+void CSkinEdit::DrawBorder()
+{
+	CDC * dc = GetWindowDC();
+	CRect rc;
+	GetWindowRect(&rc);
+	rc = CRect(0, 0, rc.right - rc.left, rc.bottom - rc.top);
+	if (m_bHover) {
+		dc->FrameRect(rc, &m_HotOrderBrush1);
+		rc.InflateRect(-1, -1);
+		dc->FrameRect(rc, &m_HotOrderBrush2);
+	}
+	else if (m_bFocus) {
+		dc->FrameRect(rc, &m_ClientBrush);
+		rc.InflateRect(-1, -1);
+		dc->FrameRect(rc, &m_hOrderBrush);
+	}
+	else {
+		dc->FrameRect(rc, &m_ClientBrush);
+		rc.InflateRect(-1, -1);
+		dc->FrameRect(rc, &m_hOrderBrush);
+	}
+	ReleaseDC(dc);
+	dc = NULL;
+}
+
+
+关于VC中DrawItem()函数 [问题点数：0分]
+https://bbs.csdn.net/topics/19523
+我创建了一个以CButton为基类的按钮，编写DrawItem函数时存在一些疑问(1)。一般windows的按钮，平时显示是一种状态，多用鼠标左键按下去时是另一种状态，这时如果不松开鼠标而移动鼠标，当鼠标离开按钮时，按钮又还原为原来的样子，这种情况该如何实现？(2)对于CCombox的DrawItem()函数，如果要绘制在整个组合框的外面画一个框之类的装饰物该怎么办？(3)许多程序中的按钮都有这样的功能（如IE的“后退”、“前进”大按钮）：多鼠标移动按钮上时显示鲜艳一点的图象，鼠标离开时又还原为暗一点的图象，该如何实现？
+
+用Timer太……了吧，传统做法应该是在OnLButtonDown中SetCapture，在OnMouseMove中判断鼠标是否在按钮区域内以及左键有否按下并设置按钮位图，在OnLButtonUp中ReleaseCapture。不过最简单的方法还是用CBitmapButton。
+
+VC中DrawItem重绘及背景图片问题 [问题点数：20分，结帖人kawayi_kai]
+https://bbs.csdn.net/topics/310105039
+1、定义一个成员变量保存图片路径或是图片内容，写一个接口函数来动态设置图片路径或图片内容，DrawItem的时候根据路径读取图片或显示设置好的图片内容
+2、两种方法：
+   重载对话框OnCtrColor函数，将所有控件背景画刷设置为NULL_BRUSH
+   重载控件或子类化控件，将控件背景画为对应的对话框背景内容
+
+第一个一定要把控件的属性改为OWNERDRAW
+第二个就是OnCtlColor 
+nCtrlID = IDC_STATIC 就行了
+如果你将按钮的属性修改成了OWNERDRAW，那么你必须在你子类（从CButton）重载DrawItem(LPDRAWITEMSTRUCT)函数，
+实现你自己的重绘代码，否则MFC会调用基类CButton的DrawItem函数，不出叉才怪
+
+
+怎么才能让DrawItem函数被调用？ [问题点数：0分]
+https://bbs.csdn.net/topics/457341
+我重载了CStatusBar的DrawItem函数，但发现他从来没有被调用
+?什么？是StatusBar吗？
+只有an owner-draw button control, combo-box control, list-box control, or menu
+可以具有调用OnDrawItem的风格
+否则是不能调用这个函数的
+好像你的那个就不是这其中之一吧，当然无法调用了
+
+为什么非要使用DrawItem？
+其实，你只要把一个控件的Parent设置成StatusBar即可在状态条上显示任何控件。
+这个方法也适用于其他控件
+
+DrawItem
+https://blog.csdn.net/jiftlixu/article/details/4893505
+今天从CButton派生了一个类CUIButton，主要用于自绘，按照基本的流程，重写DrawItem方法。
+
+步骤如下：点击CUIButton按钮，在右键弹出菜单中选择“add windows message Handler"，
+
+找到DrawItem，为其添加消息映射，添加的代码如下：
+
+void CUIButton::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
+
+结果在使用到CUIButton的地方用SubClassDlgItem就会出问题。
+
+后来调试发现，不应该按照上面的添加此消息的映射，而是为CUIButton类重写DrawItem函数，添
+
+加方法：
+
+在类CUIButton右键，在弹出菜单中选择"Add Virtual Function"，弹出的添加虚函数框中选
+
+择"DrawItem"，向导为我们生成的代码如下：
+
+void CUIButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+
+在这里添加所需的自绘代码就ok了
+附： how to implement control to self-draw
+
+1、从CButton类派生自己的CUIControl类
+
+2、借助于MFC向导生成工具，为期添加虚函数DrawItem()和OnEraseBkgnd()。
+
+     注意：DrawItem()是控件重定义的函数，不是OnDrawItem()。
+
+3、在DrawItem()中近控件的自绘处理，这里给出一个实例代码，用于一个自定义Button，在
+
+     Button上面绘图：
+4、为OnEraseBkGround()添加代码。这里很简单，直接返回True即可：
+5、在你的对话框中使用CUIButton按钮，首先在dialog资源中添加一个按钮（CButton）。
+6、在对话框类的头文件中定义一个成员CUIButton m_CtlUIBtn；注意变量的类型是CUIButton而
+    不是CButton
+7 、在OnInitDialog中用SubClass技术：
+
+
+MFC CStatic控件在DrawItem中自绘
+https://blog.csdn.net/xuanyuanlei1020/article/details/52698635
+转载轩辕泪1020 最后发布于2016-09-29 09:28:39 阅读数 2561  收藏
+展开
+转载自：也已时过境迁的MFC CStatic控件在DrawItem中自绘
+
+实现PreSubclassWindow
+void CStaticHref::PreSubclassWindow()
+{
+// TODO: Add your specialized code here and/or call the base class
+
+DWORD dwStyle = GetStyle();  
+SetWindowLong(GetSafeHwnd(),GWL_STYLE,dwStyle | SS_OWNERDRAW);
+//ModifyStyle(NULL, SS_OWNERDRAW);
+
+CStatic::PreSubclassWindow();
+}
+
+在virtual void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/);中完成相关绘制
+
+确保消息映射中不能有：ON_WM_PAINT（也可以直接在OnPaint中绘制）、ON_WM_DRAWITEM 消息，否则DrawItem函数不会被调用
+
+注：第二步的是DrawItem而非OnDrawItem。OnDrawItem是ON_WM_DRAWITEM消息的处理函数，是处理子控件发送过来的自绘消息的
+
+
+解决C++中DrawItem()函数不被调用的问题
+原创读不懂的下卷 最后发布于2013-10-15 15:18:55 阅读数 3168  收藏
+展开
+? 当在自绘一个控件时，比如自绘一个CMyButton的时候，在DrawItem()中改变了button的颜色，但是在程序执行时，DrawItem()函数并没有被执行，原因在于按钮的类型并不是BS_OWNERDRAW,所以我们需要把它改为“所有者绘制”。
+
+解决方法：
+
+可以重载一个PreSubclassWindow()函数，在该函数中调用ModifyStyle(）函数来设置类型，比如：
+
+void?CMyButton::PreSubclassWindow()
+
+{
+CButton::PreSubclassWindow();??
+
+ModifyStyle(0,?BS_OWNERDRAW);?
+}
+————————————————
+版权声明：本文为CSDN博主「读不懂的下卷」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ssslpk/article/details/12750251
+
+DrawItem（）和WM_DRAWITEM
+https://blog.csdn.net/lzrocking/article/details/7934831
+如果我们要重写一个CButton取名为CMyButton，我们可以重写CMyButton的DrawItem（）函数来实现我们的需求，但CMyButton：：DrawItem（）是在什么时候调用呢？它是在它的宿主类的OnDrawItem（）中被调用，OnDrawItem（int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct ）正是对WM_DRAWiTEM的相应函数。
+
+宿主类可以根据nIDCtl来判定是哪个子控件。其实我们可以在OnDrawItem函数里对子控件进行绘制，但是有很多的子控件看起来不好，所以我们应该在子类的DrawItem对子类绘制，例如CMyButton::DrawItem。所以可以这样理解，OnDrawItem是画窗口中的子控件的，因为它的入口参数LPDRAWITEMSTRUCT带入不同子控件的相关参数，而且，你得把字控件设置成“自画”类型，才会调用到OnDrawItem。
+
+当自绘按钮(owner-draw button)，下拉列表框(combo box)，列表框(list box)视觉属性，或者菜单发生变化时，框架为他们的owner调用OnDrawItem(发送WM_DRAWITEM)，在宿主类调用子类的DrawItem(发送WM_DRAWITEM消息)。我们可以重载子类的DrawItem可以绘制自己需要的控件，不是所有设置成自画类型的控件都会调用父窗口的OnDrawItem，例如ListBox的自画，你就必须重载CListBox的DrawItem方法和MeasureItem方法才可以，但象菜单，按钮等的自画则会调用OnDrawItem。在SDK中，子类是不可能受到WM_DRAWITEM，在MFC中可以，这是类的设计者设计的(反射)，这的确不错。
+
+
+MFC OnDrawItem方法没有执行
+https://blog.csdn.net/zhouyingge1104/article/details/103641357
+MFC项目，已经通过向导添加了OnDrawItem方法，也定义好了要自定义处理的控件ID
+
+void CStartCheckDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
+{
+	if(
+		nIDCtl == IDC_BUTTON1||
+		nIDCtl == IDC_BUTTON2
+	  ){
+		//...
+      }
+}
+但是实际运行时，OnDrawItem没有执行。
+
+想了一会儿，原来是控件的“所有者绘制”这个属性没有设置。
+
+在设计器中右击控件->属性->样式，勾选“所有者绘制”。
+再次运行，OnDrawItem方法正常执行，按钮控件批上了新的样式。
+
+请问DrawItem方法什么时候被调用 [问题点数：100分，结帖人laomai]
+https://bbs.csdn.net/topics/40390920
+DrawItem不会被执行，CButton自画要在父窗口重载OnDrawItem消息，有些自画是必须在DrawItem中的CHeaderCtrl；
+规律好像是凡是需要MeasureItem的都要DrawItem，凡是不需要MeasureItem的，就重载父窗口的OnDrawItem，不过不敢肯定；
+有一点可以肯定就是MFC中有些类的DrawItem里面只有一句就是ASSERT(FALSE)，就是一定会出错的意思，这些类一定要重载DrawItem，而不是父窗口的OnDrawItem
+
+MFC控件的SubclassDlgItem
+https://www.cnblogs.com/lujin49/p/5345313.html
+要在程序中创建新设计的控件，显然不能用自动创建的办法，因为对话框模板对新控件的特性一无所知．程序可以用手工方法创建控件，在调用派生类的Create函数时，派生类会调用基类的Create函数创建控件．用Create函数创建控件是一件比较麻烦的工作，程序需要为函数指定一大堆的控件风格以及控件的坐标和ID．特别是控件的坐标，没有经验的程序员很难确切地安排控件的位置和大小，往往需要反复调整．利用MFC的CWnd::SubclassDlgItem提供的动态连接功能，可以避免Create函数的许多麻烦，该函数大大简化了在对话框中创建派生控件的过程．
+　　大家知道，在用手工方法创建控件时，先要构建一个控件对象，然后再用Create函数在屏幕上创建控件窗口，也就是说，控件的创建工作是由控件对象完成的．动态连接的思路则不同，SubclassDlgItem可以把对话框中已有的控件与某个窗口对象动态连接起来，该窗口对象将接管控件的消息处理，从而使控件具有新的特性．SubclassDlgItem函数的声明为
+BOOL SubclassDlgItem( UINT nID, CWnd* pParent );
+　　参数nID是控件的ID，pParent是指向父窗口的指针．若连接成功则函数返回TRUE，否则返回FALSE．
+　　综上所述，要在程序中使用派生控件，应该按下面两步进行：
+在对话框模板中放置好基类控件．
+在对话框类中嵌入派生控件类的对象．
+在OnInitDialog中调用SubclassDlgItem将派生类的控件对象与对话框中的基类控件相连接，则这个基类控件变成了派生控件．
+　　例如，如果要在对话框中使用新设计的编辑框控件，应先在对话框模板中的合适位置放置一个普通的编辑框，然后，在OnInitDialog函数中按下面的方式调用SubclassDlgItem即可：
+BOOL CMyDialog::OnInitDialog()
+
+{
+CDialog::OnInitDialog();
+m_MyEdit.SubclassDlgItem(IDC_MYEDIT, this);
+return TRUE;
+}
+还有个前提  就是edit1还在生命周期内。你可以试试在主类里建个CEditnew类的指针 的成员变量，然后在初始化里给这个指针赋值为new CEditnew()  后面照旧。试试
+比如成员变量 CEditnew m_myEdit;
+然后在初始化中：m_myEdit = new CEditnew();
+m_myEdit->SubclassDlgItem(IDC_EDIT1,this);
+
+m_myEdit->ShowWindow(SW_SHOW);
+
+这样试试。
+ 
+
+
+subclassdlgitem
+https://baike.baidu.com/item/subclassdlgitem/3693947?fr=aladdin
+该函数用来子类化一个控件.
+Subclass(子类化)是MFC中最常用的窗体技术之一。子类化完成两个工作：一是把窗体类对象attach到一个windows窗体实体中（即把一个窗体的hwnd赋给该类）。另外就是把该类对象的消息加入到消息路由中，使得该类可以捕获消息。
+SubclassDlgItem可以把对话框中已有的控件与某个窗口对象动态连接起来，该窗口对象将接管控件的消息处理，从而使控件具有新的特性．SubclassDlgItem函数的声明为
+BOOL SubclassDlgItem( UINT nID, CWnd* pParent );
+参数nID是控件的ID，pParent是指向父窗口的指针．若连接成功则函数返回TRUE，否则返回FALSE．
+综上所述，要在程序中使用派生控件，应该按下面两步进行：
+在对话框模板中放置好基类控件．
+在对话框类中嵌入派生控件类的对象．
+在OnInitDialog中调用SubclassDlgItem将派生类的控件对象与对话框中的基类控件相连接，则这个基类控件对象变成了派生控件对象
+
+
+Command line error D2016 : '/O2' and '/GZ' command-line options are incompatible
+https://zhidao.baidu.com/question/80138398.html
+'/GZ' __stdcall calling convention
+'/O2' maximize speed
+这两个 编译开关 不兼容.
+编译命令行 去掉 速度优化 '/O2'
+
+VS2010 不生成pdb 和ilk文件
+https://blog.csdn.net/WloveqB/article/details/50457766
+不生成pdb文件,Generate Debug Info禁止掉,调试信息
+不生成ilk文件,Enables incremental Linking 禁止掉(增长链接)
+
+求教如何让编译时不产生.pch文件，太大了占硬盘 [问题点数：0分]
+https://bbs.csdn.net/topics/70329395
+pch一般情况下有助于加快增量开发时编译的效率,最好别关。方法是在工程设置里关闭预编译头生成:
+project set->c/c++ ->precompiled header。默认是使用stdafx.h生成预编译头（use precompiled header file)改为not using precompiled headers
+
+mfc自定义按钮
+https://download.csdn.net/download/ymv852147/8405845
+所需积分/C币：3 上传时间：2015-01-29 资源大小：28.91MB
+
+MFC开发小例子（界面开发、自定义按钮、PNG图像...
+https://download.csdn.net/download/qq_22300209/9741095
+所需积分/C币：9 上传时间：2017-01-19 资源大小：14.01MB
+
+一个MFC的自定义按钮类
+https://download.csdn.net/download/l350290017/4824866
+所需积分/C币：15 上传时间：2012-11-29 资源大小：8KB
+
+好用的MFC自定义按钮CButton
+https://download.csdn.net/download/dingkun721/10788147
+所需积分/C币：16 上传时间：2018-11-16 资源大小：325KB
+
+MFC自定义界面包括按钮标签等，用于工控，展示等
+https://download.csdn.net/download/hhhh63/6961889
+所需积分/C币：12 上传时间：2014-02-25 资源大小：225KB
+
+MFC自定义按钮
+https://download.csdn.net/download/lh806732/8221891
+所需积分/C币：9 上传时间：2014-12-03 资源大小：704KB
+
+MFC自绘Button按钮分析和实现
+https://blog.csdn.net/c_base_jin/article/details/53726209
+自绘制需要的两个基础步骤：
+1.控件类型设置为 BS_OWNERDRAW
+2.添加WM_DRAWITEM消息响应函数或者重写DrawItem函数。
+
+MFC自定义按钮的实现
+https://blog.csdn.net/liuyi1207164339/article/details/46679809
+但是对于按钮来说上述方法是不起作用的，只能寻找其他解决办法。实际上，要想改变按钮的背景色和文本颜色，需要使用CButton类的一个成员函数DrawItem,该函数的声明如下：// Overridables (for owner draw only)
+
+以上代码就是对对话框的进行了一个布局，这样就看起来比较规整，按钮的大小和间隔都是一样的！
+ 
+//对话框顶部凸起部分的实现
+ 
+CPoint pts[7] = { CPoint(0, 10), CPoint(40, 10), CPoint(50, 0), CPoint(60, 10), CPoint(250, 10), CPoint(250, 315), CPoint(0, 315)};
+ 
+//创建一个多边形区域，以上面定义的七个顶点为边界
+ HRGN poloy = CreatePolygonRgn(pts, 7, ALTERNATE);
+ CRgn rgn;
+ rgn.Attach(poloy);
+ SetWindowRgn(rgn,TRUE); //设置窗口的多边形形状
+ rgn.Detach();
+ 
+以上代码就可以把对话框设置成各种形状了，是不是很Cool ^_^。
+
+
+c++中 try 和catch的用法
+https://zhidao.baidu.com/question/148731691.html
+今天看了msdn，里面有个
+catch(object^) 什么意思。。。。
+我想要测试一个堆栈弹出空值是否会报错，如果没有报错，我要把它打印出来。问题在于，我发现这个堆栈他没有报错，而我要把这个错误打印出来的时候，程序他出一个框说程序出错了，所以下一句（打印命令）无法执行。
+请问可以利用try和catch直接捕获这个出错，让他不中止程序好让我执行下一条命令（打印出下一句话）吗。
+那要用什么方法？
+
+什么时候使用Try Catch(转)
+https://www.cnblogs.com/huangfenggu/p/4503803.html
+try{A程序块} catch{Exception e}{B程序块} 。。。。。  
+  
+A程序块比较有可能会出错的地方，B则是如果A中有了错误，进行的处理。就好比，一个流水线上，如果有个地方有个产品堵住了不通了，如果没人处理，则整个流水线就没法动作了，要想保证整个流水线的运作则要有人把这个产品给处理了。try语句就是对A程序块的语句进行捕捉有可能出错的地方，相当于流水线上那个检查的人，catch语句则是处理的.  
+  
+什么情况下需要用try-catch呢，那就是不使用这种try结构时，代码报错退出就无法继续执行。有的代码出错就应该退出，有的出错尚可以补救，就不应该退出。对于这种出错不应该退出的就需要使用这种结构，在catch中进行补救。例如，写入一个日志文件，如果这个日志文件被锁定或者占用，那么写入就会出错退出，但是我们并不想看到这样的情况，我们完全可以换一个名字再写入。  
+
+慎用try catch
+https://www.jianshu.com/p/a108e2bf33ef
+慎用try catch
+try catch最适合处理那些我们无法控制的错误，如I/O操作等，后端nodeJs或java读取I/O操作比较多比如读数据库，所以用try catch比较多。前端可以用在上传图片、使用别人的js库报错、async await同步调接口等地方适用。
+
+作者：前端妹子ice
+链接：https://www.jianshu.com/p/a108e2bf33ef
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+try catch 如何正确使用(java)
+https://jingyan.baidu.com/article/08b6a5916a455614a80922cd.html
+
+try catch 用法(java)
+https://blog.csdn.net/this_tall_people/article/details/76512417
+
+C++异常处理（try catch throw）完全攻略
+http://c.biancheng.net/view/422.html
+鉴于上述原因，C++ 引入了异常处理机制。其基本思想是：函数 A 在执行过程中发现异常时可以不加处理，而只是“拋出一个异常”给 A 的调用者，假定为函数 B。
+C++ 通过 throw 语句和 try...catch 语句实现对异常的处理。throw 语句的语法如下：
+throw  表达式;
+该语句拋出一个异常。异常是一个表达式，其值的类型可以是基本类型，也可以是类。
+try...catch 语句的语法如下：
+try {
+    语句组
+}
+catch(异常类型) {
+    异常处理代码
+}
+...
+catch(异常类型) {
+    异常处理代码
+}
+catch 可以有多个，但至少要有一个。try...catch 语句的执行过程是：
+执行 try 块中的语句，如果执行的过程中没有异常拋出，那么执行完后就执行最后一个 catch 块后面的语句，所有 catch 块中的语句都不会被执行；
+如果 try 块执行的过程中拋出了异常，那么拋出异常后立即跳转到第一个“异常类型”和拋出的异常类型匹配的 catch 块中执行（称作异常被该 catch 块“捕获”），执行完后再跳转到最后一个 catch 块后面继续执行。
+
+
+能够捕获任何异常的 catch 语句
+如果希望不论拋出哪种类型的异常都能捕获，可以编写如下 catch 块：
+catch(...) {
+    ...
+}
+
+
+
+拋出异常而不加处理会导致函数 A 立即中止，在这种情况下，函数 B 可以选择捕获 A 拋出的异常进行处理，也可以选择置之不理。如果置之不理，这个异常就会被拋给 B 的调用者，以此类推。
+
+如果一层层的函数都不处理异常，异常最终会被拋给最外层的 main 函数。main 函数应该处理异常。如果main函数也不处理异常，那么程序就会立即异常地中止。
+
+我们不要去猜底部在哪，而应该观察什么时候开始稳定回升启动.....
+
+美股暴跌！“股神”巴菲特：我活了89年也没见过这种场面
+https://new.qq.com/omn/20200312/20200312A0FIMQ00.html
+他还说，如果市场是实时交易的，那么很大程度上它就会对新闻做出反应。股市不像房地产、农场等市场，所以我们昨天（3月9日）就触发了熔断机制，这就是市场的反应。这不像1987年10月19日，但不管怎样，也是够吓人的。
+
+巴菲特：活89年来第一次遇到这种股市暴跌
+https://news.china.com/socialgd/10000169/20200312/37905439.html
+据香港东网，“股神”巴菲特接受外媒访问时表示，近日股市暴跌，主要是受到新冠肺炎疫情和国际油价暴跌两大因素“左右夹击”，直言“他活着89年以来，也是第一次经历到这种事情。”
+对于市场恐慌情绪，他说：“现时情况不是1987年股灾，但属于相似的情况．．．（而2008年金融海啸时）市场更加恐慌，仅就目前发生的事来看（截至周一）。”
+
+美股史无前例周内2次熔断后 个人投资者机会在哪里?
+http://news.163.com/20/0313/08/F7J7QHGV00018AOR.html
+对此，新京报记者采访了中信建投金融工程与大类资产配置总监、首席分析师丁鲁明，他认为，整体的市场环境都会受到美股下跌的连带影响，在此环境下，还是建议配置A股。
+丁鲁明表示，首先，整体的市场环境都会受到连带影响，在此环境下，还是建议配置A股。因为疫情在欧美的蔓延，特别是美国在最近一两周之内才开始对新冠疫情有一个加强认识，而中国的疫情防控已经到了接近完全胜利的状态，将疫情看作是利空的话，A股其实是相对安全的避风港。
+这个跌幅连巴菲特都没见过，可以说是史无前例的。一旦疫情超跌修复，恐慌性的杀跌结束以后的反弹也会非常的迅速，到了那时A股也会受到一部分的正面影响。再者本身经济复苏快，所以可能A股也会是率先反弹的。
+
+
+暴跌！美股史上第三次熔断！
+http://finance.sina.com.cn/stock/relnews/us/2020-03-13/doc-iimxxstf8604731.shtml
+美股的大跌是有着多重原因，是多年积累的大牛市泡沫的诟病，还有就是美联储的处置不当问题，当然还有特朗普等人的反应过激。而昨天的熔断，还有额外一个原因，真是川普颁布的，今天早上非常疯狂的禁止欧洲旅行禁令，来维持市场。
+更愚蠢的是特朗普为了控制疫情，禁止美国人民去欧洲旅行，以匀出一些资本来投入市场缓解危机。但这样子融资只会加重人民对市场的恐慌情绪，反而使股市更加暴跌，甚至昨天晚上的熔断很大一部分原因都是因为这个禁令。
+但是美国一周内两次熔断，将直接面临的就是一场金融风暴。
+
+美股触发历史上第二次熔断 道指暴跌超过2000点
+https://baijiahao.baidu.com/s?id=1660752319686943128&wfr=spider&for=pc
+美股十年牛市宣告结束
+
+所谓熔断机制，简单来说，就是当股市跌到一定幅度之后，市场自动停止交易一段时间，可能是几分钟，也可能是全天交易就此终止。这样做的主要目的就是，防范恐慌情绪进一步扩散，给市场带来更大的冲击。
+
+美国推出熔断机制的动因是1987年的“黑色星期一”。1987年10月19日，道指暴跌508.32点，跌幅22.6%。3个月之后，1988年2月美股熔断机制出台。
+
+美股这次触发熔断机制是历史上的第二次。上一次，是1997年10月27日，当天道指暴跌7.18%。而这一次，道指盘中的跌幅一度超过了7.8%。在莫尼塔研究首席经济学家钟正生看来，这意味着美股十年牛市的结束。“美联储上一次紧急降息50个基点，资本市场并不买账。预计这次，3月18日还会如期的降息50个基点。但是大家觉得未来美联储的货币政策空间非常有限，整个发达经济体的财政政策的空间也非常有限。
+
+
+
+美股熔断历史上只发生过三次。 上一次熔断，还要追溯到2020年3月9日。 那天我的记忆很深刻，那感觉，仿佛就在几天之前。
+
+美股熔断历史上只发生过三次。 上一次熔断，还要追溯到2020年3月12日。 那天我的记忆很深刻，那感觉，仿佛就在昨天。
+
+2020.03.13
+
+MFC 定时器用法 SetTimer、KillTimer
+https://www.cnblogs.com/yangxx-1990/p/4837327.html
+UINT_PTR SetTimer(
+  HWND hWnd,              // 窗口句柄
+  UINT_PTR nIDEvent,      // 定时器ID，多个定时器时，可以通过该ID判断是哪个定时器
+  UINT uElapse,           // 时间间隔,单位为毫秒
+  TIMERPROC lpTimerFunc   // 回调函数
+);
+
+例如
+SetTimer(m_hWnd,1,1000,NULL); //一个1秒触发一次的定时器
+在MFC程序中SetTimer被封装在CWnd类中，调用就不用指定窗口句柄了
+当不需要计时器的时候调用KillTimer(nIDEvent);
+例如：KillTimer(1);
+
+
+C函数_filelength函数了解
+https://blog.csdn.net/hgj125073/article/details/8293970
+取文件长度字节数.
+
+_splitpath函数使用
+https://blog.csdn.net/weikangc/article/details/45744445
+需要的头文件是:<stdlib.h>
+函数原型如下：
+void _splitpath( const char *path, char *drive, char *dir, char *fname, char *ext);
+其中包含5个参数，第一个是待处理的完整的文件名路径，例如：“c:\windows\myfile.txt”，当然这个文件名也可以不是那么完整，即使是"myfile.txt"这样的字符串也可以成功处理。
+后面四个参数分别代表四个需要从原始文件路径中截取的字符串，有驱动器盘符(drive)，中间的路径（dir），文件名(fname)，和后缀名（ext）。
+只要在这四个参数中传入对应的字符串指针，函数返回时即可获取对应截取的字符串，不想获取的可以直接填入NULL进行忽略，比如我只想截取文件的后缀名，那么这个函数可以如下调用：
+
+用_makepath_s，创建的目录是现实存在的还是虚拟的？ [
+https://bbs.csdn.net/topics/390194424
+MSDN:
+
+Create a path name from components. 
+
+只是driver + dir + filename + ext连接起来， 不创建物理路径和文件
+
+_splitpath(path, NULL, NULL, NULL, ext);
+
+其中ext必须是已经分配了内存空间的字符串指针，否则会出错（c语言的基本特性，我就不赘述了）
+
+CString		m_szFileName ;
+BOOL CLog::Init( const char* pszFileName, int nMaxFileSize, BOOL	bKeepFileOpen )
+{
+	m_szFileName = pszFileName ;
+...}
+
+_splitpath函数使用
+https://blog.csdn.net/weikangc/article/details/45744445
+
+OnQueryDragIcon
+https://baike.baidu.com/item/OnQueryDragIcon/4023583?fr=aladdin
+OnQueryDragIcon是在用户拖拉最小化窗口的时候显示光标的函数
+
+关于OnPaint()和OnQueryDragIcon() [问题点数：30分，结帖人xianglitian]
+https://bbs.csdn.net/topics/250034623
+CWnd::OnQueryDragIcon   ()其实是一个回调函数，就是当鼠标拖动到CWnd的窗口上的时候，系统自动调用这个函数来确定显示什么样的拖动图标。
+oskycar
+Bbs2	
+ON_WM_PAINT只有当需要对窗口进行绘制时才有用，你如果不做任何绘制工作，这个函数自然没用；   
+  ON_WM_ERASEBKGND当背景擦除时被调用，你如果不需要定制背景，DefWindowProc自然会用窗口类的刷子绘制背景，你也不必操心；   
+  ON_WM_QUERYDRAGICON只有窗口在最小化时被拖动、而且窗口类没有注册缺省图标时才有用，而事实上，MFC的窗口类总是会注册图标的（DefWindowProc会返回这个图标），即使没有，Windows也会使用系统缺省图标，因此没有它也无关紧要
+
+
+WM消息大全
+https://www.cnblogs.com/tmdsleep/p/5558271.html
+WM_ICONERASEBKGND
+0x0027
+ 此消息发送给某个最小化窗口，仅当它在画图标前它的背景必须被重画
+
+GetWindowRect和GetClientRect的区别详解
+https://www.cnblogs.com/wb-DarkHorse/archive/2013/07/08/3178201.html
+GetWindowRect得到的是相对于当前界面的整个窗口左上角的坐标，比如一个对话框程序，那就是相对于对话框左上角的坐标，从左往右是X方向，从上往下是Y方向。
+注意：这个函数的相对坐标原点分两种情况：
+1 窗口还没有初始化完成时：原点是整个窗口的左上角
+2 初始化完成后，原点是设备屏幕左上角
+GetClientRect得到的是相对于窗口客户区左上角的坐标。
+
+
+GetSystemMetrics()函数的用法
+https://www.cnblogs.com/lidabo/archive/2012/07/10/2584725.html
+可以用GetSystemMetrics函数可以获取系统分辨率，但这只是其功能之一，GetSystemMetrics函数只有一个参数，称之为「索引」，这个索引有75个标识符，通过设置不同的标识符就可以获取系统分辨率、窗体显示区域的宽度和高度、滚动条的宽度和高度。
+int x, y;
+x = GetSystemMetrics(SM_CXSCREEN); //屏幕宽度
+y = GetSystemMetrics(SM_CYSCREEN); //屏幕高度
+GetSystemMetrics(SM_CXFULLSCREEN); //获取最大化窗体的显示区域宽度
+GetSystemMetrics(SM_CYFULLSCREEN); //获取最大化窗体的显示区域高度
+下面是GetSystemMetrics函数参数nIndex的定义：
+
+SM_ARRANGE 返回是否预备最小化.
+SM_CLEANBOOT 返回系统启动方式:
+    0 正常启动
+    1 安全模式启动
+    2 网络安全模式启动
+SM_CMOUSEBUTTONS 返回值为系统支持的鼠标键数，返回0，则系统中没有安装鼠标。
+SM_CXBORDER,
+SM_CYBORDER 返回以相素值为单位的Windows窗口边框的宽度和高度，如果Windows的为3D形态，则
+等同于SM_CXEDGE参数
+SM_CXCURSOR,
+SM_CYCURSOR 返回以相素值为单位的标准光标的宽度和高度
+SM_CXDLGFRAME,
+SM_CYDLGFRAME 等同与SM_CXFIXEDFRAME and SM_CYFIXEDFRAME
+SM_CXDOUBLECLK,
+SM_CYDOUBLECLK 以相素值为单位的双击有效的矩形区域
+SM_CXEDGE,SM_CYEDGE 以相素值为单位的3D边框的宽度和高度
+SM_CXFIXEDFRAME,
+SM_CYFIXEDFRAME 围绕具有标题但无法改变尺寸的窗口（通常是一些对话框）的边框的厚度
+SM_CXFRAME,SM_CYFRAME 等同于SM_CXSIZEFRAME and SM_CYSIZEFRAME
+SM_CXFULLSCREEN,
+SM_CYFULLSCREEN 全屏幕窗口的窗口区域的宽度和高度
+SM_CXHSCROLL,
+SM_CYHSCROLL 水平滚动条的高度和水平滚动条上箭头的宽度
+SM_CXHTHUMB 以相素为单位的水平滚动条上的滑动块宽度
+SM_CXICON,SM_CYICON 系统缺省的图标的高度和宽度（一般为32*32）
+SM_CXICONSPACING,
+SM_CYICONSPACING 以大图标方式查看Item时图标之间的间距，这个距离总是大于等于
+SM_CXICON and SM_CYICON.
+SM_CXMAXIMIZED,
+SM_CYMAXIMIZED 处于顶层的最大化窗口的缺省尺寸
+SM_CXMAXTRACK,
+SM_CYMAXTRACK 具有可改变尺寸边框和标题栏的窗口的缺省最大尺寸，如果窗口大于这个
+尺寸，窗口是不可移动的。
+SM_CXMENUCHECK,
+SM_CYMENUCHECK 以相素为单位计算的菜单选中标记位图的尺寸
+SM_CXMENUSIZE,
+SM_CYMENUSIZE 以相素计算的菜单栏按钮的尺寸
+SM_CXMIN,SM_CYMIN 窗口所能达到的最小尺寸
+SM_CXMINIMIZED,
+SM_CYMINIMIZED 正常的最小化窗口的尺寸
+SM_CXMINTRACK,
+SM_CYMINTRACK 最小跟踪距离，当使用者拖动窗口移动距离小于这个值，窗口不会移动。
+SM_CXSCREEN,
+SM_CYSCREEN 以相素为单位计算的屏幕尺寸。
+SM_CXSIZE,SM_CYSIZE 以相素计算的标题栏按钮的尺寸
+SM_CXSIZEFRAME,
+SM_CYSIZEFRAME 围绕可改变大小的窗口的边框的厚度
+SM_CXSMICON,
+SM_CYSMICON 以相素计算的小图标的尺寸，小图标一般出现在窗口标题栏上。
+M_CXVSCROLL,
+SM_CYVSCROLL 以相素计算的垂直滚动条的宽度和垂直滚动条上箭头的高度
+SM_CYCAPTION 以相素计算的普通窗口标题的高度
+SM_CYMENU 以相素计算的单个菜单条的高度
+SM_CYSMCAPTION 以相素计算的窗口小标题栏的高度
+SM_CYVTHUMB 以相素计算的垂直滚动条中滚动块的高度
+SM_DBCSENABLED 如果为TRUE或不为0的值表明系统安装了双字节版本的USER.EXE,为FALSE或0则不是。
+SM_DEBUG 如果为TRUE或不为0的值表明系统安装了debug版本的USER.EXE,为FALSE或0则不是。
+SM_MENUDROPALIGNMENT 如果为TRUE或不为0的值下拉菜单是右对齐的否则是左对齐的。
+SM_MOUSEPRESENT 如果为TRUE或不为0的值则安装了鼠标，否则没有安装。
+SM_MOUSEWHEELPRESENT 如果为TRUE或不为0的值则安装了滚轮鼠标，否则没有安装。(Windows NT only)
+SM_SWAPBUTTON 如果为TRUE或不为0的值则鼠标左右键交换，否则没有。
+
+
+SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+https://blog.csdn.net/lionhenryzxxy/article/details/53007676
+SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+这个函数，是发送WM_ICONERASEBKGND到本窗口消息队列，(WPARAM) dc.GetSafeHdc(), 是响应这个消息的函数的参数。
+WM_ICONERASEBKGND发送给某个最小化窗口，仅当它在画图标前它的背景必须被重画
+后面获取图标信息，设置，然后重新画
+(以下参考自MSDN)
+
+
+VC++ - 各种DC及DC资源释放
+https://blog.csdn.net/mituan1234567/article/details/17760183
+区别在于CPaintDC在构造函数中封装了BeginPaint函数，析构函数封装了EndPaint，并由BeginPaint返回DC，因此CPaintDC在构造DC时会清空WM_PAINT事件，所以当CPaintDC析构的时候不会再触发WM_PAINT。也就是说在OnPaint函数中必须用CPaintDC函数否则每当OnPaint函数结束的时候就会再触发OnPaint，会不停循环下去。
+在重绘时最靠谱的作法就是使用CPaintDC提供的dc进行重绘，因为这样会保证每次处理一次WM_PAINT消息之后会清空WM_PAINT，这样会适当避免闪烁的显像。
+1、首先，对DC进行解释一下：
+
+Windows应用程序通过为指定设备（屏幕，打印机等）创建一个设备描述表（Device Context, DC）在DC表示的逻辑意义的“画布”上进行图形的绘制。DC是一种包含设备信息的数据结构，它包含了物理设备所需的各种状态信息。Win32程序在绘制图形之前需要获取DC的句柄HDC，并在不继续使用时释放掉。 
+
+2、然后，理顺CDC的派生类关系：
+
+CObject 
+public |------CDC 
+public |------|------CClientDC 
+public |------|------CPaintDC 
+public |------|------CWindowDC 
+public |------|------CMetaFileDC 
+(注意: 除CMetaFileDC以外的三个派生类用于图形绘制.) 
+具体的区别，在下面：
+
+CDC是Windows绘图设备的基类
+CClientDC：
+(1)（客户区设备上下文）用于客户区的输出，与特定窗口关联，可以让开发者访问目标窗口中客户区，其构造函数中包含了GetDC,析构函数中包含了ReleaseDC
+
+
+CPaintDC：
+(1)用于响应窗口重绘消息（WM_PAINT）是的绘图输出。
+(2)CPaintDC在构造函数中调用BeginPaint()取得设备上下文，在析构函数中调用EndPaint()释放设备上下文。EndPaint()除了释放设备上下文外，还负责从消息队列中清除WM_PAINT消息。因此，在处理窗口重画时，必须使用CPaintDC，否则WM_PAINT消息无法从消息队列中清除，将引起不断的窗口重画。
+(3)CPaintDC也只能用在WM_PAINT消息处理之中。
+
+CWindowDC：
+(1)可在非客户区绘制图形，而CClientDC，CPaintDC只能在客户区绘制图形。
+(2)坐标原点是在屏幕的左上角，CClientDC，CPaintDC下坐标原点是在客户区的左上角。
+(3)关联一特定窗口，允许开发者在目标窗口的任何一部分进行绘图，包含边界与标题，这种DC同WM_NCPAINT消息一起发送
+
+说明：在绘图时推荐使用CClientDC,CPaintDC和CWindowDC对象，而不推荐直接使用CDC对象。
+
+对于释放DC，请记住：
+GetDC之后要ReleaseDC，
+CreateCompatibleDC之后需要DeleteDC
+
+CClientDC dc(this);类会自动回收的 不用进行删除。
+
+
+
+关于OnPaint()函数
+https://zhidao.baidu.com/question/1510613461037026060.html
+void CDlgBookInfo1::OnPaint()
+{
+CPaintDC dc(this); // device context for painting
+}
+这个函数是重绘客户区，请问 CPaintDC dc(this);是什么意思呢？？？
+结合本函数讲解一下
+声明 dc 是 CPaintDC 对象，并调用构建函数 构建此对象。
+构建函数 的形参 是 CWnd* pWnd ， 实参 用了 "this",
+this 就是 CPaintDC 对象 所属的当前窗口 -- 接收到 WM_PAINT 消息的窗口。
+OnPaint() 函数就是 接收到 WM_PAINT 消息时 的处理函数。
+
+
+关于OnPaint()函数的用法 [问题点数：20分]
+https://bbs.csdn.net/topics/390095928
+求该函数的每一句的详解，谢谢
+void CDEMOExDlg::OnPaint()//这个是MFC默认的响应WM_PAINT消息的绘图函数
+{
+  if (IsIconic())//判断当前窗体是否最小化！
+  {
+  CPaintDC dc(this); //当前设备DC
+
+  SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+//发送WM_ICONERASEBKGND消息WM_ICONERASEBKGND发送给某个最小化窗口，仅当它在画图标前它的背景必须被重画
+
+  // Center icon in client rectangle
+  int cxIcon = GetSystemMetrics(SM_CXICON);//获取图标尺寸
+  int cyIcon = GetSystemMetrics(SM_CYICON);
+  CRect rect;
+  GetClientRect(&rect);//获取用户区域RECT数据
+  int x = (rect.Width() - cxIcon + 1) / 2;
+  int y = (rect.Height() - cyIcon + 1) / 2;
+
+  // Draw the icon
+  dc.DrawIcon(x, y, m_hIcon);//绘制图标
+  }
+  else
+  {
+  CDialog::OnPaint();//调用进行默认绘制--界面部分
+  }
+
+
+MFC中的Invalidate、OnDraw、OnPaint函数的作用、区别和联系？
+https://zhidao.baidu.com/question/314348918.html
+一、Invalidate介绍
+　　void Invalidate( BOOL bErase = TRUE );
+　　该函数的作用是使整个窗口客户区无效。窗口的客户区无效意味着需要重绘，例如，如果一个被其它窗口遮住的窗口变成了前台窗口，那么原来被遮住的部分就是无效的，需要重绘。这时Windows会在应用程序的消息队列中放置WM_PAINT消息。MFC为窗口类提供了WM_PAINT的消息处理函数OnPaint，OnPaint负责重绘窗口。视图类有一些例外，在视图类的OnPaint函数中调用了OnDraw函数，实际的重绘工作由OnDraw来完成。参数bErase为TRUE时，重绘区域内的背景将被擦除，否则，背景将保持不变。
+二、与UpdateWindow( )的区别
+　　UpdateWindow( )的作用是使窗口立即重绘。调用Invalidate等函数后窗口不会立即重绘，这是由于WM_PAINT消息的优先级很低，它需要等消息队列中的其它消息发送完后才能被处理。调用UpdateWindow函数可使WM_PAINT被直接发送到目标窗口，从而导致窗口立即重绘。
+OnPaint是WM_PAINT消息的消息处理函数，在OnPaint中调用OnDraw，一般来说，用户自己的绘图代码应放在OnDraw中。为什么需要OnDraw呢，是为了让OnDraw一个函数服务于不同的绘图环境，比如显示器，打印机，绘图仪 ,mfc在调用OnDraw之前会把适当的CDC对象传给OnDraw函数。这样窗口的打印功能就可以和显示共用一个函数。
+OnPaint是WM_PAINT消息的消息处理函数，在OnPaint中调用OnDraw，一般来说，用户自己的绘图代码应放在OnDraw中。
+当没有添加WM_PAINT消息处理时,窗口重绘时,由OnDraw来进行消息响应...
+当添加WM_PAINT消息处理时,窗口重绘时,WM_PAINT消息被投递,由OnPaint来进行消息响应.这时就不能隐式调用OnDraw了.必须显式调用( CDC *pDC=GetDC(); OnDraw(pDC); )..
+隐式调用:当由OnPaint来进行消息响应时,系统自动调用CView::OnDraw(&pDC).
+
+
+OnPaint()函数的作用原理
+https://www.cnblogs.com/BeyondTechnology/archive/2011/03/25/1995942.html
+所以解决方法有三个半:
+1.用OnEraseBkGnd实现,不要调用原来的OnEraseBkGnd函数.
+2.用OnPaint实现,同时重载OnEraseBkGnd,其中直接返回.
+3.用OnPaint实现,创建窗口时设置背景刷为空
+4.用OnPaint实现,但是要求刷新时用Invalidate(FALSE)这样
+的函数.(不过这种情况下,窗口覆盖等造成的刷新还是要闪一
+下,所以不是彻底的解决方法)
+都挺简单的.
+其實OnPaint() 與 OnEraseBkgnd() 特性是有差的
+1. OnEraseBkgnd()的要求是快速在裡面的繪圖程式最好是不要太耗時間
+因為每當window元件有任何小變動都會馬上呼叫OnEraseBkgnd()
+2. OnPaint() 是只有在程式有空閒的時候才會被呼叫
+3. OnEraseBkgnd() 是在 OnPaint() 之前呼叫的
+所以 OnPaint()被呼叫一次之前 可能會呼叫OnEraseBkgnd()好幾次
+如果我們是一个在做图形化使用者界面的人
+常会需要把一张图片设为我们dialog的背景
+把绘图的代码放在OnPaint() 之中 可能会常碰到一些问题
+比方說拖拽一个窗口在我们做的dialog上面一直移动
+则dialog会变成灰色 直到动作停止才恢复
+这是因为每次需要重绘的時候 程序都会马上呼叫OnEraseBkgnd()
+OnEraseBkgnd()就把dialog画成灰色
+而只有动作停止之后 程序才会呼叫OnPaint() 这时才会把我們要画的背景貼上去
+
+这个问题的解法 比较差劲的方法是把OnEraseBkgnd() 改写成不做事的function
+如下所示
+BOOL CMyDlg::OnEraseBkgnd(CDC* pDC)
+{
+return TRUE;
+}
+比較好的做法是直接將繪圖的程式從OnPaint()移到OnEraseBkgnd()來做
+如下所示
+
+// m_bmpBKGND 為一CBitmap物件 且事先早已載入我們的底圖
+// 底圖的大小與我們的視窗client大小一致
+
+
+BOOL CMyDlg::OnEraseBkgnd(CDC* pDC)
+{
+CRect rc;
+GetUpdateRect(&rc);
+CDC srcDC;
+srcDC.CreateCompatibleDC(pDC);
+srcDC.SelectObject(m_bmpBKGND);
+
+pDC->BitBlt(rc.left,rc.top,rc.GetWidth(),
+rc.GetHeight(),&srcDC,rc.left,rc.top,SRCCOPY);
+return TRUE;
+}
+
+MFC中OnDraw与OnPaint的区别
+
+在OnPaint中调用OnDraw，一般来说，用户自己的绘图代码应放在OnDraw中。
+
+OnPaint()是CWnd的类成员，负责响应WM_PAINT消息。OnDraw()是CVIEW的成员函数，没有响应消息的功能.当视图变得无效时（包括大小的改变，移动，被遮盖等等），Windows发送WM_PAINT消息。该视图的OnPaint 处理函数通过创建CPaintDC类的DC对象来响应该消息并调用视图的OnDraw成员函数.OnPaint最后也要调用OnDraw,因此一般在OnDraw函数中进行绘制。
+
+在OnPaint中，将调用BeginPaint，用来获得客户区的显示设备环境，并以此调用GDI函数执行绘图操作。在绘图操作完成后，将调用EndPaint以释放显示设备环境。而OnDraw在BeginPaint与EndPaint间被调用。（一个应用程序除了响应WM_PAINT消息外，不应该调用BeginPaint。每次调用BeginPaint都应该有相应的EndPaint函数。）
+至于CPaintDC和CClientDC根本是两回事情 CPaintDC是一个设备环境类，在OnPaint中作为参数传递给OnPrepareDC来作设备环境的设置。真正和CClientDC具有可比性的是CWindowDC，他们一个是描述客户区域，一个是描述整个屏幕。
+如果是对CVIEW或从CVIEW类派生的窗口绘图时应该用OnDraw。
+
+OnDraw()和OnPaint()有什么区别呢？
+首先：我们先要明确CView类派生自CWnd类。而OnPaint()是CWnd的类成员，同时负责响应WM_PAINT消息。OnDraw()是CVIEW的成员函数，并且没有响应消息的功能。这就是为什么你用VC成的程序代码时，在视图类只有OnDraw没有OnPaint的原因。而在基于对话框的程序中，只有OnPaint。
+其次：我们在第《每天跟我学MFC》3的开始部分已经说到了。要想在屏幕上绘图或显示图形，首先需要建立设备环境DC。其实DC是一个数据结构，它包含输出设备（不单指你17寸的纯屏显示器，还包括打印机之类的输出设备）的绘图属性的描述。MFC提供了CPaintDC类和CWindwoDC类来实时的响应，而CPaintDC支持重画。当视图变得无效时（包括大小的改变，移动，被遮盖等等），Windows 将 WM_PAINT 消息发送给它。
+
+最后：现在大家明白这哥俩之间的关系了吧。因此我们一般用OnPaint维护窗口的客户区（例如我们的窗口客户区加一个背景图片），用OnDraw维护视图的客户区（例如我们通过鼠标在视图中画图）。当然你也可以不按照上面规律来，只要达到目的并且没有问题，怎么干都成。补充：我们还可以利用Invalidate(),ValidateRgn(),ValidateRect()函数强制的重画窗口，具体的请参考MSDN吧。
+
+OnDraw中可以绘制用户区域。OnPaint中只是当窗口无效时重绘不会保留CClientDC绘制的内容。
+
+想象一下，窗口显示的内容和打印的内容是差不多的，所以，一般情况下，统一由OnDraw来画。窗口前景需要刷新时，系统会会调用到OnPaint，而OnPaint一般情况下是对DC作一些初始化操作后，调用OnDraw()。
+
+
+OnEraseBkGnd()，是窗口背景需要刷新时由系统调用的。明显的一个例子是设置窗口的背景颜色（你可以把这放在OnPaint中去做，但是会使产生闪烁的现象）。
+至于怎么界定背景和前景，那要具体问题具体分析了，一般情况下，你还是很容易区别的吧。
+
+的确，OnPaint()用来响应WM_PAINT消息，视类的OnPaint()内部根据是打印还是屏幕绘制分别以不同的参数调用OnDraw()虚函数。所以在OnDraw()里你可以区别对待打印和屏幕绘制。
+其实，MFC在进行打印前后还做了很多工作，调用了很多虚函数，比如OnPreparePrint()等。
+
+
+另外OnInitialUpdate
+
+视图窗口完全建立后第一个被框架调用的函数。框架在第一次调用OnDraw前会调用OnInitialUpdate，因此OnInitialUpdate是设置滚动视图的逻辑尺寸和映射模式的最合适的地方。
+
+
+
+OnPaint
+https://baike.baidu.com/item/OnPaint/639414
+当Windows或应用程序请求重画应用程序窗口的一部分时，框架调用这个成员函数。WM_PAINT在调用UpdateWindow或RedrawWindow成员函数时发出。当设置了RDW_INTERNALPAINT标志并调用RedrawWindow成员函数时，窗口可能会接收到内部重画消息。在这种情况下，窗口可能没有更新区域。应用程序必须调用GetUpdateRect成员函数以确定窗口是否具有更新区域。如果GetUpdateRect返回0，则应用程序不应调用BeginPaint和EndPaint成员函数。
+应用程序负责检查是否需要内部重画或更新，这可通过查看每条WM_PAINT消息的内部数据结构来完成，因为一条WM_PAINT可能是由于一个无效区域或由于使用RDW_INTERNALPAINT标志调用了RedrawWindow成员函数而引起的。
+Windows只发送一次内部WM_PAINT消息。在通过UpdateWindow成员函数向窗口发送了内部WM_PAINT消息以后，将不会再向窗口发送其它WM_PAINT消息，直到再次使用RDW_INTERNALPAINT标志调用了RedrawWindow成员函数。
+
+IsIconic()和OnPaint()函数 虽然没什么用 留个印象
+https://blog.csdn.net/xs574924427/article/details/7355425
+IsIconic()作用是判断窗口是否处于最小化状态（点击了最小化按钮之后）。
+
+对于普通的对话框来说，如果你在if (IsIconic()) 下面加入AfxMessageBox("haha") ，你会发现消息框并不会弹出。
+
+原因是，if (IsIconic()) 这段代码是在OnPaint()函数内，当你最小化了对话框之后，虽然IsIconic()的值是TRUE，但是OnPaint()函数并不会运行。因为OnPaint()响应的是WM_PAINT消息，而WM_PAINT消息是针对客户区的。一个最小化了的窗口不需要重绘客户区。
+
+为了验证这一点，可以设置一定时器，在OnTimer()函数里写上
+if(IsIconic()) MessageBeep(MB_OK);
+当你点击最小化按钮后，你会听见嘟嘟声。
+
+那么这段代码究竟有什么用？它是不是永远不会被执行呢？当然不是。举两个例子。
+第一，如果你强行发送WM_PAINT消息，它会执行。
+第二，特殊的对话框。比如一个ToolBox风格的对话框。这个对话框不显示在任务栏，在最小化之后它会变成一个很小的一条显示在桌面上。这时如果它被遮挡，就会出发WM_PAINT消息，从而执行那段代码。
+
+
+MFC中如何判断当前窗口是否最小化
+https://zhidao.baidu.com/question/267113507929074005.html
+IsIconic()==true; 是最小化
+IsZoomed()==true; 是最大化
+
+CreateEvent
+https://blog.csdn.net/u013407012/article/details/78585431
+一、事件是很常用的多线程同步互斥机制
+     函数原型如下所示，一共四个参数：
+HANDLE CreateEvent(
+
+　LPSECURITY_ATTRIBUTES lpEventAttributes,　// SECURITY_ATTRIBUTES结构指针，可为NULL
+　BOOL bManualReset,     // 手动/自动
+　                                    // TRUE：表示手动，在WaitForSingleObject后必须手动调用ResetEvent清除信号
+　                                   // FALSE：表示自动，在WaitForSingleObject后，系统自动清除事件信号
+　BOOL bInitialState,        //初始状态，FALSE为无信号，TRUE为有信号
+　LPCTSTR lpName         //事件的名称
+    );
+二、下面是使用演示：
+     1、首先在要使用时间的类中声明这个事件的句柄，用来标识这个事件，如下所示：
+
+
+CreateEvent
+https://baike.baidu.com/item/CreateEvent/917012?fr=aladdin
+如果函数调用成功，函数返回事件对象的句柄。如果对于命名的对象，在函数调用前已经被创建，函数将返回存在的事件对象的句柄，而且在GetLastError函数中返回ERROR_ALREADY_EXISTS。
+如果函数失败，函数返回值为NULL，如果需要获得详细的错误信息，需要调用GetLastError。
+
+
+BEGIN_MESSAGE_MAP(CMsEditDlg, CDialog)
+	//{{AFX_MSG_MAP(CMsEditDlg)
+...
+	ON_WM_TIMER()
+...
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+MFC Edit Control 设置焦点无效
+https://blog.csdn.net/u010921682/article/details/52603086
+关于对话框OnInitDialog里设置edit控件输入焦点问题  
+本人在edit.SetFocus()不起作用(edit是我关联的edit控件的edit变量) 
+最后才发现原来在vs2010/vs2013的最后有提示说
+[cpp] view plain copy
+return TRUE;  // return TRUE unless you set the focus to a control  
+// 异常: OCX 属性页应返回 FALSE  
+所以把return TRUE 改成return FALSE就可以了
+
+
+MFC中如何修改生成的exe图标
+https://www.icode9.com/content-4-384814.html
+CMsEdit_WendyDlg::CMsEdit_WendyDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CMsEdit_WendyDlg::IDD, pParent)
+{
+...
+	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+SetIcon(m_hIcon, TRUE); // Set big icon 
+SetIcon(m_hIcon, FALSE); // Set small icon;
+修改可运行程序的启动图标通过修改resource.h对应的加载图标的ID为最小来实现;
+修改关于对话框的图标可通过覆盖工程中res文件夹下的项目名.ico图标来实现.
+
+关于SetIcon()函数的几个问题
+http://bbs.bccn.net/thread-160801-1-1.html
+SetIcon()是设置应用程序对话框窗口的大图标和小图标用的,我创立了一个基于对话框的应用程序,在函数OnInitDialog()中有调动了这个函数两次,如下:
+SetIcon(m_hIcon, TRUE); // Set big icon
+SetIcon(m_hIcon, FALSE); // Set small icon
+当我将下面一个函数调动注释起来,再运行程序时,对话框左上角仍然显示小图标,只有当我把两个均注释起来时,对话框左上角才不显示小图标,这是为什么呢?两个函数都是设置程序的图标，只要调用SetIcon(handle,TRUE)或SetIcon(handle,FALSE）任意一个，都会显示图标。
+一个是设置大图标，一个是设置小图标，图标尺寸是32*32，小图标是16*16
+
+C++技巧：加载图标LoadIcon，SetIcon
+https://www.cnblogs.com/mychj2008/p/3668902.html
+其中IDR_MAINFRAME在资源下面可以找到.
+　　因此如果想更改图标的话,可以自己改写m_hIcon,或者在OninitDialog中写:
+　　SetIcon(::LoadIcon(NULL,IDI_APPLICATION),FALSE);
+　　SetIcon(::LoadIcon(NULL,IDI_APPLICATION),TRUE);
+　　考试大提示: SetIcon,它的第二个参数是BOOL,如果是TRUE,就是关闭了程序显示的图标,就是常说的快捷方式之类的图标;如果是FALSE,那么就是程序最大化,最小化或者正常显示时的标题兰上的图标. 
+
+用VC向导生成的基于对话框的程序中SetIcon 的作用
+https://blog.csdn.net/imxiangzi/article/details/37350951
+哦，原来是向窗口(窗口句柄为m_hWnd)发送了一个WM_SETICON消息，再呼出MSDN，对于这个消息，MSND上有比较详细的解释。如消息名SETICON所揭示的那样，发送这个消息给窗口，是为了让这个窗口和大图标(large icon)或者小图标(small icon)关联。在用户按ALT+TAB键切换窗口时，显示的就是大图标，小图标就是对话框窗口标题栏上的那个图标。
+同一的参数m_hIcon, 却带有TRUE或者FALSE，这是颇让人感到疑惑的地方。说白了其实也是很简单的事情，我们在用VC的资源编辑器编辑图标(icon)时，不是可以选择不同大小的图片来进行编辑吗？这些大小不同的图，最终都存入到同一个.ico文件中去了。所以m_hIcon指向的是一组图标，第二个参数(TRUE或者 FALSE)就是用来指定这一组图标中某一类大小的图标的，参数值为TRUE时，指明使用大图标(32*32相素)，FALSE指明使用小图标 (16*16像素)。
+
+
+MFC中SetIcon详解
+https://blog.csdn.net/lynn1258/article/details/52211156?utm_source=blogxgwz2
+用软件自动创建的MFC工程，在初始化的时候OnInitDialog函数中可以看到2句这样的代码。
+
+SetIcon(m_hIcon, TRUE); // 设置大图标
+SetIcon(m_hIcon, FALSE); ? ? ? ?// 设置小图标
+
+那么什么是大图标，什么是小图标呢？
+大图标就是你按"alt+tab"切换软件的时候显示的图标。小图标就是程序界面最左上角显示的图标。
+自己可以屏蔽试试，动手试下就知道了。
+
+
+MFC学习笔记——ASSERT、GetSystemMenu、IDM_ABOUTBOX
+https://blog.csdn.net/shanshangyouzhiyangm/article/details/51959038
+// IDM_ABOUTBOX 必须在系统命令范围内。
+    // 低4位是系统内部使用的
+    ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);    
+    // 如果一个应用程序增加命令到窗口菜单，应该使用小于0xF000的标识符数
+    ASSERT(IDM_ABOUTBOX < 0xF000);
+GetSystemMenu
+GetSystemMenu
+函数功能：该函数允许应用程序为复制或修改而访问窗口菜单（系统菜单或控制菜单）。
+**函数原型：**HMENU GetSystemMenu(HWND hWnd,BOOL bRevert)；
+参数：
+hWnd：拥有窗口菜单拷贝的窗口的句柄。
+bRevert：指定将执行的操作。如果此参数为FALSE，GetSystemMenu返回当前使用窗口菜单的拷贝的句柄。该拷贝初始时与窗口菜单相同，但可以被修改。
+如果此参数为TRUE，GetSystemMenu重置窗口菜单到缺省状态。如果存在先前的窗口菜单，将被销毁。
+返回值：如果参数bRevert为FALSE，返回值是窗口菜单的拷贝的句柄：如果参数bRevert为TRUE，返回值是NULL。
+备注：任何没有用GetSystemMenu函数来生成自己的窗口菜单拷贝的窗口将接受标准窗口菜单。
+
+窗口菜单最初包含的菜单项有多种标识符值，如SC_CLOSE，SC_MOVE和SC_SIZE。
+
+窗口菜单上的菜单项发送WM_SYSCOMMAND消息。
+
+
+学习打造自己的DEBUG_NEW
+https://www.cnblogs.com/lisuyun/p/5744548.html
+这里顺便提一下THIS_FILE，__FILE和__LINE__。__FILE__和__LINE__都是编译器定义的宏。当碰到__FILE__时，编译器会把__FILE__替换成一个字符串，这个字符串就是当前在编译的文件的路径名。当碰到__LINE__时，编译器会把__LINE__替换成一个数字，这个数字就是当前这行代码的行号。在DEBUG_NEW的定义中没有直接使用__FILE__，而是用了THIS_FILE，其目的是为了减小目标文件的大小。假设在某个cpp文件中有100处使用了new，如果直接使用__FILE__，那编译器会产生100个常量字符串，这100个字符串都是飧?/SPAN>cpp文件的路径名，显然十分冗余。如果使用THIS_FILE，编译器只会产生一个常量字符串，那100处new的调用使用的都是指向常量字符串的指针。
+
+
+关于"#define new DEBUG_NEW"
+https://blog.csdn.net/gggg_ggg/article/details/43407447
+因此相应修改了两个符号的定义THIS_FILE是一个char数组全局变量，字符串值为当前文件的全路径
+
+DestroyWindow函数解析
+
+https://blog.csdn.net/xiaolongwang2010/article/details/10163611
+
+归纳起来，主要有三层意思：
+
+1、该函数销毁一个指定的窗口。
+
+2、如果指定的窗口是一个父窗口，则该函数自动销毁与之管理的子窗口。
+
+3、该函数也用于销毁用CreateDialog 函数创建的非模式对话框。
+
+下面我们就来看看手动调用DestroyWindow后，该函数是如何销毁非模式对话框的，为了跟踪函数的执行流程，我们在关键位置设置了TRACE语句，其输出顺序为：
+
+1、OnDestroy
+2、OnNcDestroy
+3、PostNcDestroy
+
+ 由以上TRACE语句的输出顺序可以看出，手动调用DestroyWindow后，该函数执行过程大致为：
+
+1、该函数先发送WM_DESTROY 消息；
+
+2、OnDestroy函数响应此消息（输出OnDestroy）；
+
+3、OnDestroy函数发送WM_NCDESTROY消息；
+
+4、OnNcDestroy函数响应此消息（输出OnNcDestroy）；
+
+5、OnNcDestroy函数最后调用PostNcDestroy函数；（输出PostNcDestroy）
+
+在这里，请注意PostNcDestroy函数，该函数经常被用户重载在函数结尾加以下语句：delete this，以删除非模式对话框对象。（DestroyWindow只是销毁了非模式对话框（窗口），但并没有删除其对象。）
+
+因此，综上所叙，通过DestroyWindow函数和delete this语句就到达了分别删除非模式对话框（窗口）及其对象的目的！
+
+ 
+
+另外，通过跟踪程序发现，在模式对话框下，调用OnOk()或者OnCancel函数（EndDialog），会触发WM_DESTROY消息，从而会依次调用OnDestroy、OnNcDestroy、PostNcDestroy函数。TRACE语句按以下顺序输出：
+
+1、OnOK
+
+2、EndDialog
+
+3、OnDestroy
+
+4、OnNcDestroy
+
+5、PostNcDestroy
+
+但是在非模式对话框下，调用OnOk()或者OnCancel函数（EndDialog），则不会触发WM_DESTROY消息，从而不会调用上述函数。这可能就是很多书籍上强调的无模式对话框不要调用OnOk()或者OnCancel函数来销毁而要调用DestroyWindow函数来销毁的原因了。TRACE语句按以下顺序输出：
+
+1、OnOK
+
+2、EndDialog
+
+总结：非模式对话框下OnOk()或者OnCancel函数（EndDialog）不会触发WM_DESTROY消息。
+
+
+
+2020.03.12
+
 Compiling...
 Log.cpp
 E:\wendy_work\MsEdit_Wendy\Log.cpp(23) : error C2653: 'CWrapperPath' : is not a class or namespace name

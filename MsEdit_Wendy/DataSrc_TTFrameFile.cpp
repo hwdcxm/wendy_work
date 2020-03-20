@@ -48,6 +48,10 @@ BOOL CDataSrc_TTFrameFile::Play()
 
 }
 
+#define DIV 1024
+char *divisor = "K";
+#define WIDTH_MY 7
+
 BOOL		g_SendFilePause = FALSE;
 #define FILE_RATE	(10*1024)
 #include <io.h>
@@ -63,6 +67,9 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	DWORD m_filesize_read = 0; //static
 	DWORD m_filesize_send = 0;
 	int nLastSendMsg = 0;
+
+	MEMORYSTATUS stat;
+	
 	for( int i=0;i<m_files.GetSize() && m_nThreadStatu>0;i++ )
 	{
 		FILE* pFile ;
@@ -105,6 +112,26 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 						g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 0, m_filesize_send);
 
 					}
+
+					if(m_whileCount % 1024*1024 ==0 )
+					{
+					  static DWORD percentVirMem=100,pre_percent = 0;
+
+					  GlobalMemoryStatus (&stat);
+					  
+		 			 percentVirMem = (stat.dwAvailVirtual/1024)*100 /(stat.dwTotalVirtual/1024);
+					 TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
+					 TRACE ("There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
+					 
+					  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10)
+					  	{
+					  		m_nThreadStatu = -1 ;
+							TRACE("Because pre_percent(%d) > Now(%d), So EndThread m_nThreadStatu = -1.\n", pre_percent,stat.dwMemoryLoad);
+					  	}
+					  pre_percent = stat.dwMemoryLoad;
+					  
+					}
+					
 				}
 			}
 		}
