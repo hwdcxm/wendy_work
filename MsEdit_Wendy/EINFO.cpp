@@ -4,14 +4,13 @@
 #include "stdafx.h"
 #include "MsEdit_Wendy.h"
 #include "EINFO.h"
+#include "ShowData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-#include "ShowData.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CEINFO dialog
@@ -76,7 +75,7 @@ int CEINFO::cmp_time(_Frame_e *pFrame_e)
 {
 	long ltime = atol(strTime);
 
-	if (pFrame_e->TradeTime == ltime) // wendy lTime
+	if (pFrame_e->TradeTime2 == ltime) // wendy lTime
 	{
 		return 1;
 	}
@@ -127,7 +126,7 @@ int htoi(char s[])
 
 int CEINFO::cmp_key(_Frame_e *pFrame_e)
 {
-	long lkey = htoi(strKey); //atol(strKey);
+	long lkey = atol(strKey); //htoi(strKey); //
 
 	if (pFrame_e->Key == lkey) // wendy lTime
 	{

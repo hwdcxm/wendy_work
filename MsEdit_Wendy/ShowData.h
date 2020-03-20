@@ -7,25 +7,24 @@
 // ShowData.h : header file
 //
 #include "EINFO.h"
+#include "Datadef.h"
+#include "lock.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CShowData dialog
 
-#include "Datadef.h"
 typedef CArray<_tagTTDataFrame, _tagTTDataFrame&> CArrayItemDataFrame;
-
 typedef CList<_tagTTDataFrame, _tagTTDataFrame&> CListDataFrame;
-
 typedef CList<_Frame_e, _Frame_e&> CListFrame_e;
-
-
-#include "lock.h"
-
 class CMsEdit_WendyDlg;
 
 class CShowData : public CDialog
 {
 // Construction
 public:
+	int StructTTDDataFrameToListCtrl(_tagTTDataFrame &mTTDataFrame, CListCtrl &mp_list_data);
+	int StructFrame_eToListCtrl(_Frame_e &mpFrame_e, CListCtrl &mp_list_data);
+
 	CShowData(CWnd* pParent = NULL);   // standard constructor
 
 	CEINFO *pEINFO;
@@ -33,6 +32,8 @@ public:
 	CAutoLock	m_lock ;
 
 	CMsEdit_WendyDlg *pME_WD;
+
+	BOOL noselitem, noselcode, noseltime, nosetdelay;
 	
 	int op_item(_tagTTDataFrame *pStFrame);
 	
@@ -50,7 +51,9 @@ public:
 	
 	int op_delay_e(_Frame_e *pStFrame_e);
 	
-	BOOL noselitem, noselcode, noseltime, nosetdelay;
+	int ListSTLFrame_eToListCtrl(CListFrame_e &mpFrame_e,CListCtrl &mp_list_data);
+
+	int ListSTLDataFrameToListCtr(CListDataFrame &mpCListDataFrame,CListCtrl &mp_list_data);
 	
 	// Dialog Data
 	//{{AFX_DATA(CShowData)
@@ -87,22 +90,6 @@ protected:
 	int Datainterval;
 
 	int frame_e_count;
-
-	char string[25];
-	//CString GroupCodeString;
-	char GroupCodeString[3];
-	//CString CStrnLength;
-	char CStrnLength[6];
-	CString CStrlTime;
-	//CString CStrItemCode;
-	char CStrItemCode[10];
-	//CString CStrTransCode;
-	char CStrTransCode[3];
-
-	CString CStrnTransDataLength;
-	CString CStrpTransData;
-
-	char CStrnKey[6];
 
 	int ListIndex_bak;
 	int GetIndex;

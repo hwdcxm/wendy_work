@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 Master g_Master;
 HANDLE g_hEvent;
 CLog w_Log;
-CLog w_eLog;
+CLog w_InofLog;
 CString s_Log;
 CString s_eLog;
 CProgressDlg *g_pProDlg;
@@ -148,7 +148,7 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 
 	m_loglist.SetHorizontalExtent(1200);  //HorizontalScorllbar
 	w_Log.Init("ReadMds.log",1024*1024*1024);  // wendy 1024*1024
-	w_eLog.Init("eOfMds.log",1024*1024*1024);  // wendy 1024*1024
+	w_InofLog.Init("InfoMds.log",1024*1024*1024);  // wendy 1024*1024
 	s_Log.Format("==========================Start Application==========================");
 	SetTimer(1, 10, NULL) ;  // 350
 	
@@ -212,6 +212,7 @@ HCURSOR CMsEdit_WendyDlg::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
 }
+
 
 void CMsEdit_WendyDlg::OnAddfile() 
 {
@@ -330,7 +331,7 @@ void CMsEdit_WendyDlg::OnRead()
 	
 	TRACE("m_needreadfs=%d. \n",m_needreadfs);
 
-	if (m_needreadfs || !mCListFrame_e.GetCount())
+	if (m_needreadfs || !mCListDataFrame.GetCount())	//mCListFrame_e
 	{
 		g_fileSize = 0;
 		if(g_Master.m_MSCEType != MSCE_TYPE_PROXY)
@@ -462,7 +463,7 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 	
 	w_Log.Log("===========================End Application===========================");
 	w_Log.Close();
-	w_eLog.Close();
+	w_InofLog.Close();
 	return CDialog::DestroyWindow();
 }
 
@@ -550,47 +551,3 @@ int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 	return m_needreadfs;
 }
 
-
-
-void CMsEdit_WendyDlg::OnWRITELog() 
-{
-	// TODO: Add your control notification handler code here
-	
-	POSITION ps_e;
-	_Frame_e g_mFrame_e;
-	for(ps_e = mCListFrame_e.GetHeadPosition(); (ps_e) ; mCListFrame_e.GetNext(ps_e))
-	{
-		g_mFrame_e = mCListFrame_e.GetAt(ps_e);
-		
-		CString Cstrdwval;
-		Cstrdwval.Format("dwval:%d,",g_mFrame_e.dwVal);
-		
-		CString CstrBrokerNo;
-		CstrBrokerNo.Format("BrokerNo:%d,",g_mFrame_e.BrokerNo);
-		
-		CString CstrTradeTime;
-		CstrTradeTime.Format("Time:%d,",g_mFrame_e.TradeTime);
-		
-		CString CstrTradeTime2;
-		CstrTradeTime2.Format("Time2:%d,",g_mFrame_e.TradeTime2);		
-		
-		CString CstrKey;
-		CstrKey.Format("Key:%d,",g_mFrame_e.Key);
-		
-		
-		CString CstrPrice;
-		CstrPrice.Format("Price:%f,",g_mFrame_e.Price);
-		
-		
-		CString CstrQuantity;
-		CstrQuantity.Format("Quantity:%d,",g_mFrame_e.Quantity);
-		
-		
-		CString CstrTradeType;
-		CstrTradeType.Format("TradeType:%d ",g_mFrame_e.TyadeType);
-		
-		s_eLog = Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
-		w_eLog.Log(s_eLog);
-		
-	}				
-}

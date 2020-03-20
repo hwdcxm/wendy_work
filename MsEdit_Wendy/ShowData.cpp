@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define FUNC_DECL(factory_name) DECL_##factory_name
 
-extern CLog w_eLog;
+extern CLog w_InofLog;
 
 /////////////////////////////////////////////////////////////////////////////
 // CShowData dialog
@@ -44,12 +44,6 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 	GetIndex = 0;
 	GetIndex_bak = 0;
 	
-	memset(string,0,sizeof(char)*25);
-	memset(GroupCodeString,0,sizeof(char)*3);
-	memset(CStrnLength,0,sizeof(char)*6);
-	memset(CStrnKey,0,sizeof(char)*6);
-	memset(CStrItemCode,0,sizeof(char)*10);
-	memset(CStrTransCode,0,sizeof(char)*3);
 	//memset(&CStrnTransDataLength,0,sizeof(CString));
 	//memset(&CStrpTransData,0,sizeof(CString));
 	//memset(&CStrlTime,0,sizeof(CString));
@@ -89,7 +83,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CShowData message handlers
 	
-_Frame_e mStFrame; //_tagTTDataFrame
+_tagTTDataFrame mTTDataFrame;
+_Frame_e mFrame_e;
 extern HANDLE g_hEvent;
 
 int CShowData::op_item(_tagTTDataFrame *pStFrame)
@@ -306,7 +301,7 @@ int CShowData::op_time_e(_Frame_e *pStFrame)
 
 		if (strtime_count >0 && strtime_end_count> 0)
 		{
-			if (pStFrame->lTime >= ltime &&  pStFrame->lTime <= ltime_end)
+			if (pStFrame->TradeTime >= ltime &&  pStFrame->TradeTime2 <= ltime_end)
 			{
 				return 1;
 			}
@@ -317,7 +312,7 @@ int CShowData::op_time_e(_Frame_e *pStFrame)
 		}
 		else if ( strtime_count >0 )
 		{
-			if (pStFrame->lTime == ltime)
+			if (pStFrame->TradeTime == ltime)
 			{
 				return 1;
 			}
@@ -328,7 +323,7 @@ int CShowData::op_time_e(_Frame_e *pStFrame)
 		}
 		else if ( strtime_end_count >0 )
 		{
-			if (pStFrame->lTime == ltime_end)
+			if (pStFrame->TradeTime2 == ltime_end)
 			{
 				return 1;
 			}
@@ -361,199 +356,6 @@ int CShowData::op_delay_e(_Frame_e *pStFrame)
 	}
 }
 
-void CShowData::OnTimer(UINT nIDEvent) 
-{
-	// TODO: Add your message handler code here and/or call default
-	int i = 0;
-	//POSITION ps;
-	
-	TRACE("OnTimer...\n");
-	KillTimer(1);
-	TRACE("SetTimer...\n");
-	
-#if 1  // wendy test
-	DWORD retEvent = WaitForSingleObject(g_hEvent, 0); //INFINITE
-	if (retEvent == WAIT_OBJECT_0)
-	{
-		
-		m_lock.Lock();
-		if (InitClistGetHead == FALSE)
-		{
-			ps = mCListFrame_e.GetHeadPosition();  // wendy
-			InitClistGetHead = TRUE;
-		}
-		
-		frame_e_count = mCListFrame_e.GetCount();
-		DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-		ListIndex = m_list_data.GetItemCount();
-		int HandlDataCount = DataCount; // - DataCount_bak;
-		
-		Datainterval = HandlDataCount / 10000;
-		if (Datainterval <= 0) 
-		{
-			Datainterval = 100;
-		}
-		
-		
-		ListIndex_bak = ListIndex;
-		
-		// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
-		// ps = mCListDataFrame.GetHeadPosition()
-		for(i=0; (ps && i<1000) ; mCListFrame_e.GetNext(ps))  //mCListDataFrame.GetNext(ps)
-		{
-			
-			mStFrame = mCListFrame_e.GetAt(ps);
-			//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
-			if (op_TransCode_e(&mStFrame)&&op_item_e(&mStFrame)&&op_time_e(&mStFrame))
-			{
-				itoa(ListIndex+1,string,10);
-				m_list_data.InsertItem(ListIndex,string,0);
-				
-				memcpy(GroupCodeString,&mStFrame.btGroupCode,1);
-				m_list_data.SetItemText(ListIndex,1, GroupCodeString);
-				
-				//_itoa(mStFrame.nLength, CStrnLength, sizeof(int)*4); // sizeof(int)  4
-				//m_list_data.SetItemText(ListIndex,2, CStrnLength);
-
-				_itoa(mStFrame.Key, CStrnKey, sizeof(int)*4); // sizeof(int)  4
-				m_list_data.SetItemText(ListIndex,2, CStrnKey);
-	
-				
-				CStrlTime.Format("%ld",mStFrame.TradeTime); // wendy lTime
-				m_list_data.SetItemText(ListIndex,3, CStrlTime);
-				
-				memcpy(CStrItemCode,(char *)&(mStFrame.arItemCode[0]),sizeof(char)*8);
-				m_list_data.SetItemText(ListIndex,4, CStrItemCode);
-				
-				memcpy(CStrTransCode,&(mStFrame.btTransCode),1);
-				m_list_data.SetItemText(ListIndex,5, CStrTransCode);
-				
-				CStrnTransDataLength.Format("%d",mStFrame.nTransDataLength);
-				m_list_data.SetItemText(ListIndex,6, CStrnTransDataLength);
-				
-				CStrpTransData.Format("0x%d",(long)mStFrame.pTransData);
-				m_list_data.SetItemText(ListIndex,7, CStrpTransData);
-				ListIndex++;
-				i++;
-			}
-			
-			if (noselitem && noselcode && noseltime)
-			{
-
-
-				//GetIndex = GetIndex + Datainterval*100;
-				time_t t;
-				srand((unsigned) time(&t));
-				//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
-
-				GetIndex = GetIndex + rand()%100;
-				if (i>=100)
-				{
-					GetIndex = DataCount;
-				}
-
-				if (GetIndex >= DataCount)
-				{
-					GetIndex = DataCount-1;
-					DataCount = mCListFrame_e.GetCount();
-				}
-				ps = mCListFrame_e.FindIndex(GetIndex);
-				
-			}
-			
-			GetIndex ++;
-			if (GetIndex >= DataCount)
-			{
-				GetIndex = DataCount;
-			}
-		}
-		
-		DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
-		
-		if (GetIndex < DataCount)
-		{
-			if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
-			{
-				TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
-				GetIndex ++;
-				if (GetIndex >= DataCount)
-				{
-					GetIndex = DataCount;
-				}
-			}
-			
-			GetIndex_bak = GetIndex;
-			static int search = 0;
-			SetTimer( 1, 30, NULL ) ;
-			//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-			strsearch = "Search";
-			for(int j =0; j < search; j++)
-			{
-				strsearch = strsearch + '.';
-			}
-			
-			for(int k =0; k < 6-search; k++)
-			{
-				strsearch = strsearch + ' ';
-			}
-			
-			search ++;
-			
-			if (search > 6)
-			{
-				search = 0;
-			}
-			
-			StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-			m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
-			
-			if (enable_timer ==  false)
-			{
-				GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
-				enable_timer = true;
-			}
-		}
-		else
-		{
-			TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-			StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-			m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
-			
-			enable_timer = false;
-			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);	
-			if (noselitem && noselcode && noseltime)
-			{
-				GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
-			}
-			else
-			{
-				GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
-			}
-		}
-#endif 
-		SetEvent(g_hEvent);
-		m_lock.UnLock();
-	}
-	else if (retEvent ==WAIT_TIMEOUT)
-	{
-		SetTimer( 1, 130, NULL ) ;
-	}
-	
-	//SetTimer( 1, 30, NULL ) ;	// wendy test
-	CDialog::OnTimer(nIDEvent);
-	
-}
-
-//struct _tagTTDataFrame{
-//	int nLength;
-//	time_t lTime;
-//	BYTE btGroupCode;
-//	char arItemCode[8];
-//	BYTE btTransCode;
-//	int nTransDataLength;
-//	void * pTransData;
-//};
-
 extern Master g_Master;
 
 BOOL CShowData::OnInitDialog() 
@@ -583,14 +385,23 @@ BOOL CShowData::OnInitDialog()
 	
 	m_list_data.InsertColumn(0,"NO", LVCFMT_LEFT, 80);
 	m_list_data.InsertColumn(1,"Group", LVCFMT_LEFT, 60);
-	m_list_data.InsertColumn(2,"Key", LVCFMT_LEFT, 70);
-	m_list_data.InsertColumn(3,"Time", LVCFMT_LEFT, 110);
+	//m_list_data.InsertColumn(2,"Length", LVCFMT_LEFT, 70); // nLength Key
+	m_list_data.InsertColumn(3,"Time", LVCFMT_LEFT, 110); 
 	m_list_data.InsertColumn(4,"ItemCode", LVCFMT_LEFT, 100);
 	m_list_data.InsertColumn(5,"TransCode", LVCFMT_LEFT, 90);
 	m_list_data.InsertColumn(6,"DataLength", LVCFMT_LEFT, 90);
 	m_list_data.InsertColumn(7,"TransData", LVCFMT_LEFT, 120);
 
 	pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
+
+	if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))==0)
+	{
+		m_list_data.InsertColumn(2,"Key", LVCFMT_LEFT, 70); // nLength Key
+	}
+	else
+	{
+		m_list_data.InsertColumn(2,"Length", LVCFMT_LEFT, 70); // nLength Key
+	}
 	
 #if 1  // wendy test
 	SetTimer( 1, 1000, NULL ) ;
@@ -705,9 +516,10 @@ void CShowData::OnRclickListData(NMHDR* pNMHDR, LRESULT* pResult)
 	menu.LoadMenu(IDR_MENU1);//加载ID为IDR_MENU1的菜单
 	pPopupMenu = menu.GetSubMenu(0);   //获取弹出菜单的第一层子菜单的类指针
 
-	char strCellTxCode[10];
-	m_list_data.GetItemText(m_indexOfCell.x,5,strCellTxCode,10);  // because of m_list_data.InsertColumn(5,"TransCode", LVCFMT_LEFT, 90); so fill 5
-	if (strcmp(strCellTxCode,"e") == 0)
+	//char strCellTxCode[10];
+	//m_list_data.GetItemText(m_indexOfCell.x,5,strCellTxCode,10);  // because of m_list_data.InsertColumn(5,"TransCode", LVCFMT_LEFT, 90); so fill 5
+	
+	if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))==0) // if (strcmp(strCellTxCode,"e") == 0)
 	{
 		pPopupMenu->EnableMenuItem(ID_MENUITEM_INFO,MF_ENABLED); //MF_DISABLED MF_ENABLED
 	}
@@ -791,58 +603,534 @@ void CShowData::PostNcDestroy()
 	}
 }
 
+void CShowData::OnTimer(UINT nIDEvent) 
+{
+	// TODO: Add your message handler code here and/or call default
+	int i = 0;
+	//POSITION ps;
+	
+	//TRACE("OnTimer...\n");
+	KillTimer(1);
+	//TRACE("SetTimer...\n");
+	
+#if 1  // wendy test
+	DWORD retEvent = WaitForSingleObject(g_hEvent, 0); //INFINITE
+	if (retEvent == WAIT_OBJECT_0)
+	{
+		if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))==0)
+			{
+				ListSTLFrame_eToListCtrl(mCListFrame_e,m_list_data);
+			}
+		else
+			{
+				ListSTLDataFrameToListCtr(mCListDataFrame,m_list_data);
+			}
+		SetEvent(g_hEvent);
+	}
+	else if (retEvent ==WAIT_TIMEOUT)
+	{
+		SetTimer( 1, 130, NULL ) ;
+	}
+#endif	
+	
+	//SetTimer( 1, 30, NULL ) ;	// wendy test
+	CDialog::OnTimer(nIDEvent);
+	
+}
+
 void CShowData::OnWriteSearch() 
 {
 	// TODO: Add your control notification handler code here
-	POSITION ps_e;
-	_Frame_e mFrame_e;
+
+#if 1
+	m_lock.Lock();
+
 	CString s_eLog;
 	GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
-	w_eLog.EmptyLog();
-	
-	for(ps_e = mCListFrame_e.GetHeadPosition(); (ps_e) ; mCListFrame_e.GetNext(ps_e))
-	{
-		mFrame_e = mCListFrame_e.GetAt(ps_e);
-		
-		if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
-		{
+	w_InofLog.EmptyLog();
 
-			CString CStrItemCode_log;
-			memcpy(CStrItemCode,(char *)&(mFrame_e.arItemCode[0]),sizeof(char)*8);
-			CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+	if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))!=0)
+	{
+		POSITION ps;
+		_tagTTDataFrame mTTDataFrame;
+		DWORD mIndexNo = 0;
+		for(ps = mCListDataFrame.GetHeadPosition(); (ps) ; mCListDataFrame.GetNext(ps))
+		{
+			mTTDataFrame = mCListDataFrame.GetAt(ps);
 			
-			CString Cstrdwval;
-			Cstrdwval.Format("dwval:%d,",mFrame_e.dwVal);
+			if (op_TransCode(&mTTDataFrame)&&op_item(&mTTDataFrame)&&op_time(&mTTDataFrame))
+			{
+
+				mIndexNo ++;
+				CString CstrIndexNo;
+				CstrIndexNo.Format("No:%ld,",mIndexNo);
+	
+				CString CStrItemCode;
+				char CStrItem[10];
+				memset(CStrItem,0,sizeof(char)*10);
+				memcpy(CStrItem,(char *)&(mTTDataFrame.arItemCode[0]),sizeof(char)*8);
+				CStrItemCode.Format("Item:%s,",CStrItem);
+				
+				CString CstrGroup;
+				CstrGroup.Format("Group:%c,",mTTDataFrame.btGroupCode);
+				
+				CString CstrTrans;
+				CstrTrans.Format("Trans:%c,",mTTDataFrame.btTransCode);
+				
+				CString CstrLength;
+				CstrLength.Format("Len:%d,",mTTDataFrame.nLength);
+				
+				CString CstrTime;
+				CstrTime.Format("Time:%ld,",mTTDataFrame.lTime);		
+				
+				CString CstrDataLength;
+				CstrDataLength.Format("Dath:%d,",mTTDataFrame.nTransDataLength);
+	
+				CString CstrTransData;
+				CstrTransData.Format("TrDa:0x%ld,",mTTDataFrame.pTransData);	
+				
+				s_eLog = CstrIndexNo + CStrItemCode + CstrGroup + CstrTrans + CstrLength +CstrTime +CstrDataLength + CstrTransData;
+				w_InofLog.Log(s_eLog);
+
+			}
 			
-			CString CstrBrokerNo;
-			CstrBrokerNo.Format("BrokerNo:%d,",mFrame_e.BrokerNo);
-			
-			CString CstrTradeTime;
-			CstrTradeTime.Format("Time:%d,",mFrame_e.TradeTime);
-			
-			CString CstrTradeTime2;
-			CstrTradeTime2.Format("Time2:%d,",mFrame_e.TradeTime2);		
-			
-			CString CstrKey;
-			CstrKey.Format("Key:%d,",mFrame_e.Key);
-			
-			
-			CString CstrPrice;
-			CstrPrice.Format("Price:%f,",mFrame_e.Price);
-			
-			
-			CString CstrQuantity;
-			CstrQuantity.Format("Quantity:%d,",mFrame_e.Quantity);
-			
-			
-			CString CstrTradeType;
-			CstrTradeType.Format("TradeType:%d",mFrame_e.TyadeType);
-			
-			s_eLog = CStrItemCode_log + Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
-			w_eLog.Log(s_eLog);
 		}
-		
+	}
+	else
+	{
+		POSITION ps_e;
+		_Frame_e mFrame_e;
+		DWORD mIndexNo = 0;
+		for(ps_e = mCListFrame_e.GetHeadPosition(); (ps_e) ; mCListFrame_e.GetNext(ps_e))
+		{
+			mFrame_e = mCListFrame_e.GetAt(ps_e);
+			
+			if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
+			{
+
+				//时间，key ，price， quantity ，tradetype
+				mIndexNo ++;
+				CString CstrIndexNo;
+				CstrIndexNo.Format("No:%ld,",mIndexNo);
+				
+				CString CStrItemCode;
+				char CStrItem[10];
+				memset(CStrItem,0,sizeof(char)*10);
+				memcpy(CStrItem,(char *)&(mFrame_e.arItemCode[0]),sizeof(char)*8);
+				CStrItemCode.Format("ItemCode:%s,",CStrItem);
+				
+				//CString Cstrdwval;
+				//Cstrdwval.Format("dwval:%d,",mFrame_e.dwVal);
+				
+				//CString CstrBrokerNo;
+				//CstrBrokerNo.Format("BrokerNo:%d,",mFrame_e.BrokerNo);
+				
+				CString CstrTradeTime;
+				CstrTradeTime.Format("Time:%d,",mFrame_e.TradeTime);
+				
+				CString CstrTradeTime2;
+				CstrTradeTime2.Format("Time2:%d,",mFrame_e.TradeTime2);		
+				
+				CString CstrKey;
+				CstrKey.Format("Key:%d,",mFrame_e.Key);
+				
+				
+				CString CstrPrice;
+				CstrPrice.Format("Price:%f,",mFrame_e.Price);
+				
+				
+				CString CstrQuantity;
+				CstrQuantity.Format("Quantity:%d,",mFrame_e.Quantity);
+				
+				
+				CString CstrTradeType;
+				CstrTradeType.Format("TradeType:%d",mFrame_e.TyadeType);
+				
+				s_eLog = CstrIndexNo + CStrItemCode + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
+				w_InofLog.Log(s_eLog);
+
+			}
+		}
 	}
 	
 	GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
+	
+	m_lock.UnLock();
+#endif
+}
+
+
+int CShowData::ListSTLFrame_eToListCtrl(CListFrame_e &mpFrame, CListCtrl &mp_list_data)
+{
+
+#if 1
+	m_lock.Lock();
+	if (InitClistGetHead == FALSE)
+	{
+		ps = mCListFrame_e.GetHeadPosition();  // wendy
+		InitClistGetHead = TRUE;
+	}
+	
+	frame_e_count = mCListFrame_e.GetCount();
+	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+	ListIndex = m_list_data.GetItemCount();
+	int HandlDataCount = DataCount; // - DataCount_bak;
+	
+	Datainterval = HandlDataCount / 10000;
+	if (Datainterval <= 0) 
+	{
+		Datainterval = 100;
+	}
+	
+	
+	ListIndex_bak = ListIndex;
+	
+	// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
+	// ps = mCListDataFrame.GetHeadPosition()
+	for(int i=0; (ps && i<1000) ; mCListFrame_e.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+	{
+		
+		mFrame_e = mCListFrame_e.GetAt(ps);
+		//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
+		if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
+		{
+			StructFrame_eToListCtrl(mFrame_e,m_list_data);
+			i++;
+		}
+		
+		if (noselitem && noselcode && noseltime)
+		{
+			
+			
+			//GetIndex = GetIndex + Datainterval*100;
+			time_t t;
+			srand((unsigned) time(&t));
+			//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
+			
+			GetIndex = GetIndex + rand()%100;
+			if (i>=100)
+			{
+				GetIndex = DataCount;
+			}
+			
+			if (GetIndex >= DataCount)
+			{
+				GetIndex = DataCount-1;
+				DataCount = mCListFrame_e.GetCount();
+			}
+			ps = mCListFrame_e.FindIndex(GetIndex);
+			
+		}
+		
+		GetIndex ++;
+		if (GetIndex >= DataCount)
+		{
+			GetIndex = DataCount;
+		}
+	}
+	
+	DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
+	
+	if (GetIndex < DataCount)
+	{
+		if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
+		{
+			TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
+			GetIndex ++;
+			if (GetIndex >= DataCount)
+			{
+				GetIndex = DataCount;
+			}
+		}
+		
+		GetIndex_bak = GetIndex;
+		static int search = 0;
+		SetTimer( 1, 30, NULL ) ;
+		//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		strsearch = "Search";
+		for(int j =0; j < search; j++)
+		{
+			strsearch = strsearch + '.';
+		}
+		
+		for(int k =0; k < 6-search; k++)
+		{
+			strsearch = strsearch + ' ';
+		}
+		
+		search ++;
+		
+		if (search > 6)
+		{
+			search = 0;
+		}
+		
+		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
+		
+		if (enable_timer ==  false)
+		{
+			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
+			enable_timer = true;
+		}
+	}
+	else
+	{
+		TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
+		
+		enable_timer = false;
+		GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);	
+		if (noselitem && noselcode && noseltime)
+		{
+			GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
+		}
+		else
+		{
+			GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
+		}
+	}
+#endif 
+	m_lock.UnLock();
+	
+	return 0;
+	
+}
+
+int CShowData::ListSTLDataFrameToListCtr(CListDataFrame &mpCListDataFrame, CListCtrl &mp_list_data)
+{
+
+#if 1
+	m_lock.Lock();
+	if (InitClistGetHead == FALSE)
+	{
+		ps = mCListDataFrame.GetHeadPosition();  // wendy
+		InitClistGetHead = TRUE;
+	}
+	
+	frame_e_count = mCListDataFrame.GetCount();
+	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+	ListIndex = m_list_data.GetItemCount();
+	int HandlDataCount = DataCount; // - DataCount_bak;
+	
+	Datainterval = HandlDataCount / 10000;
+	if (Datainterval <= 0) 
+	{
+		Datainterval = 100;
+	}
+	
+	
+	ListIndex_bak = ListIndex;
+	
+	// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
+	// ps = mCListDataFrame.GetHeadPosition()
+	for(int i=0; (ps && i<1000) ; mCListDataFrame.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+	{
+		
+		mTTDataFrame = mCListDataFrame.GetAt(ps);
+		//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
+		if (op_TransCode(&mTTDataFrame)&&op_item(&mTTDataFrame)&&op_time(&mTTDataFrame))
+		{
+			StructTTDDataFrameToListCtrl(mTTDataFrame,m_list_data);
+			i++;
+		}
+		
+		if (noselitem && noselcode && noseltime)
+		{
+			
+			
+			//GetIndex = GetIndex + Datainterval*100;
+			time_t t;
+			srand((unsigned) time(&t));
+			//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
+			
+			GetIndex = GetIndex + rand()%100;
+			if (i>=100)
+			{
+				GetIndex = DataCount;
+			}
+			
+			if (GetIndex >= DataCount)
+			{
+				GetIndex = DataCount-1;
+				DataCount = mCListDataFrame.GetCount();
+			}
+			ps = mCListDataFrame.FindIndex(GetIndex);
+			
+		}
+		
+		GetIndex ++;
+		if (GetIndex >= DataCount)
+		{
+			GetIndex = DataCount;
+		}
+	}
+	
+	DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
+	
+	if (GetIndex < DataCount)
+	{
+		if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
+		{
+			TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
+			GetIndex ++;
+			if (GetIndex >= DataCount)
+			{
+				GetIndex = DataCount;
+			}
+		}
+		
+		GetIndex_bak = GetIndex;
+		static int search = 0;
+		SetTimer( 1, 30, NULL ) ;
+		//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		strsearch = "Search";
+		for(int j =0; j < search; j++)
+		{
+			strsearch = strsearch + '.';
+		}
+		
+		for(int k =0; k < 6-search; k++)
+		{
+			strsearch = strsearch + ' ';
+		}
+		
+		search ++;
+		
+		if (search > 6)
+		{
+			search = 0;
+		}
+		
+		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
+		
+		if (enable_timer ==  false)
+		{
+			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
+			enable_timer = true;
+		}
+	}
+	else
+	{
+		TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
+		
+		enable_timer = false;
+		GetDlgItem(IDC_BTN_TIMER)->EnableWindow(FALSE);	
+		if (noselitem && noselcode && noseltime)
+		{
+			GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(FALSE);
+		}
+		else
+		{
+			GetDlgItem(IDC_WRITE_SEARCH)->EnableWindow(TRUE);
+		}
+	}
+#endif 
+	m_lock.UnLock();
+	
+	return 0;
+	
+}
+	
+
+int CShowData::StructFrame_eToListCtrl(_Frame_e &mpFrame_e, CListCtrl &mp_list_data)
+{
+
+	static char string[25];
+	static char GroupCodeString[3];
+	static char CStrnLength[6];
+	static CString CStrlTime;
+	static char CStrItemCode[10];
+	static char CStrTransCode[3];
+	static CString CStrnTransDataLength;
+	static CString CStrpTransData;
+	static char CStrnKey[6];
+
+	memset(string,0,sizeof(char)*25);
+	memset(GroupCodeString,0,sizeof(char)*3);
+	memset(CStrnLength,0,sizeof(char)*6);
+	memset(CStrnKey,0,sizeof(char)*6);
+	memset(CStrItemCode,0,sizeof(char)*10);
+	memset(CStrTransCode,0,sizeof(char)*3);
+	
+
+	itoa(ListIndex+1,string,10);
+	mp_list_data.InsertItem(ListIndex,string,0);
+	
+	memcpy(GroupCodeString,&mpFrame_e.btGroupCode,1);
+	mp_list_data.SetItemText(ListIndex,1, GroupCodeString);
+	
+	_itoa(mpFrame_e.Key, CStrnKey, 10); // sizeof(int)  4 sizeof(int)*4
+	mp_list_data.SetItemText(ListIndex,2, CStrnKey);
+
+	
+	CStrlTime.Format("%ld",mpFrame_e.TradeTime2); // wendy lTime
+	mp_list_data.SetItemText(ListIndex,3, CStrlTime);
+	
+	memcpy(CStrItemCode,(char *)&(mpFrame_e.arItemCode[0]),sizeof(char)*8);
+	mp_list_data.SetItemText(ListIndex,4, CStrItemCode);
+	
+	memcpy(CStrTransCode,&(mpFrame_e.btTransCode),1);
+	mp_list_data.SetItemText(ListIndex,5, CStrTransCode);
+	
+	CStrnTransDataLength.Format("%d",mpFrame_e.nTransDataLength);
+	mp_list_data.SetItemText(ListIndex,6, CStrnTransDataLength);
+	
+	CStrpTransData.Format("0x%ld",(long)mpFrame_e.pTransData);
+	mp_list_data.SetItemText(ListIndex,7, CStrpTransData);
+	ListIndex++;
+	
+	return 0;
+}
+
+int CShowData::StructTTDDataFrameToListCtrl(_tagTTDataFrame &mTTDataFrame, CListCtrl &mp_list_data)
+{
+	static char string[25];
+	static char GroupCodeString[3];
+	static char CStrnLength[6];
+	static CString CStrlTime;
+	static char CStrItemCode[10];
+	static char CStrTransCode[3];
+	static CString CStrnTransDataLength;
+	static CString CStrpTransData;
+	static char CStrnKey[6];
+
+	memset(string,0,sizeof(char)*25);
+	memset(GroupCodeString,0,sizeof(char)*3);
+	memset(CStrnLength,0,sizeof(char)*6);
+	memset(CStrnKey,0,sizeof(char)*6);
+	memset(CStrItemCode,0,sizeof(char)*10);
+	memset(CStrTransCode,0,sizeof(char)*3);
+	
+
+	itoa(ListIndex+1,string,10);
+	mp_list_data.InsertItem(ListIndex,string,0);
+	
+	memcpy(GroupCodeString,&mTTDataFrame.btGroupCode,1);
+	mp_list_data.SetItemText(ListIndex,1, GroupCodeString);
+	
+	_itoa(mTTDataFrame.nLength, CStrnLength,10); // sizeof(int)  4
+	mp_list_data.SetItemText(ListIndex,2, CStrnLength);
+	
+	CStrlTime.Format("%ld",mTTDataFrame.lTime); // wendy lTime
+	mp_list_data.SetItemText(ListIndex,3, CStrlTime);
+	
+	memcpy(CStrItemCode,(char *)&(mTTDataFrame.arItemCode[0]),sizeof(char)*8);
+	mp_list_data.SetItemText(ListIndex,4, CStrItemCode);
+	
+	memcpy(CStrTransCode,&(mTTDataFrame.btTransCode),1);
+	mp_list_data.SetItemText(ListIndex,5, CStrTransCode);
+	
+	CStrnTransDataLength.Format("%d",mTTDataFrame.nTransDataLength);
+	mp_list_data.SetItemText(ListIndex,6, CStrnTransDataLength);
+	
+	CStrpTransData.Format("0x%ld",(long)mTTDataFrame.pTransData);
+	mp_list_data.SetItemText(ListIndex,7, CStrpTransData);
+	ListIndex++;
+	
+	return 0;
 }

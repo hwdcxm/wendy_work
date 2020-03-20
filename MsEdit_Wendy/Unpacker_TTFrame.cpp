@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "MsEdit_Wendy.h"
 #include "Unpacker_TTFrame.h"
+#include "Master.h"
+#include "ShowData.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -12,14 +14,16 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-#include "Master.h"
+//DWORD Count_BreakCList = 0;
+
 extern Master g_Master;
-
-#include "ShowData.h"
 extern CArrayItemDataFrame mCArrayItemDataFrame;
-
 extern CListDataFrame mCListDataFrame;
 extern CListFrame_e mCListFrame_e;
+
+#include "log.h"
+extern CString s_eLog;
+extern CLog w_InofLog;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -126,6 +130,7 @@ BOOL CUnpacker_TTFrame::LoadXItemTable()
 	
 	return TRUE;
 }
+
 
 BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize ) 
 {
@@ -859,9 +864,39 @@ memcpy(temp,buff,sizeof(buff));
 							HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
 						}
 						else
-						{
-							//mCListDataFrame.AddTail(*pStFrame);
+						{	
+							mCListDataFrame.AddTail(*pStFrame);
 						}
+						
+						if (0)
+						{			
+
+							CString CStrItemCode_log;
+							char CStrItemCode[10];
+							memset( CStrItemCode, 0, sizeof(CStrItemCode) ) ;
+							memcpy(CStrItemCode,(char *)&(pStFrame->arItemCode[0]),sizeof(char)*8);
+							CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+							
+							CString Cstrdwval;
+							Cstrdwval.Format("Group:%c,",pStFrame->btGroupCode);
+							
+							CString CstrBrokerNo;
+							CstrBrokerNo.Format("Trans:%c,",pStFrame->btTransCode);
+							
+							CString CstrTradeTime;
+							CstrTradeTime.Format("Time:%ld,",pStFrame->lTime);
+							
+							CString CstrTradeTime2;
+							CstrTradeTime2.Format("Length:%d,",pStFrame->nLength);		
+							
+							CString CstrKey;
+							CstrKey.Format("DataLength:%d,",pStFrame->nTransDataLength);
+		
+							
+							s_eLog = CStrItemCode_log + Cstrdwval + CstrBrokerNo + CstrTradeTime + CstrTradeTime2 +CstrKey;
+							w_InofLog.Log(s_eLog);
+						}
+													
 					}
 				}
 
@@ -929,191 +964,6 @@ void CUnpacker_TTFrame::ClearStream()
 
 }
 
-//struct _Frame_e  // get from _tagTTDataFrame
-//{
-//	int nLength;
-//	time_t lTime;
-//	BYTE btGroupCode;
-//	char arItemCode[8];
-//	BYTE btTransCode;
-//	int nTransDataLength;
-//	void * pTransData;
-
-//	DWORD	dwVal;
-//	WORD	BrokerNo;
-//	WORD	TradeTime;
-//	DWORD   TradeTime2; 
-//	WORD	Key;
-//	float	Price;
-//	unsigned long Quantity;
-//	BYTE	TyadeType;
-//	DWORD	lTemp;
-//	BYTE	byTmp;
-//};
-
-#if 0
-void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
-{
-	static int records = 0;
-	static int invalid_records = 0;
-	_tagTTDataFrame* pHead=(_tagTTDataFrame *)buff;
-
-	if (pHead->btTransCode != 'e')
-	{
-		TRACE(" Because Tx Not e, So return \n");
-		return;
-	}
-	WORD	Time=(WORD)((DWORD)pHead->pTransData>>16);
-	DWORD	usTotal;//WORD	usTotal;
-	BYTE	bySendNum = 0;
-	UINT	uiTotal;
-
-	records ++;
-	//Transaction×ÜÊý
-	memcpy(&usTotal, buff + sizeof(_tagTTDataFrame), sizeof(DWORD));
-	//µÚ¼¸¸ö±»ËÍÀ´N
-	memcpy(&bySendNum, buff + sizeof(_tagTTDataFrame) + 4, 1);
-
-	//mCListFrame_e.AddTail(*pFrame_e); // test count
-
-	if(!bySendNum)
-	{
-		invalid_records ++;
-		//TRACE("Because invalid_records=%d bySendNum is zero, So return \n",invalid_records);
-		return ;
-	}
-
-	mCListDataFrame.AddTail(*pHead);
-	
-	uiTotal=usTotal;
-
-	BYTE	byHi;
-	int		nOffset;
-	int		nOffsetData;
-
-	memcpy(&byHi, buff + sizeof(_tagTTDataFrame) + 5, 1);
-	nOffset = sizeof(_tagTTDataFrame) + 6;
-	nOffsetData=nOffset;				//Ö¸ÏòÊý¾Ý¿é
-	nOffsetData+=(bySendNum-1);
-
-	DWORD	dwVal;
-	WORD	BrokerNo;
-	WORD	TradeTime;
-	DWORD   TradeTime2; 
-	WORD	Key;
-	float	Price;
-	unsigned long Quantity;
-	BYTE	TyadeType;
-	DWORD	lTemp;
-	int		i;
-	BYTE	byTmp;
-	char str[512]="" ;
-	//¶ÁÈ¡µÚÒ»¿é
-	memcpy(&BrokerNo,buff+nOffsetData,2);
-	memcpy(&dwVal,buff+nOffsetData+2,4);
-	memcpy(&Price,buff+nOffsetData+6,4);
-	memcpy(&Quantity,buff+nOffsetData+10,4);
-	memcpy(&TyadeType,buff+nOffsetData+14,1);
-
-	lTemp = dwVal & 0x0003FFFF;
-	TradeTime2 = lTemp;  //memcpy(&TradeTime, &lTemp, 2);
-	lTemp = ((dwVal & 0x3FFC0000) >> 18);
-	memcpy(&Key, &lTemp, 2);
-
-	nOffsetData+=15;
-	
-	TradeTime=TradeTime2/10000*1800 + (TradeTime2%10000)/100*30+(TradeTime2%100)/2;
-
-	char temp[10] ;
-	memset( temp, 0, sizeof(temp) ) ;
-	temp[0]	= pHead->btGroupCode ;
-	memcpy( temp+1, pHead->arItemCode, 8 ) ;
-	{
-		//sprintf(str,"1 invalid_records=%d, records=%d...%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
-		//	invalid_records,records,temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
-		//Write(str);			
-	}
-	//TRACE("1 invalid_records=%d, records=%d...%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
-	//		invalid_records,records,temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo) ;
-
-	memcpy(mFrame_e.arItemCode,(char *)&( pHead->arItemCode[0]),sizeof(char)*8);
-	memcpy(&(mFrame_e.btGroupCode),&(pHead->btGroupCode),1);
-	memcpy(&(mFrame_e.btTransCode),&(pHead->btTransCode),1);
-	mFrame_e.nLength = pHead->nLength;
-	mFrame_e.lTime = pHead->lTime;
-	mFrame_e.nTransDataLength = pHead->nTransDataLength;
-	mFrame_e.pTransData = pHead->pTransData;
-
-	mFrame_e.dwVal = dwVal;
-	mFrame_e.BrokerNo = BrokerNo;
-	mFrame_e.TradeTime = TradeTime;
-	mFrame_e.TradeTime2 = TradeTime2;
-	mFrame_e.Key = Key;
-	mFrame_e.Price = Price;
-	mFrame_e.Quantity = Quantity;
-	mFrame_e.TyadeType = TyadeType;
-	mFrame_e.lTemp = lTemp;
-	mFrame_e.byTmp = byTmp;
-	
-	mCListFrame_e.AddTail(*pFrame_e);
-	
-	for(i = 0; i < bySendNum-1; i ++)
-	{
-		memcpy(&byTmp, buff + nOffset, 1);
-		nOffset ++;
-		
-		if((byTmp & 128)==128)
-		{
-			memcpy(&BrokerNo,buff+nOffsetData,2);
-			nOffsetData+=2;
-		}
-		
-		if((byTmp & 64)==64)
-		{
-			memcpy(&dwVal,buff+nOffsetData,4);
-			lTemp = dwVal & 0x0003FFFF;
-			TradeTime2 = lTemp;		
-			TradeTime=(TradeTime2 / 10000) * 1800 + (TradeTime2 % 10000)/100 * 30;
-			lTemp = ((dwVal & 0x3FFC0000) >> 18);
-			memcpy(&Key, &lTemp, 2);
-			nOffsetData+=4;
-		}
-		else
-		{
-			Key++;
-		}
-		
-		if((byTmp & 32) ==32)
-		{
-			memcpy(&Price,buff+nOffsetData,4);
-			nOffsetData+=4;
-		}
-		
-		if((byTmp&16)==16)
-		{
-			memcpy(&Quantity,buff+nOffsetData,4); 
-			nOffsetData+=4;
-		}
-		
-		if((byTmp&8)==8)
-		{
-			memcpy(&TyadeType,buff+nOffsetData,1);
-			nOffsetData++;
-		}
-
-	//	char temp[10] ;
-		memset( temp, 0, sizeof(temp) ) ;
-		temp[0] = pHead->btGroupCode ;
-		memcpy( temp+1, pHead->arItemCode, 8 ) ;
-		TRACE( "2 invalid_records=%d,records=%d...%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, TyadeType:%c, BrokerNo:%d\r\n", 
-			invalid_records,records,temp, TradeTime,TradeTime2, Key, Price, Quantity, TyadeType, BrokerNo ) ;
-		sprintf(str,"2...%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
-			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
-	//	Write(str);	
-	}
-}
-#endif
-
 
 void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 {
@@ -1130,8 +980,6 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	BYTE	bySendNum = 0;
 	UINT	uiTotal;
 
-// wendy	HWND hWnd=GetSafeHwnd(); //»ñÈ¡Ö÷´°¿ÚµÄ¾ä±ú
-	
 	//Transaction×ÜÊý
 	memcpy(&usTotal, buff + sizeof(_tagTTDataFrame), sizeof(DWORD));
 	//µÚ¼¸¸ö±»ËÍÀ´N
@@ -1163,7 +1011,7 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	int		i;
 	BYTE	byTmp;
 	char str[512]="" ;
-	//¶ÁÈ¡µÚÒ»¿é
+	// ¶ÁÈ¡µÚÒ»¿é
 	memcpy(&BrokerNo,buff+nOffsetData,2);
 	memcpy(&dwVal,buff+nOffsetData+2,4);
 	memcpy(&Price,buff+nOffsetData+6,4);
@@ -1172,12 +1020,13 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 
 	lTemp = dwVal & 0x0003FFFF;
 	TradeTime2 = lTemp;  //memcpy(&TradeTime, &lTemp, 2);
+
 	//andy 2019.6.19 added
 	if(TradeTime2<60000) 
-		TradeTime2 = TradeTime2+262144; //18bitæœ€å¤§262144ï¼Œæº¢å‡ºäº†ï¼
-	char szTmp[100];
-	sprintf(szTmp,"Charting HandleFrame_e tickertime=%d",TradeTime2);
-	OutputDebugString(szTmp);
+		TradeTime2 = TradeTime2+262144; // 18bit×î´ó262144£¬Òç³öÁË£¡
+	//char szTmp[100];
+	//sprintf(szTmp,"pHead->btTransCode=%c",pHead->btTransCode);
+	//OutputDebugString(szTmp);
 	//andy 2019.6.19 added
 
 	lTemp = ((dwVal & 0x3FFC0000) >> 18);
@@ -1187,23 +1036,16 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	
 	TradeTime=TradeTime2/10000*1800 + (TradeTime2%10000)/100*30+(TradeTime2%100)/2;
 
-	char temp[10] ;
-	memset( temp, 0, sizeof(temp) ) ;
-	temp[0]	= pHead->btGroupCode ;
-	memcpy( temp+1, pHead->arItemCode, 8 ) ;
-// wendy	::PostMessage(hWnd, WM_INSERTITEM, 0, (LPARAM)temp);
-//	::SendMessage(hWnd, WM_INSERTITEM, 0, (LPARAM)temp); 
-	//static int iii =0;
-//	if( (strstr(temp,"HIFC")!=NULL || strstr(temp,"00001")!=NULL || strstr(temp,"00700")!=NULL))
-	{
-		sprintf(str,"%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
-			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
-//	wendy	Write(str);			
-	}
-// wendy	::PostMessage(hWnd, WM_INSERTDATA, 0,(LPARAM)&str); 
-//	::SendMessage(hWnd, WM_INSERTDATA, 0,(LPARAM)&str); 
-	TRACE( "%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, TyadeType:%c, BrokerNo:%d\r\n", 
-			temp, TradeTime,TradeTime2, Key, Price, Quantity, TyadeType, BrokerNo ) ;
+//	char temp[10] ;
+//	memset( temp, 0, sizeof(temp) ) ;
+//	temp[0]	= pHead->btGroupCode ;
+//	memcpy( temp+1, pHead->arItemCode, 8 ) ;
+//	{
+//		sprintf(str,"%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
+//			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
+//	}
+
+	mCListDataFrame.AddTail(*pHead);
 
 	memcpy(mFrame_e.arItemCode,(char *)&( pHead->arItemCode[0]),sizeof(char)*8);
 	memcpy(&(mFrame_e.btGroupCode),&(pHead->btGroupCode),1);
@@ -1225,6 +1067,45 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	mFrame_e.byTmp = byTmp;
 	
 	mCListFrame_e.AddTail(*pFrame_e);
+	if (0)
+	{
+
+		CString CStrItemCode_log;
+		char CStrItemCode[10];
+		memset( CStrItemCode, 0, sizeof(CStrItemCode) ) ;
+		memcpy(CStrItemCode,(char *)&(mFrame_e.arItemCode[0]),sizeof(char)*8);
+		CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+		
+		CString Cstrdwval;
+		Cstrdwval.Format("dwval:%d,",mFrame_e.dwVal);
+		
+		CString CstrBrokerNo;
+		CstrBrokerNo.Format("BrokerNo:%d,",mFrame_e.BrokerNo);
+		
+		CString CstrTradeTime;
+		CstrTradeTime.Format("Time:%d,",mFrame_e.TradeTime);
+		
+		CString CstrTradeTime2;
+		CstrTradeTime2.Format("Time2:%d,",mFrame_e.TradeTime2);		
+		
+		CString CstrKey;
+		CstrKey.Format("Key:%d,",mFrame_e.Key);
+		
+		
+		CString CstrPrice;
+		CstrPrice.Format("Price:%f,",mFrame_e.Price);
+		
+		
+		CString CstrQuantity;
+		CstrQuantity.Format("Quantity:%d,",mFrame_e.Quantity);
+		
+		
+		CString CstrTradeType;
+		CstrTradeType.Format("TradeType:%d",mFrame_e.TyadeType);
+		
+		s_eLog = CStrItemCode_log + Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
+		w_InofLog.Log(s_eLog);
+	}
 
 	for(i = 0; i < bySendNum-1; i ++)
 	{
@@ -1270,18 +1151,14 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 			nOffsetData++;
 		}
 
-	//	char temp[10] ;
-		memset( temp, 0, sizeof(temp) ) ;
-		temp[0] = pHead->btGroupCode ;
-		memcpy( temp+1, pHead->arItemCode, 8 ) ;
-	//	::SendMessage(hWnd, WM_INSERTITEM, 0,(LPARAM)temp); 
-		TRACE( "%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, TyadeType:%c, BrokerNo:%d\r\n", 
-			temp, TradeTime,TradeTime2, Key, Price, Quantity, TyadeType, BrokerNo ) ;
-		sprintf(str,"%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
-			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
-// wendy		Write(str);	
-// wendy		::PostMessage(hWnd, WM_INSERTDATA, 0,(LPARAM)&str); 
-	//	::SendMessage(hWnd, WM_INSERTDATA, 0,(LPARAM)&str); 	
+//		memset( temp, 0, sizeof(temp) ) ;
+//		temp[0] = pHead->btGroupCode ;
+//		memcpy( temp+1, pHead->arItemCode, 8 ) ;
+//		TRACE( "%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, TyadeType:%c, BrokerNo:%d\r\n", 
+//			temp, TradeTime,TradeTime2, Key, Price, Quantity, TyadeType, BrokerNo ) ;
+//		sprintf(str,"%s, tradeticker-- TickTime:%d %d, key: %u, price:%.4f, share:%d, total:%d, BrokerNo:%d\r\n", 
+//			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
+
 
 	memcpy(mFrame_e.arItemCode,(char *)&( pHead->arItemCode[0]),sizeof(char)*8);
 	memcpy(&(mFrame_e.btGroupCode),&(pHead->btGroupCode),1);

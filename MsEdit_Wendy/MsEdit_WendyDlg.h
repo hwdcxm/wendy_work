@@ -64,7 +64,6 @@ protected:
 	afx_msg void OnDelfile();
 	afx_msg void OnRead();
 	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnWRITELog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
