@@ -34,15 +34,15 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 	m_strEditCell = _T("");
 	//}}AFX_DATA_INIT
 
-	DataCount_bak = 1;
-	DataCount = 0;
-	ListIndex = 0;
-	Datainterval = 1;
+	//DataCount_bak = 1;
+	TotalRecord = 0;
+	GetRecord = 0;
+	RecordInterval = 1;
 
-	ListIndex_bak = 0;
+	//ListIndex_bak = 0;
 
-	GetIndex = 0;
-	GetIndex_bak = 0;
+	SearchRecord = 0;
+	SearchRecord_bak = 0;
 	
 	//memset(&CStrnTransDataLength,0,sizeof(CString));
 	//memset(&CStrpTransData,0,sizeof(CString));
@@ -397,18 +397,20 @@ BOOL CShowData::OnInitDialog()
 	if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))==0)
 	{
 		m_list_data.InsertColumn(2,"Key", LVCFMT_LEFT, 70); // nLength Key
+		TotalRecord = mCListFrame_e.GetCount();
 	}
 	else
 	{
 		m_list_data.InsertColumn(2,"Length", LVCFMT_LEFT, 70); // nLength Key
+		TotalRecord =mCListDataFrame.GetCount();
 	}
 	
 #if 1  // wendy test
 	SetTimer( 1, 1000, NULL ) ;
 
-	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-	StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+	//frame_e_count = mCListFrame_e.GetCount();
+	//DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
+	StatusBar_fileinfo.Format("GetRecord=%ld,SearchRecord=%ld,TotalRecord=%ld",GetRecord,SearchRecord,TotalRecord);
 	m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 	
 	WIN32_FIND_DATA fileInfo;
@@ -565,11 +567,6 @@ void CShowData::OnMenuitemCopy()
 void CShowData::OnBtnTimer() 
 {
 	// TODO: Add your control notification handler code here
-	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-	StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-	m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
-
 	static BOOL entimer = true;
 	if (entimer)
 	{
@@ -708,7 +705,6 @@ void CShowData::OnWriteSearch()
 			if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
 			{
 
-				//Ê±¼ä£¬key £¬price£¬ quantity £¬tradetype
 				mIndexNo ++;
 				CString CstrIndexNo;
 				CstrIndexNo.Format("No:%ld,",mIndexNo);
@@ -767,31 +763,23 @@ int CShowData::ListSTLFrame_eToListCtrl(CListFrame_e &mpFrame, CListCtrl &mp_lis
 	m_lock.Lock();
 	if (InitClistGetHead == FALSE)
 	{
-		ps = mCListFrame_e.GetHeadPosition();  // wendy
+		ps = mCListFrame_e.GetHeadPosition();
 		InitClistGetHead = TRUE;
 	}
 	
-	frame_e_count = mCListFrame_e.GetCount();
-	DataCount= mCListFrame_e.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-	ListIndex = m_list_data.GetItemCount();
-	int HandlDataCount = DataCount; // - DataCount_bak;
+	TotalRecord = mCListFrame_e.GetCount();
+	GetRecord = m_list_data.GetItemCount();
 	
-	Datainterval = HandlDataCount / 10000;
-	if (Datainterval <= 0) 
+	RecordInterval = TotalRecord / 10000;
+	if (RecordInterval <= 0) 
 	{
-		Datainterval = 100;
+		RecordInterval = 100;
 	}
 	
-	
-	ListIndex_bak = ListIndex;
-	
-	// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
-	// ps = mCListDataFrame.GetHeadPosition()
-	for(int i=0; (ps && i<1000) ; mCListFrame_e.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+	for(int i=0; (ps && i<1000) ; mCListFrame_e.GetNext(ps)) 
 	{
 		
 		mFrame_e = mCListFrame_e.GetAt(ps);
-		//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
 		if (op_TransCode_e(&mFrame_e)&&op_item_e(&mFrame_e)&&op_time_e(&mFrame_e))
 		{
 			StructFrame_eToListCtrl(mFrame_e,m_list_data);
@@ -802,51 +790,45 @@ int CShowData::ListSTLFrame_eToListCtrl(CListFrame_e &mpFrame, CListCtrl &mp_lis
 		{
 			
 			
-			//GetIndex = GetIndex + Datainterval*100;
 			time_t t;
-			srand((unsigned) time(&t));
-			//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
-			
-			GetIndex = GetIndex + rand()%100;
+			srand((unsigned) time(&t));		
+			SearchRecord = SearchRecord + rand()%100;
 			if (i>=100)
 			{
-				GetIndex = DataCount;
+				SearchRecord = TotalRecord;
 			}
 			
-			if (GetIndex >= DataCount)
+			if (SearchRecord >= TotalRecord)
 			{
-				GetIndex = DataCount-1;
-				DataCount = mCListFrame_e.GetCount();
+				SearchRecord = TotalRecord-1;
+				TotalRecord = mCListFrame_e.GetCount();
 			}
-			ps = mCListFrame_e.FindIndex(GetIndex);
+			ps = mCListFrame_e.FindIndex(SearchRecord);
 			
 		}
 		
-		GetIndex ++;
-		if (GetIndex >= DataCount)
+		SearchRecord ++;
+		if (SearchRecord >= TotalRecord)
 		{
-			GetIndex = DataCount;
+			SearchRecord = TotalRecord;
 		}
 	}
 	
-	DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
-	
-	if (GetIndex < DataCount)
+	if (SearchRecord < TotalRecord)
 	{
-		if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
+		if (SearchRecord_bak == SearchRecord) // Terminate Loop that at sometime can not stop
 		{
-			TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
-			GetIndex ++;
-			if (GetIndex >= DataCount)
+			TRACE("SetTimer But SearchRecord_bak == SearchRecord...\n");
+			SearchRecord ++;
+			if (SearchRecord >= TotalRecord)
 			{
-				GetIndex = DataCount;
+				SearchRecord = TotalRecord;
 			}
 		}
 		
-		GetIndex_bak = GetIndex;
+		SearchRecord_bak = SearchRecord;
 		static int search = 0;
-		SetTimer( 1, 30, NULL ) ;
-		//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		//TRACE("SetTimer GetRecord=%d,SearchRecord=%d,TotalRecord=%ld,RecordInterval=%ld\n",GetRecord,SearchRecord,TotalRecord,RecordInterval);
 		strsearch = "Search";
 		for(int j =0; j < search; j++)
 		{
@@ -865,19 +847,20 @@ int CShowData::ListSTLFrame_eToListCtrl(CListFrame_e &mpFrame, CListCtrl &mp_lis
 			search = 0;
 		}
 		
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-		m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
+		StatusBar_fileinfo.Format("GetRecord=%d,SearchRecord=%d,TotalRecord=%ld   ",GetRecord,SearchRecord,TotalRecord);
+		m_StatusBar.SetText(StatusBar_fileinfo+strsearch, 0, 0);
 		
 		if (enable_timer ==  false)
 		{
 			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
 			enable_timer = true;
 		}
+		SetTimer( 1, 30, NULL ) ;
 	}
 	else
 	{
-		TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		TRACE("No SetTimer GetRecord=%d,SearchRecord=%d,TotalRecord=%ld,RecordInterval=%ld\n",GetRecord,SearchRecord,TotalRecord,RecordInterval);
+		StatusBar_fileinfo.Format("GetRecord=%d,SearchRecord=%d,TotalRecord=%ld",GetRecord,SearchRecord,TotalRecord);
 		m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 		
 		enable_timer = false;
@@ -905,31 +888,23 @@ int CShowData::ListSTLDataFrameToListCtr(CListDataFrame &mpCListDataFrame, CList
 	m_lock.Lock();
 	if (InitClistGetHead == FALSE)
 	{
-		ps = mCListDataFrame.GetHeadPosition();  // wendy
+		ps = mCListDataFrame.GetHeadPosition();
 		InitClistGetHead = TRUE;
 	}
 	
-	frame_e_count = mCListDataFrame.GetCount();
-	DataCount= mCListDataFrame.GetCount();  //mCArrayItemDataFrame.GetSize();  //m_list_data.GetItemCount(); //
-	ListIndex = m_list_data.GetItemCount();
-	int HandlDataCount = DataCount; // - DataCount_bak;
+	TotalRecord= mCListDataFrame.GetCount();
+	GetRecord = m_list_data.GetItemCount();
 	
-	Datainterval = HandlDataCount / 10000;
-	if (Datainterval <= 0) 
+	RecordInterval = TotalRecord / 10000;
+	if (RecordInterval <= 0) 
 	{
-		Datainterval = 100;
+		RecordInterval = 100;
 	}
 	
-	
-	ListIndex_bak = ListIndex;
-	
-	// FindIndex(GetIndex) && ListIndex < ListIndex_bak+100  ps = mCListDataFrame.FindIndex(GetIndex)
-	// ps = mCListDataFrame.GetHeadPosition()
-	for(int i=0; (ps && i<1000) ; mCListDataFrame.GetNext(ps))  //mCListDataFrame.GetNext(ps)
+	for(int i=0; (ps && i<1000) ; mCListDataFrame.GetNext(ps))
 	{
 		
 		mTTDataFrame = mCListDataFrame.GetAt(ps);
-		//if (mStFrame.btTransCode == pME_WD->m_TransCode)  //(strncmp(mStFrame.btTransCode,pME_WD->m_TransCode,1) == 0) (mStFrame.btTransCode == 'e') 
 		if (op_TransCode(&mTTDataFrame)&&op_item(&mTTDataFrame)&&op_time(&mTTDataFrame))
 		{
 			StructTTDDataFrameToListCtrl(mTTDataFrame,m_list_data);
@@ -938,53 +913,48 @@ int CShowData::ListSTLDataFrameToListCtr(CListDataFrame &mpCListDataFrame, CList
 		
 		if (noselitem && noselcode && noseltime)
 		{
-			
-			
-			//GetIndex = GetIndex + Datainterval*100;
 			time_t t;
 			srand((unsigned) time(&t));
-			//GetIndex = GetIndex + rand()%Datainterval;  // Datainterval  100
 			
-			GetIndex = GetIndex + rand()%100;
+			SearchRecord = SearchRecord + rand()%100;
 			if (i>=100)
 			{
-				GetIndex = DataCount;
+				SearchRecord = TotalRecord;
 			}
 			
-			if (GetIndex >= DataCount)
+			if (SearchRecord >= TotalRecord)
 			{
-				GetIndex = DataCount-1;
-				DataCount = mCListDataFrame.GetCount();
+				SearchRecord = TotalRecord-1;
+				TotalRecord = mCListDataFrame.GetCount();
 			}
-			ps = mCListDataFrame.FindIndex(GetIndex);
+			ps = mCListDataFrame.FindIndex(SearchRecord);
 			
 		}
 		
-		GetIndex ++;
-		if (GetIndex >= DataCount)
+		SearchRecord ++;
+		if (SearchRecord >= TotalRecord)
 		{
-			GetIndex = DataCount;
+			SearchRecord = TotalRecord;
 		}
 	}
 	
-	DataCount_bak = DataCount;  //mCArrayItemDataFrame.GetSize(); m_list_data.GetItemCount();
 	
-	if (GetIndex < DataCount)
+	if (SearchRecord < TotalRecord)
 	{
-		if (GetIndex_bak == GetIndex) // Terminate Loop that at sometime can not stop
+		if (SearchRecord_bak == SearchRecord) // Terminate Loop that at sometime can not stop
 		{
-			TRACE("SetTimer But GetIndex_bak == GetIndex...\n");
-			GetIndex ++;
-			if (GetIndex >= DataCount)
+			TRACE("SetTimer But SearchRecord_bak == SearchRecord...\n");
+			SearchRecord ++;
+			if (SearchRecord >= TotalRecord)
 			{
-				GetIndex = DataCount;
+				SearchRecord = TotalRecord;
 			}
 		}
 		
-		GetIndex_bak = GetIndex;
+		SearchRecord_bak = SearchRecord;
 		static int search = 0;
 		SetTimer( 1, 30, NULL ) ;
-		//TRACE("SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
+		//TRACE("SetTimer GetRecord=%d,SearchRecord=%d,TotalRecord=%ld,RecordInterval=%ld\n",GetRecord,SearchRecord,TotalRecord,RecordInterval);
 		strsearch = "Search";
 		for(int j =0; j < search; j++)
 		{
@@ -1003,19 +973,20 @@ int CShowData::ListSTLDataFrameToListCtr(CListDataFrame &mpCListDataFrame, CList
 			search = 0;
 		}
 		
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
-		m_StatusBar.SetText(strsearch+StatusBar_fileinfo, 0, 0);
+		StatusBar_fileinfo.Format("GetRecord=%d,SearchRecord=%d,TotalRecord=%ld   ",GetRecord,SearchRecord,TotalRecord);
+		m_StatusBar.SetText(StatusBar_fileinfo+strsearch, 0, 0);
 		
 		if (enable_timer ==  false)
 		{
 			GetDlgItem(IDC_BTN_TIMER)->EnableWindow(TRUE);
 			enable_timer = true;
 		}
+		SetTimer( 1, 30, NULL ) ;
 	}
 	else
 	{
-		TRACE("No SetTimer DataCount=%d,Datainterval=%d,ListIndex=%d,GetIndex=%d\n",DataCount,Datainterval,ListIndex,GetIndex);
-		StatusBar_fileinfo.Format("ListIndex=%d,GetIndex=%d,DataRecord=%d,Frame_e=%d",ListIndex,GetIndex,DataCount,frame_e_count);
+		TRACE("No SetTimer GetRecord=%d,SearchRecord=%d,TotalRecord=%ld,RecordInterval=%ld\n",GetRecord,SearchRecord,TotalRecord,RecordInterval);
+		StatusBar_fileinfo.Format("GetRecord=%d,SearchRecord=%d,TotalRecord=%ld",GetRecord,SearchRecord,TotalRecord);
 		m_StatusBar.SetText(StatusBar_fileinfo, 0, 0);
 		
 		enable_timer = false;
@@ -1058,31 +1029,31 @@ int CShowData::StructFrame_eToListCtrl(_Frame_e &mpFrame_e, CListCtrl &mp_list_d
 	memset(CStrTransCode,0,sizeof(char)*3);
 	
 
-	itoa(ListIndex+1,string,10);
-	mp_list_data.InsertItem(ListIndex,string,0);
+	itoa(GetRecord+1,string,10);
+	mp_list_data.InsertItem(GetRecord,string,0);
 	
 	memcpy(GroupCodeString,&mpFrame_e.btGroupCode,1);
-	mp_list_data.SetItemText(ListIndex,1, GroupCodeString);
+	mp_list_data.SetItemText(GetRecord,1, GroupCodeString);
 	
 	_itoa(mpFrame_e.Key, CStrnKey, 10); // sizeof(int)  4 sizeof(int)*4
-	mp_list_data.SetItemText(ListIndex,2, CStrnKey);
+	mp_list_data.SetItemText(GetRecord,2, CStrnKey);
 
 	
 	CStrlTime.Format("%ld",mpFrame_e.TradeTime2); // wendy lTime
-	mp_list_data.SetItemText(ListIndex,3, CStrlTime);
+	mp_list_data.SetItemText(GetRecord,3, CStrlTime);
 	
 	memcpy(CStrItemCode,(char *)&(mpFrame_e.arItemCode[0]),sizeof(char)*8);
-	mp_list_data.SetItemText(ListIndex,4, CStrItemCode);
+	mp_list_data.SetItemText(GetRecord,4, CStrItemCode);
 	
 	memcpy(CStrTransCode,&(mpFrame_e.btTransCode),1);
-	mp_list_data.SetItemText(ListIndex,5, CStrTransCode);
+	mp_list_data.SetItemText(GetRecord,5, CStrTransCode);
 	
 	CStrnTransDataLength.Format("%d",mpFrame_e.nTransDataLength);
-	mp_list_data.SetItemText(ListIndex,6, CStrnTransDataLength);
+	mp_list_data.SetItemText(GetRecord,6, CStrnTransDataLength);
 	
 	CStrpTransData.Format("0x%ld",(long)mpFrame_e.pTransData);
-	mp_list_data.SetItemText(ListIndex,7, CStrpTransData);
-	ListIndex++;
+	mp_list_data.SetItemText(GetRecord,7, CStrpTransData);
+	GetRecord++;
 	
 	return 0;
 }
@@ -1107,30 +1078,30 @@ int CShowData::StructTTDDataFrameToListCtrl(_tagTTDataFrame &mTTDataFrame, CList
 	memset(CStrTransCode,0,sizeof(char)*3);
 	
 
-	itoa(ListIndex+1,string,10);
-	mp_list_data.InsertItem(ListIndex,string,0);
+	itoa(GetRecord+1,string,10);
+	mp_list_data.InsertItem(GetRecord,string,0);
 	
 	memcpy(GroupCodeString,&mTTDataFrame.btGroupCode,1);
-	mp_list_data.SetItemText(ListIndex,1, GroupCodeString);
+	mp_list_data.SetItemText(GetRecord,1, GroupCodeString);
 	
 	_itoa(mTTDataFrame.nLength, CStrnLength,10); // sizeof(int)  4
-	mp_list_data.SetItemText(ListIndex,2, CStrnLength);
+	mp_list_data.SetItemText(GetRecord,2, CStrnLength);
 	
 	CStrlTime.Format("%ld",mTTDataFrame.lTime); // wendy lTime
-	mp_list_data.SetItemText(ListIndex,3, CStrlTime);
+	mp_list_data.SetItemText(GetRecord,3, CStrlTime);
 	
 	memcpy(CStrItemCode,(char *)&(mTTDataFrame.arItemCode[0]),sizeof(char)*8);
-	mp_list_data.SetItemText(ListIndex,4, CStrItemCode);
+	mp_list_data.SetItemText(GetRecord,4, CStrItemCode);
 	
 	memcpy(CStrTransCode,&(mTTDataFrame.btTransCode),1);
-	mp_list_data.SetItemText(ListIndex,5, CStrTransCode);
+	mp_list_data.SetItemText(GetRecord,5, CStrTransCode);
 	
 	CStrnTransDataLength.Format("%d",mTTDataFrame.nTransDataLength);
-	mp_list_data.SetItemText(ListIndex,6, CStrnTransDataLength);
+	mp_list_data.SetItemText(GetRecord,6, CStrnTransDataLength);
 	
 	CStrpTransData.Format("0x%ld",(long)mTTDataFrame.pTransData);
-	mp_list_data.SetItemText(ListIndex,7, CStrpTransData);
-	ListIndex++;
+	mp_list_data.SetItemText(GetRecord,7, CStrpTransData);
+	GetRecord++;
 	
 	return 0;
 }

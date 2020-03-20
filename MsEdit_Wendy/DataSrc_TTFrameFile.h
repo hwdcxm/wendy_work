@@ -24,7 +24,7 @@ public:
 
 	BOOL Init( CStringArray&  files ,int SleepCount = 0) ;
 
-	int			m_RecDataCount ;
+	DWORD			m_RecDataCount ;
 	
 	CAutoLock		m_lock ;
 

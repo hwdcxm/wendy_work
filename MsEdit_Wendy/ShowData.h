@@ -84,16 +84,21 @@ protected:
 
 	POSITION ps;
 
-	int DataCount_bak;
-	int DataCount;
-	int ListIndex;
-	int Datainterval;
+	//int DataCount_bak;
+	//int DataCount;
+	//int ListIndex;
+	//int Datainterval;
 
-	int frame_e_count;
+	DWORD TotalRecord;
+	DWORD SearchRecord;
+	DWORD SearchRecord_bak;
+	DWORD GetRecord;
 
-	int ListIndex_bak;
-	int GetIndex;
-	int GetIndex_bak;
+	DWORD RecordInterval;
+
+	//int ListIndex_bak;
+	//int GetIndex;
+	//int GetIndex_bak;
 
 	BOOL InitClistGetHead;
 
