@@ -34,9 +34,9 @@ Master::~Master()
 
 void Master::Play() 
 {
-	if( m_pDataSrc_TTFrameFile!=NULL )
+	//if( m_pDataSrc_TTFrameFile!=NULL )
 	{
-		m_pDataSrc_TTFrameFile->Play() ;
+		m_DataSrc_TTFrameFile.Play() ;
 	}
 //	m_procTTFrame.Play() ;
 }

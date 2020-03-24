@@ -416,10 +416,10 @@ BOOL CShowData::OnInitDialog()
 	WIN32_FIND_DATA fileInfo;
 	HANDLE hFind;
 	
-	for( int i=0;i<g_Master.m_pDataSrc_TTFrameFile->m_files.GetSize();i++ )
+	for( int i=0;i<g_Master.m_DataSrc_TTFrameFile.m_files.GetSize();i++ )
 	{
 		DWORD fileSize;
-		hFind = FindFirstFile(g_Master.m_pDataSrc_TTFrameFile->m_files[i] ,&fileInfo);
+		hFind = FindFirstFile(g_Master.m_DataSrc_TTFrameFile.m_files[i] ,&fileInfo);
 		if(hFind != INVALID_HANDLE_VALUE)
 		{
 			fileSize = fileInfo.nFileSizeLow;

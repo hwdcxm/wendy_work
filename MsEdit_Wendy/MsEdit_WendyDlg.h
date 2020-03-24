@@ -22,6 +22,7 @@ class CMsEdit_WendyDlg : public CDialog
 {
 // Construction
 public:
+	DWORD GetFileSizeMB(CListBox &mClistBox);
 	int SetBtnReadOrSearch(int Flag=0);
 	CMsEdit_WendyDlg(CWnd* pParent = NULL);	// standard constructor
 

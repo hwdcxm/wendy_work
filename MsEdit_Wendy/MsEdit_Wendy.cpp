@@ -36,6 +36,8 @@ CMsEdit_WendyApp::CMsEdit_WendyApp()
 
 CMsEdit_WendyApp theApp;
 
+CMsEdit_WendyDlg* gpMsEdit_WendyDlg=NULL;
+
 /////////////////////////////////////////////////////////////////////////////
 // CMsEdit_WendyApp initialization
 
@@ -56,6 +58,7 @@ BOOL CMsEdit_WendyApp::InitInstance()
 
 	CMsEdit_WendyDlg dlg;
 	m_pMainWnd = &dlg;
+	gpMsEdit_WendyDlg = &dlg;
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{

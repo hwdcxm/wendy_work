@@ -20,6 +20,7 @@ CString s_Log;
 CString s_eLog;
 CProgressDlg *g_pProDlg;
 DWORD g_fileSize;
+DWORD g_fileSizeMB;
 
 extern CListDataFrame mCListDataFrame;
 extern CListFrame_e mCListFrame_e;
@@ -245,8 +246,6 @@ void CMsEdit_WendyDlg::OnAddfile()
 
 	s_Log.Format("OnAddfile FileName = %s",cstrFileName);
 
-
-
 	SetBtnReadOrSearch(1);
 }
 
@@ -328,16 +327,21 @@ void CMsEdit_WendyDlg::OnRead()
 			}
 		}
 	}
+
+	if (g_fileSizeMB >=500)
+	{
+		m_needreadfs = 1;
+	}
 	
 	TRACE("m_needreadfs=%d. \n",m_needreadfs);
 
 	if (m_needreadfs || !mCListDataFrame.GetCount())	//mCListFrame_e
 	{
-		g_fileSize = 0;
+		//g_fileSize = 0;
 		if(g_Master.m_MSCEType != MSCE_TYPE_PROXY)
 		{
-			g_Master.m_pDataSrc_TTFrameFile = new CDataSrc_TTFrameFile() ;
-			g_Master.m_pDataSrc_TTFrameFile->m_pUnpacker=&g_Master.m_unpakcer_TTFrame;
+			//g_Master.m_pDataSrc_TTFrameFile = new CDataSrc_TTFrameFile() ;
+			g_Master.m_DataSrc_TTFrameFile.m_pUnpacker=&g_Master.m_unpakcer_TTFrame;
 			//g_Master.m_pDataSrc_TTFrameFile->m_pCacheStream = &g_Master.m_cacheStream_TTFrame ;
 			
 			//CStringArray files ;
@@ -352,7 +356,7 @@ void CMsEdit_WendyDlg::OnRead()
 				files.Add( szTemp ) ;
 				memset(szTemp,0,sizeof(szTemp));
 			}			
-			g_Master.m_pDataSrc_TTFrameFile->Init( files,g_Master.m_itemdesk.delay );
+			g_Master.m_DataSrc_TTFrameFile.Init( files,g_Master.m_itemdesk.delay );
 		}
 		
 		Sleep(1000);
@@ -372,20 +376,6 @@ void CMsEdit_WendyDlg::OnRead()
 			mCListFrame_e.RemoveAll();
 		}
 
-		WIN32_FIND_DATA fileInfo;
-		HANDLE hFind;
-		for( int i=0;i<g_Master.m_pDataSrc_TTFrameFile->m_files.GetSize();i++ )
-		{
-			DWORD fileSize;
-			hFind = FindFirstFile(g_Master.m_pDataSrc_TTFrameFile->m_files[i] ,&fileInfo);
-			if(hFind != INVALID_HANDLE_VALUE)
-			{
-				fileSize = fileInfo.nFileSizeLow;
-			}
-			FindClose(hFind);
-			g_fileSize = g_fileSize + fileSize;		
-		}
-
 		ResetEvent(g_hEvent);
 
 		pShowData =  new CShowData;
@@ -398,7 +388,7 @@ void CMsEdit_WendyDlg::OnRead()
 
 		TRACE("Read Files.... \n");
 		g_Master.Play();
-		if (m_needreadfs == 1)
+		if (m_needreadfs == 1 && g_fileSizeMB < 500)
 		{
 			GetDlgItem(IDC_READ)->SetWindowText("(Search)");
 		}
@@ -434,11 +424,11 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 			mCListFrame_e.RemoveAll();
 		}
 		
-		if (g_Master.m_pDataSrc_TTFrameFile)
-		{
-			delete g_Master.m_pDataSrc_TTFrameFile;
-			g_Master.m_pDataSrc_TTFrameFile = NULL;
-		}
+		//if (g_Master.m_pDataSrc_TTFrameFile)
+		//{
+		//	delete g_Master.m_pDataSrc_TTFrameFile;
+		//	g_Master.m_pDataSrc_TTFrameFile = NULL;
+		//}
 
 		KillTimer(1);
 	}
@@ -514,12 +504,10 @@ void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent)
 
 		 GlobalMemoryStatus (&stat);
 		 percentVirMem = (stat.dwAvailVirtual/1024)*100 /(stat.dwTotalVirtual/1024);
-		 TRACE("CMsEdit_WendyDlg %ld percent of memory is in use.\n", stat.dwMemoryLoad);
-		 TRACE ("CMsEdit_WendyDlg There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
-		 
+
 		  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10)
 			{
-			 TRACE("Because pre_percent(%d) > Now(%d), So Do Something..? \n", pre_percent,stat.dwMemoryLoad);
+			 TRACE("CMsEdit_WendyDlg...Because pre_percent(%d) > Now(%d), So Do Something..? \n", pre_percent,stat.dwMemoryLoad);
 			}
 		pre_percent = stat.dwMemoryLoad;
 		
@@ -535,30 +523,39 @@ int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 	int m_count = m_filelist.GetCount();
 	int m_precount = pre_files.GetSize();
 
-	if (m_count != m_precount)
+	if (GetFileSizeMB(m_filelist) > 500)
 	{
 		m_needreadfs = 1;
 	}
-	else if (m_precount > 0)
+	else
 	{
-		for (int i=0;i<pre_files.GetSize();i++)
+		if (m_count != m_precount)
 		{
-			if (m_filelist.FindString(-1,pre_files.GetAt(i))>=0)  // wendy nStartAfter=0 LB_ERR
+			m_needreadfs = 1;
+		}
+		else if (m_precount > 0)
+		{
+			for (int i=0;i<pre_files.GetSize();i++)
 			{
-				TRACE("Already read this file(%d). \n",i+1);
-			}
-			else
-			{
-				m_needreadfs = 1;
+				if (m_filelist.FindString(-1,pre_files.GetAt(i))>=0)  // wendy nStartAfter=0 LB_ERR
+				{
+					TRACE("Already read this file(%d). \n",i+1);
+				}
+				else
+				{
+					m_needreadfs = 1;
+				}
 			}
 		}
-	}
-	else if (m_precount == 0)
-	{
-		m_needreadfs = 1;
+		else if (m_precount == 0)
+		{
+			m_needreadfs = 1;
+		}
 	}
 	
 	TRACE("SetBtnReadOrSearch m_needreadfs=%d. \n",m_needreadfs);
+
+
 
 	if (m_needreadfs == 1)
 	{
@@ -570,5 +567,45 @@ int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 	}
 
 	return m_needreadfs;
+}
+
+
+DWORD CMsEdit_WendyDlg::GetFileSizeMB(CListBox &mClistBox)
+{
+	CStringArray files ;
+	char szTemp[256];
+	int i = 0;
+	int m_count = mClistBox.GetCount();
+	g_fileSize = 0;
+
+	for(i=0;i<m_count;i++ )
+	{
+		memset(szTemp,0,sizeof(szTemp));
+		mClistBox.GetText(i,szTemp);
+		if( strlen(szTemp)<=0 )
+		{
+			break ;
+		}
+		files.Add( szTemp ) ;
+	}
+
+	WIN32_FIND_DATA fileInfo;
+	HANDLE hFind;
+	
+	for(i=0;i<files.GetSize();i++ )
+	{
+		DWORD fileSize = 0;
+		hFind = FindFirstFile(files[i] ,&fileInfo);
+		if(hFind != INVALID_HANDLE_VALUE)
+		{
+			fileSize = fileInfo.nFileSizeLow;
+		}
+		FindClose(hFind);
+		g_fileSize = g_fileSize + fileSize;		
+	}
+
+	g_fileSizeMB = g_fileSize/1024/1024;
+			
+	return g_fileSizeMB;
 }
 

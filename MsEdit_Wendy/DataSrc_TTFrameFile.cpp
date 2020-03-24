@@ -15,6 +15,7 @@ extern CString s_Log;
 
 extern CProgressDlg *g_pProDlg;
 extern DWORD g_fileSize;
+extern DWORD BigFile_NoSelectGetTotalRecord;
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -48,10 +49,6 @@ BOOL CDataSrc_TTFrameFile::Play()
 
 }
 
-#define DIV 1024
-char *divisor = "K";
-#define WIDTH_MY 7
-
 BOOL		g_SendFilePause = FALSE;
 #define FILE_RATE	(10*1024)
 #include <io.h>
@@ -69,6 +66,7 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	int nLastSendMsg = 0;
 
 	MEMORYSTATUS stat;
+	BigFile_NoSelectGetTotalRecord = 0;
 	
 	for( int i=0;i<m_files.GetSize() && m_nThreadStatu>0;i++ )
 	{
@@ -123,10 +121,14 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 					 TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
 					 TRACE ("There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
 					 
-					  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10)
+					  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10 || BigFile_NoSelectGetTotalRecord >=200000)
 					  	{
 					  		m_nThreadStatu = -1 ;
 							TRACE("Because pre_percent(%d) > Now(%d), So EndThread m_nThreadStatu = -1.\n", pre_percent,stat.dwMemoryLoad);
+							if (BigFile_NoSelectGetTotalRecord >=200000)
+							{
+								TRACE("BigFile_NoSelectGetTotalRecord(>=200000)=%d, So EndThread m_nThreadStatu = -1.\n", BigFile_NoSelectGetTotalRecord);
+							}
 					  	}
 					  pre_percent = stat.dwMemoryLoad;
 					  

@@ -7,6 +7,7 @@
 #include "Unpacker_TTFrame.h"
 #include "Master.h"
 #include "ShowData.h"
+#include "MsEdit_WendyDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -24,6 +25,11 @@ extern CListFrame_e mCListFrame_e;
 #include "log.h"
 extern CString s_eLog;
 extern CLog w_InofLog;
+
+extern DWORD g_fileSizeMB;
+extern CMsEdit_WendyDlg* gpMsEdit_WendyDlg;
+DWORD BigFile_NoSelectGetTotalRecord = 0;
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -859,14 +865,40 @@ memcpy(temp,buff,sizeof(buff));
 						//mCArrayItemDataFrame.Add(*pStFrame); // xxx long time
 						//mCListDataFrame.AddTail(*pStFrame);
 						//mCListDataFrame.AddHead(*pStFrame);
-						if (pStFrame->btTransCode == 'e')
-						{
-							HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
-						}
+
+						if (g_fileSizeMB <500)
+							{
+								if (pStFrame->btTransCode == 'e')
+								{
+									HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+								}
+								else
+								{	
+									mCListDataFrame.AddTail(*pStFrame);
+								}
+							}
 						else
-						{	
-							mCListDataFrame.AddTail(*pStFrame);
-						}
+							{
+								if (gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
+									{
+											if (gpMsEdit_WendyDlg->pShowData->noselitem && gpMsEdit_WendyDlg->pShowData->noselcode && gpMsEdit_WendyDlg->pShowData->noseltime)
+											{
+												BigFile_NoSelectGetTotalRecord ++;
+											}
+											else
+											{
+												BigFile_NoSelectGetTotalRecord = 0;
+											}
+										if (pStFrame->btTransCode == 'e')
+										{
+											HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+										}
+										else
+										{	
+											mCListDataFrame.AddTail(*pStFrame);
+										}
+									}
+							}
 						
 						if (0)
 						{			

@@ -39,7 +39,8 @@ public:
 	OutItem m_itemdesk;
 	int			m_MSCEType ;
 
-	CDataSrc_TTFrameFile*	m_pDataSrc_TTFrameFile ;
+	//CDataSrc_TTFrameFile*	m_pDataSrc_TTFrameFile ;
+	CDataSrc_TTFrameFile	m_DataSrc_TTFrameFile ;
 	CUnpacker_TTFrame		m_unpakcer_TTFrame ;
 
 	void Stop();
