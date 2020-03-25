@@ -30,6 +30,10 @@ extern DWORD g_fileSizeMB;
 extern CMsEdit_WendyDlg* gpMsEdit_WendyDlg;
 DWORD BigFile_NoSelectGetTotalRecord = 0;
 
+extern DWORD mBufferMaxMB;
+extern int mCanBuffer;
+
+DWORD ReadGetFrames = 0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -865,8 +869,10 @@ memcpy(temp,buff,sizeof(buff));
 						//mCArrayItemDataFrame.Add(*pStFrame); // xxx long time
 						//mCListDataFrame.AddTail(*pStFrame);
 						//mCListDataFrame.AddHead(*pStFrame);
-
-						if (g_fileSizeMB <500)
+						ReadGetFrames ++;
+				if ( mCanBuffer > 0)
+				{
+						if (g_fileSizeMB <mBufferMaxMB)
 							{
 								if (pStFrame->btTransCode == 'e')
 								{
@@ -899,34 +905,41 @@ memcpy(temp,buff,sizeof(buff));
 										}
 									}
 							}
+				}
 						
-						if (0)
-						{			
-
-							CString CStrItemCode_log;
-							char CStrItemCode[10];
-							memset( CStrItemCode, 0, sizeof(CStrItemCode) ) ;
-							memcpy(CStrItemCode,(char *)&(pStFrame->arItemCode[0]),sizeof(char)*8);
-							CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
-							
-							CString Cstrdwval;
-							Cstrdwval.Format("Group:%c,",pStFrame->btGroupCode);
-							
-							CString CstrBrokerNo;
-							CstrBrokerNo.Format("Trans:%c,",pStFrame->btTransCode);
-							
-							CString CstrTradeTime;
-							CstrTradeTime.Format("Time:%ld,",pStFrame->lTime);
-							
-							CString CstrTradeTime2;
-							CstrTradeTime2.Format("Length:%d,",pStFrame->nLength);		
-							
-							CString CstrKey;
-							CstrKey.Format("DataLength:%d,",pStFrame->nTransDataLength);
-		
-							
-							s_eLog = CStrItemCode_log + Cstrdwval + CstrBrokerNo + CstrTradeTime + CstrTradeTime2 +CstrKey;
-							w_InofLog.Log(s_eLog);
+						else if ( mCanBuffer > -1)
+						{	
+								if (pStFrame->btTransCode == 'e')
+								{
+									HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+								}
+								else if (gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
+								{
+									CString CStrItemCode_log;
+									char CStrItemCode[10];
+									memset( CStrItemCode, 0, sizeof(CStrItemCode) ) ;
+									memcpy(CStrItemCode,(char *)&(pStFrame->arItemCode[0]),sizeof(char)*8);
+									CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+									
+									CString Cstrdwval;
+									Cstrdwval.Format("Group:%c,",pStFrame->btGroupCode);
+									
+									CString CstrBrokerNo;
+									CstrBrokerNo.Format("Trans:%c,",pStFrame->btTransCode);
+									
+									CString CstrTradeTime;
+									CstrTradeTime.Format("Time:%ld,",pStFrame->lTime);
+									
+									CString CstrTradeTime2;
+									CstrTradeTime2.Format("Length:%d,",pStFrame->nLength);		
+									
+									CString CstrKey;
+									CstrKey.Format("DataLength:%d,",pStFrame->nTransDataLength);
+				
+									
+									s_eLog = CStrItemCode_log + Cstrdwval + CstrBrokerNo + CstrTradeTime + CstrTradeTime2 +CstrKey;
+									w_InofLog.Log(s_eLog);
+								}
 						}
 													
 					}
@@ -1077,7 +1090,10 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 //			temp, TradeTime,TradeTime2, Key, Price, Quantity, usTotal, BrokerNo);
 //	}
 
-	mCListDataFrame.AddTail(*pHead);
+	if ( mCanBuffer>0)
+	{
+		mCListDataFrame.AddTail(*pHead);
+	}
 
 	memcpy(mFrame_e.arItemCode,(char *)&( pHead->arItemCode[0]),sizeof(char)*8);
 	memcpy(&(mFrame_e.btGroupCode),&(pHead->btGroupCode),1);
@@ -1097,10 +1113,13 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	mFrame_e.TyadeType = TyadeType;
 	mFrame_e.lTemp = lTemp;
 	mFrame_e.byTmp = byTmp;
-	
-	mCListFrame_e.AddTail(*pFrame_e);
-	if (0)
-	{
+
+	if ( mCanBuffer>0)
+		{
+			mCListFrame_e.AddTail(*pFrame_e);
+		}
+	else if (gpMsEdit_WendyDlg->pShowData->op_TransCode_e(&mFrame_e)&&gpMsEdit_WendyDlg->pShowData->op_item_e(&mFrame_e)&&gpMsEdit_WendyDlg->pShowData->op_time_e(&mFrame_e))
+		{
 
 		CString CStrItemCode_log;
 		char CStrItemCode[10];
@@ -1137,7 +1156,7 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 		
 		s_eLog = CStrItemCode_log + Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
 		w_InofLog.Log(s_eLog);
-	}
+		}
 
 	for(i = 0; i < bySendNum-1; i ++)
 	{
@@ -1211,7 +1230,50 @@ void CUnpacker_TTFrame::HandleFrame_e(BYTE * buff,WORD Len)
 	mFrame_e.lTemp = lTemp;
 	mFrame_e.byTmp = byTmp;
 	
-	mCListFrame_e.AddTail(*pFrame_e);
+	//mCListFrame_e.AddTail(*pFrame_e);
+		if ( mCanBuffer>0)
+		{
+			mCListFrame_e.AddTail(*pFrame_e);
+		}
+	else if (gpMsEdit_WendyDlg->pShowData->op_TransCode_e(&mFrame_e)&&gpMsEdit_WendyDlg->pShowData->op_item_e(&mFrame_e)&&gpMsEdit_WendyDlg->pShowData->op_time_e(&mFrame_e))
+		{
+
+		CString CStrItemCode_log;
+		char CStrItemCode[10];
+		memset( CStrItemCode, 0, sizeof(CStrItemCode) ) ;
+		memcpy(CStrItemCode,(char *)&(mFrame_e.arItemCode[0]),sizeof(char)*8);
+		CStrItemCode_log.Format("ItemCode:%s,",CStrItemCode);
+		
+		CString Cstrdwval;
+		Cstrdwval.Format("dwval:%d,",mFrame_e.dwVal);
+		
+		CString CstrBrokerNo;
+		CstrBrokerNo.Format("BrokerNo:%d,",mFrame_e.BrokerNo);
+		
+		CString CstrTradeTime;
+		CstrTradeTime.Format("Time:%d,",mFrame_e.TradeTime);
+		
+		CString CstrTradeTime2;
+		CstrTradeTime2.Format("Time2:%d,",mFrame_e.TradeTime2);		
+		
+		CString CstrKey;
+		CstrKey.Format("Key:%d,",mFrame_e.Key);
+		
+		
+		CString CstrPrice;
+		CstrPrice.Format("Price:%f,",mFrame_e.Price);
+		
+		
+		CString CstrQuantity;
+		CstrQuantity.Format("Quantity:%d,",mFrame_e.Quantity);
+		
+		
+		CString CstrTradeType;
+		CstrTradeType.Format("TradeType:%d",mFrame_e.TyadeType);
+		
+		s_eLog = CStrItemCode_log + Cstrdwval + CstrTradeTime + CstrTradeTime2 +CstrKey +CstrPrice + CstrQuantity + CstrTradeType;
+		w_InofLog.Log(s_eLog);
+		}
 	}
 }
 

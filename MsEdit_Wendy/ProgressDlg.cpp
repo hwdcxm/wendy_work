@@ -12,6 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 extern DWORD g_fileSize;
+extern Master g_Master;
 
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg dialog
@@ -57,6 +58,10 @@ LRESULT CProgressDlg::OnUpdateProgress( WPARAM wParam, LPARAM lParam )
 	m_progressCtrl.SetPos( SetNum );
 
 	getstr.Format("Read: %d KB",nProgress);
+	if (wParam == 1)
+	{
+		getstr.Format("ReadGetFramesl: %d",nProgress);
+	}
 	m_pStatic_Read->SetWindowText(getstr);
 
 	if( SetNum >= 100 )
@@ -111,4 +116,19 @@ LRESULT CProgressDlg::OnEndDlg(WPARAM wParam, LPARAM lParam)
 {
 	OnClose();
 	return NULL;
+}
+
+void CProgressDlg::OnCancel() 
+{
+	// TODO: Add extra cleanup here
+	g_Master.m_DataSrc_TTFrameFile.m_nThreadStatu = -1;
+	
+	CDialog::OnCancel();
+}
+
+void CProgressDlg::OnOK() 
+{
+	// TODO: Add extra validation here
+	g_Master.m_DataSrc_TTFrameFile.m_nThreadStatu = -1;
+	CDialog::OnOK();
 }

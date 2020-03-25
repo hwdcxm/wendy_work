@@ -52,6 +52,7 @@ CShowData::CShowData(CWnd* pParent /*=NULL*/)
 	m_filesize = 0;
 
 	InitClistGetHead = FALSE;
+	pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
 
 }
 
@@ -392,7 +393,7 @@ BOOL CShowData::OnInitDialog()
 	m_list_data.InsertColumn(6,"DataLength", LVCFMT_LEFT, 90);
 	m_list_data.InsertColumn(7,"TransData", LVCFMT_LEFT, 120);
 
-	pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
+	//pME_WD = (CMsEdit_WendyDlg*)AfxGetMainWnd();
 
 	if (memcmp("e",pME_WD->m_TransCode,sizeof(BYTE))==0)
 	{

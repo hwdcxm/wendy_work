@@ -17,6 +17,11 @@ extern CProgressDlg *g_pProDlg;
 extern DWORD g_fileSize;
 extern DWORD BigFile_NoSelectGetTotalRecord;
 
+extern CMsEdit_WendyDlg* gpMsEdit_WendyDlg;
+extern int mCanBuffer;
+extern DWORD ReadGetFrames;
+
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -67,6 +72,7 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 
 	MEMORYSTATUS stat;
 	BigFile_NoSelectGetTotalRecord = 0;
+	ReadGetFrames = 0;
 	
 	for( int i=0;i<m_files.GetSize() && m_nThreadStatu>0;i++ )
 	{
@@ -99,7 +105,7 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 					ProcRecPackage( buf, readsize ) ;
 
 					m_filesize_read = m_filesize_read + readsize;
-					if ((g_fileSize - m_filesize_read) < 1024)
+					if ((g_fileSize - m_filesize_read) < FILE_RATE +3 )
 					{
 						nLastSendMsg = 1;
 					}
@@ -108,6 +114,11 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 						//Sleep( 100 );
 						m_filesize_send = m_filesize_read / 1024;
 						g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 0, m_filesize_send);
+
+						if ( mCanBuffer < 0 && nLastSendMsg==1 )
+							{
+								g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 1, ReadGetFrames);
+							}
 
 					}
 
@@ -147,7 +158,10 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	}
 //	logstr.Format( "finish ttframe files" );
 	s_Log = s_Log + _T("EndThread DataSrc_TTFrameFile ");
-	g_pProDlg->PostMessage( WM_PROGRESS_END, 0, 123 );
+	if ( mCanBuffer>=0)
+	{
+		g_pProDlg->PostMessage( WM_PROGRESS_END, 0, 123 );
+	}
 //	g_Log.Log(logstr) ;
 //	if ( g_Master.m_itemdesk.transcode!=' ' && g_Master.m_itemdesk.transcode<MAX_PATH )
 //	{
@@ -162,6 +176,12 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	//_endthread();
 	Sleep(1600);
 	SetEvent(g_hEvent);
+
+	if ( mCanBuffer<1)
+	{
+		delete gpMsEdit_WendyDlg->pShowData;
+	}
+
 	return 0;
 }
 

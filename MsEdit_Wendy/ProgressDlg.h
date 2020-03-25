@@ -42,6 +42,8 @@ protected:
 	afx_msg LRESULT OnUpdateProgress( WPARAM wParam, LPARAM lParam );
 	virtual BOOL OnInitDialog();
 	afx_msg void OnClose();
+	virtual void OnCancel();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

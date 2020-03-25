@@ -26,6 +26,10 @@ extern CListDataFrame mCListDataFrame;
 extern CListFrame_e mCListFrame_e;
 CStringArray pre_files ;
 
+// for read Profile.ini value
+int mCanBuffer=1;
+DWORD mBufferMaxMB=500;
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
@@ -161,6 +165,17 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 			TRACE( "ER: Event Data_CListCtr ALREADY_EXISTS ! \n");			
 		} 
 	}
+
+	//读PrivateProfileInt
+	//如果 Key 值没有找到，则返回缺省的值 如果Key值第一个字符不为整数则返回0
+	mCanBuffer =GetPrivateProfileInt("ReadFileMode","CanBuffer",1,".\\Profile.ini"); 
+	mBufferMaxMB =GetPrivateProfileInt("ReadFileMode","BufferMaxMB",500,".\\Profile.ini"); 
+
+	if (mCanBuffer >1)
+		{
+			mBufferMaxMB = 0x0FFFFFFF;
+		}
+	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -328,7 +343,7 @@ void CMsEdit_WendyDlg::OnRead()
 		}
 	}
 
-	if (g_fileSizeMB >=500)
+	if (g_fileSizeMB >=mBufferMaxMB || mCanBuffer < 1)
 	{
 		m_needreadfs = 1;
 	}
@@ -379,8 +394,16 @@ void CMsEdit_WendyDlg::OnRead()
 		ResetEvent(g_hEvent);
 
 		pShowData =  new CShowData;
-		pShowData->Create(IDD_SHOWDATA);
-		pShowData->ShowWindow(SW_SHOW);
+
+		if ( mCanBuffer > 0)
+		{
+			pShowData->Create(IDD_SHOWDATA);
+			pShowData->ShowWindow(SW_SHOW);
+		}
+		else
+			{
+				w_InofLog.EmptyLog();
+			}
 
 		g_pProDlg = new CProgressDlg();
 		g_pProDlg->Create(CProgressDlg::IDD, NULL );
@@ -388,7 +411,7 @@ void CMsEdit_WendyDlg::OnRead()
 
 		TRACE("Read Files.... \n");
 		g_Master.Play();
-		if (m_needreadfs == 1 && g_fileSizeMB < 500)
+		if (m_needreadfs == 1 && g_fileSizeMB < mBufferMaxMB && mCanBuffer > 0)
 		{
 			GetDlgItem(IDC_READ)->SetWindowText("(Search)");
 		}
@@ -396,9 +419,13 @@ void CMsEdit_WendyDlg::OnRead()
 	else
 	{
 		SetEvent(g_hEvent);
+		
 		pShowData =  new CShowData;
-		pShowData->Create(IDD_SHOWDATA);
-		pShowData->ShowWindow(SW_SHOW);
+		if ( mCanBuffer > 0)
+		{
+			pShowData->Create(IDD_SHOWDATA);
+			pShowData->ShowWindow(SW_SHOW);
+		}
 	}
 
 #endif // wendy test
@@ -523,7 +550,7 @@ int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 	int m_count = m_filelist.GetCount();
 	int m_precount = pre_files.GetSize();
 
-	if (GetFileSizeMB(m_filelist) > 500)
+	if (GetFileSizeMB(m_filelist) >= mBufferMaxMB || mCanBuffer < 1)
 	{
 		m_needreadfs = 1;
 	}

@@ -75,7 +75,7 @@ BOOL CLog::WriteLog( const char* pszMsg )
 	}
 
 	// check size.
-	long lSize = _filelength( m_pFile->_file ) ;
+	unsigned long lSize = _filelength( m_pFile->_file ) ;
 	if( lSize>m_nMaxFileSize )	
 	{
 		fclose( m_pFile ) ;
@@ -202,7 +202,7 @@ BOOL CLog::WriteEachFrame( const char* fileName, const char* pszMsg )
 	}
 	
 	// check size.
-	long lSize = _filelength( m_pFile->_file ) ;
+	unsigned long lSize = _filelength( m_pFile->_file ) ;
 	if( lSize>m_nMaxFileSize )	
 	{
 		fclose( m_pFile ) ;
