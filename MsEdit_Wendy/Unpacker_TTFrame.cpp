@@ -9,6 +9,9 @@
 #include "ShowData.h"
 #include "MsEdit_WendyDlg.h"
 
+#include "log.h"
+#include "QSNative_Option.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -22,7 +25,7 @@ extern CArrayItemDataFrame mCArrayItemDataFrame;
 extern CListDataFrame mCListDataFrame;
 extern CListFrame_e mCListFrame_e;
 
-#include "log.h"
+
 extern CString s_eLog;
 extern CLog w_InofLog;
 
@@ -34,6 +37,8 @@ extern DWORD mBufferMaxMB;
 extern int mCanBuffer;
 
 DWORD ReadGetFrames = 0;
+
+CQSNative_Option mCQSNative_Option;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -882,6 +887,7 @@ memcpy(temp,buff,sizeof(buff));
 								{	
 									mCListDataFrame.AddTail(*pStFrame);
 								}
+
 							}
 						else
 							{
@@ -941,6 +947,8 @@ memcpy(temp,buff,sizeof(buff));
 									w_InofLog.Log(s_eLog);
 								}
 						}
+
+						mCQSNative_Option.HandleFrame(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy test
 													
 					}
 				}
@@ -952,7 +960,7 @@ memcpy(temp,buff,sizeof(buff));
 			else
 			{
 			}
-			}while(nBuffIp>3);
+		}while(nBuffIp>3);
 
 label2:
 			nTradIp=sizeof(_tagTTDataFrame);

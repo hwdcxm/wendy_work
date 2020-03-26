@@ -1,3 +1,415 @@
+微信,user name :手机号or awendy9...9(9个）password:Q名+o
+
+git checkout .
+
+如何回滚文件
+
+1. 修改完，还未执行git add 
+git checkout .
+使用暂存区的文件覆盖工作区，所以执行完git add .之后，再执行该命令是无效的  
+git checkout .和git add .是一对反义词
+
+2.使用git add 提交到暂存区，还未commit之前
+git reset  先用Head指针覆盖当前的暂存区内容
+git checkout . 再用暂存区内容覆盖工作区内容
+或者使用
+git reset --hard 直接使用head覆盖当前暂存区和工作区
+
+3.已经git commit，还未git push
+git reset --hard origin/master (v ok)
+从远程仓库把代码取回来，然后覆盖本地仓库、本地暂存区和工作区  
+或者使用
+git reset --hard last_commit_id
+覆盖本地仓库、暂存区和工作区，其中查看last_commit_id命令为
+git log
+  或者使用
+git reset --mixed last_commit_id  
+覆盖本地的暂存区，再执行
+git checkout . 覆盖本地工作区
+
+4.已经git push  
+  那就没办法了
+
+
+
+error BK1506 : cannot open file '.\Debug\????????.sbr': No such file or dire
+https://blog.csdn.net/shuilan0066/article/details/8738035
+1 error BK1506 : cannot open file '.\Debug\????????.sbr': No such file or dire
+
+
+
+
+解决方法：
+
+从工程->设置->浏览信息->创建创建浏览信息的复选框的勾给去掉就行了
+
+
+
+
+工程---属性---C/C---Browse Information -----Enable Browse Information? 设置为NONE
+
+
+无法识别您当前的时区,请选择一个有效的时区
+https://jingyan.baidu.com/article/e9fb46e17547797521f766b5.html
+
+2020.03.26
+
+Service Worker, 你到底是个什么东西？
+https://www.zcfy.cc/article/service-worker-what-are-you-mariko-kosaka-1927.html
+我认为它就像一个你可以邀请住到用户浏览器里的外星人。听起来很奇怪？好吧，让我来解释给你听。
+
+service-worker用法详解
+https://segmentfault.com/a/1190000019863217
+
+Service Workers简介(一)
+https://www.jianshu.com/p/1bc5bf8be43d
+service worker是一个脚本，由浏览器在背后默默地运行，独立于web页面.....
+关于service worker，我们需要知道:
+它是一个 JavaScript 线程, 所以它不能直接接触DOM. service worker 可以与一些页面通信(这些页面通过postMessage接口发出信息)，而这些页面可以操作DOM(如果需要的话)
+Service worker 是一个可编程的网络代理，它允许你控制网络如何从你的页面发出请求。
+
+
+
+# Begin Target
+
+# Begin Target
+
+# Name "MsEdit_Wendy - Win32 Release"
+# Name "MsEdit_Wendy - Win32 Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\DataSrc_TTFrameFile.cpp
+# End Source File
+# Begin Source File
+...
+SOURCE=.\MsEdit_Wendy.rc
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\Datadef.h
+# End Source File
+# Begin Source File
+....
+SOURCE=.\WorkThread.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+...
+
+SOURCE=.\res\MsEdit_Wendy.rc2
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\ReadMe.txt
+# End Source File
+# End Target
+# End Project
+
+Begin XX 和 End XX 需要一一对应 (v ok)
+
+-----------------------------------------
+SOURCE=.\WorkThread.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MsEdit_Wendy.rc
+# End Source File
+# End Group
+# Begin Group "Header Files"
+---------------------------------------- (v ok)
+SOURCE=.\WorkThread.cpp
+# Begin Source File
+# End Source File
+
+SOURCE=.\MsEdit_Wendy.rc
+# End Source File
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+------------------------------------------------- x
+
+VC6.0添加文件到工程无响应解决方案 (2011-12-09 20:43:25)转载▼
+http://blog.sina.com.cn/s/blog_77f7c6e20100yc6p.html
+标签： vc6.0 加载 文件 工具栏 解决方案 工程 it	分类： VC学习
+    最近使用vc6.0时，要添加类到工程，但是右键点击添加文件到工程或者在工程里单击增加到工程——文件毫无反应，在网上搜了很久，发现是visio2007与vc6.0有冲突。找了解决方案，下面简单说下：
+
+1、下载filetool.exe，下载地址：http://support.microsoft.com/kb/241396/zh-cn
+
+2、解压下载下来的filetool.exe文件，用vc6.0打开解压出来的filetool.dsw文件
+
+3、运行程序，生成debug文件
+
+4、单击工具——定制——附加项和宏文件——浏览，把刚才生成的debug文件夹里的filetool.dll加载进来，关闭对话框
+
+这时候会出现一个只有两个命令的工具栏，用工具栏上的命令就可以把文件加载到工程中了。至于对快捷键的设置我都没有设置，反正只要已经能成功加载文件就行了。
+
+
+
+.dsp has been modified and cannot be loaded as a developer studio project
+https://www.cnblogs.com/weiweiting/articles/2645801.html
+网上找到的方法：
+
+　　第一个是,打开工程文件时,XX.DSP   has   been   modified   and   cannot   be   loaded   as   a   Developer   Studio   project.  
+
+　　第二个是编译时错误，resource.h fatal error RC1004: unexpected end of file found
+
+　　我是在用replace pioneer替换工程名后出现第一个问题的，对比备份的dsp文件没有发现任何可能错误的地方。然后我退求其次手动修改了原来的dsp文件，于是就碰到第二个问题了，同样对比备份的resource.h文件也没发现任何不同。
+
+　　网上对于第一个问题的解决方法是新建一个工程再把原有文件都添加进去，太麻烦了。
+
+　　第二个问题给的解决方法是找一个正常的resouce.h文件替换结尾部分：
+
+　　看了网上给出的第二个问题方法，我对比了下它们的结尾部分，其实是有差别的，差别就是一个回车换行~晕哪，怪只能怪VC6不提供行号显示功能，假如放到Dev-C++下打开就一目了然了。
+
+    同样对于第一个问题，我们只要检查下dsp文件最后是不是有一个空行就好了。
+
+上述方法，都没有解决我的问题，奇怪的是，这个工程在我工作机上打开是没有问题的，为什么在笔记本上打开就有问题了？经过检查，我发现工程放的文件夹在几层文件夹下，是解压后的文件，并且上两层文件夹名中带括号（还有注意中文文件名的问题），我试着把工程文件夹放在任一硬盘驱动器根目录下，问题解决……
+
+
+2020.03.25
+
+ini的注释怎么写？ [问题点数：20分，结帖人flypigluo]
+https://bbs.csdn.net/topics/70114126
+一般是分号开头，也可以是#号，或者直接写注释也行
+ini文件本身只是一个文本格式的文件，你可以自己定义，只要你真正的数据，如小节名，键名不要使用这些怪字符就可以了，
+ini的注释写法是:
+
+每一行的第一个字母是 ; 号,这一行就是注释行．注释行可以出现在文件中的任意一行．
+
+就像Ｃ＋＋
+// 这是一个注释行．
+汇编
+; 这是一个注释行．
+
+my.ini文件参数中文注释
+https://blog.csdn.net/lienfeng6/article/details/78140404
+
+INI文件中的注释符（；），有什么用？ [问题点数：40分，结帖人sdcer777]
+https://bbs.csdn.net/topics/360137034
+注释成单独的行，正解
+嗯,只有开头的;会被认为是注释行
+
+石岩营业厅地址：宝安区石岩街道宝石西路76号（石岩新汽车站、北龙加油站旁）。服务时间：9:00-18:00（2020年1月24日-1月30日营业时间为：11:00-16:00）；服务电话：13510008009，如需了解位置信息可参考以下地图链接： http://f.amap.com/1pE7c_0152Bxd【中国移动】
+
+
+佳华豪苑营业厅地址：宝安区石岩大道83号佳华豪苑首层11-12号商铺(真功夫餐厅旁)。服务时间：9:30－18:30，服务电话：13510001292，如需了解位置信息可参考以下地图链接： http://f.amap.com/5Bf3t_0F52zIH【中国移动】
+
+
+8元自由选套餐（30分钟）：
+1、包含国内通话30分钟，国内接听免费，来电显示；
+2、超出套餐范围：
+（1）语音通话：在国内直接拨打国内电话0.25元/分钟全包。
+（2）国内流量：默认开通30元流量保障服务，每10元100MB，不足10元部分按照0.29元/MB收取，以此类推，直至超出流量费用达到30元时，可以继续使用流量至1GB。
+温馨提醒：以上资费不含中国港澳台地区。★“众志成城、抗击疫情。服务不中断、爱心永在线”，广东移动手机营业厅为您提供足不出户的便捷服务，详情可点击： dx.10086.cn/10086rg 。如有疑问，请回复0寻求在线客服帮助。【中国移动】
+
+
+8元自由选套餐（100MB流量）：
+1、包含国内流量100MB，国内接听免费，来电显示；
+2、超出套餐范围：
+（1）语音通话：在国内直接拨打国内电话0.25元/分钟全包。
+（2）国内流量：默认开通30元流量保障服务，每10元100MB，不足10元部分按照0.29元/MB收取，以此类推，直至超出流量费用达到30元时，可以继续使用流量至1GB。
+温馨提醒：以上资费不含中国港澳台地区。★“众志成城、抗击疫情。服务不中断、爱心永在线”，广东移动手机营业厅为您提供足不出户的便捷服务，详情可点击： dx.10086.cn/10086rg 。如有疑问，请回复0寻求在线客服帮助。【中国移动】
+
+亲，超60分钟了，超出会打不出，打不进。
+可以在公众号的充值激活点套餐订购输入手表号码之后点右下角有叠加包可以办理接着使用，如果不办理可以等待到下个月1号才可以使用 
+
+移动卡，【中升翼联】季度包套餐/59元，半年 包套餐/79元，1年包套餐/109元：              
+通话时长60分钟/月， 100MB/月
+30分钟通话时长叠加包/8元：30分钟，当月有效，月底清 零 
+
+
+中国移动营业厅(石岩服营厅) 查看全市分店
+信息更新时间: 2020年03月23日
+地址： 广东省深圳市宝安区石岩镇宝石西路石岩上屋坳背龙新村93,94号商铺首层 查看地图
+电话： 10086
+分类： 营业厅
+
+石岩宝石西路76号，石岩汽车站公交站那里
+
+石岩影剧院背后过去有个佳华商场，旁边有个肯德基，肯德基旁边就有个中国移动营业厅。
+可以办理所有业务，石岩就两个，一个在这里，另一个在石岩汽车站旁边。10：00--19：00
+
+MFC的注册表操作—CRegKey类的使用
+https://blog.csdn.net/a237428367/article/details/5973799
+1.简介
+CRegKey提供了对系统注册表的操作方法，通过CRegKey类，可以方便的打开注册表的某个分支或子键（CRegKey::Open），可以方便的修改一个键的键值（CRegKey::SetValue），也可以查询某个键的键值（CRegKey::QueryValue），操作完成之后，可以关闭子键（CRegKey::Close）。
+要想使用CRegKey类，需要包含头文件atlbase.h
+2.常用操作方法
+1) 打开需要查询或修改的注册表键
+CRegKey myKey;
+    if(myKey.Open(HKEY_LOCAL_MACHINE, "SOFTWARE//Microsoft//Windows") != ERROR_SUCCESS)
+    {
+        AfxMessageBox("Error open reg key!!");
+    }
+2) 查询注册表项中的某个键的键值
+CRegKey myKey;
+   if(myKey.Open(HKEY_LOCAL_MACHINE, "SOFTWARE//Microsoft//Windows//CurrentVersion") != ERROR_SUCCESS)
+        AfxMessageBox("Error open reg key!!!");
+    else
+    {
+        char szPath[MAX_PATH];
+        DWORD dwLen = myKey.QueryValue(szPath, "WallPaperDir", MAX_PATH);
+    }
+
+CRegKey myKey;
+    if(myKey.Open(HKEY_CLASSES_ROOT, ".txt") != ERROR_SUCCESS)
+        AfxMessageBox("Error open key!!!");
+    else
+    {
+        char szFileType[255];
+        DWORD dwLen = myKey.QueryValue(szFileType, "", sizeof(szFileType));
+    }
+
+3) 添加或修改键值
+ CRegKey myKey;
+    if(myKey.Open(HKEY_CURRENT_USER, "Software//Microsoft//Internet Explorer//Toolbar") != ERROR_SUCCESS)
+        AfxMessageBox("error open reg key!!!");
+    else
+    {
+        myKey.SetValue("C://WINDOWS//Web//Wallpaper//Bliss.bmp", "BackBitmap");
+    }
+4) 删除键值
+CRegKey myKey;
+    if(myKey.Create(HKEY_CLASSES_ROOT, ".spj") != ERROR_SUCCESS)
+        AfxMessageBox("error create key!!!");
+    else
+        AfxMessageBox("create key ok!");
+5) 新建项
+CRegKey myKey;
+    if(myKey.Create(HKEY_CLASSES_ROOT, ".spj") != ERROR_SUCCESS)
+        AfxMessageBox("error create key!!!");
+    else
+        AfxMessageBox("create key ok!");
+6) 删除项
+LONG DeleteSubKey( LPCTSTR lpszSubKey );
+该函数可以删除名为lpszSubKey的项，以及该项下的所有的键。注意，被删除的项不能含有子项！可以通过另外一个函数LONG RecurseDeleteKey( LPCTSTR lpszKey );删除某个项以及该项下的所有内容。
+
+7) 关闭注册表
+LONG Close( );
+关闭注册表时，之前所做的修改才会被保存到硬盘。或者，也可以使用LONG RegFlushKey( HKEY hKey ); 函数在需要的时候将所做的修改及时写入硬盘。
+
+
+
+2020.03.24
+
+刚刚收到，要激活卡的，幸好先问一下没有激活卡，因为卡不是本地的不能加入集团网，谢谢客服回得快
+
+CArray,CMap,CList 速度比较
+http://www.cppblog.com/xkjy3000/archive/2012/06/20/179510.aspx
+CArray：增加元素非常快, 查询元素慢(循环方式)
+CMap：增加元素很慢,查询元素非常快(Lookup方法)【随机地频繁地访问元素时,建议使用CMAP】
+CList：插入删除很快。但是通过索引访问很慢
+
+用CTypedPtrList吧。你这样用结构传值做参数性能很低的
+而且不推荐用CTypedPtrList,用CTypedPtrMap会快得多
+
+恒大的多个楼盘已经打7.5折卖啦
+
+MFC控件编程之 按钮编辑框.静态文本的使用以及访问控件的七种方法.
+https://www.cnblogs.com/iBinary/p/9652668.html
+常用的API:
+　　1.根据控件ID.获取控件的标题名称.
+　　GetDlgItemText(控件ID,字符串缓冲区);
+　　2.根据控件ID.设置控件的标题.
+　　SetDlgItemText(控件ID.字符串);
+我们如果在MFC中使用API .需要加上全局访问符号.::  也就是四饼. 
+否则就是使用MFC自带的封装的API不过此时我们上面所说的API.就是使用的MFC封装的.比较方便..
+三丶访问控件的七种方法.
+上面我们已经使用了一种了. GetDlgItemText() 根据指定控件ID获取控件文本.
+
+3.1   控件ID访问方法.
+　　 GetDlgItem(控件ID)
+　　GetWindowsText(缓冲区.大小.)
+GetDlgItem(IDC_EDIT1)->GetWindowText(ch1,12);
+GetDlgItem(IDC_EDIT3)->SetWindowText(ch3);
+上面是MFC封装好了.所以我们可以 ->继续调用.如果是自己使用Windows API编写.那么需要 ::GetDlgItem(指定窗口的句柄,控件ID)获取根据控件ID寻找的窗口句柄.然后自己继续调用 ::GetWindowText(句柄.缓冲区) 来进行获取.
+具体原理可以自己看下源代码
+
+3.2GetDlgItemText() 获取.
+GetDlgItemText(IDC_EDIT2, ch2, 12);
+SetDlgItemText(IDC_EDIT3, ch3);
+
+3.3. 使用方法三.直接获取整形.
+GetDlgItemInt(IDC_EDIT2);
+SetDlgItemInt(IDC_EDIT3,nNum3);
+
+3.4 控件跟整形变量关联. Value类型
+如果使用这个方法.那么我们的控件需要绑定一个变量.使用这个变量来获取跟设置.
+编辑框 - > 类向导 -> 添加变量   给编辑框进行关联.
+使用的时候需要用到一个函数. 
+UpdateData(True) 或者 False
+TRUE. 则把控件里面的数据.关联到变量里. 简单理解为就是获取数据.调用了这个.那么我们绑定的变量就会有数据了.
+FALSE: 数据设置到控件中. 当我们使用完变量则需要将数据设置到控件里显示.就用FALSE.
+原理.
+DoDataExChange函数. 
+在MFC中有一个这种函数. 用来跟关联变量的设置的.
+DDX_Text 是跟变量关联了.
+DDV开头的则是检查的.
+我们可以F12跟进看到很多这种类型.
+
+3.5 把控件跟控件变量关联. Edit类型.我们可以跟控件关联
+这个就可以当控件使用了.
+我们给编辑框关联的.那么查询MSDN可以看到控件的操作方法.
+m_Edit.GetWindowText();
+m_Edit.SetWindowText();
+
+3.6发送消息进行控件操作.
+MFC中都是消息驱动的.那么我们也有API可以进行发消息操作.
+::SendMessage(控件id的句柄,消息类型,大小.附加参数.)
+::SendMessage(GetDlgItem(EDT_EDIT)->m_hWnd,WM_GETTEXT,12,(LPARAM)ch1);
+参数2: 消息类型.我们WM_GETTEXT 是代表我要获取这个文本.
+参数3: 12 是缓冲区的长度.
+参数4: 缓冲区.
+其中3 4 是额外附加参数.什么意思? 就是说这个参数不确定.可以自己给定.
+我们解析的时候按照对应类型解析即可. 你可以给数组.也可以给结构体.都是可以的.
+设置字符串.
+::SendMessage(Getdlgitem(IDC_EDT3),WM_SETTEXT,0,(LPARAM)ch3);
+这个方法需要掌握.一般写windows程序.这个函数会常用.
+
+3.7 根据方法6合并的一个函数
+SendDlgItemMessage(控件ID.WM_GETTEXT,附加参数,附加参数);
+//使用例子
+SendDlgItemMessage(IDC_EDIT1,WM_GETTEXT,12,(LPARAM)ch1);
+设置字符串
+SendDlgItemMessage(IDC_EDIT1,WM_SETTEXT,0,(LPARAM)ch3);
+
+C:\Users\Wendy\Downloads
+
+我们赠送的卡是先要在微*ｘｉｎ公众号里充值激活+实名认证后就可以使用了！（充值激活+实名认证，就和平时办卡一样） 
+亲  充满电正常使用1-2天左右，具体可使用时间会因为您的使用频率和使用方式而影响的
+移动卡，【中升翼联】季度包套餐/59元，半年 包套餐/79元，1年包套餐/109元：              通话时长60分钟/月， 100MB/月
+30分钟通话时长叠加包/8元：30分钟，当月有效，月底清 零
+https://detail.tmall.com/item.htm?spm=a1z0d.6639537.1997196601.4.d94a74843zDY6M&id=601405966315
+
+
+移动日租卡，在网上怎么办理？
+https://zhidao.baidu.com/question/1580282184231188180.html
+移动日租卡在网上办理的步骤如下：
+1、使用手机打开手机微信进入微信首页点击右上角“+”，选择“添加朋友”，搜索移动微信公众号。
+2、点击“移动”进入公众号后点击下方“关注”并进入页面。
+3、进入公众号点击左下方键盘标识，然后在下方输入“日租卡”并点击发送。
+4、公众号回复“日租卡办理”，然后点击蓝色字体进入链接。
+5、最后弹出日租卡申请页面，点击“限时限量立即申请”，这样移动日租卡在网上办理的问题就解决了。
+
+
+移动日租卡最便宜的套餐多少钱
+https://zhidao.baidu.com/question/2273167452121837148.html
+8元日租卡，我来帮你算
+8元基础月租加上每天日租然后就是
+8块一个月的月租，流量一元800M.，你每天用多少流量的钱，乘以30天，就等于你一个月的话费，如果你不用流量，一个月它就扣8元，打电话，短信费除外，，，，望采纳
+
+2020.03.23
+
 The MemoryStatus structure is 32 bytes long.
 It should be 32.
 50 percent of memory is in use.

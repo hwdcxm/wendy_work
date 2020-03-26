@@ -128,12 +128,41 @@ SOURCE=.\ProgressDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\QServer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\QServer_Native.cpp
+
+!IF  "$(CFG)" == "MsEdit_Wendy - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "MsEdit_Wendy - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\QServer_Remote.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\QSNative_Option.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ShowData.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\TTOptionsDataTable.cpp
 # End Source File
 # Begin Source File
 
@@ -197,6 +226,26 @@ SOURCE=.\ProgressDlg.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Protocol_SRV.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QServer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QServer_Native.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QServer_Remote.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QSNative_Option.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
@@ -206,6 +255,10 @@ SOURCE=.\ShowData.h
 # Begin Source File
 
 SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\TTOptionsDataTable.h
 # End Source File
 # Begin Source File
 
