@@ -1,3 +1,453 @@
+面试了一个 46 岁的程序员，我思绪万千!
+https://mp.weixin.qq.com/s/ibYJld1_uHPjXivM5iTqSw
+
+https://www.sqlite.org/2013/sqlite-amalgamation-3071700.zip
+查看复制链接地址得出以上地址，即可直接下载成功(v ok)
+https://www.sqlite.org/snapshot/sqlite-snapshot-202003260029.tar.gz
+https://www.sqlite.org/2020/sqlite-amalgamation-3310100.zip
+
+如何在网站 https://www.sqlite.org/download.html 上找sqlite-amalgamation-3071700版本的
+sqlite3.c, sqlite3.h (x no)
+
+
+sqlite-amalgamation-3_7_17
+
+/ Check-in [af8057ef]Login
+Home Timeline Files
+https://www.sqlite.org/src/info/af8057ef5dcaa72d
+Comment:	Update the sessions branch to the latest 3.7.17 beta.
+Downloads:	Tarball | ZIP archive | SQL archive
+Timelines:	family | ancestors | descendants | both | sessions
+Files:	files | file ages | folders
+SHA1:	af8057ef5dcaa72dc0d2ab5d1553b06757449fa1
+User & Date:	drh on 2013-05-17 10:58:08
+Other Links:	branch diff | manifest | tags
+
+
+** version 3.7.13.  By combining all the individual C code files into this 
+Downloads  2012-06-11 (3.7.13)
+** version 3.7.17.  By combining all the individual C code files into this 
+RadarAlert
+
+Release History
+2013-05-20 (3.7.17)
+
+History Of SQLite Releases
+https://www.sqlite.org/chronology.html
+
+Date	Version 
+2020-01-27	3.31.1
+2020-01-22	3.31.0
+2019-10-11	3.30.1
+2019-10-10	3.30.1
+2019-10-04	3.30.0
+...
+
+Windows下通过VC6编译SQLite源代码
+https://www.cnblogs.com/braver/articles/2621202.html
+1.下载SQLite源代码。
+http://www.sqlite.org/sqlite-amalgamation-3071300.zip
+2.创建Win32 Dll Library工程，在工程中加入sqlite3.c, sqlite3.h, sqlite3.def。（sqlite3.def加入工程的Resource Files中）
+
+如何使用VC6编译sqlite3源码生成动态链接库(版本：sqlite-source-3_6_23_1)
+https://blog.csdn.net/littletigerat/article/details/5502491
+四．将文件添加进工程
+将sqlite-source-3_6_22里的文件添加到sqlite3工程中：
+
+1.将sqlite-source-3_6_22下的所有*.C文件添加在工程的Source File中
+
+2.将sqlite-source-3_6_22下的所有*.h文件添加在工程的Header File中
+
+注意：不要将tclsqlite.c源文件添加进工程中；
+
+五．文件说明：
+1. tclsqlite.c用于生成基于TCL的API，如果需要编译，则需要另外下载tcl.h头文件；
+
+2. shell.c用于生成命令行模式的sqlite.exe；
+
+3. fts3*.c是全文索引的模块；
+
+4. rTree.c是建立数据库R树索引的模块；
+
+
+
+数据库 如何在VC6下使用sqlite3
+https://www.cnblogs.com/vipwtl/p/5916925.html
+到http://www.sqlite.org/download.html下载：
+解压后得到sqlite3.h，得到的其他文件这里不会用到
+下载第二个，解压后得到sqlite3.dll和sqlite3.def
+下面要做的是：利用sqlite3.def生成sqlite3.lib
+⑥用VC6新建一个空的控制台工程，把(sqlite3.h、sqlite3.dll、sqlite3.lib)放到工程文件夹里，
+
+选择菜单栏的工程-->设置：在连接的(对象/库模块)后面加上sqlite3.lib，然后点确定
+
+
+关于面向宝安区户籍在册轮候家庭配租公共租赁住房选房有关事项的通告
+http://www.baoan.gov.cn/jshej/zwfw/zfly/tzgg/202003/t20200330_19082487.htm
+信息来源：宝安区住建局 信息提供日期：2020-03-30 16:08
+1、勤诚达乐园:https://720yun.com/t/5cvkihpyg8m?scene_id=36604776,或扫描本通告末的二维码在线看房。
+2、君钰府:https://720yun.com/t/b3vkihpyzr7?scene_id=36604747,或扫描本通告末的二维码在线看房。
+
+Sqlite3小结（小型数据库中增删改查的操作）
+https://blog.csdn.net/nan_lei/article/details/84344003
+2、常见数据库简介
+
+目前比较流行的数据库有以下几种：
+
+1.大型数据库Oracle Database
+
+Oracle公司（甲骨文公司）是全球最大的企业级软件公司，其公司旗下著名产品有Java编程语言与OracleDatabase。Oracle公司主要面向大型企业，为各大企业提供专业级的数据库解决方案。
+
+2.办公用数据库Microsoft Access
+
+Access是微软在Office办公套件内提供的数据库软件，具有数据库引擎和图形化交互界面，并且可以使用VBA编程环境对其进行深度编程操作。
+
+3.小型数据库MySQL
+
+由瑞典MySQLAB公司开发（该公司已被Oracle公司收购），经常应用于WEB前端领域。由于体积小、速度快、代码开源深受程序开发人员喜爱。还可以配合PHP和Apache搭建数据库服务器。
+
+4.嵌入式数据库SQLite
+
+SQLite数据库是专门针对嵌入式开发的数据库软件，占用资源非常少（仅需几百K内存即可），处理速度快，而且可以直接使用C语言编程，同时也可以配合C#、PHP、Java等其他语言。SQLite诞生于2000年，2015年发布了新版本SQLite3，一经推出马上变成了最流行的嵌入式数据库软件。
+
+//SQL中文翻译为“结构化查询语言”，是单词"Structured Query Language"的缩写。SQL是一种操作数据库的高级的非过程化编程语言，用户使用SQL命令通过DBMS对数据库内的数据进行访问。1987年，SQL得到国际标准组织ISO的支持成为数据库的国际标准，不过各种数据库的SQL命令略有不同，因此并不能够完全通用。
+
+//SQL到底应该读作"S-Q-L"三个字母还是读作"色Q尔"整体读音，这个争?? ?论时至今日仍没有定论
+
+二、SQLite3数据库使用
+
+//使用SQLite3需要安装，若当前主机没有SQLite3软件可以输入命令sudo apt-get install sqlite3安装
+
+使用SQLite3数据库有两种方式：
+
+1.手动创建
+
+
+
+SQLITE_API int sqlite3_exec
+
+每日文件(日期h.db)和最新15分钟文件(renew.db)
+
+Andy 2020/3/31 星期二 8:26:57
+ben要辞职了，你接手一下他的一部分项目
+
+awendy 2020/3/31 星期二 8:28:53
+哦，好的。
+
+Andy 2020/3/31 星期二 8:29:38
+他会给你，今天先看radar 和 options ，options以前看过的
+
+Andy 2020/3/31 星期二 8:57:21
+大概搞清楚是做什么的
+
+awendy 2020/3/31 星期二 8:57:39
+好的。
+
+Andy 2020/3/31 星期二 8:57:51
+你跑w2t里面有个异动雷达
+
+Andy 2020/3/31 星期二 8:58:26
+radar包括 server 和 client  
+
+awendy 2020/3/31 星期二 9:00:45
+好的。
+
+awendy 2020/3/31 星期二 8:58:09
+问你个私人问题啊，你为什么要离职的呀？
+
+awendy 2020/3/31 星期二 8:58:33
+有更好的方向发展， 还是其它原因的呀。
+
+Ben 2020/3/31 星期二 8:58:51
+回老家啊，对象在老家
+
+awendy 2020/3/31 星期二 8:59:22
+哦，这倒是个事实原因的。
+
+Ben 2020/3/31 星期二 8:59:47
+是啊
+
+Ben 2020/3/31 星期二 9:12:57
+嗯，最开始server和client是同一个工程来的
+
+Ben 2020/3/31 星期二 9:13:16
+后来client功能加多了，就分开了
+
+
+Ben 2020/3/31 星期二 10:05:45
+这个地方由<0改成<=0
+
+Ben 2020/3/31 星期二 10:06:04
+版本号也改到60吧
+
+
+
+2020.03.31
+
+http://www.oracle.com/
+download--->
+https://www.oracle.com/downloads/
+java--->
+https://www.oracle.com/java/technologies/javase-downloads.html
+--->
+23465028@qq.com Hwdcxm+birthyear
+jdk-8u241-windows-i586.exe
+Java SE 8u241
+Java SE 8u241 includes important bug fixes. Oracle strongly recommends that all Java SE 8 users upgrade to this release.
+
+https://www.oracle.com/java/technologies/javase-downloads.html
+拉到最下面
+Java Archive
+The Java Archive offers access to some of our historical Java releases. WARNING: These older versions of the JRE and JDK are provided to help developers debug issues in older systems. They are not updated with the latest security patches and are not recommended for use in production.
+--->
+https://www.oracle.com/cn/java/technologies/oracle-java-archive-downloads.html
+Oracle Java 存档
+Oracle Java 存档提供对一些历史 Java 版本的自助式下载访问。
+警告: 提供这些旧的 JRE 和 JDK 版本是为了帮助开发人员对旧系统中的问题进行调试。 这些旧版本未使用新安全补丁进行更新，不建议用于生产环境。
+--->
+https://www.oracle.com/java/technologies/java-archive-javase-v13-downloads.html
+j2sdk-1_3_1_28-windows-i586.exe
+以上为java的JDK下载全流程。
+
+
+https://www.eclipse.org
+右上角download--->
+https://www.eclipse.org/downloads/；进入官网，点击Download Packages；
+右边..从这个2018-09开始才会有32位的--->
+https://www.eclipse.org/downloads/packages/release/2018-09/r
+--->
+Eclipse IDE for Java Developers
+189 MB 534,722 DOWNLOADS
+The essential tools for any Java developer, including a Java IDE, a Git client, XML Editor, Mylyn, Maven and Gradle integration
+Windows 32-bit 64-bit
+---->
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2018-09/R/eclipse-java-2018-09-win32.zip
+Select Another Mirror
+China - Beijing Institute of Technology
+eclipse-java-2018-09-win32.zip
+
+以上为eclipse的JDK下载全流程。
+
+
+
+
+https://docs.oracle.com/javase/8/docs/
+
+D:\Program Files\Project
+
+Project 只有一个 其它盘下都是Temp
+
+C:\Users\Wendy\Documents\WeChat Files\awendy999999999\FileStorage\File\2020-03
+奥拓维修手册.rar 2^10=1024
+
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2018-09/R/eclipse-java-2018-09-win32.zip
+Select Another Mirror
+China - Beijing Institute of Technology
+eclipse-java-2018-09-win32.zip
+
+https://www.eclipse.org/downloads/packages/release/2018-09/r
+从这个2018-09开始才会有32位的
+
+https://www.eclipse.org/downloads/；进入官网，点击Download Packages；
+
+https://www.eclipse.org/downloads/packages/release/photon/r
+https://ftp.yz.yamagata-u.ac.jp/pub/eclipse//technology/epp/downloads/release/2018-09/R/eclipse-jee-2018-09-win32.zip
+https://ftp.yz.yamagata-u.ac.jp/pub/eclipse//oomph/epp/2018-09/Ra/eclipse-inst-win32.exe
+
+https://www.oracle.com/cn/java/technologies/oracle-java-archive-downloads.html
+https://www.oracle.com/java/technologies/java-archive-javase-v13-downloads.html
+j2sdk-1_3_1_28-windows-i586.exe
+
+https://www.oracle.com/java/technologies/javase-downloads.html
+23465028@qq.com Hwdcxm+birthyear
+jdk-8u241-windows-i586.exe
+Java SE 8u241
+Java SE 8u241 includes important bug fixes. Oracle strongly recommends that all Java SE 8 users upgrade to this release.
+
+
+C:\Users\Wendy\Desktop
+C:\Users\Public\Desktop
+D:\Program Files\Microsoft Visual Studio\MyProjects
+
+AStyle_3.1_windows-硬件开发工具类资源-CSDN下载
+2019年3月24日 - AStyle_3.1_windows 评分 AStyle是一款代码格式化工具
+
+C:\ProgramData dp45977c.lfl是什么?
+https://zhidao.baidu.com/question/326749346357971285.html
+DP45977C.lfl文件默认保存在C:\ProgramData，该文件为隐藏文件，大小为0字节，使用记事本打开后无任何内容。该文件自Win7系统就出现在该位置，Win8、Win8.1和Win10系统也有存在。virscan.org网站鉴定该文件是安全文件。该文件好像和Realtek声卡驱动有关，可能用于加载相关声卡驱动。
+该文件正常情况，不能删除，即便在PE下已无法删除，删除后会自动生成。
+
+整理电脑硬盘.
+
+凌风观雪: 我终于解决2345全家桶了，分享给大家-在任务管理器里找到2345病毒位置，记下来-开机进入安全模式（各个电脑不同）-进入对应位置删除（亲测可删）-打开注册表-搜索2345全家桶，一个干掉，花了5小时，原装系统不想重装。。。
+https://tieba.baidu.com/p/5986053651
+
+MSCREATE.DIR是什么文件?
+https://zhidao.baidu.com/question/26271769.html
+这种现象是安装程序的设计导致的。安装程序会在每个文件夹中创建MSCREATE.DIR（0 字节隐藏文件）以指示安装程序已创建该文件夹 。当您在维护模式下运行安装程序并删除组件或单击全部删除时，安装程序将使用此文件来确定是否可删除的空文件夹。如果某个空文件夹不包含此文件，在维护模式下运行安装程序时，安装程序不会删除该文件夹。
+例如，如果在 Microsoft Office 文件夹中，创建“我的文件”的文件夹，当您在维护模式下运行 Microsoft Office 安装程序并单击全部删除时，安装程序不会删除“我的文件”的文件夹，即使它是空的。
+
+feel doing things of Twenty years ago.
+
+汽车冲向儿子瞬间父亲做出神反应 惊险画面曝光让人后怕
+https://wxn.qq.com/cmsid/AUS2020032900508903
+
+2020.03.30
+
+快速看书，得右键loadmenu菜单的流程，量变到质变的案例？
+
+
+MFC对话框资源移植（一个工程复制到另一个工程）
+https://blog.csdn.net/myruo/article/details/80917406
+前言：
+
+很多时候，我们需要把已经存在的一个对话框资源（或者类似的）复制到另一个工程中（好吧，其实就是懒~）
+
+
+可用方案：
+
+
+1、把两个工程添加到一个项目中，这样你就可以随意的复制粘贴了，当然，这种办法还需要你去布局，改ID什么的
+
+
+2、简单快速高效的办法：在源工程的rc文件中复制你需要的内容到目标工程的rc文件，然后把源工程的resource.h中对应部分复制到目标工程，这样就大功告成了。
+
+
+
+VC 如何Copy一个项目的资源文件中的对话框到另一个项目
+https://blog.csdn.net/ccl3311/article/details/3224222
+方法一：
+文本打开rc文件，找到你想要的对话框资源那段，直接拷贝到你的工程中。不过这样资源你需要手动的resource.h中添加。 
+方法二：
+将要拷贝资源的工程(Prcject)插入到你现在的工程所在的工作区(WorkSpace)中，在ResourceView中，找到你想要复制的对话框，复制，再回到你的工程中，粘帖就可以了。资源拷贝好后将对应.cpp和.h文件拷贝到你的工程目录下，并且添加到你的工程中，稍微做一下修改即可，也可以利用ClassWizard添加对应的类。
+方法三：
+class view 中选中界面对于的类，右键->add to  gallery，需要的时候 project->add to project-> component and control找到对应的ogx 文件，插入即可。
+
+
+VC++6.0如何将一个工程中的对话框资源复制到另一个工程
+https://blog.csdn.net/PerfectToday/article/details/11056681
+第一步：打开源工程，切换到资源视图（ResourceView），选中要复制的对话框或菜单资源ID，如：本例中选中对话框资源“IDD_FIND_DLG”，按Ctrl+C或点击Edit菜单选择Copy项。
+第二步：点击文件（File）菜单，选择关闭工作区（Close Workspace），从而关闭源工程。
+第三步：点击文件（File）菜单，选择打开工作区（Open Workspace），从而打开目标工程。注意打开时需要手动选择文件类型（Projects (*.dsp)）。之后选择资源视图且选中
+第四步：顺便把对话框 IDD_FIND_DLG 对应的H/CPP文件从源工程工作区目录中复制过来，本例还复制了一个相关的线程类，合计4个文件。
+之后，选择文件视图（FileView），右击工程在弹出的菜单中选择“Add Files to Project…”选中上述4个文件，将相关类加载到目标工程中来。
+第五步：一般情况下，对话框类与源工程其它类都保持着密切的交互动作，增加相关变量、函数保持相关处理的一致性，编译之后就不会有什么错误了。
+
+
+VC++中如何复制对话框资源
+https://www.cnblogs.com/Yogurshine/p/3710566.html
+法1：
+ 
+在你的工程中添加另一个工程的rc文件，这时资源视图中就会出现两个rc,从后加的rc中拷贝资源到你自己工程的rc中就可以了。(复制即可 v ok)
+ resource.h 也要复制过来，修改ID值为不同。
+ 
+ 
+法2：vc中如何拷贝一个工程的对话框资源到另一个工程中?
+ 
+这是一个很专业也很有用的问题。其实VC的设计者早就为我们考虑了这个问题。
+在VC6环境下，选择Class视图，选中想要克隆的对话框所对应的类，例如CAboutDlg，点击鼠标右键，选择Add to gallery。在新工程中选择Project菜单，选择Add Component and ActivX，你会看到多了一个文件夹（与上一个工程同名），进入该文件夹，选择*.ogx。选择Insert，你会发现原来的对话框被加入到新的工程中了！
+ 
+补充：
+.net下更简单，将原来的工程加到新的工程中，直接将对话框拷贝过去就行了！
+ 
+ 
+法3：
+VC++中如何复制对话框资源
+第一步：用记事本打开原工程的.rc文件，找到想复制的对话框的信息，如下所示
+ 
+IDD_UGMS_DIALOGDIALOGEX 0, 0, 320, 230
+STYLE WS_CHILD | WS_VISIBLE
+EXSTYLE WS_EX_APPWINDOW
+FONT 9, "宋体"
+BEGIN
+  GROUPBOX      "学生信息",IDC_STATIC,10,8,290,200
+  GROUPBOX      "",IDC_STATIC,25,55,205,120
+  PUSHBUTTON    "最前(&F)",IDC_BUTTON_FIRST,30,30,35,15
+  PUSHBUTTON    "向前(&B)",IDC_BUTTON_PRE,82,30,35,15
+  PUSHBUTTON    "向后(&N)",IDC_BUTTON_NEXT,134,30,35,15
+  PUSHBUTTON    "最后(&L)",IDC_BUTTON_LAST,186,30,35,15
+  PUSHBUTTON    "查询(&Q)",IDC_BUTTON_QUERY,246,70,40,15
+  PUSHBUTTON    "增加(&A)",IDC_BUTTON_ADD,246,96,40,15
+  PUSHBUTTON    "修改(&M)",IDC_BUTTON_MODIFY,246,122,40,15
+  PUSHBUTTON    "删除(&D)",IDC_BUTTON_DELETE,246,148,40,15
+  PUSHBUTTON    "确定(&O)",IDC_BUTTON_OK,58,183,40,15
+  PUSHBUTTON    "取消(&C)",IDC_BUTTON_CANCEL,150,183,40,15
+  LTEXT          "学号：",IDC_STATIC,52,75,25,8
+  LTEXT          "姓名：",IDC_STATIC,52,100,25,8
+  LTEXT          "性别：",IDC_STATIC,52,125,25,8
+  LTEXT          "入学时间：",IDC_STATIC,44,151,41,8
+  EDITTEXT      IDC_EDIT_SID,91,72,95,15,ES_AUTOHSCROLL
+  EDITTEXT      IDC_EDIT_SNAME,91,96,95,15,ES_AUTOHSCROLL
+  EDITTEXT      IDC_EDIT_SSEX,91,120,95,15,ES_AUTOHSCROLL
+  CONTROL        "DateTimePicker1",IDC_DATETIMEPICKER_SCOMEDATE,
+                  "SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,91,144,
+                  95,15
+  GROUPBOX      "",IDC_STATIC,25,19,205,35
+END
+ 
+上面代码中绿色背景代表的是要复制的对话框资源的ID，此段代码也就是.rc文件中记录的此对话框的信息，黄色背景中间的代码就是
+ 
+相应对话框中添加的控件信息，只需将相应代码拷到新工程的相应.rc文件相应的ID对话框资源的BEGIN 和END之间即可；
+ 
+第二步：打开原工程的FileView视图下的Header Files 下的resource.h文件，将其中相应ID的信息复制到新工程的resource.h中即可；
+ 
+例如：
+ 
+//复制的资源ID
+#define IDC_BUTTON_FIRST              1000
+#define IDC_BUTTON_PRE                1001
+#define IDC_BUTTON_NEXT              1002
+#define IDC_BUTTON_LAST              1003
+#define IDC_BUTTON_QUERY              1004
+#define IDC_BUTTON_ADD                1005
+#define IDC_BUTTON_MODIFY              1006
+#define IDC_BUTTON_DELETE              1007
+#define IDC_BUTTON_OK                1008
+#define IDC_BUTTON_CANCEL              1009
+#define IDC_EDIT_SID                  1010
+#define IDC_EDIT_SNAME                1011
+#define IDC_EDIT_SSEX                1012
+#define IDC_DATETIMEPICKER_SCOMEDATE    1013
+ 
+第三步：记得不要遗漏啊，如有ID重复，可以更改一下即可！
+ 
+ 
+法4：
+ 
+今天碰到模块移植问题了,自己做的对话框类(继承于CDialog)要移植到目标工程中.在网上搜了几个帖子发现都说的很生涩.问了我们的技术总监之后总算解决这个问题了.
+ 
+      问题:把一个MFC SDI工程中的一个对话框资源和类拷贝到另一个MFC SDI中.
+ 
+      1.在VC6中打开老的工程,在工作区Resource标签页中选中Dialog文件夹下的资源文件(就是双击后会出现编辑窗口界面的那个东西),按Ctrl+C(Edit->Copy也一样).
+ 
+      2.关闭当前工程,注意不要关闭VC6,打开目标工程(File->OpenWorkspace),然后选中工作区的Resource标签页中的Dialog文件夹,然后按Ctrl+V(Edit->Paste也一样).好了,对话框拷贝过来了.
+ 
+      3.将对话框类的cpp h文件拷贝到目标工程中(不详细说了,往当前工程添加文件)
+ 
+      4.打开复制过来的类cpp和h文件,删除没用的头文件(老工程相关的),并且在.h文件中添加文件包含
+ 
+#include "Resource.h"
+第四步很关键,老工程中根本就没有这个文件包含,可是移植之后必须手动添加头文件包含.因为这个问题卡了10几分钟...
+当你用资源ID时（通常资源编辑器编辑的资源ID都在resource.h中），如果没有包含CWinApp的派生类所在的头文件就会出错，你看一下它的头文件里，包含了这个文件， 而向导生成的类，它的实现文件都有包含CWinApp派生类所在的头文件的
+ 
+然后在新工程中就可以使用这个类了,主要就是这个类的对话框中的资源复制头一次遇到.不敢独享,拿出来跟新手们一起学习.
+ 
+ 
+于是，当有已经创建好的对话框资源要添加到新工程中时：
+（1）右键单击新工程所在的解决方案添加“现有项目”把旧工程添加进来；
+（2）切换到“资源视图”并在旧工程对话框资源上右键“复制”；
+（3）在新工程对话框资源上右键“粘贴”；
+（4）现在就可以为新对话框添加类了，顺便把旧工程的响应函数拷贝过来；
+（5）切换回“解决方案资源管理器”，右键旧工程“移除”。
+
+
+三天前左右，济自己冲凉了。办济手表卡明说不让拍照，以后尽量看场合拍照。
+aoe罗马尽量少作笔，多练技术.
+
+只要百度搜索，右边会出现百度热榜.
+
+2020.03.27
+
 微信,user name :手机号or awendy9...9(9个）password:Q名+o
 
 git checkout .
