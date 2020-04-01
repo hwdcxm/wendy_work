@@ -1,3 +1,555 @@
+MFC/vc中当鼠标经过按钮等控件时出现文字提示功能(v ok)
+https://blog.csdn.net/zhangyulin54321/article/details/8763149
+在VC中，也常常为一些图片按钮添加一些功能提示。
+下面讲解实现过程：
+该功能的实现主要是用CToolTipCtrl类。该类在VC??msdn中有详细说明。
+首先在对话框的头文件中加入初始化语句：public:下，加入：CToolTipCtrl????m_Mytip;
+然后在初始化对话框函数中加入：
+m_Mytip.Create(this);
+m_Mytip.AddTool( GetDlgItem(IDC_BUTTON), "你想要添加的提示信息" ); //IDC_BUTTON为你要添加提示信息的按钮的ID
+m_Mytip.SetDelayTime(200); //设置延迟
+m_Mytip.SetTipTextColor( RGB(0,0,255) ); //设置提示文本的颜色
+m_Mytip.SetTipBkColor( RGB(255,255,255)); //设置提示框的背景颜色
+m_Mytip.Activate(TRUE); //设置是否启用提示
+
+然后在类向导中添加PreTranslateMessage消息响应函数
+BOOL CXXXDlg::PreTranslateMessage(MSG* pMsg)
+{
+// TODO: Add your specialized code here and/or call the base class
+??if(pMsg->message==WM_MOUSEMOVE)
+??m_Mytip.RelayEvent(pMsg);
+return CDialog::PreTranslateMessage(pMsg);
+}
+注：如果要为多个按钮添加功能提示只需在
+m_Mytip.AddTool( GetDlgItem(IDC_BUTTON), "你想要添加的提示信息" );
+的下面再加上类似语句，如
+m_Mytip.AddTool( GetDlgItem(IDC_BUTTON1), "你想要添加的提示信息1" );
+m_Mytip.AddTool( GetDlgItem(IDC_BUTTON2), "你想要添加的提示信息2" );
+。。。。。。。。
+————————————————
+版权声明：本文为CSDN博主「zhangyulin54321」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/zhangyulin54321/article/details/8763149
+
+懂过创改.(v ok)(w)
+
+【MFC】按钮提示功能的实现(v ok)
+https://blog.csdn.net/Marcy_SEU/article/details/7932844
+假设在CDlg**中有一控件IDC_EDIT_A，想要鼠标指向该控件时提示，步骤如下：
+
+
+1、CDlg**头文件中声明成员变量
+CToolTipCtrl m_tooltip;
+
+
+2、CDlg***::OnInitDialog() 中创建并设置参数
+m_tooltip.Create(this);
+
+
+//CToolTipCtrl与控件关联
+m_tooltip.AddTool(GetDlgItem(IDC_EDIT_A), TTS_ALWAYSTIP);//当鼠标指向IDC_EDIT_A控件显示提示
+m_tooltip.AddTool(GetDlgItem(IDOK), "Test");//当鼠标指向IDC_EDIT_A控件显示提示
+//若如是句柄可以用FromHandle(hwnd)替换 GetDlgItem(IDC_EDIT_A)
+ 
+ 
+//文字颜色
+m_tooltip.SetTipTextColor(RGB(0,0,255));
+ 
+ 
+//鼠标指向多久后显示提示，毫秒
+m_tooltip.SetDelayTime(TTDT_INITIAL, 10); 
+ 
+ 
+//鼠标保持指向，提示显示多久，毫秒
+m_tooltip.SetDelayTime(TTDT_AUTOPOP, 30000); 
+ 
+ 
+//设定显示宽度，超长内容自动换行
+m_tooltip.SetMaxTipWidth(200);
+ 
+ 
+3、重写PreTranslateMessage，增加以下内容：
+if(m_tooltip.m_hWnd!=NULL) 
+{
+ m_tooltip.RelayEvent(pMsg);
+}
+ 
+ 
+4、在需要的地方动态更新tip内容
+m_tooltip.UpdateTipText(str, FromHandle(hwnd));
+
+
+鼠标移到CBitmanpButton按钮上时，按钮图片就变为另一幅图片，怎么实现？ [问题点数：20分，结帖人C
+https://bbs.csdn.net/topics/90137578
+响应PreTranslateMessage消息。
+判断pMsg是否是WM_MOUSEMOVE消息。
+获得当前鼠标在屏幕的坐标   ::GetCursorPos(&point);
+转为客户区坐标   ::ScreenToClient(this->m_hWnd,&point);
+判断当前坐标上的控件   hwnd=::ChildWindowFromPoint(this->m_hWnd,point);
+如果是你想要显示其他图片的控件那么就执行转化成另外一张图片的操作
+
+
+MFC中如何编写当鼠标移动到Button上时，使button变大？ [问题点数：20分，结帖人kevinstrain]
+https://bbs.csdn.net/topics/390889635
+新建一个基于CButton 的类CNewButtom，增加响应函数mousemove（）；
+在按钮上添加变量，关联新建立的类（CNewButtom newname)，当鼠标移动到按钮上时变会触发mousemove（）；
+添加#include"NewButton.h"     CNewButton m_but;
+即可
+
+MFC自绘Button按钮分析和实现
+https://blog.csdn.net/c_base_jin/article/details/53726209
+自绘制需要的两个基础步骤：
+1.控件类型设置为 BS_OWNERDRAW
+2.添加WM_DRAWITEM消息响应函数或者重写DrawItem函数。
+   //创建画刷
+   CBrush pBrush;
+
+   if(ODS_SELECTED & lpDrawItemStruct->itemState)
+   {
+	      pBrush.CreateSolidBrush(RGB(10,230,10));
+   }
+   else
+   {
+	      pBrush.CreateSolidBrush(RGB(100,130,10));
+   }
+(v ok)
+
+要去看懂, 看懂就过.(v ok)(w)
+
+MFC要怎么动态设置CheckBox的Caption属性？ [问题点数：20分，结帖人zl247111504]
+https://bbs.csdn.net/topics/390304918
+既然是动态创建的，就会指定他的ID对吧
+然后用( (CButton*)GetDlgItem(IDC_CHECK_ID) )->SetWindowText(_T("XXXX"));
+
+比如你的CheckBox的ID是ID_CHECKBOX，那么可以这样：
+CWnd *pWnd = GetDlgItem(ID_CHECKBOX);
+pWnd->SetWindowText("Text");
+
+m_CheckBox.SetWindowText(_T("XXXX"));
+
+MFC 里面checkbox状态问题 [问题点数：40分，结帖人a13728843352]
+https://bbs.csdn.net/topics/390868517
+现在我想问的是，是要等整个按键下的代码执行完以后，才刷新这个选中状态？还是开头设置了，立即改变状态？
+现在我测试是并没有立即改变勾选状态的，请问怎么处理,能达到实时的效果？
+
+难道是你处理过程很费时？界面假死？
+若是，那就用线程
+
+MFC之单选框，复选框用法案例
+https://blog.csdn.net/weixin_42899088/article/details/96623187
+
+MFC中CheckBox的状态判断
+https://blog.csdn.net/tianxia_rwx/article/details/53057729
+　　MFC中复选框Checkbox控件，查找到有四种方法可对其进行操作。
+　　1，利用CButton成员函数GetCheck和SetCheck。
+　　2，利用CWnd成员函数IsDlgButtonChecked。
+　　3，把CheckBox复选框控件与Value类别BOOL型变量相关联。
+　　4，把CheckBox复选框控件与Control类别CButton类型变量相关联。
+下面进行详细介绍：
+
+1，利用CButton成员函数GetCheck和SetCheck。
+int state =((CButton *)GetDlgItem(IDC_CHECK1))->GetCheck();
+1
+返回值说明：
+　　if state == 0，按钮处于未选中状态。
+　　if state == 1，按钮处于选中状态。
+　　if state == 2，按钮状态不确定（仅当按钮风格为BS_3STATE或BS_AUTO3STATE时）。如果按钮是其它风格，则返回0
+
+可使用下方函数进行状态设置：
+
+((CButton *)GetDlgItem(IDC_CHECK1))->SetCheck(int nCheck);
+1
+参数 nCheck 指定按钮控件的选中状态。可能的取值如下：
+　　if nCheck == 0，把按钮设为未选中状态。
+　　if nCheck == 1，把按钮设为选中状态 。
+　　if nCheck == 2，把按钮设为不确定状态。仅当按钮的风格是BS_3STATE或BS_AUTO3STATE时有效。
+
+2，利用CWnd成员函数IsDlgButtonChecked。
+　　CButton的基类是CWnd，那么就可以用IsDlgButtonChecked来获取和设置Check Box的状态。另外MSDN上说明IsDlgButtonChecked还可以用于单选框Radio Button。
+
+UINT IsDlgButtonChecked( int nIDButton ) const;
+1
+nIDButton为控件ID
+函数功能：
+　　该函数可以确定某个按钮控制是否有选中标志，或者三态按钮控制是否为灰色的、选中的、或两者都不是。
+返回值：
+　　使用BS_AUTOCHECKBOX、BS_AUTORADIOBUTTON、BS_AUTO3STATE、BS_CHECKBOX、BS_RADIOBUTION或BS_3STATE样式创建的按钮的返回值可以是如下值之一：
+　　BST_CHECKED：表示按钮被选中。
+　　BST_INDETERMINATE：表示按钮是灰色的，即为不确定状态（只有具有BS_3STATE或BS_AUTO3STATE样式的按钮才使用该值）。
+　　BST_UNCHECKED：表示该按钮未选中（unckecked）。如果该按钮用其他任何样式，那么返回值为零。
+
+if ( BST_CHECKED == IsDlgButtonChecked( IDC_CHECK1 ) )
+{
+    //IDC_CHECK1是CheckBox控件。
+    //Check Box被选中执行相关动作
+}
+1
+
+3，把CheckBox复选框控件与Value类别BOOL型变量相关联。
+　　为复选框CheckBox控件添加一个控件类型的BOOL值变量如：BOOL m_CheckBox1;
+
+void MyTestDlg::DoDataExchange (CDataExchange *pDX)
+{
+    //此代码利用类向导可以自动生成
+    MyTestDlg::DoDataExchange (pDX) ;
+    DDX_Check(pDX, IDC_CHECK1, m_CheckBox1);
+}
+//下方是代码片段
+//从控件获得数据,获得输入数据后可以进行状态判断 
+UpdateData(TRUE); 
+BOOL state = m_CheckBox1;
+//向控件更新数据,设置控件的状态
+m_CheckBox1 = TRUE；
+UpdateData(FALSE);
+1
+2
+
+13
+4，把CheckBox复选框控件与Control类别CButton类型变量相关联。
+　　为复选框CheckBox控件添加一个类别为Control，变量类型为CButton的变量：m_CheckBox1;
+
+void MyTestDlg::DoDataExchange(CDataExchange* pDX)  
+{
+    CPropertyPage::DoDataExchange(pDX);  
+    DDX_Control(pDX, IDC_CHECK1, m_CheckBox1); 
+}
+//下方是代码片段
+//从控件获得数据,获得输入数据后可以进行状态判断 
+UpdateData(TRUE); 
+BOOL state = m_CheckBox1.GetCheck();
+//向控件更新数据,设置控件的状态
+m_CheckBox1.SetCheck(int nCheck);
+UpdateData(FALSE);
+1
+2
+
+这个其实和第一种强制转换成（CButton *）一样的。
+
+友情链接：
+http://blog.csdn.net/dytdyt2010/article/details/43064031
+http://www.creocn.com/mfc-check-box-using-exp.html
+http://blog.sina.com.cn/s/blog_817a5eb601015xtr.html
+————————————————
+版权声明：本文为CSDN博主「tianxia_rwx」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/tianxia_rwx/article/details/53057729
+
+
+
+VS2010 MFC编程之复选框checkbox
+https://blog.csdn.net/mengxiangjia_linxi/article/details/80939098
+复选框：MFC中用于勾选的方形小格，可以通过点击勾选事件或选中与否的状态进行相应操作。
+
+使能某个复选框：
+
+m_check2.EnableWindow(TRUE);
+1
+其中，m_check2为为复选框添加的变量。
+
+设置复选框状态：
+一般复选框是通过鼠标勾选的，也可以通过函数设置其状态。
+1.设置复选框状态为：未选中
+
+m_check1.SetCheck(0);
+1
+2.设置复选框状态为：选中
+
+m_check1.SetCheck(1);
+1
+参考:https://www.cnblogs.com/mupiaomiao/p/6247789.html
+
+MFC 复选框选中和是否被选中判断
+判断复选框是否被选中
+方法1：
+
+((CButton*)GetDlgItem(IDC_CHECK_enable))->SetCheck(1);
+1
+其中IDC_CHECK_enable为控件ID，1表示选中，0,表示未选中
+方法2：
+
+m_enable.SetCheck(1);
+1
+其中m-enable绑定控件
+
+获取复选框状态：
+
+int tt= m_enable.GetCheck();
+1
+返回1表示选中，返回0表示未选中。
+
+用参数判断选中与否：
+
+变量	状态
+BST_UNCHECKED	未选中
+BST_CHECKED	选中
+m_Badmin.SetCheck(BST_CHECKED); //将按钮设置为选中状态
+
+int nState = m_Badmin.GetCheck();  
+if (nState == BST_CHECKED)  
+{  
+    //选中
+}  
+else   
+{  
+    //未选中
+} 
+
+参考：https://blog.csdn.net/yal179/article/details/24396295
+
+
+MFC-复选框单选按钮用法
+https://blog.csdn.net/qq_18297675/article/details/50979187
+
+利用CButton类获取指向复选框按钮的指针,然后来操作它
+
+//获取指向复选框按钮的指针
+    CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK);
+
+    //被选中返回1
+    if (pBtn->GetCheck())
+    {
+        AfxMessageBox(_T("复选框被选中了"));
+    } 
+    else
+    {
+        AfxMessageBox(_T("复选框取消选中了"));
+    }
+    //设置选中状态pBtn->SetCheck(1)
+1
+2
+3
+
+方法2:
+利用 CWnd类的成员函数IsDlgButtonChecked
+
+CWnd* pWnd = (CWnd*)GetDlgItem(IDC_CHECK);
+    if (pWnd->IsDlgButtonChecked(IDC_CHECK) == BST_CHECKED)
+    {
+        AfxMessageBox(_T("复选框被选中了"));
+    } 
+    else
+    {
+        AfxMessageBox(_T("复选框取消选中了"));
+    }
+1
+2
+
+9
+方法3:
+
+    //发送消息,如果被选中返回1
+     BOOL bCheck = ::SendMessage(GetDlgItem(IDC_CHECK)->m_hWnd, BM_GETCHECK, 0, 0);
+     if (bCheck)
+     {
+         AfxMessageBox(_T("复选框被选中了"));
+     } 
+     else
+     {
+         AfxMessageBox(_T("复选框取消选中了"));
+     }
+      //::SendMessage(GetDlgItem(IDC_CHECK)->m_hWnd, BM_SETCHECK,1, 0);
+1
+2
+3
+
+方法4:
+与控件关联一个布尔变量
+
+    if (m_IsChecked)
+    {
+        AfxMessageBox(_T("复选框被选中了"));
+    } 
+    else
+    {
+        AfxMessageBox(_T("复选框取消选中了"));
+    }
+1
+
+方法5:
+与控件关联一个控件变量
+
+    if (m_checkbox.GetCheck())
+    {
+        AfxMessageBox(_T("复选框被选中了"));
+    }
+    else
+    {
+        AfxMessageBox(_T("复选框取消选中了"));
+    }
+    //m_checkbox.SetCheck(1);
+1
+
+单选框:
+
+判断是否被选中:
+
+方法1:
+
+void CMFCTESTDlg::OnBnClickedRadio()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CButton* pBtn = (CButton*)GetDlgItem(IDC_RADIO);
+    if (pBtn->GetCheck())
+    {
+        AfxMessageBox(_T("单选按钮1被选中了"));
+    }
+
+}
+
+
+void CMFCTESTDlg::OnBnClickedRadio2()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CButton* pBtn = (CButton*)GetDlgItem(IDC_RADIO2);
+    if (pBtn->GetCheck())
+    {
+        AfxMessageBox(_T("单选按钮2被选中了"));
+    }
+}
+1
+
+方法2:
+
+void CMFCTESTDlg::OnBnClickedRadio()
+{
+    // TODO: 在此添加控件通知处理程序代码
+
+    //发送消息,如果被选中返回1
+    BOOL bCheck = ::SendMessage(GetDlgItem(IDC_RADIO)->m_hWnd, BM_GETCHECK, 0, 0);
+    if (bCheck)
+    {
+        AfxMessageBox(_T("单选按钮1被选中了"));
+    }
+
+}
+
+
+void CMFCTESTDlg::OnBnClickedRadio2()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    BOOL bCheck = ::SendMessage(GetDlgItem(IDC_RADIO2)->m_hWnd, BM_GETCHECK, 0, 0);
+    if (bCheck)
+    {
+        AfxMessageBox(_T("单选按钮2被选中了"));
+    }
+}
+1
+2
+
+
+
+#ifdef _W2TSERVER
+
+按下TAB键切换时，会改变Radio按钮的选择啊？怎么处理呢？ [问题点数：30分，结帖人lyl0625]
+https://bbs.csdn.net/topics/310268040
+TAb键不是只会改变焦点吗,怎么会改变选项.
+自己处理下wm_char消息中的VK_TAB键,直接返回就行.
+
+// The one and only window has been initialized, so show and update it. 
+m_pMainWnd->SetWindowPos(NULL,0,0,750,555,SWP_NOMOVE);//设置窗口的初始大小为750*555 
+m_pMainWnd->ShowWindow(SW_SHOW); 
+m_pMainWnd->UpdateWindow(); 
+
+
+GetCheckedRadioButton
+CWnd::GetCheckedRadioButton  
+int GetCheckedRadioButton( int nIDFirstButton, int nIDLastButton );
+Return Value
+ID of the checked radio button, or 0 if none is selected.
+Parameters
+nIDFirstButton
+Specifies the integer identifier of the first radio button in the group.
+nIDLastButton
+Specifies the integer identifier of the last radio button in the group.
+Remarks
+Retrieves the ID of the currently checked radio button in the specified group.
+
+
+CWnd::CheckRadioButton  
+void CheckRadioButton( int nIDFirstButton, int nIDLastButton, int nIDCheckButton );
+
+Parameters
+
+nIDFirstButton
+
+Specifies the integer identifier of the first radio button in the group.
+
+nIDLastButton
+
+Specifies the integer identifier of the last radio button in the group.
+
+nIDCheckButton
+
+Specifies the integer identifier of the radio button to be checked.
+
+Remarks
+
+Selects (adds a check mark to) a given radio button in a group and clears (removes a check mark from) all other radio buttons in the group. 
+
+The CheckRadioButton function sends aBM_SETCHECK message to the specified radio button.
+
+Example
+
+// Of the 4 radio buttons, selects radio button 3.
+void CMyDlg::OnMarkRadio() 
+{
+   CheckRadioButton(IDC_RADIO1, IDC_RADIO4, IDC_RADIO3);   
+}
+
+CWnd Overview |  Class Members |  Hierarchy 
+
+
+
+关于RadioButton的TabIndex和TabStop
+https://blog.csdn.net/xingma1988/article/details/40650995
+原创xingma1988 最后发布于2014-10-31 10:55:16 阅读数 764  收藏
+展开
+winform界面上将一个Checked设为false，启动界面时，该RadioButton的Checked却自动变成true。
+
+找了半天发现是RadioButton的TabIndex，TabStop导致，将它的TabIndex设为最小，TabStop设为true，启动界面时?Checked就会自动变成true。
+
+
+MFC Radio Button 使用 分组 RadioButton 用法
+https://blog.csdn.net/c_cyoxi/article/details/23868979
+2. 分组
+将radio1、radio2、radio3分为1组，radio4、radio5分为另一组；
+方法：设置 radio1 的 属性： group、tabstop、auto均为true
+设置 radio2 的 属性： group设为false，tabstop、auto均为true
+设置 radio3 的 属性：group设为false， tabstop、auto均为true
+
+设置 radio4 的 属性： group、tabstop、auto均为true
+设置 radio5 的 属性： group设为false，tabstop、auto均为true
+3.   按CTRL+D，保证同一组内的radio的tab序号是连续的；调整tab序号的方式是
+4. 关联int型变量   注意：只需将group属性为true的radio1关联，radio2和radio3无需关联；  同样，radio4需关联，radio5无需关联
+第4步完成后，在窗体头文件中可以看到
+注意：updatedata(true) 不能少； 它的作用是 将radio的状态值更新给关联的变量，即m_radiobtngroup1；
+
+
+2020.04.01
+
+东方财富网 > 行情中心 > 期货市场 > 国际期货 > (CL20K NYMEX原油2005) (CL00Y NYMEX原油)
+
+NYMEX原油CL原油分析纽约原油布伦特原油2020年03月02日 (2020-03-02 17:24:32)
+标签： 原油期货 纽约原油 nemex期油 布伦特原油 不收仓息原油期货	分类： 原油分析
+原油RF-CL：
+油价周五再度下跌。最高46.91，最低43.83，当前在45 附近运行。多国确诊病例大幅增加，众多
+大型国际活动取消，原油需求预期继续堪忧。日图收出下影中阴线，显示空头继续主导趋势。美盘
+末段跟随美股反弹，下影线可暂时看做支撑区域，短线或将反复测试。整体趋势仍是震荡偏弱。当
+前可继续逢反弹在45.70 附近空，止损46.30，目标44.10。
+http://blog.sina.com.cn/s/blog_8783a85d0102yty5.html
+
+
+339G/2053G hixi
+243G/2055G hwdcxm
+
+http://bbs.16rd.com/ 一牛网
+yiwai name + open
+huangwd name + open
+
+https://pan.baidu.com/ or https://yun.baidu.com/
+hixi open+bir
+
+http://pan.baidu.com/
+hwdcxm  name+bir
+
 面试了一个 46 岁的程序员，我思绪万千!
 https://mp.weixin.qq.com/s/ibYJld1_uHPjXivM5iTqSw
 
