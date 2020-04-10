@@ -120,6 +120,10 @@ SOURCE=.\MyListBox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MyProgress.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\PathAPI.cpp
 # End Source File
 # Begin Source File
@@ -218,6 +222,10 @@ SOURCE=.\MyListBox.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\MyProgress.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\PathAPI.h
 # End Source File
 # Begin Source File
@@ -272,6 +280,14 @@ SOURCE=.\WorkThread.h
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\res\IGPEditor_hwd.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\IGPEditor_hwdDoc.ico
+# End Source File
 # Begin Source File
 
 SOURCE=.\res\MsEdit_Wendy.ico

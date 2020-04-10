@@ -10,6 +10,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg dialog
 
+#include "MyProgress.h"
+
 class CProgressDlg : public CDialog
 {
 // Construction
@@ -22,7 +24,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CProgressDlg)
 	enum { IDD = IDD_PROGRESS };
-	CProgressCtrl	m_progressCtrl;
+	CMyProgress m_progressCtrl; //CProgressCtrl
 	//}}AFX_DATA
 
 

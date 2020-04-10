@@ -1,3 +1,2879 @@
+VC++ Tab Control控件的使用
+https://blog.csdn.net/andylin02/article/details/3910426
+
+MFC Tab控件使用方法
+https://blog.csdn.net/weixin_34387468/article/details/94584702
+
+MFC Tab控件使用
+https://blog.csdn.net/weixin_30758821/article/details/99130552
+ 2、创建两个新的对话框资源，其属性作如下修改：
+  Border：none //边界为空,这样它就没了标题栏
+  Style ：Child // 这样这个模板就可以当作另一个窗口的子窗口了。其它如果没有必要，就不用改了。
+TCITEM item;
+  item.mask = TCIF_TEXT;
+  item.pszText = "第一页";
+
+m_tabctrl.InsertItem (0,&item);
+  item.pszText ="第二页";
+  m_tabctrl.InsertItem (1,&item);
+
+m_mm1.Create (IDD_DIALOG1,&m_tabctrl); 
+m_mm2.Create (IDD_DIALOG2,&m_tabctrl);
+
+m_mm1.SetWindowPos (NULL,10,30,400,100,SWP_SHOWWINDOW);
+m_mm2.SetWindowPos (NULL,10,30,400,100,SWP_HIDEWINDOW );
+
+
+
+C++ MFC Tab Control控件的详细使用(v ok)
+https://www.cnblogs.com/lujin49/p/4556645.html
+C++ MFC Tab Control控件的详细使用
+1. 新建一个MFC工程, 取名MyTab, 选择Dialog based, 然后Finish. 
+2. 删除对话框上默认添加的三个控件. 添加Tab Control控件并在Property属性中设置ID为IDC_TABTEST 在More Styles里勾上Bottom. 调速尺寸使其布满整个对话框, 我这边Tab Control的尺寸最后为164X203. 在ClassWizard为其添加变量, 变量名为m_tab. 类型为CTabCtrl. 
+3. 在对话框的初始化函数OnInitDialog里面添加如下代码: 
+m_tab.InsertItem(0,"参数一");  //添加参数一选项卡 
+m_tab.InsertItem(1,"参数二");  //添加参数二选项卡 
+m_tab.InsertItem(2,"结果");    //添加结果选项卡
+
+4.在对话框资源里面添加三个对话框资源, ID分别命名为IDD_PARA1, IDD_PARA2, IDD_RESULT. 字体为宋体, 字号为9, style为Child, Border为None, 宽度调整为161. 再分别为其添加对应的基于CDialog类CPara1, CPara2, CResult. 
+5. 在CMyTabDlg类中添加三个成员变量m_para1, m_para2, m_result, 分别是三个子对话框的实例. 代码如下:
+
+CResult m_result; 
+CPara2 m_para2; 
+CPara1 m_para1; 
+6. 在IDD_PARA1对话框上添加静态文本控件内容为"参数一" 再在后面插入一个文本框控件, 用ClassWizard将其关联为一个int型变量,名为m_nPara1; 
+在IDD_PARA2对话框上添加静态文本控件内容为"参数二" 再在后面插入一个文本框控件, 用ClassWizard将其关联为一个int型变量,名为m_nPara2; 
+在IDD_RESULT对话框上添加静态文本控件内容为"结果" 再在后面插入一个文本框控件, 用ClassWizard将其关联为一个int型变量,名为m_nResult; 
+7. 为CPara1类添加成员函数int GetParaValue() 代码如下: 
+int CPara1::GetParaValue() 
+...{ 
+ return m_nPara1; 
+} 
+为CPara2类添加成员函数int GetParaValue() 代码如下: 
+int CPara2::GetParaValue() 
+...{ 
+ return m_nPara2; 
+} 
+为CResult类添加成员函数void SetResultValue(int nResult) 代码如下: 
+void CResult::SetResultValue(int nResult) 
+...{ 
+     m_nResult = nResult; 
+} 
+8. 在IDD_MYTAB_DIALOG对话框的初始化函数OnInitDialog里面添加如下代码: 
+//关联对话框,并且将IDC_TABTEST控件设为父窗口 
+m_para1.Create(IDD_PARA1,GetDlgItem(IDC_TABTEST)); 
+m_para2.Create(IDD_PARA2,GetDlgItem(IDC_TABTEST)); 
+m_result.Create(IDD_RESULT,GetDlgItem(IDC_TABTEST)); 
+ 
+//获得IDC_TABTEST客户区大小 
+CRect rs; 
+m_tab.GetClientRect(&rs); 
+//调整子对话框在父窗口中的位置 
+rs.top+=1; 
+rs.bottom-=60; 
+rs.left+=1; 
+rs.right-=2; 
+ 
+//设置子对话框尺寸并移动到指定位置 
+m_para1.MoveWindow(&rs); 
+m_para2.MoveWindow(&rs); 
+m_result.MoveWindow(&rs); 
+ 
+//分别设置隐藏和显示 
+m_para1.ShowWindow(true); 
+m_para2.ShowWindow(false); 
+m_result.ShowWindow(false); 
+ 
+//设置默认的选项卡 
+m_tab.SetCurSel(0);
+
+9. 添加Tab Control控件的TCN_SELCHANGE事件响应函数OnSelchangeTabtest(NMHDR* pNMHDR, LRESULT* pResult) ,函数体代码如下:
+
+int CurSel = m_tab.GetCurSel(); 
+ switch(CurSel) 
+ ...{ 
+ case 0: 
+         m_para1.ShowWindow(true); 
+         m_para2.ShowWindow(false); 
+         m_result.ShowWindow(false); 
+ break; 
+ case 1: 
+         m_para1.ShowWindow(false); 
+         m_para2.ShowWindow(true); 
+         m_result.ShowWindow(false); 
+ break; 
+ case 2: 
+         m_para1.ShowWindow(false); 
+         m_para2.ShowWindow(false); 
+         m_result.ShowWindow(true); 
+ break; 
+ default: 
+         ; 
+     }     
+ 
+    *pResult = 0;
+
+10. 在IDD_MYTAB_DIALOG对话框下面添加一个按钮, 标题为"计算" 为其添加事件响应函数, 代码如下:
+
+m_para1.UpdateData(true); 
+     m_para2.UpdateData(true); 
+     m_result.SetResultValue(m_para1.GetParaValue()+m_para2.GetParaValue()); 
+     m_result.UpdateData(false); 
+
+
+mfc CListCtrl分页显示数据库数据
+https://blog.csdn.net/XuePiaoFei1/article/details/49758437
+
+MFC CListCtrl 将一个列表的选中项添加到另一个列表
+http://www.mamicode.com/info-detail-1713732.html
+
+MFC CListCtrl 点击选中整行
+https://blog.csdn.net/qiangzi4646/article/details/79001391
+CListCtrl 默认只有点击第一列才能选中,而且只能让第一列高亮,那么如何让点击某一行的任何列,整行都高亮呢?
+有2个方法,如下:
+	//方法1
+	::SendMessage(m_listCtrlDevice.m_hWnd, LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT, LVS_EX_FULLROWSELECT);
+	//方法2
+	m_listCtrlDevice.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+
+mfc CListCtrl 报表格式
+https://blog.csdn.net/weixin_30596735/article/details/95003305
+
+
+vc++ MFC-CListCtrl控件
+https://blog.csdn.net/wny198816/article/details/6784517
+
+虚拟列表(icosmall) VC++6 MFC CListCtrl SetItemCount(int nItems) nItems上限问题
+https://ask.csdn.net/questions/747730
+虚拟列表(icosmall) VC++6 MFC CListCtrl SetItemCount(int nItems) nItems上限只有一亿 当超过一亿时列表就空白了，有什么方法改一下这个数值工程要求1.3亿多一点
+int MaxVal=_ttoi(Tmpstr);  //Unicode 
+m_pIntegerList->SetItemCount(MaxVal);
+有没有搞错 一次设置1.3亿个item？可以刷新啊 不用一次全设
+
+MFC CListCtrl实现双击编辑
+https://blog.csdn.net/m0_37837218/article/details/103677739-soetl_so_first_rank_v2_rank_v25-16
+OnNMDblclkList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    NM_LISTVIEW *pNMListCtrl = (NM_LISTVIEW *)pNMHDR; //该变量是个结构体指针，该结构体中存放着双击的行号(iItem),以及列号(iSubItem),当未选中时返回-1
+    //找了一些网上的一些教程，当表没有插入数据时，也能响应解析行号列号，试了下我这边不行，原因未知
+    //所以我这里想要双击解析行号列号，必须要提前插入行列，可以插空字符
+    if (pNMListCtrl->iItem != -1)
+    {
+        CRect itemRect,dlgRect;
+        //获取点击的单元格的客户区,相对于控件的客户区
+        m_ListCtrl.GetSubItemRect(pNMListCtrl->iItem, pNMListCtrl->iSubItem, LVIR_BOUNDS,itemRect);
+        //获取CLisrmtCtrl控件的客户区域
+        m_ListCtrl.GetWindowRect(&dlgRect);
+        //这个函数可以把你在屏幕上鼠标的位置转换为你打开的程序的客户区的坐标，把这个注释掉之后，就看不到编辑框了
+        ScreenToClient(&dlgRect);
+        //单元格相对于控件的客户区的top＋控件相对于程序客户区的top = 单元格在程序客户区的top
+        itemRect.top += (dlgRect.top);
+        itemRect.left += (dlgRect.left);
+        //m_height,m_width是单元格的长度，在初始化CListCtrl控件时，最好设置固定的列宽以及行高(行高用图片撑起来的方法比较简单)，因为这样编辑框出现的位置特别是大小比较准确固定，就是单元格的宽度，否则可能会出现编辑框每次出现大小极其不固定的情况
+        itemRect.bottom = rect.top + m_height;
+        itemRect.right = rect.left + m_width;
+        //m_ItemEdit是一个CEdit的control变量，这里的思想就是双击单元格，解析区域位置，然后让该区域显示一个编辑框控件，保存编辑内容后，再设置单元格内容
+        m_ItemEdit.MoveWindow(&itemRect);
+        m_ItemEdit.ShowWindow(SW_SHOW);
+        m_ItemEdit.SetFocus();//这样就可以每次编辑框跳出来，只有编辑框深蓝色(选种色)，不至于列表一整行都是深蓝色
+        //知道了item的行号和列号了，就可以根据编辑框保存的数据以及SetItemText(m_riw,m_column,str)设置单元格的内容了，这里可以利用CEdit的KILLFOCUS消息映射，每次编辑框失去焦点，就设置单元格数据显示
+        m_row = pNMListCtrl->iItem; //记录选中的行
+        m_column = pNMListCtrl->iSubItem;//记录选中的列
+    }
+}
+
+
+MFC CListCtrl的方法
+https://blog.csdn.net/ccfxue/article/details/51455473
+
+VC MFC列表框(CListBox)控件
+https://www.douban.com/note/178901478/
+QQ？
+
+MFC CListCtrl相应checkbox消息
+https://blog.csdn.net/XuePiaoFei1/article/details/81213614
+
+MFC中的CListCtrl
+https://blog.csdn.net/u014660247/article/details/53242539
+目录显示？？
+// 创建 图标列表
+m_ilNormal.Create(MAKEINTRESOURCE(IDB_NORMAL), 32, 1, RGB(255, 255, 255));
+m_ilSmall.Create(MAKEINTRESOURCE(IDB_SMALL), 16, 1, RGB(255, 255, 255));
+//将图像列表设置到控件
+m_list.SetImageList(&m_ilNormal, LVSIL_NORMAL);
+m_list.SetImageList(&m_ilSmall, LVSIL_SMALL);
+
+
+// 添加控件的列
+m_list.InsertColumn(0, L"名称", LVCFMT_CENTER, 100);
+m_list.InsertColumn(1, L"大小", LVCFMT_CENTER, 100);
+m_list.InsertColumn(2, L"类型", LVCFMT_CENTER, 100);
+m_list.InsertColumn(3, L"修改日期", LVCFMT_CENTER, 100);
+
+
+//插入 item
+showdata(L"C:");
+AfxOleInit();
+m_list.SetBkImage(L"C:/one.bmp"); // 需要先初始化Ole库
+m_list.SetTextBkColor(CLR_NONE);
+
+
+MFC总结之CListCtrl用法及技巧
+https://blog.csdn.net/htt9931/article/details/8730785
+
+MFC中的CListCtrl控件添加行
+https://blog.csdn.net/chinayu2007/article/details/76155182
+m_list.Attach(::GetDlgItem(this->m_hWnd,IDC_LIST1));
+void SecondDig::OnBnClickedButton4()
+{
+	int pos = m_ListCtrl.GetSelectionMark();
+	CString gonghao = m_ListCtrl.GetItemText(pos,0);
+	AfxMessageBox(gonghao);
+}
+
+
+MFC CListCtrl
+https://blog.csdn.net/weixin_30484739/article/details/97676923
+windows进程任务管理器?
+
+MFC 中的CListCtrl简介
+https://blog.csdn.net/weixin_34335458/article/details/94558553
+
+MFC总结之CListCtrl用法及技巧
+转载vanillazheng 最后发布于2019-06-02 13:33:46 阅读数 3107  收藏展开
+https://blog.csdn.net/zwgdft/article/details/7560592
+https://www.cnblogs.com/lidabo/archive/2012/08/23/2652792.html
+
+
+MFC总结之CListCtrl用法及技巧（一）
+https://blog.csdn.net/zwgdft/article/details/7560592
+
+MFC总结之CListCtrl用法及技巧
+https://blog.csdn.net/zhaodan19861107/article/details/40377771
+转载地址：http://blog.csdn.net/zwgdft/article/details/7565331
+感谢作者的总结。   
+本文根据本人在项目中的应用，来谈谈CListCtrl的部分用法及技巧。当初学习时，查了很多资料，零零碎碎的作了些记录，现在主要是来做个总结，方便以后查阅。主要包括以下十三点内容：基本操作、获取选中行的行号、复选框操作、动态设置选中行的字体颜色、设置选中行的背景颜色、禁止拖动表头、让第一列居中显示、设置行高与字体、虚拟列表技术、点击表头时进行归类、向上与向下移动、动态调整大小问题、避免闪烁问题。
+
+      分为两篇来进行总结。本篇重点总结：基本操作、获取选中行的行号、复选框操作、动态设置选中行的字体颜色、设置选中行的背景颜色
+来将其设置为LVS_REPORT风格，否则插入无效。还用另一种方法来设置风格，即在OnInitialUpate()中获取CListCtrl控制权，然后修改风格，如下所示：
+                      CListCtrl &theCtrl =GetListCtrl();
+                      theCtrl.ModifyStyle(0, LVS_REPORT);
+BOOL SetItemText(int nItem,  int nSubItem, LPCTSTR lpszText )
+设置第nItem行nSubItem列的信息（nItem:0,1,2,3……； nSubItem:1,2,3……）
+删除操作
+       有三个操作函数：
+                       BOOL DeleteAllItems()  -------删除所有的行
+                       BOOL DeleteItem(nItem) --------删除某一行
+                       BOOL DeleteColumn(nCol) -----删除某一列
+ 3、复选框操作
+       有时需要在item前面添加一个CheckBox，供用户选择，然后对所有选中项进行处理。
+       这里涉及到两个问题：第一个，如何添加CheckBox风格；第二个，如何判断某一行的CheckBox状态是否发生改变。
+ 4、动态设置选中行的字体颜色
+         有时可能需要设置某行的文字为特殊颜色，以表示某种特殊含义，比如正在下载的信息用绿色，暂停下载的用灰色。
+5、设置选中行的背景颜色
+         设置选中行的背景颜色，可以将选中行以特殊颜色显示，容易明白当前处理的是哪一行。尽管有高亮，但是高亮是基于焦点的，如果你选中了某一行，然后焦点转移了，这是就无法判断你选的是哪一行了。
+7、让第一列居中显示
+        在插入列时，我们可以通过参数nFormat来设置文本居中显示，但是这种设置对于第一列是没有作用的。这时我们可以考虑将我们的内容从第二列开始插入（设置为居中显示）。先插入第一列，然后删除第一列，这样原先的第二列就充当了第一列。
+ 8、设置行高和字体
+        设置CListCtrl的行高没有函数接口，可以通过自绘来实现，但是比较麻烦。有一个比较简单的方法是通过使用一个空白的图像将行撑起来，使其高度发生变化。示例如下
+9、虚拟列表技术
+        给一个链接，介绍的比较详细：http://hi.baidu.com/qi_xian/blog/item/929b04ce27d02c0592457ef8.html
+       当数据量大时，使用InsertItem插入数据的过程是很漫长的。这时我们有两个方法来解决该问题：一是使用CListCtrl的虚拟列表技术，二是采用分页显示的方法。对于虚拟列表技术，上述链接中的文章讲的很详细，我用过它的比较简单的方法，后来改用了分页方法。
+       使用虚拟列表技术，有三点需要搞清楚：
+① 使用虚拟技术时，需要将CListCtrl控件的Owner Data属性设置为ture。
+② 给虚拟列表添加元素时，不需要使用InserItem函数，通过调用SetItemCount设置数据总个数，然后由系统产生不同的消息，在相应的消息响应函数中完成插入工作。
+③ 虚拟列表向父窗口发送的消息有三种： ⑴ 当它需要数据时，发送LVN_GETDISPINFO消息； ⑵ 当用户试图查找某个元素时，发送LVN_ODFINDITEM消息； ⑶当需要缓冲数据时，发送 LVN_ODCACHEHINT消息。
+10、点击表头时进行归类排序
+         系统通过发送LVM_SORTITEMS消息来处理归类问题，在该消息的处理函数中需要调用一个回调函数，这个回调函数需要我们来设计，以完成不同的归类方法。回调函数原型如下：
+ 11、向上与向下移动
+        有时需要向上或向下移动表项内容，这里给出向上移动的方法，向下移动的方法类似。
+12、避免闪烁问题
+           这个问题在我的前面一篇博文有提到。
+  http://blog.csdn.net/zwgdft/article/details/7394318
+13、动态调整大小
+        有时由于不确定软件运行时的电脑屏幕大小，需要根据屏幕大小动态设置CListCtrl控件的大小
+
+
+	for(int i=0; i<10; i++) 
+	{
+		CString NO,Group,Length,Time,ItemCode,TransCode,DataLength,TransData;
+		NO.Format("%d",i+1);
+		Group.Format("Group%d",i+1);
+		Length.Format("Length%d",i+1);
+		Time.Format("Time%d",i+1);
+		ItemCode.Format("ItemCode%d",i+1);
+		TransCode.Format("TransCode%d",i+1);
+		DataLength.Format("DataLength%d",i+1);
+		TransData.Format("TransData%d",i+1);
+
+		m_CtrlListCtrl1.InsertItem(3,NO,0);		
+		m_CtrlListCtrl1.SetItemText(i,1, Group);
+		m_CtrlListCtrl1.SetItemText(0,2, Length);
+		m_CtrlListCtrl1.SetItemText(i,3, Time);
+		m_CtrlListCtrl1.SetItemText(i,4, ItemCode);
+		m_CtrlListCtrl1.SetItemText(i,5, TransCode);
+		m_CtrlListCtrl1.SetItemText(i,6, DataLength);
+		m_CtrlListCtrl1.SetItemText(i,7, TransData);
+	}
+思考现象
+
+MFC CListCtrl 使用介绍
+https://blog.csdn.net/ypist/article/details/7769996
+LVS_EDITLABELS 结点的显示字符可以被编辑，对于报表风格来讲可编辑的只为第一列。 
+LVS_SHOWSELALWAYS 在失去焦点时也显示当前选中的结点 
+
+通过调用int InsertItem( int nItem, LPCTSTR lpszItem );可以在列表控件中nItem指明位置插入一项，lpszItem为显示字符。除LVS_REPORT风格外其他三种风格都只需要直接调用 InsertItem就可以了，但如果使用报表风格就必须先设置列表控件中的列信息。
+
+关于动态提供结点所显示的字符：首先你在项时需要指明lpszItem参数为： LPSTR_TEXTCALLBACK。在控件显示该结点时会通过发送TVN_GETDISPINFO来取得所需要的字符，在处理该消息时先将参数 pNMHDR转换为LPNMLVDISPINFO，然后填充其中item.pszText。通过item中的iItem,iSubItem可以知道当前显示的为那一项。下面的代码演示了这种方法：
+
+char szOut[8][3]={"No.1","No.2","No.3"};//添加结点
+m_list.InsertItem(LPSTR_TEXTCALLBACK,)
+m_list.InsertItem(LPSTR_TEXTCALLBACK,)
+//处理消息
+void CParentWnd::OnGetDispInfoList(NMHDR* pNMHDR, LRESULT* pResult)
+{ 
+    LV_DISPINFO* pLVDI = (LV_DISPINFO*)pNMHDR; 
+    pLVDI->item.pszText=szOut[pTVDI->item.iItem];//通过iItem得到需要显示的字符在数组中的位置 
+    *pResult = 0;
+}
+
+如何得到当前选中项位置：在列表控件中没有一个类似于ListBox中GetCurSel()的函数，但是可以通过调用GetNextItem( -1, LVNI_ALL | LVNI_SELECTED);得到选中项位置。
+
+2. 设置listctrl 风格及扩展风格
+      LONG lStyle;
+      lStyle. = GetWindowLong(m_list.m_hWnd, GWL_STYLE);//获取当前窗口style
+      lStyle. &= ~LVS_TYPEMASK; //清除显示方式位
+      lStyle.|= LVS_REPORT; //设置style
+      SetWindowLong(m_list.m_hWnd, GWL_STYLE, lStyle);//设置style
+
+
+      DWORD dwStyle. = m_list.GetExtendedStyle();
+      dwStyle.|= LVS_EX_FULLROWSELECT;//选中某行使整行高亮（只适用与report风格的listctrl）
+      dwStyle.|= LVS_EX_GRIDLINES;//网格线（只适用与report风格的listctrl）
+      dwStyle.|= LVS_EX_CHECKBOXES;//item前生成checkbox控件
+      m_list.SetExtendedStyle(dwStyle); //设置扩展风格
+
+3. 插入数据
+      m_list.InsertColumn( 0, "ID", LVCFMT_LEFT, 40 );//插入列
+      m_list.InsertColumn( 1, "NAME", LVCFMT_LEFT, 50 );
+      int nRow = m_list.InsertItem(0, “11”);//插入行
+      m_list.SetItemText(nRow, 1, “jacky”);//设置数据
+
+6. 得到listctrl中所有行的checkbox的状态
+      m_list.SetExtendedStyle(LVS_EX_CHECKBOXES);
+      CString str;
+      for(int i=0; i<m_list.GetItemCount(); i++)
+      {
+           if( m_list.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED || m_list.GetCheck(i))
+           {
+                str.Format(_T("第%d行的checkbox为选中状态"), i);
+                AfxMessageBox(str);
+           }
+      }
+
+7. 得到listctrl中所有选中行的序号
+
+
+      方法一：
+      CString str;
+      for(int i=0; i<m_list.GetItemCount(); i++)
+      {
+           if( m_list.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED )
+           {
+                str.Format(_T("选中了第%d行"), i);
+                AfxMessageBox(str);
+           }
+      }
+
+
+      方法二：
+      POSITION pos = m_list.GetFirstSelectedItemPosition();
+      if (pos == NULL)
+           TRACE0("No items were selected!\n");
+      else
+      {
+           while (pos)
+           {
+                int nItem = m_list.GetNextSelectedItem(pos);
+                TRACE1("Item %d was selected!\n", nItem);
+                // you could do your own processing on nItem here
+           }
+      }
+
+让列表里面的选项可以重命名:
+
+yourlistctrl.ModifyStyle(0,LVS_EDITLABELS);
+yourlistctrl.EditLabel(ItemIndex)-> SetFocus();
+
+其中 ItemIndex 为项目所在的索引，比如0,1,2,。
+
+MFC列表控件CListCtrl
+https://blog.csdn.net/fly_wt/article/details/83690531
+接口
+功能
+CListCtrl::SetExtendedStyle
+设置列表风格
+CListCtrl::GetExtendedStyle
+
+获取列表风格
+
+CListCtrl::InsertColumn
+
+插入某列内容，主要用于设置标题
+
+CListCtrl::InsertItem
+
+在某行插入新项内容
+
+CListCtrl::SetItemText
+
+设置某行某列的子项内容
+
+CListCtrl::GetItemText
+
+获取某行某列的内容
+//设置风格样式
+	//LVS_EX_GRIDLINES 网格
+	//LVS_EX_FULLROWSELECT 选中整行
+	m_list.SetExtendedStyle(m_list.GetExtendedStyle()
+		| LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+ 
+	//插入标题
+	CString head[] = { TEXT("姓名"), TEXT("年龄"), TEXT("性别") };
+ 
+	//插入列
+	m_list.InsertColumn(0, head[0], LVCFMT_LEFT, 100);
+	m_list.InsertColumn(1, head[1], LVCFMT_LEFT, 100);
+	m_list.InsertColumn(2, head[2], LVCFMT_LEFT, 100);
+ 
+	//插入正文内容，先确定行，再确定列
+	for (int i = 0; i < 10; i++)
+	{
+		CString str;
+		str.Format(TEXT("张三_%d"), i );
+ 
+		//确定行
+		m_list.InsertItem(i, str);
+ 
+		//设置列
+		int j = 0;
+		m_list.SetItemText(i, ++j, TEXT("男"));
+		m_list.SetItemText(i, ++j, TEXT("23"));
+	}
+
+MFC使用笔记-CListCtrl(v ok)
+https://blog.csdn.net/weixin_41246132/article/details/80467706
+void C*Dlg::OnNMCustomdrawList*(NMHDR *pNMHDR, LRESULT *pResult)  
+{  
+    NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);  
+    *pResult = CDRF_DODEFAULT;  
+    if(CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage)  
+    {  
+        *pResult = CDRF_NOTIFYITEMDRAW;  
+    }  
+    else if ( CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage )  
+    {  
+        *pResult = CDRF_NOTIFYSUBITEMDRAW;  
+    }  
+    else if ( (CDDS_ITEMPREPAINT | CDDS_SUBITEM) == pLVCD->nmcd.dwDrawStage )  
+    {  
+        int nItem = static_cast<int>(pLVCD->nmcd.dwItemSpec);  
+        if(nItem%2 == 1)  
+        {  
+            pLVCD->clrTextBk = RGB(237,243,253); //偶数行背景色为灰色  
+        }  
+        else  
+        {  
+            pLVCD->clrTextBk = RGB(255,255,255); //奇数行背景色为白色  
+        }   
+        //让符合某条件的整行红字显示  
+        CString csTemp = m_list1.GetItemText(nItem,/*需要判断的列(int)*/);  
+        if(/*需要判断的内容(CString)*/ == csTemp)  
+        {  
+            pLVCD->clrText   = RGB(255,0,0);  
+        }  
+        else  
+        {  
+            pLVCD->clrText   = RGB(0,0,0);  
+        }  
+        int nSubItem = static_cast<int>(pLVCD->iSubItem);  
+        if(nSubItem == /*需要特别修改的列*/)  
+        {  
+            pLVCD->clrTextBk = RGB(158,250,158); //某列背景色为绿色   
+            pLVCD->clrText   = RGB(0,0,255);//某列背景色为蓝色  
+    }  
+}  
+
+
+各位大佬们，VC6中如何添加NM_CUSTOMDRAW
+https://www.cctry.com/thread-11090-1-1.html
+最近做一个CListCtrl Report， 动态写入大量数据 ，要对部分超标的数据以醒目颜色显示，但控件没有提供对单元格颜色修改的方法。上网查了一下，很多人提到NM_CUSTOMDRAW消息，但VC6.0 Class Wizard中没有这个消息啊！请大佬们教教我怎么办呢？感激不尽！
+手动添加吧！
+
+1、头文件中加上：
+afx_msg void OnCustomdrawMyList ( NMHDR* pNMHDR, LRESULT* pResult );
+
+2、CPP的映射中加上：
+BEGIN_MESSAGE_MAP(CTestDlg, CDialog)
+        //{{AFX_MSG_MAP(CTestDlg)
+        ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST1, OnCustomdrawMyList)
+        //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+3、函数的实现：
+void CTestDlg::OnCustomdrawMyList( NMHDR* pNMHDR, LRESULT* pResult )
+{
+        NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
+       
+    // Take the default processing unless we set this to something else below.
+    *pResult = 0;
+       
+    // First thing - check the draw stage. If it's the control's prepaint
+    // stage, then tell Windows we want messages for every item.
+    if ( CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage )
+        {
+        *pResult = CDRF_NOTIFYITEMDRAW;
+        }
+       
+        // This is the notification message for an item. We'll request
+        // notifications before each subitem's prepaint stage.
+        else if ( pLVCD->nmcd.dwDrawStage==CDDS_ITEMPREPAINT )
+        {
+                COLORREF m_crTextBk , m_clrText;
+                int nItem = static_cast<int> (pLVCD->nmcd.dwItemSpec);
+
+                // 判断使ListCtrl不同颜色现实的条件
+                CString strTemp = m_List1.GetItemText(nItem,10);
+                if (strTemp == "YES")
+                {
+                        m_clrText = RGB(255,0,0);
+                }
+                else if(strTemp == "NO")
+                {
+                        m_clrText = RGB(0,0,255);
+                }
+                pLVCD->clrText = m_clrText;
+                *pResult = CDRF_DODEFAULT;
+        }
+}
+
+
+BEGIN_MESSAGE_MAP(CDlgCtrlListCtrl001Dlg, CDialog)
+	//{{AFX_MSG_MAP(CDlgCtrlListCtrl001Dlg)
+...	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, OnItemchangedList1)
+	ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST2, OnItemchangingList2)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+MFC中CListCtrl的使用
+https://blog.csdn.net/seven407/article/details/6943786
+char *columnTitle_chan[] = {"通道号","通道状态","呼叫状态","连接号码"};
+int columnWidth_chan[] = {60,80,80,80};
+LVCOLUMN lvc_chan;
+lvc_chan.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH | LVCF_ORDER;
+lvc_chan.fmt = LVCFMT_LEFT;
+for(int i=0; i<4; i++)
+{
+lvc_chan.pszText = columnTitle_chan[i];
+lvc_chan.iSubItem = i;
+lvc_chan.iOrder = i;
+lvc_chan.cx = columnWidth_chan[i];
+m_userList.InsertColumn(i, &lvc_chan);
+}
+
+
+ClistCtrl有一个成员函数GetEditControl(),应该跟列表编辑有关,但是不知道怎么用.大家帮帮忙. [问题点数(x no)
+https://bbs.csdn.net/topics/310231208
+
+
+CListCtrl 编辑子项
+https://blog.csdn.net/zx249388847/article/details/51434987
+相信很多人用过MFC的新手都知道，MFC虽然封装了一些常用的控件，但不少控件真正使用起来，与个人的要求可能会有一些差别，总有一些功能不是很方便就能实现的，例如CTabCtrl（Tab控件）的颜色（涉及到自绘、头大）/CListCtrl的子项编辑。报表风格的列表控件，在资源里设置了“可就地编辑”的属性，子项虽然能够编辑，但编辑框是出现在第一列的，即不管你选择修改的项是在第几列，编辑框总是出现在相应行的第一列位置，很麻烦，而且经过我的尝试，编辑完后的文本保存，也是需要自己实现的。
+
+为了简便实现，我没有派生子类，而是在资源中添加一个编辑框，通过将编辑框显示隐藏在指定位置，达到可编辑的目的，在编辑框失去焦点时，将文本显示在ListCtrl中。
+下面是我的实现方法：
+
+
+LVS_EDITLABELS (x no)(v ok) 和属性  |LVS_EX_ONECLICKACTIVATE 冲突， 操作上需选中后再缓击即可， 不可及时击无效，可能变成双击事件了。
+CListCtrl::EditLabel
+CEdit* EditLabel(int nItem)
+
+返回值：
+如果成功，则返回一个指向用于编辑项文本CEdit对象的指针，否则为NULL。
+
+参数： nItem 被编辑的列表视图项的索引值。  
+
+说明：
+一个拥有LVS_EDITLABELS窗口风格的列表视图控件将允许用户就地编辑项标签。用户能够通过单击项的标签开始编辑。
+使用该函数能够在列表视图项的文本中进行就地编辑。
+
+请参阅：CListCtrl::GetEditControl 
+
+
+CListCtrl::GetEditControl
+
+CEdit* GetEditControl() const
+
+返回值：
+如果成功，则返回一个指向用于编辑项文本的CEdit对象，否则为NULL。
+
+说明：
+获取用于编辑列表视图的项文本的编辑控件的句柄。
+
+请参阅：CListCtrl::EditLabel 
+
+
+
+MFC控件List Control的样式LVS_与扩展样式LVS_EX_(v ok)
+https://blog.csdn.net/markton1990/article/details/7784001
+LVS_EX_HEADERDRAGDROP	报表头可以拖拽
+允许拖放的列表视图控件中的列重新排序。此样式是只可用于使用 LVS_REPORT 样式的列表视图控件。
+LVS_EX_ONECLICKACTIVATE	单击激活
+
+还有一种是蓝牙技术，蓝牙通过测量型号的强度来定位，它的功率比较低，通过蓝牙制造的定位系统体积比较小、非常容易集成在扫地机器人电路中，采用这种技术，它不容易受视距的影响，也就是即便有障碍物阻挡，也能够在直线距离内实现定位。
+
+GetItem 获取列表视图项的属性  
+GetCallbackMask 获取列表视图控件的回调掩码  
+SetCallbackMask 设置列表视图控件的回调掩码  
+
+
+要了解更多信息，请参阅CListCtrl::GetCallBackMask和“使用CListCtrl：回调项和回调掩码”。
+
+请参阅“Visual C++程序员指南”中的“使用CListCtrl:列表控件中的滚动、排列、排序和查找”。
+同时请参阅CListCtrl::GetItem，CListCtrl::InsertItem和CListCtrl::FindItem。
+
+请参阅联机文档“Visual C++程序员指南”中的“使用CListCtrl:虚列表控件”。 
+请参阅联机文档“Visual C++程序员指南”中的“使用CListCtrl:改变列表控件风格”。
+请参阅联机文档“Visual C++程序员指南”中的“使用CListCtrl:给控件添加列(报表视图)”。 
+请参阅联机文档“Visual C++程序员指南”中的“使用ClistCtrl”和“控件主题”。
+
+08:38
+
+2020.04.10
+
+MFC 不注消热键会怎么样
+
+MFC 热键设置 OnHotKey方法和Accelerator方法的设置
+http://www.softwareace.cn/?p=688
+
+MFC加速键Acceleretor使用及详细介绍(v ok)
+https://blog.csdn.net/rankun1/article/details/69384639
+为主对话框类添加一个加速键变量成员：
+
+HACCEL m_hAccel;
+在对话框的OnInitDialog初始化函数中加载加速键资源
+  // 加载加速键资源
+  m_hAccel = LoadAccelerators (AfxGetInstanceHandle (), MAKEINTRESOURCE(IDR_ACCELERATOR1)); 
+然而对话框要处理加速键需要处理按键消息，翻译加速键，添加虚函数:PreTranslageMessage,在函数里添加对加速键的翻译函数
+
+BOOL CAccelDlg::PreTanslateMessage(MSG* pMsg)
+  {
+      if(WM_KEYFIRST<=pMsg->message && pMsg->message <= WM_KEYLAST)
+      {
+          if(hAccel && ::TranslateAccelerator(m_hWnd,hAccel,pMsg))
+              return TRUE;
+     }
+     return CDialog::PreTranslateMessage(pMsg);
+ }
+
+Ok, 到这里就可按 Ctrl+o 键达到和点击“打开”按钮一样的效果
+
+
+VC中HotKey Control怎样设置ctr(alt)+shift+小键盘上数字键 [问题点数：20分，结帖人wwhwayne]
+https://bbs.csdn.net/topics/370234985
+HotKey Control在vs2008中一直无法设置ctr(alt)+shift+小键盘上数字键,WM_CHAR消息中也挡不到消息.奇怪,求高人指点下.
+BOOL CTestMfcDlg::PreTranslateMessage(MSG* pMsg) 
+{
+// TODO: Add your specialized code here and/or call the base class
+if (pMsg->message == WM_KEYDOWN)
+{
+switch (pMsg->wParam)
+{ 
+case 'X':
+if(::GetKeyState(VK_CONTROL) < 0 && ::GetKeyState(VK_SHIFT)<0)
+MessageBox("hello");
+return TRUE;
+}
+}
+return CDialog::PreTranslateMessage(pMsg);
+}
+如果是小键盘的数可以将'X' 替换成 VK_NUMPAD1等，由于我ctr+shift+小键盘和输入法冲突，所以改成'X'，你可以按照这个改下。
+
+MFC使用WM_HOTKEY添加快捷键
+https://blog.csdn.net/huyu107/article/details/50580855
+
+mfc hotkey控件 怎样按下快捷键之后执行操作? [问题点数：20分，结帖人C_4510471]
+https://bbs.csdn.net/topics/392009245
+我想在hotkey控件中按下快捷键就注册
+
+应该捕获什么类型的消息呢? 
+1. 在资源视图中添加资源，选择"Accelerator"选项新建即可；
+2. 打开新建的文件夹下的"IDR_ACCELERATOR1"中编辑，其中包括ID、修饰符、键、类型。ID中选择你要添加快捷键的菜单、按钮的ID编号，修饰符中选择你是否要使用组合键，如：Alt、Alt+Shift等等，键中选择你要使用什么样的虚拟键码，类型中选择VK形式或者是ASCII形式。
+3. 在你的对话框的头文件中添加快捷键变量，如HACCEL m_hAcc；
+4. 在你的对话框的源文件的OnInitDialog函数中加载快捷键，如：
+1 HACCEL m_hAcc=LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCELERATOR1)); 
+5. 重载函数PreTranslateMessage，使用类向导，重载虚函数PreTranslateMessage，如：
+12345678910 BOOL CVideoMonitorDlg::PreTranslateMessage(MSG* pMsg) 
+{ 
+    if (WM_KEYFIRST<=pMsg->message&&pMsg->message<= WM_KEYLAST)  
+    {  
+        HACCEL hAccel=m_hAcc;  
+        if (hAccel && ::TranslateAccelerator(m_hWnd, hAccel, pMsg))  
+        return TRUE; 
+    }  
+    return CDialogEx::PreTranslateMessage(pMsg); 
+} 
+6. 通过以上5个步骤基本上即可对工程中的菜单或者按钮添加热键。
+方法三：
+使用WM_HOTKEY。
+在对话框头文件中：
+12 afx_msg LRESULT OnHotKey(WPARAM wParam,LPARAM lParam); 
+afx_msg void OnDestroy(); 
+在对话框CPP文件中：
+1234 BEGIN_MESSAGE_MAP(CYourDlg, CDialog) 
+   ON_MESSAGE(WM_HOTKEY,OnHotKey)  
+   ON_WM_DESTROY() 
+END_MESSAGE_MAP() 
+hotkey对应映射：
+1234567 LRESULT CYourDlg::OnHotKey(WPARAM wParam,LPARAM lParam) 
+{ 
+    if（wParam==IDC_XXX） 
+        OnYourFunction(); 
+//ToDo: add function 
+     return 0;  
+} 
+注册热键：
+1234 BOOL CYourDlg::OnInitDialog() 
+{ 
+    ::RegisterHotKey(GetSafeHwnd(), IDC_XXX, MOD_ALT, 'D');//注册热键alt+D（D必须大写） 
+} 
+记得销毁：
+1234 void CYourDlg::OnDestroy() 
+{ 
+    ::UnregisterHotKey(GetSafeHwnd(),IDC_XXX);//销毁热键 
+} 
+
+
+MFC HOTKEY 用法
+https://blog.csdn.net/weibojishu1984/article/details/5969661
+WPARAM wParam;
+LPARAM lParam;
+
+//发送WM_HOTKEY消息，响应 ctrl + d 按键
+wParam = 0; 
+lParam = MAKELONG(MOD_CONTROL,'D'); 
+::SendMessage(hEditWnd,WM_HOTKEY, wParam, lParam);
+http://blog.csdn.net/hityct1/archive/2009/01/27/3853666.aspx
+
+HotKey用来干什么，怎样用啊，谢谢。 [问题点数：0分]
+https://bbs.csdn.net/topics/10127146
+快捷键，也叫键盘快捷方式，使用户能快速的通过键盘发送消息。
+定义一个快捷键一定要让命令ID匹配相应的菜单项的命令ID,注意
+不要和标准WINDOWS键盘命令发生冲突。
+快捷键，当此程序不是当前程序时，也可以通过热键，执行此程序的一些功能
+RegisterHotKey(……)
+UnregisterHotKey(……)
+
+Hot Key Control快捷键控件
+https://blog.csdn.net/zyrr159487/article/details/7090913
+1)在 VC ＋＋ 6.0 和VS2005中，大多数的窗口消息可以从 ClassWizard 中找到，但是一些不常用的消息
+在 ClassWizard 中并没有封装 ,WM_HOTKEY 就是其中一个，因此用户必须手动添加。添加代码如下：
+afx_msg LRESULT OnHotKey(WPARAM wp,LPARAM lp); 
+ON_MESSAGE(WM_HOTKEY,&CVS_2005_DlgDlg::OnHotKey)
+LRESULT CVS_2005_DlgDlg::OnHotKey(WPARAM wp,LPARAM lp) (v ok)
+{
+   WinExec("notepad",1);//打开记事本
+  return 1;
+}
+
+BOOL CVS_2005_DlgDlg::OnInitDialog()
+{
+ ...
+        UINT fsModifiers = 0; 
+ fsModifiers |= MOD_CONTROL; 
+ fsModifiers |= MOD_ALT; 
+ RegisterHotKey(GetSafeHwnd(), 1, fsModifiers, VK_F8); // 注册热键
+ ...
+}
+
+
+1.MFC中三个基本的控件介绍
+https://blog.csdn.net/u011371629/article/details/60905997
+
+15:00
+
+CDC类的主要绘图成员函数
+
+VC自绘美化通用控件
+https://blog.csdn.net/xvdongming/article/details/2621860
+VC通用控件都是灰色，当对程序界面进行美化时，使用通用控件就和美化后的程序界面不搭配，在VB，C#中，可以很方便的更改控件背景颜色，但在VC中就不能，需要我们自己来完善这方面的功能。我在这只简单的介绍一些，大家有兴趣的话，可以到http://www.vbkbase.com（VC知识库）中去搜索查看相关内容。
+
+在VC60中新建一个对话框工程，添加一个新类，根据你要美化的控件选择对应的基类，如我要美化STATIC控件，就选择CStatic做为基类，新类名为CStaticEx。
+
+在新类中添加两个类成员变量，一个为控件的背景色，一个为文字的颜色：
+
+private:
+
+COLORREF m_BackColor;
+
+COLORREF m_TextColor;
+
+在构造函数中对这两个变量进行初始化,我初始化为黑底白字
+
+m_BackColor=RGB(0,0,0);
+
+m_TextColor=RGB(255,255,255);
+
+为CStaticEx加入WM_PAINT消息，在WM_PAINT消息处理函数OnPaint中加入美化控件的代码
+
+{
+
+CPaintDC dc(this); // device context for painting
+
+CDC memdc;
+
+CBrush m_Brush,*m_Oldbrush;
+
+CBitmap bitmap;
+
+CRect rect;
+
+CString strWindowText;
+
+int x,y;
+
+CSize size;
+
+//得到区域
+
+GetClientRect(&rect);
+
+//得到文本
+
+this->GetWindowText(strWindowText);
+
+//创建兼容的内存位图句柄
+
+memdc.CreateCompatibleDC(&dc);
+
+bitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+
+memdc.SelectObject( &bitmap );
+
+//得到文字尺寸
+
+size=memdc.GetTextExtent(strWindowText);
+
+//创建画刷，画背景色
+
+m_Brush.CreateSolidBrush(m_BackColor);
+
+m_Oldbrush=memdc.SelectObject(&m_Brush);
+
+memdc.FillRect(&rect,&m_Brush);
+
+memdc.SelectObject(m_Oldbrush);
+
+m_Brush.DeleteObject();
+
+//文字
+
+y=rect.top;
+
+x=rect.right/2-size.cx/2 ;
+
+memdc.SetBkColor(m_BackColor);
+
+memdc.SetTextColor(m_TextColor);
+
+memdc.TextOut(x,y,strWindowText);
+
+//画图
+
+dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &memdc, rect.left, rect.top, SRCCOPY);
+
+}
+
+在对话框上添加一个STATIC控件,命名为IDC_STATICTEST,为其添加一个成员变量CStatic m_StaticTest;
+
+将CStaticEx类的头文件添加到对话框类的头文件中；
+
+将CStatic m_StaticTest
+
+更改为CStaticEx m_StaticTest;
+
+编译，运行就可以看到效果了！
+
+
+《MFC 控件透明处理》
+https://blog.csdn.net/mars_xiaolei/article/details/82414475
+
+MFC重绘的透明Slider
+
+14:25
+
+MFC：一个不错的贴图Slider，CBitmapSlider
+https://download.csdn.net/download/polarheaven/1337736
+所需积分/C币：9 上传时间：2009-05-22 资源大小：2.73MB
+
+slider控件移动滑块，动态的显示tooltip方法！
+https://blog.csdn.net/shen_001/article/details/6402094
+
+MFC自绘滑块类
+
+CSliderCtrl的自绘制和鼠标定位滑块
+https://blog.csdn.net/mur1985/article/details/6118282
+
+MFC的Slider control使用
+https://blog.csdn.net/CXAZW/article/details/40783133
+MFC中Slider control控件 [问题点数：40分，结帖人litchgu]
+https://bbs.csdn.net/topics/392278141
+这个控件用上去感觉怪怪的，我鼠标点到一个位子，滑块不会移到我点的位子，而是移动一段距离，要多次点击才能移到想要的地方，有没有什么办法可以实现我的想法，鼠标一点击就移到鼠标点击的地方。网上查了一下，有人说可以在WM_LBUTTONDOWN中实现，但是看下面评论说会有点小问题，暂时没有试验，请问有没有什么好的方法可以解决这个问题？
+
+void CYourSlider::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	// TODO: Add your message handler code here and/or call default
+//	int pos=GetPos();
+//	int page=GetPageSize();
+//
+	CRect rcc;
+	GetChannelRect(&rcc);
+	double f=100.0/rcc.Width();
+	int ptx=(int)((point.x-rcc.left)*f);
+	SetPos(ptx);
+
+...}
+	CRect rct;
+	GetThumbRect(&rct);
+	if(rct.PtInRect(point))
+	{// 点击 滑块
+		CSliderCtrl::OnLButtonDown(nFlags, point);
+		return;	
+	}
+// 不在 滑块
+	CRect rcc;
+	GetChannelRect(&rcc);
+	double f=100.0/rcc.Width();
+	int ptx=(int)((point.x-rcc.left)*f);
+//	afxDump << point.x  << ";" << ptx << "\n";// 20;0
+	SetPos(ptx);
+
+
+MFC-滑块控件的使用
+https://blog.csdn.net/flyonedream/article/details/78849775
+
+MFC滑动动条控件Slider的用法
+https://blog.csdn.net/llmmssing/article/details/78873894
+
+没用过BitmapSlider类，帮顶了。
+
+MFC-控件大全-Slider Control(转)
+https://blog.csdn.net/liufei_learning/article/details/5809978
+
+MFC  滑动条Slider的用法[转] 
+http://blog.sina.com.cn/s/blog_13f9c0f100102wmea.html
+
+[VC/MFC]滑动动条控件Slider的用法
+https://blog.csdn.net/dongzhongshu/article/details/5674798
+
+MFC入门 slider控件的简单使用(v ok)
+https://blog.csdn.net/qq_24421591/article/details/49231765
+1,将控件slider control拖放到对话框中；
+2，为slider control添加control型变量m_slider;
+3,使用类向导，给对话框类（此例中对话框类名为CMyImagge）添加“虚函数”，OnInitDialog()；
+4，在CMyImagge.cpp中，对OnInitDialog()函数进行编写：
+
+// CMyImage 消息处理程序
+
+
+BOOL CMyImage::OnInitDialog()
+{
+    CDialogEx::OnInitDialog();
+    CDialogEx::OnInitDialog();
+    m_slider.SetRange(1,20);//设置滑动范围为1到20
+    m_slider.SetTicFreq(1);//每1个单位画一刻度
+    m_slider.SetPos(10);//设置滑块初始位置为1 
+    return TRUE;  // return TRUE unless you set the focus     to a control
+               // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+
+
+void CMyImage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+    UpdateData(TRUE);
+
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    CSliderCtrl   *pSlidCtrl=(CSliderCtrl*)GetDlgItem(IDC_SLIDER1);
+    //m_int 即为当前滑块的值。
+    m_int=0.1*pSlidCtrl->GetPos();//取得当前位置值  
+    CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+    UpdateData(FALSE);
+}
+
+
+
+百雀羚化妆品女水嫩精纯尊享套装洁面乳爽肤水面霜控油补水保湿
+百雀羚化妆品套装水乳爽肤水保湿水补水四件套护肤品男士女士
+百雀羚套装 礼盒水乳霜化妆品套装草本补水保湿男女正品包邮
+
+前天即2020.04.07 梅没提抚养费神经质的事了，晚上我买百雀羚了。
+
+09:10 - 10:44
+
+MyProgress 用到项目MsEdit_Wendy的进度条中
+
+MFC 自绘进度条(v ok)
+https://blog.csdn.net/tonykk2008/article/details/7921240
+
+从 CProgress类派生出 CTextProgress
+
+	COLORREF m_crProgress;
+	COLORREF m_crBlank;
+    COLORREF m_crText;
+
+CTextProgress::CTextProgress()
+{
+    m_crProgress = RGB(0,255,0);
+    m_crBlank = RGB(255,255,255);
+    m_crText = RGB(0,25,255);
+}
+
+void CTextProgress::OnPaint() 
+{
+    //CPaintDC dc(this); // device context for painting
+    // TODO: Add your message handler code here
+    PAINTSTRUCT ps;
+    CDC *pDC = BeginPaint(&ps);
+    int nPos = GetPos();
+    int nMin,nMax;
+    GetRange(nMin,nMax);
+    CString csPos;
+    csPos.Format("%d%%",nPos*100/(nMax-nMin));
+    
+    CRect clientRC;
+    GetClientRect(clientRC);
+    CSize sztext = pDC->GetTextExtent(csPos); //获取字符串的高度和宽度
+    int nX = (clientRC.Width() - sztext.cx) /2; //计算中心位置
+    int nY = (clientRC.Height() -sztext.cy) /2;
+    pDC->SetBkMode(TRANSPARENT);
+    
+    
+    //获取单位刻度
+    double dFraction = (double) clientRC.Width()/(nMax-nMin);
+    int nLeft = nPos * dFraction; //计算左边距
+    CRect leftRC = clientRC;
+    leftRC.right = nLeft;
+    CRect rightRC = clientRC;
+    rightRC.left = nLeft;
+    
+    pDC->FillRect(leftRC,&CBrush(m_crProgress));
+    pDC->FillRect(rightRC,&CBrush(m_crBlank));
+    pDC->SetTextColor(m_crText);
+    pDC->TextOut(nX,nY,csPos);
+    ReleaseDC(pDC);
+    EndPaint(&ps);
+    // Do not call CProgressCtrl::OnPaint() for painting messages
+}
+
+
+
+查看静态变量的值(v ok) (w) 或将局部静态变量改变为全部静态变量也可断点调试
+https://blog.csdn.net/waangyan/article/details/6304015
+VC6.0中，无法直接看到静态变量的值，可以这样做：
+可以这样：
+static i = 0;
+int *p = &i;
+然后就可以在Watch窗口中，通过*p的形式查看函数内部静态变量的值了。
+VC6.0中这种情况是存在的，不过在VS2008中就不存在不能查看函数内静态变量的问题。
+
+
+VC调试静态变量(v ok)
+https://jingyan.baidu.com/article/63acb44ae5bd2f61fcc17e9e.html
+在debug模式下选择调试程序，选择disassembly
+选择要查看变量的地址
+拷贝地址到memory中即可。
+填写地址值例如: 0x00416898
+
+
+vc6.0  调试 static变量
+
+请问VC6.0在调试的时候怎样查看 静态变量的值？ [问题点数：20分]
+https://bbs.csdn.net/topics/200006631
+
+vc6.0 单步调试 没法看到static变量的值
+
+C++/MFC-Progress
+https://blog.csdn.net/qwdpoiguw/article/details/72642528
+CProgressCtrl* prgctl=(CProgressCtrl*)GetDlgItem(IDC_PROGRESS1);
+prgctl->SetPos(50);//位置
+prgctl->SetRange32(0,300);//范围
+/******************三种方法增加进度**********************/
+//法一：使用SetPos增加进度
+static int i=0;
+prgctl->SetPos(i);
+i+=10;
+if (i>=300)
+{
+       i=0;
+}
+//法二：使用OffsetPos增加进度
+prgctl->OffsetPos(10);
+//法三：使用SetStep增加进度
+prgctl->SetStep(3);//设置增量
+prgctl->StepIt();
+
+
+语法,概念,原理->控件,API,类->各领域技能
+C,C++,VC++,C#,JAVA,Android,汇编,单片机,其它(w)
+
+09:10 
+
+2020.04.09
+
+C++/MFC-Progress
+https://blog.csdn.net/qwdpoiguw/article/details/72642528
+一、CProgressCtrl控件属性(v ok)
+当我们在处理大程序时，常常需要耗很长时间(比如搜索内存，复制大文件)，为了不让用户错误的认为系统已经死机，我们要给程序添加进度条。
+vertical ：是否垂直显示。
+smooth ：平滑过度，不显示进度方块。可以显示更细致。
+
+
+VC中Spin控件的使用 [转]
+https://blog.csdn.net/dunhuacc1234/article/details/5519571
+设置属性:
+Auto Buddy(自动取关联控件为TAB顺序前一个)
+Set Buddy Interger(使控件设置关联控件数值，这个值可以是十进制或十六进制)
+Wrap(数值超过范围时循环)
+Arrow keys(当按下向上和向下方向键时，控件可以增加或减小)
+
+SPin控件增减小数(v ok)
+https://blog.csdn.net/yanzhibo/article/details/4585007
+BOOL CGraphCtrDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	
+	m_spin.SetRange(0.1,10);                  // 设置范围
+	m_spin.SetBuddy(GetDlgItem(IDC_TXTY));	  // Spin控件绑定Edit控件
+	m_spin.SetPos(0.4);                       // 起始位置
+
+	return TRUE;  
+}
+
+void CGraphCtrDlg::OnDeltaposSpin(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	NM_UPDOWN* pNMUpDown = (NM_UPDOWN*)pNMHDR;
+
+	if(pNMUpDown->iDelta > 0)        // 往上箭头
+	{
+	     if(m_txtValue < 10)         // m_txtValue是绑定编辑框的文本值
+		m_txtValue += 0.1;
+	}
+	else if(pNMUpDown->iDelta < 0)  // 往下箭头
+	{
+	     if(m_txtValue > 0.11)
+		m_txtValue -= 0.1;
+	}
+	UpdateData(FALSE);               // 更新文本值到编辑框
+	
+	*pResult = 0;
+}
+
+
+MFC-SpinControl(数值调节按钮)(v ok)
+https://blog.csdn.net/qq_18297675/article/details/50982535
+Spin和Edit是配合使用的,如图:
+然后设置它们的TAB键顺序,顺序必须是edit为1,spin为2.
+设置好顺序之后就是关联它们,右键单击spin属性,设置Set Buddy Integer为TRUE,Auto Buddy也设置为TRUE
+
+接着去初始化对话框函数中设置spin的范围和进制数
+可以用关联变量也可用用CSpinButtonCtrl类
+
+    m_spin.SetRange32(0, 10);//表示数值只能在0到10内变化
+    m_spin.SetBase(10);//设置进制数,只能是10进制和16进制
+
+//获取指向控件的指针
+    CSpinButtonCtrl* pSpin = (CSpinButtonCtrl*)GetDlgItem(IDC_SPIN);
+    pSpin->SetRange32(0, 10);
+    pSpin->SetBase(10);
+
+
+void CScrollDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+{
+	if(	pScrollBar->m_hWnd==m_ctrlScroll.m_hWnd)
+	{
+F:\Users\Wendy\Downloads\skinscrollbar_demo
+
+
+VC对话框自带滚动条的使用(v ok)
+https://blog.csdn.net/popppig/article/details/8218227
+void CDlgControlScrollBar001Dlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+{
+
+	SCROLLINFO scrollinfo;
+	GetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+	
+	switch (nSBCode)
+	{
+	case SB_RIGHT: //滑块滚动到最底部
+		ScrollWindow((scrollinfo.nPos-scrollinfo.nMax)*10,0); //滚动屏幕
+		scrollinfo.nPos = scrollinfo.nMax; //设定滑块新位置
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL); //更新滑块位置
+		break;
+	case SB_LEFT: //滑块滚动到最顶部
+		ScrollWindow((scrollinfo.nPos-scrollinfo.nMin)*10,0);
+		scrollinfo.nPos = scrollinfo.nMin;
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		break;
+	case SB_LINELEFT: //单击上箭头
+		scrollinfo.nPos -= 1;
+		if (scrollinfo.nPos<scrollinfo.nMin)
+		{
+			scrollinfo.nPos = scrollinfo.nMin;
+			break;
+		}
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		ScrollWindow(10,0);
+		break;
+	case SB_LINERIGHT: //单击下箭头
+		scrollinfo.nPos += 1;
+		if (scrollinfo.nPos>scrollinfo.nMax)
+		{
+			scrollinfo.nPos = scrollinfo.nMax;
+			break;
+		}
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		ScrollWindow(-10,0);
+		break;
+	case SB_PAGELEFT: //单击滑块上方空白区域
+		scrollinfo.nPos -= 5;
+		if (scrollinfo.nPos<scrollinfo.nMin)
+		{
+			scrollinfo.nPos = scrollinfo.nMin;
+			break;
+		}
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		ScrollWindow(10*5,0);
+		break;
+	case SB_PAGERIGHT: //单击滑块下方空白区域
+		scrollinfo.nPos += 5;
+		if (scrollinfo.nPos>scrollinfo.nMax)
+		{
+			scrollinfo.nPos = scrollinfo.nMax;
+			break;
+		}
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		ScrollWindow(-10*5,0);
+		break;
+	case SB_ENDSCROLL: //鼠标离开滑块，结束滑块拖动
+		// MessageBox("SB_ENDSCROLL");
+		break;
+	case SB_THUMBPOSITION:
+		// ScrollWindow(0,(scrollinfo.nPos-nPos)*10);
+		// scrollinfo.nPos = nPos;
+		// SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		break;
+	case SB_THUMBTRACK: //拖动滑块
+		ScrollWindow((scrollinfo.nPos-nPos)*10,0);
+		scrollinfo.nPos = nPos;
+		SetScrollInfo(SB_HORZ,&scrollinfo,SIF_ALL);
+		break;
+	}
+
+#if 0
+	// TODO: Add your message handler code here and/or call default
+	//int pos = ((CScrollBar * )GetDlgItem(IDC_SCROLLBAR1))->GetScrollPos();    // 获取水平滚动条当前位置  
+	int pos = pScrollBar->GetScrollPos();    // 获取水平滚动条当前位置
+
+    switch (nSBCode)    
+    {    
+        // 如果向左滚动一列，则pos减1   
+        case SB_LINEUP:    
+            pos -= 1;    
+            break;    
+        // 如果向右滚动一列，则pos加1   
+        case SB_LINEDOWN:    
+            pos  += 1;    
+            break;    
+        // 如果向左滚动一页，则pos减10   
+        case SB_PAGEUP:    
+            pos -= 10;    
+            break;    
+        // 如果向右滚动一页，则pos加10   
+        case SB_PAGEDOWN:    
+            pos  += 10;    
+            break;    
+        // 如果滚动到最左端，则pos为1   
+        case SB_TOP:    
+            pos = 1;    
+            break;    
+        // 如果滚动到最右端，则pos为100   
+        case SB_BOTTOM:    
+            pos = 100;    
+            break;      
+        // 如果拖动滚动块滚动到指定位置，则pos赋值为nPos的值   
+        case SB_THUMBPOSITION:    
+            pos = nPos;    
+            break;    
+        // 下面的m_horiScrollbar.SetScrollPos(pos);执行时会第二次进入此函数，最终确定滚动块位置，并且会直接到default分支，所以在此处设置编辑框中显示数值   
+        default:    
+            SetDlgItemInt(IDC_EDIT1, pos);   
+            return;    
+    }    
+  
+    // 设置滚动块位置   
+    //((CScrollBar * )GetDlgItem(IDC_SCROLLBAR1))->SetScrollPos(pos);   
+	pScrollBar->SetScrollPos(pos);  
+#endif
+	
+	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CDlgControlScrollBar001Dlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+{
+	
+	
+	//TODO: Add your message handler code here and/or call default
+	
+	SCROLLINFO scrollinfo;
+	GetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+	
+	switch (nSBCode)
+	{
+	case SB_BOTTOM: //滑块滚动到最底部
+		ScrollWindow(0,(scrollinfo.nPos-scrollinfo.nMax)*10); //滚动屏幕
+		scrollinfo.nPos = scrollinfo.nMax; //设定滑块新位置
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL); //更新滑块位置
+		break;
+	case SB_TOP: //滑块滚动到最顶部
+		ScrollWindow(0,(scrollinfo.nPos-scrollinfo.nMin)*10);
+		scrollinfo.nPos = scrollinfo.nMin;
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		break;
+	case SB_LINEUP: //单击上箭头
+		scrollinfo.nPos -= 1;
+		if (scrollinfo.nPos<scrollinfo.nMin)
+		{
+			scrollinfo.nPos = scrollinfo.nMin;
+			break;
+		}
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		ScrollWindow(0,10);
+		break;
+	case SB_LINEDOWN: //单击下箭头
+		scrollinfo.nPos += 1;
+		if (scrollinfo.nPos>scrollinfo.nMax)
+		{
+			scrollinfo.nPos = scrollinfo.nMax;
+			break;
+		}
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		ScrollWindow(0,-10);
+		break;
+	case SB_PAGEUP: //单击滑块上方空白区域
+		scrollinfo.nPos -= 5;
+		if (scrollinfo.nPos<scrollinfo.nMin)
+		{
+			scrollinfo.nPos = scrollinfo.nMin;
+			break;
+		}
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		ScrollWindow(0,10*5);
+		break;
+	case SB_PAGEDOWN: //单击滑块下方空白区域
+		scrollinfo.nPos += 5;
+		if (scrollinfo.nPos>scrollinfo.nMax)
+		{
+			scrollinfo.nPos = scrollinfo.nMax;
+			break;
+		}
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		ScrollWindow(0,-10*5);
+		break;
+	case SB_ENDSCROLL: //鼠标离开滑块，结束滑块拖动
+		// MessageBox("SB_ENDSCROLL");
+		break;
+	case SB_THUMBPOSITION:
+		// ScrollWindow(0,(scrollinfo.nPos-nPos)*10);
+		// scrollinfo.nPos = nPos;
+		// SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		break;
+	case SB_THUMBTRACK: //拖动滑块
+		ScrollWindow(0,(scrollinfo.nPos-nPos)*10);
+		scrollinfo.nPos = nPos;
+		SetScrollInfo(SB_VERT,&scrollinfo,SIF_ALL);
+		break;
+	}
+	
+	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
+	
+#if 0
+	// TODO: Add your message handler code here and/or call default
+	//int pos = ((CScrollBar * )GetDlgItem(IDC_SCROLLBAR1))->GetScrollPos();    // 获取竖直滚动条当前位置
+	int pos = pScrollBar->GetScrollPos();    // 获取竖直滚动条当前位置
+	
+    switch (nSBCode)    
+    {    
+        // 如果向左滚动一列，则pos减1   
+	case SB_LINEUP:    
+		pos -= 1;    
+		break;    
+        // 如果向右滚动一列，则pos加1   
+	case SB_LINEDOWN:    
+		pos  += 1;    
+            break;    
+        // 如果向左滚动一页，则pos减10   
+        case SB_PAGEUP:    
+            pos -= 10;    
+            break;    
+        // 如果向右滚动一页，则pos加10   
+        case SB_PAGEDOWN:    
+            pos  += 10;    
+            break;    
+        // 如果滚动到最左端，则pos为1   
+        case SB_TOP:    
+            pos = 1;    
+            break;    
+        // 如果滚动到最右端，则pos为100   
+        case SB_BOTTOM:    
+            pos = 100;    
+            break;      
+        // 如果拖动滚动块滚动到指定位置，则pos赋值为nPos的值   
+        case SB_THUMBPOSITION:    
+            pos = nPos;    
+            break;    
+        // 下面的m_horiScrollbar.SetScrollPos(pos);执行时会第二次进入此函数，最终确定滚动块位置，并且会直接到default分支，所以在此处设置编辑框中显示数值   
+        default:    
+            SetDlgItemInt(IDC_EDIT2, pos);   
+            return;    
+    }    
+  
+    // 设置滚动块位置   
+    //((CScrollBar * )GetDlgItem(IDC_SCROLLBAR2))->SetScrollPos(pos);   
+	pScrollBar->SetScrollPos(pos);  
+
+	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
+#endif
+}
+
+演示垂直滚动条CScrollbar控件的使用(v ok)
+https://blog.csdn.net/lee353086/article/details/47419471
+void CDlgControlScrollBar001Dlg::OnButton1() 
+{
+	// TODO: Add your control notification handler code here
+	if (m_pScrollbar == NULL)
+	{
+		CRect rect;
+		GetClientRect(rect);
+		rect.left = rect.right - GetSystemMetrics(SM_CXVSCROLL);
+ 
+		m_pScrollbar = new CScrollBar;
+		m_pScrollbar->Create(WS_VISIBLE|SB_VERT,rect,this,IDC_SCROLLBAR1);
+		m_pScrollbar->SetScrollRange(0,100);
+	}
+
+	if (m_pScrollbar2 == NULL)
+	{
+		CRect rect;
+		GetClientRect(rect);
+		rect.top = rect.bottom - GetSystemMetrics(SM_CYHSCROLL);
+ 
+		m_pScrollbar2 = new CScrollBar;
+		m_pScrollbar2->Create(WS_VISIBLE|SB_HORZ,rect,this,IDC_SCROLLBAR2);
+		m_pScrollbar2->SetScrollRange(0,100);
+	}
+}
+
+void CDlgControlScrollBar001Dlg::OnButton2() 
+{
+	// TODO: Add your control notification handler code here
+	if (m_pScrollbar)
+	{
+		m_pScrollbar->DestroyWindow();
+		delete m_pScrollbar;
+		m_pScrollbar = NULL;
+	}
+
+		if (m_pScrollbar2)
+	{
+		m_pScrollbar2->DestroyWindow();
+		delete m_pScrollbar2;
+		m_pScrollbar2 = NULL;
+	}
+
+}
+
+void CDlgControlScrollBar001Dlg::PostNcDestroy() 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CDialog::PostNcDestroy();
+	OnButton2();
+}
+
+
+MFC ScrollBar控件的使用方法
+https://blog.csdn.net/buaaxiao/article/details/5812395
+
+MFC应用实例：[55]ScrollBar的使用
+https://jingyan.baidu.com/article/f71d60379c50001ab741d111.html
+
+简单到复杂，量变到质变。语法,概念,原理->控件,API,类->各领域技能(动态库,COM,套接字,DiretShow,挂等等)
+学无止境，常用不多。(w)
+
+“天花”是如何被人类彻底消灭的？
+https://www.sohu.com/a/271005467_166075
+在人类征服天花的历程中，中国发明的人痘接种法和英国琴纳发明的牛痘接种法，都为消灭天花发挥了作用。
+
+2020.04.08
+
+DLL的远程注入技术及注入dll函数调用
+https://blog.csdn.net/ShiQW5696/article/details/80005765
+
+【转】关于MFC程序中ScrollBar的用法简单介绍(v ok)
+https://blog.csdn.net/u012072837/article/details/23193997
+
+CListBox类常见函数用法
+https://blog.csdn.net/fivedoumi/article/details/7104520
+13.得到某点最近于0的项目索引
+UINT ItemFromPoint( CPoint pt, BOOL& bOutside ) const;
+例如:
+BOOL bOutside ;
+int nItem = m_listbox.ItemFromPoint(CPoint(0,15),bOutside);
+16.得到某项目当前的（是否）选中状态
+int GetSel( int nIndex ) const;
+
+例如：
+
+int nState = this->m_listbox.GetSel(0);
+
+17.得到项目的字符串
+
+void GetText( int nIndex, CString& rString ) const;
+
+例如：
+
+CString string;
+
+m_listbox.GetText(1,string);
+
+26.显示指定目录下所有符合指定属性的文件名
+
+int Dir( UINT attr, LPCTSTR lpszWildCard );
+
+例如：
+
+m_listbox.Dir(0x0000,L"D:\\My Documents\\My Pictures\\*.*");
+
+
+
+CListBox用法总结
+https://blog.csdn.net/fnjejkd/article/details/103010666
+动态创建CListBox控件
+黑色非标准3D边框：
+CListBox *pMyListBox = new CListBox();
+pMyListBox->Create(
+WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | LBS_NOTIFY | LBS_MULTIPLESEL,
+CRect(10, 10, 100, 100),
+this,
+1234);
+pMyListBox->SetFont(this->GetFont());
+
+pMyListBox->AddString(TEXT(“123”));
+pMyListBox->AddString(TEXT(“456”));
+pMyListBox->AddString(TEXT(“789”));
+
+标准3D边框：
+CListBox *pMyListBox = new CListBox();
+pMyListBox->CreateEx(
+WS_EX_CLIENTEDGE,
+TEXT(“LISTBOX”),
+TEXT(""),
+WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | LBS_NOTIFY | LBS_MULTIPLESEL,
+10, 10, 100, 100,
+this->GetSafeHwnd(),
+(HMENU)1234);
+pMyListBox->SetFont(this->GetFont());
+
+pMyListBox->AddString(TEXT(“123”));
+pMyListBox->AddString(TEXT(“456”));
+pMyListBox->AddString(TEXT(“789”));
+
+
+
+CListBox一些用法(v ok) 上移下移
+https://blog.csdn.net/bichenggui/article/details/4478927
+
+	// 复制到剪贴板
+	HGLOBAL hClip;
+	//定义一个HGLOBAL句柄变量用来指向分配的内存块
+	if (OpenClipboard())
+	{
+		EmptyClipboard();//将剪贴板内容清空
+		hClip=GlobalAlloc(GMEM_MOVEABLE,strSelAll.GetLength()+1);
+		//在堆上分配可移动的内存块，程序返回一个内存句柄
+		char * buff; //定义指向字符型的指针变量
+		buff=(char*)GlobalLock(hClip);
+		//对分配的内存块进行加锁，将内存块句柄转化成一个指针,并将相应的引用计数器加1
+		strcpy(buff,strSelAll);
+		//将用户输入的数据复制到指针变量中，实际上就是复制到分配的内存块中
+		GlobalUnlock(hClip);
+		//数据写入完毕，进行解锁操作，并将引用计数器数字减1
+		SetClipboardData(CF_TEXT,hClip);
+		//将存放有数据的内存块放入剪贴板的资源管理中
+		CloseClipboard();
+		//关闭剪贴板，释放剪贴板资源的占用权
+		GlobalFree(hClip);
+		
+	}
+
+
+c++ new一个数组
+https://blog.csdn.net/lixinglaing/article/details/81434608
+原创..名字已存在... 最后发布于2018-08-05 19:57:36 阅读数 6630  收藏
+展开
+c++使用new分配一个数组，分为数组初始化和未初始化两种情形：
+
+    bool* array = new bool[10];   //未初始化
+    bool* array = new bool[10](); //初始化为0
+
+
+使用VC6编辑菜单复制资源弹出菜单时，要在同个VC6实例中进行，即可先复制关闭打开粘贴的流程操作，不然不会成功。(v ok)
+
+CComboBox
+https://blog.csdn.net/cqbsbjianxy/article/details/4641927
+ON_CBN_SELENDOK 用户在选择了一项以后，要么按了ENTER键，要么按了向下箭头键，从而隐藏了组合框的列表。此通知消息在CBN_CLOSEUP之前发送，表明用户的选择将不被认为是有效的。即使没有发送CBN_CLOSEUP通知消息，也会发送CBN_SELENDCANCEL或CBN_SEL-ENDOK消息（例如风格为CBS_SIMPLE的组合框）。
+ON_CBN_KILLFOCUS 组合框将失去输入焦点。
+ON_CBN_SELCHANGE 用户在列表中单击或者利用箭头键选择了另一个项，从而引起了选中项的改变。在处理此消息时，编辑控件中的文本只能通过GetLBText或者类似的某个函数存取。不能使用GetWindowText函数。
+
+
+
+CComboBox控件详解
+https://blog.csdn.net/bmjhappy/article/details/87094824
+,对于Clear()函数很多书中解释都是有误的,很多书中对他的解释是清除当前选中的文本,我认为这样的解释是有歧异的,真正的解释是把你刚选中的文本释放掉,也就是不选,而不是把选中的删除,真正的删除选中的文本的函数是Cut(),
+ 6.LimitText()函数.其作用是限制在编辑框中键入的文本长度,BOOL LimitText(int nMaxChars); 当nMaxChars为0时,不是不能输入,而是长度最大化为65535字节
+6. 在CComboBox组合框中，条目的对齐方式是左对齐，能设置为对中或者右对齐吗？
+答: 没有直接的方法,你必须自己对齐, 比如最大长度是10
+    int i;
+     String.Format("%10d", i);
+    CComboBox->AddString
+
+
+MFC中ComboBox的用法
+https://blog.csdn.net/meijiexuji/article/details/8807851
+四、获得焦点
+通常要判断控件是否获得了焦点，可以用GetFocus()函数
+例如：if(GetFocus()==GetDlgItem(IDC_EDIT_VALUE2))//判断焦点是否在编辑框IDC_EDIT_VALUE2内。
+但是combobox 的焦点不同，因为它是由edit和listbox两部分组成的
+所以获得焦点要用GetParent()：if((GetFocus()->GetParent())==GetDlgItem(IDC_COMBO_CF))
+
+
+
+CComboBoxEx的使用——图标、插入、选择 [问题点数：40分，结帖人smbluesky]
+https://bbs.csdn.net/topics/390765951
+
+MFC：CComboBoxEx使用总结
+https://blog.csdn.net/hisinwang/article/details/45752989
+
+CComboBoxEx中不能使用AddString
+https://blog.csdn.net/qq_21078557/article/details/52639423
+工具栏中使用了CComboBoxEx控件，但是一调用AddString就出错，花了N多的时间，原来是CComboBoxEx不能使用AddString。很初级的问题，不过为避免更多人走这个弯路，所以在这里稍微提一下.CComboBoxEx用法如下：
+   COMBOBOXEXITEM   Item;
+   Item.mask   =   CBEIF_TEXT   ;
+   Item.pszText   =   _T("Text Sample");
+   Item.iItem   =   0;//index
+   m_comboboxex.InsertItem(&Item);
+
+梅昨天说孩子抚养费(x no)
+
+女子拿刀闯安倍私邸:不知是首相家 想被捕重启人生
+https://news.163.com/20/0406/07/F9GVNU6J00019B3E.html
+
+2020.04.07
+
+CEdit Class
+https://docs.microsoft.com/zh-cn/previous-versions/f7yhsd2b(v=vs.120)
+
+如何获取对话框的HWND [问题点数：20分，结帖人adobase](v ok)
+https://bbs.csdn.net/topics/390081101
+ConDlg dlg;
+HWND hWnd = dlg.m_hWnd;  //获取不到对话框的HWND；
+在对话框的OnInitDialog()中获得。
+对话框指针->GetSafeHwnd()
+DoModal 不返回你没办法做其他动作的，除非放到线程里。或者说搞个ConDlg 的友元类，访问它的m_hWnd。只是一个想法，没试过。
+
+
+[Win32SDK基本]Edit Control详解(v ok)
+https://blog.csdn.net/zuishikonghuan/article/details/46773455
+ES_PASSWORD：（密码编辑框）使单行编辑控件中的所有字符显示为星号。应用程序可以定义一个不同的显示字符（用EM_SETPASSWORDCHAR消息）
+如果一个编辑控件使用Comctl32.dll版本6。那么使用黑色圆的默认字符。在编辑控件从以前版本的公共控件，默认的字符是一个星号。
+接收回车键：
+对于多行编辑框有效。
+ES_WANTRETURN：当用户按下回车键时换行。没有ES_WANTRETURN时，用户必须按CTRL + ENTER键插入一个回车。
+
+
+
+MFC 得到Edit控件里的值怎么进行类型转换 [问题点数：20分，结帖人marcomo1986]
+https://bbs.csdn.net/topics/350223042
+我得到Edit里的内容是以CString形式返回的，我怎么把他转化成DWORD的呢？因为我后来要对得到的这个数据进行比较处理。所以要与10或20等数相比较，分不多，谢了
+CString::GetBuffer
+CString::ReleaseBuffer
+atoi
+
+CString -> DWORD
+_tcstoul();
+GetDlgItemInt();
+
+atoi
+
+
+MFC Edit control用法
+https://blog.csdn.net/qq_32534441/article/details/89418685
+1只允许输入数字
+如果设置EditControl中只能输入数字,在VC6.0中需要编写一个派生类来达到目的,而在VC++2005下只需要在属性对话框中将 Number的属性值设
+
+MFC——编辑控件的7种方法(v ok)
+https://blog.csdn.net/qq_35508344/article/details/78040136
+学习自猎豹网校
+
+afx_msg宏表示声明的是一个消息响应函数。
+afx_msg为消息响应标志，它向系统声明，有消息映射到函数实现体。而在map宏定义中，就有具体消息和此函数的映射定义。
+
+MFC应用程序类型
+单文档 SDI +-文档/视图结构 难
+多文档 MDI +-文档/视图结构 难
+对话框 无 简单
+多顶级文档 文档/视图结构 难
+
+该视频内容主要针对MFC对话框。参考教材Visual C++ 实例精通
+对于单文档/多文档，参考MFC windows 程序设计（第2版），微软出品
+
+第一个MFC“文本字符数统计”
+这里写图片描述
+统计按钮的代码button，这里是unicode模式。
+
+    CString strInput; //MFC的字符串格式
+    GetDlgItemText(IDC_EDIT_INPUT,strInput);//获得指定控件的句柄，且保存数据
+    int nLen = strInput.GetLength();        //获得字符串长度
+    CString strOutput;              
+    strOutput.Format(_T("字符串长度：%d,字符个数：%d"),nLen,nLen);//设置格式
+    SetDlgItemText(IDC_STATIC_OUTPUT,strOutput); //设置静态文本框输出
+
+还可以设置多行模式MultiLine为True，就可以添加竖直或者水平滚动条
+你会发现enter被计算为输入字符，并且是2个字节
+如果是多字节字符集，英文为一个，汉子为2个字节。
+
+void Clb001Dlg::OnBnClickedButtonCount()
+{
+    // TODO: 在此添加控件通知处理程序代码
+   CString strInput;
+    GetDlgItemText(IDC_EDIT_INPUT,strInput);
+    int nLen = strInput.GetLength();
+    int nCount = 0;
+    for(int i = 0; i <nLen;i++)
+    {
+        if((BYTE)strInput[i]>0x7f)            //转化成BYTE-单字节；WORD-2字节；DWORD-4字节
+            ++i;                                            //遇到汉字，自动加1掠过
+            nCount++；
+    }
+    CString strOutput;
+    strOutput.Format(_T("字符串长度：%d,字符个数：%d"),nLen,nCount);
+    SetDlgItemText(IDC_STATIC_OUTPUT,strOutput);
+}
+
+4.访问对话框控件的7种方法
+1.GetDlgItem()->GetWindowText()
+GetDlgItem()->SetWIndowText()
+
+2.GetDlgItemText()
+  SetDlgItemText()
+3.GetDlgItemInt()
+  SetDlgItemInt()
+
+计算器示例——方法1
+
+void Clb002Dlg::OnBnClickedButton1()
+{
+    int num1,num2,num3;   //在文本空间输入的都是字符串（重点，需要转换）
+    TCHAR ch1[12],ch2[12],ch3[12];//访问和获取文本框字符串，转换成num
+    GetDlgItem(IDC_EDIT1)->GetWindowText(ch1,12);//第一个参数：保存位置；第二个参数：保存位数
+    GetDlgItem(IDC_EDIT2)->GetWindowText(ch2,12);
+
+    //字符串转化成数字
+    num1 = _ttoi(ch1);    //字符串转数字,默认按照10进制
+    num2 = _ttoi(ch2);    //
+    num3 = num1 + num2;    //num3不能在控件中显示，需要转化成字符串
+
+    _itot(num3,ch3,10);    //第3个参数，按照10进制转换
+    GetDlgItem(IDC_EDIT3)->SetWindowText(ch3);//结果显示
+}
+
+计算器示例——方法2：直接获取控件内文本字符
+
+void Clb002Dlg::OnBnClickedButton2()
+{
+    int num1,num2,num3;   //在文本空间输入的都是字符串（重点，需要转换）
+    TCHAR ch1[12],ch2[12],ch3[12];//访问和获取文本框字符串，转换成num
+
+    GetDlgItemText(IDC_EDIT1,ch1,12);
+    GetDlgItemText(IDC_EDIT2,ch2,12);
+
+    //字符串转化成数字
+    num1 = _ttoi(ch1);    //字符串转数字,默认按照10进制
+    num2 = _ttoi(ch2);    //
+    num3 = num1 + num2;    //num3不能在控件中显示，需要转化成字符串
+
+    _itot(num3,ch3,10);    //第3个参数，按照10进制转换
+    SetDlgItemText(IDC_EDIT3,ch3);//结果显示
+}
+
+计算器示例——方法3：直接将文本转换成数字
+
+void Clb002Dlg::OnBnClickedButton3()
+{
+    int num1,num2,num3;   
+
+    num1 = GetDlgItemInt(IDC_EDIT1);
+    num2 = GetDlgItemInt(IDC_EDIT2);
+
+    num3 = num1 + num2 ;
+    SetDlgItemInt(IDC_EDIT3,num3);//结果显示
+}
+
+计算机示例——方法4：把控件和变量值类型相关联。
+点击第一个文本框的按钮，右击——添加变量——变量名“m_num1”,类别“value”,变量类型“int”,还可以限定最大值和最小值。
+设置结束后在*Dlg.cpp 生成如下代码
+
+void Clb002Dlg::DoDataExchange(CDataExchange* pDX)   //关联的代码定义
+{
+    CDialogEx::DoDataExchange(pDX);                  //pDX是关联指针
+    DDX_Text(pDX, IDC_EDIT1, m_num1);                //将变量M_num1和IDC_EDIT1相关联
+    DDV_MinMaxInt(pDX, m_num1, -200, 200);           //最大值和最小值限制
+}
+
+对创建的变量初始化
+
+Clb002Dlg::Clb002Dlg(CWnd* pParent /*=NULL*/)
+    : CDialogEx(Clb002Dlg::IDD, pParent)
+    , m_num1(0)     //默认初始化为0
+    , m_num2(0)
+    , m_num3(0)
+{
+    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+做关联后，button4的定义：
+
+void Clb002Dlg::OnBnClickedButton4()
+{
+    UpdateData(TRUE);//TRUE把控件里数据关联到变量
+    m_num3 = m_num1 + m_num2 ; 
+    UpdateData(FALSE);//FAULSE把变量关联到空间内
+}
+
+计算器示例–方法5：把控件和变量控件类型
+右击编辑框——添加变量——类别“control”,变量类型“CEdit”,变量名“m_edit1”
+新建控件变量后，在dlg.h中自动生成代码
+
+public:
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnBnClickedButton1();
+    afx_msg void OnBnClickedButton2();
+    afx_msg void OnBnClickedButton3();
+    afx_msg void OnBnClickedButton4();
+    afx_msg void OnBnClickedButton5();
+    int m_num1;
+    int m_num2;
+    int m_num3;
+    CEdit m_edit1;
+    CEdit m_edit2;
+    CEdit m_edit3;
+
+编写方法5按钮代码
+
+void Clb002Dlg::OnBnClickedButton5()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+
+    m_edit1.GetWindowText(ch1,12);
+    m_edit2.GetWindowText(ch2,12);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+
+    num3 = num1 + num2 ;
+    _itot(num3,ch3,10); //第三个参数，按照十进制转换
+    m_edit3.SetWindowText(ch3);
+}
+
+刚才错把ch3[12]数组定义为3，导致报错“run-time failture #3,” Stack around the variable ‘？’ was corrupted. ? 栈溢出
+
+计算机示例——方法6：发送消息（windows核心机制）SendMessage()
+直接写按钮6的代码
+
+void Clb002Dlg::OnBnClickedButton6()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+    //::代表全局函数，属于windows
+    //第一个参数代表获取对话框的窗口句柄，第二个参数代表消息类型，第三个参数数组大小，最后参数代表该数组
+    ::SendMessage(GetDlgItem(IDC_EDIT1)->m_hWnd,WM_GETTEXT,12,(LPARAM)ch1);
+    ::SendMessage(GetDlgItem(IDC_EDIT2)->m_hWnd,WM_GETTEXT,12,(LPARAM)ch2);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+    num3 = num1 + num2 ;
+    _itot(num3,ch3,10);
+
+    //发送消息给第三个文本框：和。
+    ::SendMessage(GetDlgItem(IDC_EDIT3)->m_hWnd,WM_SETTEXT,0,(LPARAM)ch3);
+}
+
+
+发送消息的机制是重点
+::SendMessage()
+WPARAM,LPARAM ??
+消息类型？
+计算机示例——方法7：SendDlgItemMessage(),方法6的合成简化版
+按钮7代码
+
+void Clb002Dlg::OnBnClickedButton7()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+
+    SendDlgItemMessage(IDC_EDIT1,WM_GETTEXT,12,(LPARAM)ch1);
+    SendDlgItemMessage(IDC_EDIT2,WM_GETTEXT,12,(LPARAM)ch2);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+    num3 = num2 + num2;
+
+    _itot(num3,ch3,10);
+    SendDlgItemMessage(IDC_EDIT3,WM_SETTEXT,0,(LPARAM)ch3);
+}
+
+    方法1/2/3 MFC的基本方法。
+    方法4和5 和控件变量有关，最简单。
+    方法6和7 windows例的基本方法
+
+Dlg,cpp 对话框的源码完整为：
+
+
+// lb002Dlg.cpp : 实现文件
+//
+
+#include "stdafx.h"
+#include "lb002.h"
+#include "lb002Dlg.h"
+#include "afxdialogex.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
+// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
+
+class CAboutDlg : public CDialogEx
+{
+public:
+    CAboutDlg();
+
+// 对话框数据
+    enum { IDD = IDD_ABOUTBOX };
+
+    protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+// 实现
+protected:
+    DECLARE_MESSAGE_MAP()
+};
+
+CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
+{
+}
+
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+    CDialogEx::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+END_MESSAGE_MAP()
+
+
+// Clb002Dlg 对话框
+
+
+
+
+Clb002Dlg::Clb002Dlg(CWnd* pParent /*=NULL*/)
+    : CDialogEx(Clb002Dlg::IDD, pParent)
+    , m_num1(0)
+    , m_num2(0)
+    , m_num3(0)
+{
+    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+void Clb002Dlg::DoDataExchange(CDataExchange* pDX)
+{
+    CDialogEx::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT1, m_num1);
+    DDV_MinMaxInt(pDX, m_num1, -200, 200);
+    DDX_Text(pDX, IDC_EDIT2, m_num2);
+    DDX_Text(pDX, IDC_EDIT3, m_num3);
+    DDX_Control(pDX, IDC_EDIT1, m_edit1);
+    DDX_Control(pDX, IDC_EDIT2, m_edit2);
+    DDX_Control(pDX, IDC_EDIT3, m_edit3);
+}
+//控件和消息映射的定义。
+BEGIN_MESSAGE_MAP(Clb002Dlg, CDialogEx)
+    ON_WM_SYSCOMMAND()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
+    ON_BN_CLICKED(IDOK, &Clb002Dlg::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &Clb002Dlg::OnBnClickedCancel)
+    ON_BN_CLICKED(IDC_BUTTON1, &Clb002Dlg::OnBnClickedButton1)
+    ON_BN_CLICKED(IDC_BUTTON2, &Clb002Dlg::OnBnClickedButton2)
+    ON_BN_CLICKED(IDC_BUTTON3, &Clb002Dlg::OnBnClickedButton3)
+    ON_BN_CLICKED(IDC_BUTTON4, &Clb002Dlg::OnBnClickedButton4)
+    ON_BN_CLICKED(IDC_BUTTON5, &Clb002Dlg::OnBnClickedButton5)
+    ON_BN_CLICKED(IDC_BUTTON6, &Clb002Dlg::OnBnClickedButton6)
+    ON_BN_CLICKED(IDC_BUTTON7, &Clb002Dlg::OnBnClickedButton7)
+END_MESSAGE_MAP()
+
+
+// Clb002Dlg 消息处理程序
+
+BOOL Clb002Dlg::OnInitDialog()
+{
+    CDialogEx::OnInitDialog();
+
+    // 将“关于...”菜单项添加到系统菜单中。
+
+    // IDM_ABOUTBOX 必须在系统命令范围内。
+    ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+    ASSERT(IDM_ABOUTBOX < 0xF000);
+
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (pSysMenu != NULL)
+    {
+        BOOL bNameValid;
+        CString strAboutMenu;
+        bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+        ASSERT(bNameValid);
+        if (!strAboutMenu.IsEmpty())
+        {
+            pSysMenu->AppendMenu(MF_SEPARATOR);
+            pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+        }
+    }
+
+    // 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
+    //  执行此操作
+    SetIcon(m_hIcon, TRUE);         // 设置大图标
+    SetIcon(m_hIcon, FALSE);        // 设置小图标
+
+    // TODO: 在此添加额外的初始化代码
+
+    return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+}
+
+void Clb002Dlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+    {
+        CAboutDlg dlgAbout;
+        dlgAbout.DoModal();
+    }
+    else
+    {
+        CDialogEx::OnSysCommand(nID, lParam);
+    }
+}
+
+// 如果向对话框添加最小化按钮，则需要下面的代码
+//  来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，
+//  这将由框架自动完成。
+
+void Clb002Dlg::OnPaint()
+{
+    if (IsIconic())
+    {
+        CPaintDC dc(this); // 用于绘制的设备上下文
+
+        SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+
+        // 使图标在工作区矩形中居中
+        int cxIcon = GetSystemMetrics(SM_CXICON);
+        int cyIcon = GetSystemMetrics(SM_CYICON);
+        CRect rect;
+        GetClientRect(&rect);
+        int x = (rect.Width() - cxIcon + 1) / 2;
+        int y = (rect.Height() - cyIcon + 1) / 2;
+
+        // 绘制图标
+        dc.DrawIcon(x, y, m_hIcon);
+    }
+    else
+    {
+        CDialogEx::OnPaint();
+    }
+}
+
+//当用户拖动最小化窗口时系统调用此函数取得光标
+//显示。
+HCURSOR Clb002Dlg::OnQueryDragIcon()
+{
+    return static_cast<HCURSOR>(m_hIcon);
+}
+
+
+
+void Clb002Dlg::OnBnClickedOk()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CDialogEx::OnOK();
+}
+
+
+void Clb002Dlg::OnBnClickedCancel()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CDialogEx::OnCancel();
+}
+
+
+void Clb002Dlg::OnBnClickedButton1()
+{
+    int num1,num2,num3;   //在文本空间输入的都是字符串（重点，需要转换）
+    TCHAR ch1[12],ch2[12],ch3[12];//访问和获取文本框字符串，转换成num
+    GetDlgItem(IDC_EDIT1)->GetWindowText(ch1,12);//第一个参数：保存位置；第二个参数：保存位数
+    GetDlgItem(IDC_EDIT2)->GetWindowText(ch2,12);
+
+    //字符串转化成数字
+    num1 = _ttoi(ch1);    //字符串转数字,默认按照10进制
+    num2 = _ttoi(ch2);    //
+    num3 = num1 + num2;    //num3不能在控件中显示，需要转化成字符串
+
+    _itot(num3,ch3,10);    //第3个参数，按照10进制转换
+    GetDlgItem(IDC_EDIT3)->SetWindowText(ch3);//结果显示
+}
+
+
+void Clb002Dlg::OnBnClickedButton2()
+{
+    int num1,num2,num3;   //在文本空间输入的都是字符串（重点，需要转换）
+    TCHAR ch1[12],ch2[12],ch3[12];//访问和获取文本框字符串，转换成num
+
+    GetDlgItemText(IDC_EDIT1,ch1,12);
+    GetDlgItemText(IDC_EDIT2,ch2,12);
+
+    //字符串转化成数字
+    num1 = _ttoi(ch1);    //字符串转数字,默认按照10进制
+    num2 = _ttoi(ch2);    //
+    num3 = num1 + num2;    //num3不能在控件中显示，需要转化成字符串
+
+    _itot(num3,ch3,10);    //第3个参数，按照10进制转换
+    SetDlgItemText(IDC_EDIT3,ch3);//结果显示
+}
+
+
+void Clb002Dlg::OnBnClickedButton3()
+{
+    int num1,num2,num3;   
+
+    num1 = GetDlgItemInt(IDC_EDIT1);
+    num2 = GetDlgItemInt(IDC_EDIT2);
+
+    num3 = num1 + num2 ;
+    SetDlgItemInt(IDC_EDIT3,num3);//结果显示
+}
+
+
+void Clb002Dlg::OnBnClickedButton4()
+{
+    UpdateData(TRUE);//TRUE把控件里数据关联到变量
+    m_num3 = m_num1 + m_num2 ; 
+    UpdateData(FALSE);//FAULSE把变量关联到空间内
+}
+
+
+void Clb002Dlg::OnBnClickedButton5()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+
+    m_edit1.GetWindowText(ch1,12);
+    m_edit2.GetWindowText(ch2,12);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+
+    num3 = num1 + num2 ;
+    _itot(num3,ch3,10); //第三个参数，按照十进制转换
+    m_edit3.SetWindowText(ch3);
+}
+
+
+void Clb002Dlg::OnBnClickedButton6()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+    //::代表全局函数，属于windows
+    //第一个参数代表获取对话框的窗口句柄，第二个参数代表消息类型，第三个参数数组大小，最后参数代表该数组
+    ::SendMessage(GetDlgItem(IDC_EDIT1)->m_hWnd,WM_GETTEXT,12,(LPARAM)ch1);
+    ::SendMessage(GetDlgItem(IDC_EDIT2)->m_hWnd,WM_GETTEXT,12,(LPARAM)ch2);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+    num3 = num1 + num2 ;
+    _itot(num3,ch3,10);
+
+    //发送消息给第三个文本框：和。
+    ::SendMessage(GetDlgItem(IDC_EDIT3)->m_hWnd,WM_SETTEXT,0,(LPARAM)ch3);
+}
+
+
+void Clb002Dlg::OnBnClickedButton7()
+{
+    int num1,num2,num3;
+    TCHAR ch1[12],ch2[12],ch3[12];
+
+    SendDlgItemMessage(IDC_EDIT1,WM_GETTEXT,12,(LPARAM)ch1);
+    SendDlgItemMessage(IDC_EDIT2,WM_GETTEXT,12,(LPARAM)ch2);
+
+    num1 = _ttoi(ch1);
+    num2 = _ttoi(ch2);
+    num3 = num2 + num2;
+
+    _itot(num3,ch3,10);
+    SendDlgItemMessage(IDC_EDIT3,WM_SETTEXT,0,(LPARAM)ch3);
+}
+
+
+MFC之CStatic控件的使用方法(v ok)
+https://blog.csdn.net/iq19900204/article/details/6824673
+CStatic 继承于 CWnd，是一种特殊的窗体。他可以显示文本字符串（这也是最常用的用法）、图标、指针(cursor)、位图和增强图文元件. 通常静态控件不提供输入和输出。但是如果把他的属性设置为 SS_NOTIFY，他可以通知其父窗口的击鼠标事件。
+一。CStatic 用于显示文本
+
+      如果文本不变，可以直接设置其 Caption。如果想在运行过程中改变其显示文本，可以用如下方式：
+
+CStatic   *pStatic=(CStatic*)GetDlgItem(IDC_STATIC);
+pStatic->SetWindowText("Just a Test of Static Control!");
+二。CStatic 用于显示图标
+
+      如果要显示图标，则必须要设置窗口属性为 SS_ICON 和 SS_CENTERIMAGE，实例代码如下：
+
+CStatic* pStatic = (CStatic*)GetDlgItem(IDC_STATIC);
+LONG style = GetWindowLong(pStatic->GetSafeHwnd(), GWL_STYLE);style |= SS_ICON;  
+style |= SS_CENTERIMAGE;   
+SetWindowLong(pStatic->GetSafeHwnd(),GWL_STYLE,style);
+pStatic->SetIcon(m_hIcon);
+三。CStatic 用于显示指针 cursor
+
+      如果要显示 cursor，则必须要设置窗口属性为 SS_ICON 和 SS_CENTERIMAGE，实例代码如下：
+
+CStatic* pStatic = (CStatic*)GetDlgItem(IDC_STATIC);
+LONG style = GetWindowLong(pStatic->GetSafeHwnd(), GWL_STYLE);
+style |= SS_ICON;  
+style |= SS_CENTERIMAGE;   
+SetWindowLong(pStatic->GetSafeHwnd(),GWL_STYLE,style);
+pStatic->SetCursor(OnQueryDragIcon());
+四。CStatic 用于显示位图
+
+      如果要显示图标，则必须要设置窗口属性为 SS_BITMAP 和 SS_CENTERIMAGE，实例代码如下：
+
+//获得指向静态控件的指针  
+CStatic   *pStatic=(CStatic*)GetDlgItem(IDC_STATIC);
+//获得位图句柄  
+HBITMAP   hBitmap=::LoadBitmap(AfxGetApp()->m_hInstance, 
+        MAKEINTRESOURCE(IDB_BITMAP2));
+//LONG result = SetWindowLong(pStatic->GetSafeHwnd(),GWL_STYLE,style);
+//设置静态控件的样式，使其可以使用位图，并试位标显示使居中  
+pStatic->ModifyStyle(0xF,SS_BITMAP|SS_CENTERIMAGE);  
+//设置静态控件显示位图  
+pStatic->SetBitmap(hBitmap);
+ 
+
+文章出处：CSDN
+ 
+
+使用Visual C++ 6.0编制软件时，静态控件是最常用的控件之一。一般情况下，静态控件用作那些没有固定标题文本属性的控件（如文本编辑控件、列表框等）的标签，或者用来为控件分组，或者用来显示一些提示性的文件。实际上，静态控件除了显示静态文本这一基本功能外，还有许多其他的特殊功能，如在静态控件中可以显示图标、位图，甚至还可以在静态控件中显示动画。本文将通过示例程序来介绍静态控件的这些特殊用法。 
+　　
+　　1． 显示图标 
+　　⑴ 使用AppWizard创建一个基于对话框的MFC应用程序，设置其工程名为ShowIco。 
+　　⑵ 在对话框上增加一个静态控件。需要注意的是，有资源管理器添加的静态控件在默认情况下其ID均为IDC_STATIC,因此，如果需要在程序中区分和操纵各个不同的静态控件，一般情况下，需要更改新添加的静态控件的ID值。这里将静态控件的ID值设置为IDC_SHOWICO。 
+　　⑶ 在资源管理器中添加图标资源，其ID为IDI_ICON1。 
+　　⑷ 使用ClassWizard添加WM_INITDIALOG消息处理函数OnInitDialog。 
+　　⑸ 在OnInitDialog函数中下面的代码： 
+　　//获得指向静态控件的指针 
+　　CStatic *pStatic=(CStatic *)GetDlgItem(IDC_SHOWICO); 
+　　//加载图标 
+　　HICON hIcon=AfxGetApp()->LoadIcon(IDI_ICON1); 
+　　//设置静态控件的样式，使其可以使用图标，并试图标显示使居中 
+　　pStatic->ModifyStyle(0xF,SS_ICON|SS_CENTERIMAGE); 
+　　//设置静态控件图标 
+　　pStatic->SetIcon(hIcon); 
+　　运行该程序，显示如上图。 
+　　
+　　2．显示位图 
+　　⑴ 使用AppWizard创建一个基于对话框的MFC应用程序，设置其工程名为ShowBmp。 
+　　⑵ 在对话框上增加一个静态控件,将静态控件的ID值设置为IDC_SHOWBMP。 
+　　⑶ 在资源管理其中添加位图资源，其ID为IDB_INFO。 
+　　⑷ 使用ClassWizard添加WM_INITDIALOG消息处理函数OnInitDialog。 
+　　⑸ 在OnInitDialog函数中下面的代码： 
+　　//获得指向静态控件的指针 
+　　CStatic *pStatic=(CStatic *)GetDlgItem(IDC_SHOWBMP); 
+　　//获得位图句柄 
+　　HBITMAP Bitmap=::LoadBitmap(AfxGetApp()_hInstance, 
+　　　 MAKINTRESOURCE(IDB_INFO)); 
+　　//设置静态控件的样式，使其可以使用位图，并试位标显示使居中 
+　　pStatic->ModifyStyle(0xF,SS_BITMAP|SS_CENTERIMAGE); 
+　　//设置静态控件显示位图 
+　　pStatic->SetBitmap(hBitmap); 
+　　运行该程序即可。 
+　　
+　　3． 显示动画 
+　　编写一个字符串在静态控件中不停的移动的程序。 
+　　⑴ 使用AppWizard创建一个基于对话框的MFC应用程序，设置其工程名为ShowAnimation。 
+　　⑵ 在对话框上增加一个静态控件。将静态控件的ID值设置为IDC_PREVIEW。 
+　　⑶ 使用ClassWizard添加WM_INITDIALOG消息处理函数OnInitDialog和WM_TIMER的消息处理函数OnTimer。 
+　　⑷ 在CshowAnimationDlg类中，增加两个变量m_x和m_y，用以表示字符串的坐标。 
+　　⑸ 在OnInitDialog函数中添加下列代码： 
+　　 m_x=0; 
+　　 m_y=0; 
+　　　 KillTimer(1); 
+　　 VERIFY(SetTimer(1, 500, NULL) != 0); 
+　　1． 在CshowAnimationDlg类中，增加一个成员函数Draw()如下： 
+　　void CshowAnimationDlg::Draw() 
+　　　{ 
+　　　 CWnd *pWnd=GetDlgItem(IDC_PREVIEW); 
+　　CDC *pDC=pWnd->GetDC(); 
+　　RECT rect; 
+　　　pWnd->GetClientRect(&rect); 
+　　pWnd->Invalidate(); 
+　　pWnd->UpdateWindow(); 
+　　　pDC->SelectStockObject(BLACK_BRUSH); 
+　　pDC->Rectangle(0,0,rect.right,rect.bottom); 
+　　　pDC->SetTextColor(RGB(255,0,0)); 
+　　pDC->SetBkColor(RGB(0,0,0)); 
+　　if((m_x>=rect.right)||(m_y>=rect.bottom-20)) 
+　　{ m_x=0; 
+　　m_y=0; 
+　　　 } 
+　　pDC->TextOut(m_x,m_y,\"动画\"); 
+　　　} 
+　　2． 在OnTimer函数中，添加如下代码： 
+　　　　 if (nIDEvent == 1) 
+　　　　{ 
+　　　　m_x+=5; 
+　　　　m_y+=5; 
+　　　　Draw(); 
+　　　　　} 
+　　　else CWnd::OnTimer(nIDEvent);
+
+ 
+
+ 
+
+MFC中 CStatic类(静态控件类)
+
+【说明】CStatic类提供了一个Windows静态控件的功能。一个静态控件可以用来显示一
+个文本字符串、方框、矩形、图标、光标、位图或增强的图元文件。它可以被用来作为
+标签、方框或用来分隔其它的控件。静态控件通常不接收输入，也不提供输出；但是，
+如果它具有SS_NOTIFY风格，则它可以通知其父有关设备点击的消息。
+创建一个静态控件分两步。首先，调用构造函数来构造一个CStatic类的对象，然后调用
+成员函数Create来创建此静态控件并将它分配给当前的CStatic类的对象。
+如果你是在一个对话框中创建了一个静态控件(通过一个对话框资源)，则当用户关闭这
+个对话框时， CStatic类的对象被自动销毁。
+如果你是在一个窗口中创建了一个CStatic类的对象，则可能需要你自己来销毁它。在一
+个窗口的堆栈中创建的CStatic类的对象将自动被销毁。如果你是使用new函数在堆中创
+建CStatic类的对象，则当你使用完后，必须调用delete来销毁这个CStatic类的对象。
+
+【库 名】<afxwin.h>
+
+
+【成员函数】
+
+（1）BOOL Create(LPCTSTR lpszText, DWORD dwStyle, const RECT& rect, CWnd* pP
+arentWnd, UINT nID = 0xffff);
+【返回值】如果本成员函数调用成功则返回非零值；否则返回0。
+【参 数】
+lpszText
+指定要放置在静态控件中的文本。如果是NULL，则表示没有文本是可见的。
+dwStyle
+指定静态控件的窗口风格。以下任何静态控件风格的组合都可以用于这个控件。
+SS_BITMAP
+指定在静态控件中显示一个被定义在资源文件中的位图。该风格将忽略静态控件的高度
+和宽度，静态控件将根据位图的大小自动调节自身的尺寸。
+SS_BLACKFRAME
+建立一个黑色的边框。
+SS_BLACKRECT
+建立一个黑色的矩形。
+SS_CENTER
+使文字在静态控件中水平居中。
+SS_CENTERIMAGE
+当静态控件用于显示文本时，该风格将使文本在静态控件中垂直居中。当静态控件用于
+显示位图或图标时，该风格将使位图或图标在静态控件中垂直居中，当位图或图标小于
+静态控件时，静态控件将使用位图或图标左上角的点的颜色填充空白处。
+SS_ENHMETAFILE
+指定在静态控件中显示一个增强型图元文件。该风格将不会忽略静态控件的高度和宽度
+，而图元文件将调节自身的大小来适应静态控件的尺寸。
+SS_ETCHEDFRAME
+建立一个浮雕边框。
+SS_ETCHEDHORZ
+建立一个边框，并将顶端边框设置为浮雕风格。
+SS_ETCHEDVERT
+建立一个边框，并将左侧边框设置为浮雕风格。
+SS_GRAYFRAME
+建立一个灰色的边框。
+SS_GRAYRECT
+建立一个灰色的矩形。
+SS_ICON
+指定在静态控件中显示一个被定义在资源文件中的图标。该风格将忽略静态控件的高度
+和宽度，静态控件将根据位图的大小自动调节自身的尺寸。
+SS_LEFT
+使文字在静态控件中左对齐。
+SS_LEFTNOWORDWRAP
+在缺省情况下，静态控件把’\n’和’\t’都作为换行标记。只有在设置本风格后，静
+态控件才把’\t’看作是制表键(缺省时制表键的宽度为8个字符的宽度)。
+SS_NOPREFIX
+该标志表示终止对前缀字符的处理。通常，本成员函数将前缀助记符’&’解释为一个指
+令，即在’&’后面的字符下面划一下划线。并且将’&&’解释成一个单个的’&’指令
+。通过指令指定该标志，这种处理就不再进行了。
+SS_NOTIFY
+在缺省情况下，静态控件是不响应鼠标事件的。只有在设置该风格后，当用户单击静态
+控件时，静态控件才向父窗口发送STN_CLICKED通知。
+SS_OWNERDRAW
+在指定该风格后，当静态控件在视觉外观发生变化时，该静态控件的属主窗口将响应WM
+_DRAWITEM消息。
+SS_RIGHT
+使文字在静态控件中左对齐。
+SS_SIMPLE
+只显示一行文本，文本不能被剪切或替换(父窗口不能处理CTLCOLOR消息)。
+SS_SUNKEN
+设置一个下沉的静态控件，当静态控件为一个方框时，方框的四边下沉；当静态控件为
+一个矩形时，整个矩形下沉。
+SS_USERITEM
+建立一个用户自定义项目。
+SS_WHITEFRAME
+建立一个白色的边框。
+SS_WHITERECT
+建立一个白色的矩形。
+rect
+指定静态控件的位置和大小。它可以是一个RECT结构类型的数据或一个CRect类的对象。
+
+pParentWnd
+指定CStatic类的对象的父窗口，通常是一个CDialog类的对象。它不能是NULL。
+nID = 0xffff
+指定静态控件的控件标识。
+【注释】在使用静态控件显示文本而且没有设置SS_LEFTNOWORDWRAP风格时，’\n’和
+’\t’都忧患行的作用。两者的区别是在一行文本的长度大于静态控件的宽度时使用’
+\n’换行将使该行文本的下一行也为空行，但使用’\t’则无此现象。
+
+（2）CStatic();
+【注 释】构造一个空的CStatic类的对象。
+
+（3）HBITMAP GetBitmap() const;
+【返回值】返回一个当前位图的句柄，如果没有设置位图，则返回NULL。
+【注释】此成员函数用来获取先前用成员函数SetBitmap设置的与CStatic类的对象关联
+的位图句柄。
+
+（4）HCURSOR GetCursor();
+【返回值】返回一个当前图标句柄。如果没有设置图标则返回NULL。
+【注释】此成员函数用来获取先前用成员函数SetCursor设置的与CStatic类的对象关联
+的光标句柄。
+
+（5）HENHMETAFILE GetEnhMetaFile() const;
+【返回值】返回一个当前增强图元文件句柄。如果没有设置增强的图元文件则返回NULL
+【注释】此成员函数用来获取先前用成员函数SetEnhMetaFile设置的与CStatic类的对
+象关联的增强的图元文件句柄。
+
+（6）HICON GetIcon();
+【返回值】返回一个当前图标句柄。如果没有设置增强的图标则返回NULL。
+【注释】此成员函数用来获取先前用成员函数SetIcon设置的与CStatic对象关联关联的
+图标句柄。
+
+（7）HBITMAP SetBitmap(HBITMAP hBitmap) const;
+【返回值】返回先前与此静态控件关联的位图的句柄。如果没有与此静态控件关联的位
+图，则返回NULL。
+【参 数】
+hBitmap
+要绘制在此静态控件中的位图句柄。
+【注释】此成员函数用来将一个新的位图与此静态控件关联。这个位图将被自动绘制在
+此静态控件中。缺省的，它将被绘制在左上角，并且此静态控件将根据位图的大小来调
+整尺寸。使用此成员函数必须设置风格SS_BITMAP。
+
+（8）HCURSOR SetCursor(HCURSOR hCursor);
+【返回值】返回先前与此静态控件关联的光标的句柄。如果没有与此静态控件关联的光
+标，则返回NULL。
+【参 数】
+hCursor
+要绘制在此静态控件中的光标句柄。
+【注释】此成员函数用来将一个新的光标与此静态控件关联。这个光标将被自动绘制在
+此静态控件中。缺省的，它将被绘制在左上角，并且此静态控件将根据光标的大小来调
+整尺寸。使用此成员函数必须设置风格SS_ICON。
+
+（9）HENHMETAFILE SetEnhMetaFile(HENHMETAFILE hMetaFile);
+【返回值】返回先前与此静态控件关联的增强图元文件的句柄。如果没有与此静态控件
+关联的增强图元文件，则返回NULL。
+【参 数】
+hMetaFile
+要绘制在此静态控件中的增强图元文件句柄。
+【注释】此成员函数用来将一个新的增强图元文件与此静态控件关联。这个增强图元文
+件将被自动绘制在此静态控件中。缺省的，它将被绘制在左上角，并且此静态控件将根
+据增强图元文件的大小来调整尺寸。使用此成员函数必须设置风格SS_ENHMETAFILE。
+
+（10）HICON SetIcon(HICON hIcon);
+【返回值】返回先前与此静态控件关联的图标的句柄。如果没有与此静态控件关联的图
+标，则返回NULL。
+【参 数】
+hIcon
+要绘制在此静态控件中的图标句柄。
+【注释】此成员函数用来将一个新的图标与此静态控件关联。这个图标将被自动绘制在
+此静态控件中。缺省的，它将被绘制在左上角，并且此静态控件将根据图标的大小来调
+整尺寸。使用此成员函数必须设置风格SS_ICON。
+
+
+MFC 设置光标 SetCursor(HCURSOR hCursor)用法。(v ok)
+https://blog.csdn.net/wang15061955806/article/details/52385911
+
+VC++ 6.0 设定光标可以使用SetCursor(HCURSOR hCursor)来设定，如果是新手，建议在WM_SETCURSOR消息响应函数中设置，你可以在别的地方设置，但是需要自己控制光标的变化。
+
+       1、使用系统预定义的光标：
+
+       使用ClassWizard为视图或者对话框添加WM_SETCURSOR消息的响应函数OnSetCursor();在函数中，使用SetCursor函数，然后要返回真，屏蔽掉系统的设置函数。
+
+BOOL CMyProgramView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+{
+ // TODO: Add your message handler code here and/or call default
+ 
+             SetCursor(LoadCursor(NULL,IDC_ARROW)); //设定光标为箭头，就是我们平时用的。
+
+             return TRUE;
+
+            return CView::OnSetCursor(pWnd, nHitTest, message);
+}
+
+LoadCursor第一个参数是要载入光标的程序的实例，当使用系统预定义光标的时候，要设置为空。当要使用自定义光标的时候，设置为AfxGetInstanceHandle()，使用自定义的光标，在第2点中讲。
+
+更换LoadCursor中的第二个参数，就能得到不同的系统预定义光标。
+
+IDC_APPSTARTING 标准的箭头和小沙漏
+
+IDC_ARROW 标准的箭头
+IDC_CROSS 十字光标
+IDC_HELP 标准的箭头和问号
+IDC_IBEAM 工字光标
+IDC_NO 禁止圈
+IDC_SIZEALL 四向箭头指向东、西、南、北
+IDC_SIZENESW 双箭头指向东北和西南
+IDC_SIZENS 双箭头指向南北
+IDC_SIZENWSE 双箭头指向西北和东南
+IDC_SIZEWE 双箭头指向东西
+IDC_UPARROW 垂直箭头
+IDC_WAIT 沙漏
+         2、使用自定义光标：
+         首先在资源中添加一个光标，和你添加对话框是一样的，然后画图。系统默认是黑白色彩的光标，可以修改为彩色的光标。修改方法为：
+         点击NewDevieImage工具条：
+         
+        然后点击Custom，设置颜色为256色。
+         
+        点击OK。
+         自己画好光标后，就可以把画好的光标设置为系统使用的光标了：
+          方法还是再OnSetCursor函数中使用SetCursor函数，只是LoadCursor的参数不一样：
+    
+BOOL CMyProgramView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+{
+ // TODO: Add your message handler code here and/or call default
+ 
+            SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_MYCURSOR)));
+             return TRUE;
+
+            return CView::OnSetCursor(pWnd, nHitTest, message);
+}
+
+       LoadCursor第一个参数要为当前应用程序的实例，使用AfxGetInstanceHandle（）得到，第二个参数为刚才新建的光标的ID。这样，程序的光标就设定为你需要的了。
+ 
+3、如何动态更换光标：
+      很多时候需要动态的更换光标，这里建议是自己定义一些标志，然后在OnSetCursor中判断标志，当标志为一个值的时候，设定什么光标。
+4、什么时候系统会发送设置光标消息：WM_SETCURSOR。
+      原文的定义是这样：The WM_SETCURSOR message is sent to a window if the mouse causes the cursor to move within a window and mouse input is not captured。
+      只要鼠标事件发生就会自动发送 WM_SETCURSOR从而触发OnSetCursor。你可以再鼠标按下的函数中使用SetCursor来设置一个光标，你会发现光标确实改变了。但是只要你移动鼠标，或者放开鼠标，光标就变回去了。
+
+转载地址：http://blog.csdn.net/zengweicdut/article/details/8681818
+
+
+CPicture就是CStatic
+只不过设置了不同的属性而已。
+操作都是一样的。
+给CPicture控件添加映射变量的时候也是CStatic类型的。没有其他的类型可选。
+
+C++ MFC picture control控件按比例显示任意图片文件（jpg、bmp等）
+https://blog.csdn.net/sdpyly/article/details/82717587
+C++ MFC picture control控件按比例显示任意图片文件（jpg、bmp等）
+原创这大概是个bug 最后发布于2018-09-15 23:15:10 阅读数 6084  收藏
+展开
+前段时间做大一专业实训，用MFC做一个图片查看类程序，对于从来没有学过C++的我们来说显示一张图片就是一件很难的事情了，作为小组里唯一一个MFC设计者，我从网上有很多关于MFC图片控件显示的文章，但大多数文章描述的方法不能满足我们的需求。我们需要显示一个文件夹中任意一张图片，实现前后翻页，按比例显示，并且实现图片旋转。现在介绍如何在picture control中按比例显示一张任意格式的图片。
+
+showpic();函数的实现
+分为四个步骤
+1.用image类创建一个图片对象，获取其宽和高；
+2.获取控件句柄，从而获得控件客户区的相关参数；
+3.计算，算出图片应该按怎样的比例显示出来；
+4.获取控件的DC，将图片显示出来；
+
+   下面先上代码，附部分注释
+1
+代码块
+void ShowPic()//形参可以为所给的图片对象的指针，这里为了通用性省去了形参
+{
+    float cx, cy, dx, dy, k, t;//跟控件的宽和高以及图片宽和高有关的参数
+    CRect   rect;//用于获取图片控件的宽和高
+    CImage q;//为cimage图片类创建一个对象
+    q.Load("你想加载的图片路径");//构造函数的形参是所加载图片的路径 
+    cx = q.GetWidth();
+    cy = q.GetHeight();//获取图片的宽 高
+    k = cy / cx;//获得图片的宽高比
+
+    CWnd *pWnd = NULL;
+    pWnd = GetDlgItem(你定义的图片控件的ID);//获取控件句柄
+    pWnd->GetClientRect(&rect);//获取Picture Control控件的客户区
+    dx = rect.Width();
+    dy = rect.Height();//获得控件的宽高比
+    t = dy / dx;//获得控件的宽高比
+    if (k >= t)
+    {
+
+        rect.right = floor(rect.bottom / k);
+        rect.left = (dx - rect.right) / 2;
+        rect.right = floor(rect.bottom / k) + (dx - rect.right) / 2;
+    }
+    else
+    {
+        rect.bottom = floor(k*rect.right);
+        rect.top = (dy - rect.bottom) / 2;
+        rect.bottom = floor(k*rect.right) + (dy - rect.bottom) / 2;
+    }
+    //相关的计算为了让图片在绘图区居中按比例显示，原理很好懂，如果图片很宽但是不高，就上下留有空白区；如果图片很高而不宽就左右留有空白区，并且保持两边空白区一样大
+
+    CDC *pDc = NULL;
+    pDc = pWnd->GetDC();//获取picture control的DC，这是什么玩意我也不知道，百度就行
+    int ModeOld = SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);//设置指定设备环境中的位图拉伸模式
+
+    GetDlgItem(Pic)->ShowWindow(FALSE);
+    GetDlgItem(Pic)->ShowWindow(TRUE);
+    q.StretchBlt(pDc->m_hDC, rect, SRCCOPY);//显示函数
+    SetStretchBltMode(pDc->m_hDC, ModeOld);
+    ReleaseDC(pDc);//释放指针空间
+
+IDC_STATIC
+IDC_STATIC
+
+MFC：Picture控件的用法(v ok)
+https://blog.csdn.net/hisinwang/article/details/45753009
+一、利用Picture控件静态加载显示Bitmap图片
+在界面上创建Picture控件
+将Picture控件的Type属性设为Bitmap
+导入或新建Bitmap类型资源，ID为IDB_BITMAP1等等
+为控件添加变量CStatic m_pic;
+加载图片代码：
+
+HBITMAP hBitmap = ::LoadBitmap(AfxGetInstanceHandle(),
+MAKEINTRESOURCE(IDB_BITMAP1));
+m_pic.SetBitmap(hBitmap);
+
+分析：
+优点：代码非常简洁
+缺点：
+1、加载的Bitmap不可调整大小，取实际大小值，Picture控件会自动调整为Bitmap的实际大小值。
+2、加载的Bitmap资源只能在模块内部
+
+二、利用Picture控件动态加载显示Bitmap图片
+HBITMAP hBitmap = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
+    TEXT("D:\\test.bmp"), IMAGE_BITMAP, 50, 50, 
+    LR_DEFAULTCOLOR | LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+m_pic.SetBitmap(hBitmap);
+
+分析：
+加载的图片在模块外
+可以指定图片大小，如上图中的50,50，若实际大小和此不相符，会自动缩放图片
+LR_DEFAULTCOLOR — 指定按照原图的颜色加载图片，不可少
+LR_LOADFROMFILE — 加载外部的Bitmap，一定要指定
+LR_CREATEDIBSECTION — 一般会指定
+如若按照图片本身的大小加载，则设置cx,cy为0,0，并且在最后的标志位加上|LR_DEFAULTSIZE
+注意：从网上下载的Bitmap图片可能用上面的方法加载失败，返回的HBITMAP为NULL，GetLastError()返回0，这个一般是图片格式的问题，可以用Windows的画图程序打开Bitmap再另存为24位位图的bmp格式就可以了。
+
+
+
+MFC中picture control控件的用法 [问题点数：40分](v ok)
+https://bbs.csdn.net/topics/360236450
+我在MFC中添加了picture control控件，然后往里面加载了bmp文件，按照网上的程序添加了代码：
+// uBmpResource：图片ID; uCtrlResource: Picture控件ID 
+void   SetBitmap(UINT   IDB_BITMAP3,   UINT   IDC_STATIC1)    错误1、2、3
+{           错误4、5
+        HBITMAP   hBitmap; 
+        CStatic   *pStatic   =   (CStatic   *)GetDlgItem(IDC_STATIC1); 
+        hBitmap   =   (HBITMAP)LoadImage( 
+                AfxGetInstanceHandle(),   
+                MAKEINTRESOURCE(IDB_BITMAP3),   
+                IMAGE_BITMAP,   
+                0,   
+                0,   
+                LR_LOADMAP3DCOLORS); 
+        pStatic-> ModifyStyle(0xF,   SS_BITMAP); 
+        pStatic-> SetBitmap(hBitmap); 
+}
+但是这一段程序会报错，就是说
+错误1 error C2143: 语法错误 : 缺少“)”(在“常量”的前面)
+错误2 error C2143: 语法错误 : 缺少“;”(在“常量”的前面)
+错误3 error C2059: 语法错误 : “)”
+错误4 error C2143: 语法错误 : 缺少“;”(在“{”的前面)
+错误5 error C2447: “{”: 缺少函数标题(是否是老式的形式表?)
+这是什么错误啊，还有我想在一个控件里直接使用这个函数应该怎么写代码，另外初始化对话框代码是不是应该在说明了控件之后直接带上啊，本人是初学者，请多给意见，谢谢哈
+...
+CStatic::SetBitmap( HBITMAP hBitmap );
+或
+CStatic::SetBitmap( ::LoadBitmap(...) ); 
+
+四月天:期货杠杆大，仓位重基本都会爆仓
+
+四月天:一单占用保证金1千美金，然后价格波动1美金，账号波动1000美金
+
+2020.04.03
+
+	CArray<int,int> aryListBoxSel; // 数组用来保存选择的项目的索引
+	aryListBoxSel.SetSize(nCount);
+	GetSelItems(nCount, aryListBoxSel.GetData()); (v ok)
+
+Cindy Huang: 父母都上班的表示很无柰,这网课什么时候才能结束,我们家的落了好多任务感觉已经无力弥补了
+网课？ 有这回事。 想起大学时考完英语科目了，才发出竞不知道有多少章的书。
+Cloud Dream: 等你们到了我这年龄就知道了，哪有赚得完的钱，哪又有花不完的钱
+
+四月天:
+就这0.2单子，油价涨到40，就赚4千美金
+怕还有低点，剩下的还没下手
+0.2单，即是多少
+0.2手
+买一手，涨一块赚一千
+最多买0.5
+国际油价有美国wti连续，布伦特原油2个指数
+我买的wti，看连续，不看每月的
+同花顺就有
+模拟账号19块5买的
+实际我准备3万RMB，我占1万八，大家1万2，剩下后面再补，本金应该4100美金的样子，先赚一个月看看吧
+如果一口气去赌石油，0.4x30美金差价x1000倍杠杆，等于12000美金
+也就是3万赚，8万
+实际也不可能守那么久，半路会见机行事，留部分做长线
+风险巨大，我都是久经沙场的，才玩小玩
+我现在只动了200美金，如果不跌，剩下的钱都在那闲着
+如果石油跌到15块，我就亏1100美金
+依次是黄金，石油，富时A50，都可以小单玩，尤其是A50，跟中国A股的，好把握
+
+WTI原油连续
+
+四月天:
+国际油价有美国wti连续，布伦特原油2个指数
+
+
+四月天:
+我买的wti，看连续，不看每月的
+
+
+
+大家一般认为MFC的按钮控件的使用很普通很简单，无非就是个单击事件。我不否认这个事实，我想说的是能否在这个普通简单上稍微有点创意呢？大家普通简单，你有点创意特别，那么你就超过了很多人了。这个程序的特点就是在普通之上，添加了自绘变色，提示，鼠标滑过变色等。当然最关键最重要的是零积分下载！零积分下载！零积分下载！重要的事说三遍。呵呵。
+
+COLORREF和COLOR和RGB的总结
+https://www.cnblogs.com/riskyer/p/3285524.html
+COLORREF和COLOR和RGB的总结
+一、COLORREF与RGB的相互转化
+RGB(r,g,b)是一个宏
+实际上它做得事是((COLORREF)(((BYTE)(r)|((WORD)((BYTE)(g))<<8))|(((DWORD)(BYTE)(b))<<16)))
+
+ rgb(r,g,b)   =   一个整型值   =   r   +   g   *   256   + b*255*256   
+
+
+COLORREF 是 一 个 32-bit 整 型 数 值，它 代 表 了 一 种 颜 色。你 可以 使 用 RGB 函 数 来 初 始 化 COLORREF
+它的定义
+
+
+
+void CButtonExDlg::OnMouseMove(UINT nFlags, CPoint point) (v ok)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	if (m_btnOK.ItemState == 1)
+	{
+		m_btnOK.ItemState =0;
+		// 重画OK按钮
+		m_btnOK.Invalidate(TRUE);
+	}
+
+	if (m_btnCancel.ItemState == 1)
+	{
+		m_btnCancel.ItemState =0;
+		// 重画OK按钮
+		m_btnCancel.Invalidate(TRUE);
+	}
+	
+	CDialog::OnMouseMove(nFlags, point);
+}
+
+void CImageButton::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	// TODO: Add your message handler code here and/or call default
+//	CDC *pDC = GetClientRect();
+
+	if (ItemState == 0)
+	{
+		ItemState = 1;
+		// 重画按钮
+		Invalidate(TRUE);
+	}
+	CButton::OnMouseMove(nFlags, point);
+}
+
+
+MFC判断鼠标光标在某个矩形框内
+https://blog.csdn.net/arcsinsin/article/details/9864151
+POINT point;
+GetCursorPos(&point);
+CRect   rc; 
+rc.left=0;                   
+rc.top=70;
+rc.right= rc.left+50;
+rc.bottom= rc.top+200;
+  
+if(rc.PtInRect(point))  
+{
+    /*要进行的操作*/
+}
+
+MFC中WM_MOUSEACTIVATE消息的具体作用
+https://ask.csdn.net/questions/772495
+通过鼠标激活窗口的消息。至于窗口激活，对于窗口，是被选为当前窗口，对于控件，是setfocus获得焦点的状态。
+
+营养又减肥的早餐——生菜火腿黄瓜鸡蛋卷饼 
+https://www.sohu.com/a/128655897_628326
+
+黄瓜卷饼的做法步骤
+http://www.sbar.com.cn/caipu/12003893e8
+
+做法简单的卷饼，配上自制的酱料，火腿肠，生菜黄瓜条孩子超爱吃
+https://3g.163.com/v/video/VI3IR52FE.html
+
+昨晚陈斌说他第一天上班招聘程序员
+
+2020.04.02
+
+黄明济昨晚学跳绳。梅说他右肩低，速快跳不好，主要评批无方法耐心教。(v ok)(w)
+我说他早跳，速快，方法由静动慢快渐进教不行，说不用力慢跳等和以身作侧才教好。济说去绳动作练会的。
+
 MFC/vc中当鼠标经过按钮等控件时出现文字提示功能(v ok)
 https://blog.csdn.net/zhangyulin54321/article/details/8763149
 在VC中，也常常为一些图片按钮添加一些功能提示。
@@ -1581,7 +4457,7 @@ D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Gallery\MsEdit_Wendy\Sho
 
 逻辑先简单到复杂，先大模块到小模块等。及时记录和进入状态等，不拖拉。
 
-昨晚明济自己冲凉了。
+昨晚明济自己冲凉了。(v ok)
 
 别像永泰的播放控件换肤按钮滑动条等找不到了。
 
