@@ -1,3 +1,2739 @@
+记者1：你可以把面具摘了，病例死亡率只有0.1%-0.3%
+记者2：真的？这可真让人放心。无论如何，来这里的人都打过疫苗了。（"Everybody Here Has Been Vaccinated Anyway"）
+记者1：USC与洛杉矶县医疗局在加州做的调查，他们发现虽然数据显示只有7000病例，但是实际感染人数应该在21.1万至42.2万人直接。
+记者2：真的？所以这让死亡率降到0.1%-0.3%了？
+记者1：是的。
+记者2：这个调查结果已经出来了？
+记者1：是，今天刚出来的。这让实际死亡率看起来只有看起来的十分之一。
+记者2：所以这一切都是一场骗局？
+记者1：不，我不觉得这是骗局。哈哈哈哈。
+https://www.acfun.cn/v/ac14970703
+http://www.aixifan.com/v/ac14970703
+
+
+
+VC++ ipaddress控件的使用
+https://blog.csdn.net/SysProgram/article/details/5821752
+#include "stdafx.h"
+#include <WinSock.h>
+#include <string.h> 
+//#include "Dialog.h"
+//#include "DLG.h"
+
+#pragma   comment(lib,   "ws2_32.lib")
+
+void CDlgCtrl_IPAddress001Dlg::OnButton7() 
+{
+	// TODO: Add your control notification handler code here
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	char name[255];
+	CString ip;
+	PHOSTENT hostinfo;
+	wVersionRequested = MAKEWORD(2, 0);
+	
+	if (WSAStartup(wVersionRequested, &wsaData) == 0)
+	{
+		
+		if(gethostname(name, sizeof(name)) == 0)
+		{
+			if((hostinfo = gethostbyname(name)) != NULL)
+			{
+				ip = inet_ntoa(*(struct in_addr *)*hostinfo->h_addr_list);
+			}
+		}
+		WSACleanup( );
+	}
+	 AfxMessageBox(name);//name里是本机名
+	 AfxMessageBox(ip); //ip中是本机IP
+	
+}
+
+DlgCtrl_IPAddress001Dlg.obj : error LNK2001: unresolved external symbol _WSACleanup@0
+DlgCtrl_IPAddress001Dlg.obj : error LNK2001: unresolved external symbol _inet_ntoa@4
+DlgCtrl_IPAddress001Dlg.obj : error LNK2001: unresolved external symbol _gethostbyname@4
+DlgCtrl_IPAddress001Dlg.obj : error LNK2001: unresolved external symbol _gethostname@8
+DlgCtrl_IPAddress001Dlg.obj : error LNK2001: unresolved external symbol _WSAStartup@8
+Debug/DlgCtrl_IPAddress001.exe : fatal error LNK1120: 5 unresolved externals
+Error executing link.exe.
+
+error LNK2001: unresolved external symbol _WSACleanup@0错误的解决
+https://blog.csdn.net/jyc1228/article/details/3598593?utm_source=blogxgwz3
+#pragma ? comment(lib,  "ws2_32.lib")如果
+Rebuild ? All不行的话, 
+那就在project->setting->link中加入ws2_32.lib ? 就OK了! 
+实际两种方法都是一样的/
+
+用socket的时候记得加入ws2_32.lib 
+如果不行则用下一招
+解决方法：project---setting--link--object/library modules里面粘贴
+VFW32.Lib cxcore.lib cv.lib ml.lib cvaux.lib highgui.lib cvcam.lib
+即可.................
+
+
+
+
+C++/MFC-IP Address Control
+https://blog.csdn.net/qwdpoiguw/article/details/72812005
+void CDlgCtrl_IPAddress001Dlg::OnButton1() 
+{
+	// TODO: Add your control notification handler code here
+	BOOL r=m_ip.IsBlank();
+    TRACE("%d \n",r);
+
+}
+
+void CDlgCtrl_IPAddress001Dlg::OnButton2() 
+{
+	// TODO: Add your control notification handler code here
+	//格式一
+	BYTE i1,i2,i3,i4;
+       m_ip.GetAddress(i1,i2,i3,i4);
+       //格式二
+	BYTE i11,i22,i33,i44;
+	DWORD d;
+       m_ip.GetAddress(d);
+       //格式二取出单个值
+       BYTE* pd=(BYTE *)&d;
+	i44=*pd++;
+	i33=*pd++;
+	i22=*pd++;
+	i11=*pd;
+//注意排序
+
+	CString ip;
+	ip.Format("IP:%d.%d.%d.%d",i1,i2,i3,i4);
+	MessageBox(ip);
+
+		CString ip2;
+	ip2.Format("IP:%d.%d.%d.%d",i11,i22,i33,i44);
+	MessageBox(ip2);
+
+}
+
+void CDlgCtrl_IPAddress001Dlg::OnButton3() 
+{
+	// TODO: Add your control notification handler code here
+	m_ip.ClearAddress();
+}
+
+void CDlgCtrl_IPAddress001Dlg::OnButton4() 
+{
+	// TODO: Add your control notification handler code here
+	//法一
+	m_ip.SetAddress(192,168,0,1);
+
+
+}
+
+void CDlgCtrl_IPAddress001Dlg::OnButton5() 
+{
+	// TODO: Add your control notification handler code here
+	//法二，较少用
+	DWORD a=0x11223344;
+	m_ip.SetAddress(a);
+}
+
+void CDlgCtrl_IPAddress001Dlg::OnButton6() 
+{
+	// TODO: Add your control notification handler code here
+//192.168.0.1-192.168.0.100
+       //第几个位置（0-3），最小值（0-255），最大值（0-255）
+       m_ip.SetFieldRange(0,192,192);
+       m_ip.SetFieldRange(1,168,168);
+       m_ip.SetFieldRange(2,0,0);
+       m_ip.SetFieldRange(3,1,100);
+
+}
+
+
+
+MFC控件(11):Month Calendar Control
+https://blog.csdn.net/weiwenhp/article/details/9406683
+这个控件跟Date Time Picker控件蛮类似.实际应该是Date Time Picker把它整合进去了,只有当点一下才出来.而
+Month control直接显示在页面上.当然了它还有其他一些不一样的设置信息了.
+现在来讲下常用的两个用法:设置当前选中项, 获取当前选中日期
+
+设置默认选中项
+如果什么设置也不做默认选中的是当前日期.那怎么指定选中某个日期呢.
+CMonthCalCtrl m_montCtrl;
+DDX_Control(pDX, IDC_MONTHCALENDAR1, m_montCtrl);
+m_montCtrl.SetCurSel(CTime(2008,8,8,0,0,0,0)); //指定选中2008/8/8
+
+获取当前选中日期
+//当在控件中选不同的日期时可以用如下消息来处理
+ON_NOTIFY(MCN_SELCHANGE, IDC_MONTHCALENDAR1, OnMcnSelchangeMonthcalendar1)
+
+void CMFC_Ctrl_TimeDlg::OnMcnSelchangeMonthcalendar1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+LPNMSELCHANGE pSelChange = reinterpret_cast<LPNMSELCHANGE>(pNMHDR);
+CTime month;
+m_montCtrl.GetCurSel(month); //获取当前日期信息
+//根据日期信息做其他操作,比如可以显示不同的页面信息
+*pResult = 0;
+}
+
+
+
+Visual C++中的日历控件使用详解
+https://blog.csdn.net/newzzorg/article/details/8106153
+
+VC中的MONTH CALENDAR控件（CMonthCalCtrl）--微软的BUG
+https://blog.csdn.net/fanerde/article/details/2073218
+void CDlgCtrlMonthCalendar001Dlg::OnButton1() 
+{
+	// TODO: Add your control notification handler code here
+	SYSTEMTIME st; 
+	m_Month.GetCurSel(&st); 
+	st.wHour = st.wMinute = st.wSecond = st.wMilliseconds = 0; 
+	CTime refDateTime(st); 
+	CString strDate = refDateTime.Format("%Y-%m-%d");
+	MessageBox(strDate);
+	
+}
+
+
+
+如何改变MFC日历控件Calendar Control的显示大小 [问题点数：40分，结帖人allenchenhh133]
+https://bbs.csdn.net/topics/392015068
+h
+CFont m_BnFont;
+CMonthCalCtrl m_Month;
+init
+m_BnFont.CreatePointFont(160,"黑体");  //宋体
+m_Month.SetFont(&m_BnFont);
+
+
+int main()
+{
+	double run_time;
+	LARGE_INTEGER time_start;	//开始时间
+	LARGE_INTEGER time_over;	//结束时间
+	double dqFreq;		//计时器频率
+	LARGE_INTEGER f;	//计时器频率
+
+    int n=0;  // _UI128_MAX  INT_MAX
+    cnt = 0;
+	printf ("Please Input Num(>0) of Hanoto: Nun = ");
+    scanf ("%d", &n);
+
+
+	while(n > 0)
+	{
+		QueryPerformanceFrequency(&f);
+		dqFreq=(double)f.QuadPart;
+		QueryPerformanceCounter(&time_start);	//计时开始
+
+		hanoi(n, 'A', 'B', 'C',1);
+
+		QueryPerformanceCounter(&time_over);	//计时结束
+		run_time=(time_over.QuadPart-time_start.QuadPart)/dqFreq;
+		// xx乘以1000000把单位由秒化为微秒，精度为1000 000/（cpu主频）微秒  1000000*
+		printf ("Over cnt = %I64d run_time=%fus\n",cnt,run_time);
+
+
+		printf ("\nPlease Input Num(>0) = ");
+		scanf ("%d", &n);
+		cnt = 0;
+	}
+    return 0;
+}
+
+
+QueryPerformanceCounter精确计算执行时间
+https://blog.csdn.net/augusdi/article/details/10959287
+
+datetimepicker 动态显示时间
+
+datetimepicker显示年月日时分秒
+https://blog.csdn.net/qq_39356868/article/details/78388757
+① CustomFormat属性设置为： yyyy-MM-dd HH:mm:ss
+② 记住还要修改一个属性值，DateFormat属性 可选项改为Custom ，默认是Long
+
+软媒时间 3.19 正式版
+https://mytime.ruanmei.com/
+
+C#软件开发工程师（.net）
+1、精通 C# .NET 进行Windows、Windows Phone平台下程序开发；
+2、有至少1年以上C#项目开发经验；
+3、计算机或相关专业本科以上学历；
+4、有共享软件免费软件开发经验者尤佳。
+高级UI设计师
+1、PC客户端产品的界面视觉和交互设计；
+2、移动客户端产品（iOS、Android、WP）的界面视觉和交互设计；
+3、网站页面视觉设计及前端代码编写。
+职位要求：
+1、一年以上相关从业经验；
+2、本科及以上学历，美术、设计相关专业毕业，熟悉并热爱互联网行业；
+3、熟悉用户体验设计的工作原理及开发流程，能够归纳产品经理提出的交互设计需求，并快速构建信息结构和交互流程；
+4、熟练掌握色彩、图形、布局在设计作品中的运用，能够把握整体的设计风格，完成项目所需的界面和图标设计；
+5、熟悉HTML、CSS、JavaScript、jQuery等Web前端语言。
+优势加分：
+1、良好的手绘表达能力。
+2、具备将构思通过Flash或AfterEffect等软件转化为演示的能力。
+3、对心理学有所涉猎。
+
+
+
+win7任务栏显示秒
+
+您好，
+
+Win7 任务栏不支持显示秒，如果要实现的话，可以通过安装第三方的软件。
+另外可以通过添加小工具来实现看到秒钟（同时也包括时钟和分钟），请在桌面右键，选择“小工具”，在里面设置将时钟添加到桌面（在时钟图标上右键，选择添加）。
+您好，win7 目前是不支持这样的设置。您可以添加桌面小工具，添加一个钟，看秒表。
+
+
+软媒时间
+
+如何让电脑右下角的时间显示秒？
+1,运行框中输入“regedit”即可打开注册表。
+2,在注册表中定位到“HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced”位置。
+3,在右侧窗口空白处，右击新建ShowSecondsInSystemClock。
+4,双击“ShowSecondsInSystemClock”把数值数据改为1.
+5,重启系统，修改后的注册表即可生效。
+6,重启后，就可以看到显示秒的时间栏了。
+
+2020.04.30
+
+MFC中 CDateTimeCtrl 自定义日期显示格式
+https://www.cnblogs.com/lxt287994374/archive/2013/11/01/3402543.html
+MFC里的DateTimePicker控件 ，通过属性来设置的话只能设置两种显示方式，要么日期，要么时间，很多时候我们需要在一个DateTimePicker里日期和时间同时显示。
+
+这个时候只能通过自定义显示格式来完成，使用方法如下：
+
+CDateTimeCtrl    m_dateTimeCtrl;
+
+DateTime_SetFormat(m_dateTime.GetSafeHwnd(),"''yyyy'-'MM'-'dd' 'HH':'m':'s''");
+
+ 
+
+'yyyy' 代表年
+
+'MM' 代表月
+
+'dd'  代表天
+
+'HH' 代表小时（24小时制），‘hh’ 代表12小时制
+
+‘m’ 代表分
+
+'s'  代表秒
+
+ 
+
+资料来源：http://blog.csdn.net/viniboy1982/article/details/3989990
+
+
+VC控件DateTimePicker使用方法及其相关
+https://blog.csdn.net/aastoneaa/article/details/8250910
+Format函数的格式符号及其意义：
+%a: 简写的星期名，例如Sat代表Saturday
+%A: 全写星期（英文），如Friday
+%b: 简写的月名，例如Mar代表March
+%B: 月份（全写英文），如October
+%c: 月/日/年 时:分:秒，如1/3/2012 21:19:11
+%d: 月中的天数，值为01～31
+%H: 24小时格式的小时数，值为00～23
+%I: 通常的12小时格式的小时数，值为01～12
+%j: 一年当中的第几天，值为001～336
+%m: 月数，值为01～12
+%M: 分钟数，值为00～59
+%p: 由12小时格式的时钟指示的am/pm(上午/下午)
+%S: 秒数，值为00～59
+%U: 年中的周数，值为00～53，以周日为一周的第一天
+%w: 周中的日期数，值为0～6，其中0为周日
+%W: 年中的周数，值为00～53，以周一为一周的第一天
+%x: 月/日/年，%c的前半段
+%X: 时/分/秒，%c的后半段
+%y: 不带年代前缀的年数，值为00～99
+%Y: 年份（带世纪，如2006）
+%z: 简写的时区名称
+%Z: 时区名称的全称，如果时区未知，此字符为空，如“中国标准时间”
+
+
+MFC控件之Date Time Picker
+https://blog.csdn.net/lebao82/article/details/15337659
+1、同时显示时间跟日期
+部分转载自：http://loveafaye.blogbus.com/logs/41089096.html
+
+一是用两个CDateTimeCtrl。
+
+二种是使用CDateTimeCtrl的成员函数SetTime和SetFormat。
+
+如下：
+
+((CDateTimeCtrl*)GetDlgItem(IDC_READ_TIME))->SetTime(&m_time);
+
+GetDlgItem(IDC_READ_TIME)->SendMessage(DTM_SETFORMAT,0,(LPARAM)_T("yyyy-MM-dd HH:mm:ss"));
+
+或
+
+m_dt.SetFormat("yyyy-M-d HH:mm:ss");
+
+2、输入时自动跳转
+
+
+MFC控件: Date Time Picker
+https://blog.csdn.net/u012999771/article/details/42102753/
+选择时间
+//同样是用控件Date Time Picker,只不过属性要改下.把Properites中的属性Format改成Time, User Spin Control为True.
+
+//当然你也可以不改Format,在代码中用SetFormat去设置也一样.
+
+CDateTimeCtrl m_timeCtrl;
+
+DDX_Control(pDX, IDC_DATETIMEPICKER2, m_timeCtrl);
+
+
+//时间默认显示是跟你操作系统上的时间设置格式一样.有时可能只显示小时和分钟,没有秒.你可以在代码中设置显示秒
+
+m_timeCtrl.SetFormat(_T("hh:mm:sstt"));
+
+
+获取时间信息
+
+CTime m_time;
+
+m_timeCtrl.GetTime(m_time);
+
+int hour = m_time.GetHour();
+
+int minute= m_time.GetMinute();
+
+int second = m_time.GetSecond();
+
+
+
+MFC Date Time Picker的使用
+
+https://blog.csdn.net/xiaxiaojing/article/details/38756547
+3.获取当前时间
+
+方法一：
+
+CTime time ;
+
+time = CTime::GetCurrentTime();//是一个静态方法，静态方法可以直接类名::方法名调用。
+
+将上述控件设置为当前时间：m_dtCtrl.SetTime(time);
+
+日期格式化：?CString strDate = time.Format(L"%Y-%m-%d"); ? ?//获取到的为日期 如：2010-03-05
+
+方法二：
+
+COleDateTime dateTest;
+
+
+关于RichEdit控件中换行 [问题点数：100分，结帖人ymbymb]
+https://bbs.csdn.net/topics/60443569
+选择RichEdit控件的多行属性，然后选中Want Return 就可以了！
+在App类的InitInstance函数中添加AfxInitRichEdit(); (v ok)
+
+MFC RichEdit的用法
+https://blog.csdn.net/u010983763/article/details/72722868
+
+MFC 添加richedit控件
+https://blog.csdn.net/sunymen/article/details/53857966
+
+对话框Enter键与Esc键的处理问题
+https://blog.csdn.net/hisinwang/article/details/8164692
+Enter键-->void CDlgCtrlRichEdit001Dlg::OnOK() 
+Esc键-->void CDlgCtrlRichEdit001Dlg::OnCancel() 
+
+
+在MFC对话框中，经常会碰到按Enter或ESC键，对话框会被关闭的现象。
+一、原因分析
+MFC对话框Enter键消息机理：
+1.如果Dialog中某个Button拥有Foucs，则按Enter键会响应该按钮。
+在Dialog按下某按钮该按钮就会获得焦点。
+2.如果Dialog中，没有任何Button拥有focus，但是Dialog有default button，则按Enter键时会响应Default Button，Default Button可以设置。
+3.如果Dialog中，没有任何Button拥有focus，也没有Default Button，则按Enter键时，会给对话框发送一条WM_COMMAND消息，参数wParam被设置成IDOK(此时Windows为对话框提供了一个专用的键盘接口用于处理Enter按键消息)。
+
+MFC对话框Esc键消息机理：
+ESC键按下时，会给对话框发送一条WM_COMMAND的消息，参数wParam被设置成IDCANCEL。
+
+WM_CLOSE消息机理：
+WM_CLOSE消息(单击关闭按钮)会调用CWnd::OnClose函数,在此函数中会Send一个WM_COMMAND,wParam=IDCANCEL消息。
+[源码不可见，用spy++可以看到]
+
+我们查看源码看下CDialog对以上消息的处理:
+BEGIN_MESSAGE_MAP(CDialog, CWnd)
+  ON_COMMAND(IDOK, &CDialog::OnOK)
+  ON_COMMAND(IDCANCEL, &CDialog::OnCancel)
+END_MESSAGE_MAP()
+ 
+void CDialog::OnOK()
+{
+    if (!UpdateData(TRUE))
+    {
+        return;
+    }
+ 
+    EndDialog(IDOK);
+}
+ 
+void CDialog::OnCancel()
+{
+    EndDialog(IDCANCEL);
+}
+二、解决方案
+2.1重载PreTranslateMessage函数
+BOOL CYourDlg::PreTranslateMessage(MSG* pMsg)  
+{
+    if (pMsg->message == WM_KEYDOWN)
+    {
+        switch(pMsg->wParam)
+        {
+        case VK_RETURN:
+            return TRUE;
+ 
+        case VK_ESCAPE:
+            return TRUE;
+ 
+        default:
+            break;
+        }
+    }
+ 
+    return CDialog::PreTranslateMessage(pMsg);
+}
+2.2重载CDialog的两个虚函数OnOK&OnCancel使其什么也不做，并重载WM_CLOSE消息的处理函数并在其中调用EndDialog(IDCANCEL)
+protected:
+    virtual void OnOK();
+    virtual void OnCancel();
+ 
+void CYourDlg::OnOK()
+{
+}
+ 
+void CYourDlg::OnCancel()
+{
+}
+ 
+BEGIN_MESSAGE_MAP(CYourDlg, CDialog)
+    ON_WM_CLOSE()
+END_MESSAGE_MAP()
+ 
+protected:
+    afx_msg void OnClose();
+ 
+void CYourDlg::OnClose()
+{
+    EndDialog(IDCANCEL);
+}
+
+
+处理Esc和Enter键
+重载PreTranslateMessage函数
+
+PreTranslateMessage()函数捕获键盘按键消息
+https://blog.csdn.net/bookish_2010_prj/article/details/5873896
+01. PreTranslateMessage函数，常用于屏蔽MFC对话框中默认的Enter和ESC消息
+
+函数原型：BOOL PreTranslateMessage(MSG* pMsg)
+
+用法举例：
+
+BOOL CTestDlg::PreTranslateMessage(MSG* pMsg)
+{
+    if(pMsg->message == WM_KEYDOWN){
+        if(pMsg->wParam == VK_ESCAPE){
+            return TRUE;
+        }
+        if(pMsg->wParam == VK_RETURN){
+            return TRUE; // 对话框内部控件不可以接收到回车消息!!
+        }
+    }
+
+    return CDialog::PreTranslateMessage(pMsg);
+}
+
+02.响应系统按键
+
+if(pMsg->message==WM_SYSKEYDOWN)
+{
+   if(pMsg->wParam==VK_MENU)
+    MessageBox("alt");
+}
+
+
+if((pMsg->wParam==VK_F9) && (GetAsyncKeyState(VK_MENU)<0))
+{  
+   MessageBox(_T("同时按下了Alt键和F9键"));  
+}
+
+
+GetAsyncKeyState()
+=========================
+功能：确定用户当前是否按下了键盘上的一个键
+原型：SHORT GetAsyncKeyState(int vKey);
+
+参数：nVirtKey指出要检查键的虚键代码。结果的高位指出该键当前是否被按下（是为1，否为0）。
+常用键的VK值：
+VK_SHIFT Shift键
+VK_LSHIFT 左Shift键
+VK_RSHIFT 右Shift键
+VK_CONTROL Ctrl键
+VK_LCONTROL 左Ctrl键
+VK_RCONTROL 右Ctril键
+VK_MENU Alt键
+VK_LMENU 左Alt键
+VK_RMENU 右Alt键
+VK_LBUTTON 鼠标左键
+VK_RBUTTON 鼠标右键
+
+另一个函数GetKeyState与GetAsyncKeyState函数不同。GetAsyncKeyState在按下某键的同时调用，判断正在按下某键。
+GetKeyState则在按过某键之后再调用，它返回最近的键盘消息从线程的队列中移出时的键盘状态，判断刚按过了某键。
+
+与RegisterHotKey()相比，GetAsyncKeyState()的优点在于可以监控鼠标按键，缺点是需要使用定时器。
+
+
+
+
+MFC 添加richedit控件
+https://blog.csdn.net/sunymen/article/details/53857966
+使用richedit控件
+1)初始化//必须加，否则无法显示窗口
+CXXXApp::CXXXApp()? //找到应用类
+{
+// TODO: add construction code here,
+// Place all significant initialization in InitInstance
+ AfxInitRichEdit(); //此句必须加 (v ok)
+ LoadLibrary(_T("RICHED20.DLL"));  // 或LoadLibrary(_T("RICHED32.DLL"));
+}
+
+
+
+CAnimateCtrl::Open的使用问题
+https://blog.csdn.net/playboy1/article/details/6885261
+使用CAnimateCtrl::Open( LPCTSTR lpszFileName )时，参数lpszFileName 是个字符串，表示AVI文件名。因此在分发应用程序时，除了分发可执行程序外，
+还必须单独分发AVI文件。是否有办法从资源中得到AVI文件？
+
+在这个程序中，如果要从外部获取文件是相当不方便的，万一谁不小心将文件删除或改名的话。。。。
+所以最好的方法是将文件作为资源存储在可执行文件中。幸亏CAnimateCtrl类有一个成员函数 CAnimateCtrl::Open 以UINT为参数，也就是说，它UINT可以是资源的ID号。
+
+但是如何将AVI文件放入EXE文件呢？这是需要技巧的。animation控件寻找AVI类型的资源，所以你要做的事情是在资源文件（.rc）中加入代码：
+
+IDR_MYANIMATION AVI DISCARDABLE "res\\myanim.avi"?
+
+事先必须定义IDR_MYANIMATION为一个整型数，（注意不能使用一个串名作为资源）并且AVI文件要放在工程目录下的RES目录中。
+资源编译器会一个字节一个字节地将myanim.avi拷贝到可执行文件中，以便动画控件能找到它。
+
+另外，使用相同的方法可以将任何文件作为资源放入EXE文件。方法是：
+
+IDR_MYFOOFILE FOO DISCARDABLE "res\\myanim.foo" 
+
+
+一旦在EXE文件中包含了foo类型文件，如何访问它呢？那就需要自己写一些代码。首先，你必须调用FindResource函数来获得资源句柄。
+
+HINSTANCE hInst = AfxGetResourceHandle(); 
+HRSRC hRsrc = ::FindResource(hInst,
+MAKEINTRESOURCE(IDR_MYFOOFILE), // ID
+"FOO"); // type 
+ASSERT(hRsrc); 
+
+
+假设hRsrc非空，再调用两个函数来获得资源（FOO文件）的大小及数据本身。
+
+DWORD len = SizeofResource(hInst, hRsrc); 
+BYTE* lpRsrc = (BYTE*)LoadResource(hInst, hRsrc); 
+ASSERT(lpRsrc); 
+
+现在，在内存中lpRsrc指向FOO文件，如果你想要象访问普通磁盘文件一样访问这个内存，可以使用类库的CMemFile，它将一块存储区域当作CFile来对待。
+CMemFile file(lpRsrc, len); 
+file.Read(...); // etc. 
+
+
+你甚至可以象重载OnOpenDocument打开磁盘文件一样用CDocument打开资源。
+
+
+
+动画控件只能运行简单的AVI片段。特别的，通过动画控件运行的片段必须符合下列要求： · 必须确切地是一个视频流并且它必须至少有一个帧。  
+· 文件中至多有两个流（典型地，其它流，比如音频流，尽管动画控件忽略音频流）。  
+· 片段必须是非压缩的或用RLE8压缩的。  
+· 在视频流中不允许调色板改变。  
+可以将AVI片段作为一个AVI资源加入到自己的应用中去，或作为一个独立的AVI文件伴随应用。
+既然当AVI片段显示时，线程继续执行，所以一个动画控件的一个通用使用就是在一个长时间的操作时确定系统是活动状态。例如，当系统查找一个文
+---MFC类库详解
+
+mfc中利用animate控件不能播放avi视频 [问题点数：40分]
+https://bbs.csdn.net/topics/391892690
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, "AVI File(*.avi)|*.avi|ALL File(*.*)|*.*||");
+	if (IDOK != dlg.DoModal())
+	{
+		return;
+		CDialog::OnOK();
+	}
+	CString cstr;
+	cstr = dlg.GetPathName();
+	if (cstr != "")
+	{
+		if (m_animate.Open(cstr))
+		{
+			m_animate.Play(0, -1, -1);
+			MessageBox("ok");
+		}
+		else
+			MessageBox(cstr);
+	}
+	else
+		CDialog::OnOK();
+
+
+
+MFC控件(14):Spin Control 与Animation Control
+https://blog.csdn.net/weiwenhp/article/details/9411497
+Animation Control
+有时要在页面上显示些动态画面,可以使用该控件.
+
+CAnimateCtrl m_animate;
+
+DDX_Control(pDX, IDC_ANIMATE1, m_animate);
+
+m_animate.Open(_T("D:\\Temp\\boxed-correct.avi")); //加载一个avi文件
+
+m_animate.CenterWindow(); //播放窗口显示位置
+
+m_animate.Play(0,-1,-1); //开始播放,三个参数的意思分别是:第一个参数表示开始播放的位置,0表示从开头播放. 第二个参数表示结束位置,-1表示播放完整个视频.第三个参数表示重复播放的次数,-1表示重复无数次. 播放的位置你可以联想下看视频时下面的进度条,可以拉动选择播放指定的内容.
+
+
+如果要停止播放则
+
+m_animate.Stop();
+
+
+
+MFC学习之CTreeCtrl控件的使用
+https://blog.csdn.net/haitunxiaomo/article/details/24674671
+其中接点前变成可选的状态，则是将CTreeCtrl控件的属性中的Checks Boxs的属性改为TRUE就可以了。
+Name前面的加减收缩符号，则是通过将属性Has Buttons改为TRUE。
+void CDlgCtrlTree001Dlg::OnClickWebTree(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	
+	// 获取当前选中节点的句柄   
+    //HTREEITEM hItem = m_webTree.GetSelectedItem();  
+
+		UINT uFlag;
+      CPoint point;
+      ::GetCursorPos(&point);     
+      ::ScreenToClient(m_webTree.m_hWnd, &point);     
+      HTREEITEM   hItem   =   m_webTree.HitTest(point,&uFlag);//HitTest函数能够得到与当前鼠标位置相关的项的句柄
+
+
+
+	m_webTree.SelectItem(hItem);
+	
+	*pResult = 0;
+}
+
+
+
+
+HTREEITEM
+HTREEITEM的含义
+https://blog.csdn.net/u012350993/article/details/25047631
+http://blog.sina.com.cn/s/blog_6f6e42050101bzwn.html
+HTREEITEM是树中节点的句柄，也就是一个DWORD值。
+
+在树中唯一标识一个节点。它的值对于程序员其实没有什么意义，
+
+只是可以通过它找到一个节点，从而取得节点的属性，如
+
+GetItemText( HTREEITEM hItem ) ；或对节点进行某些操作，
+
+如删除DeleteItem( HTREEITEM hItem );
+
+HTREEITEM其实就是CTreeCtrl控件的项句柄，也就是一个DWORD值，
+
+用于给树控件添加、查询、删除项目，
+
+在树中唯一标识一个节点。它的值对于程序员其实没有什么意义，
+
+只是可以通过它找到一个节点，从而取得节点的属性，如
+
+GetItemText( HTREEITEM hItem ) ；或对节点进行某些操作，
+
+如删除DeleteItem( HTREEITEM hItem );
+
+
+
+
+MFC树形控件CTreeCtrl使用方法、遍历、SetCheck无效、根据名称获取节点、获取选中节点等问题
+https://blog.csdn.net/shenhch/article/details/78606033
+
+MFC之TreeCtrl控件使用经验总结
+https://www.cnblogs.com/zxllm/p/5435798.html
+4.编辑标签:要允许编辑树视图控件中的文本,可以设置以下三个步骤
+      (1).设置树视图的TVS_EDITLABELS风格
+TVS_EDITLABE可以通过资源编辑框内部修改(Edit labels),也可以用代码的方式修改,如下
+long lStyle=::GetWindowLong(m_treeCtrl.GetSafeHwnd(),GWL_STYLE);
+      lStyle|=TVS_EDITLABELS;
+      ::SetWindowLong(m_treeCtrl.GetSafeHwnd(),GWL_STYLE,lStyle)
+      (2).处理TVN_BEGINLABELEDIT通知消息
+       //设置相关限制,如限制编辑框字符串长度
+      CEdit*pEdit=GetEditControl();     //获取当前选中结点编辑框
+      ASSERT(pEdit);
+      if (pEdit)
+      {
+          pEdit->LimitText(15);//设置编辑框文本长度为15个字符串
+          *pResult = 0;      
+      }
+      (3).处理TVN_ENDLABLEEDIT通知消息
+
+// CMyTreeCtrl 消息处理程序
+void CMyTreeCtrl::ExpandBranch(HTREEITEM hItem,BOOL bExpand )
+//展开
+{
+      if (ItemHasChildren(hItem))    //判断是否有孩子结点
+      {
+          Expand(hItem,bExpand?TVE_EXPAND:TVE_COLLAPSE);
+          //展开/叠起结点
+          hItem=GetChildItem(hItem);//获取第一个子结点
+          do{
+              ExpandBranch(hItem);
+          } while(hItem=GetNextSiblingItem(hItem));//获取兄弟结点
+      }
+}
+void CMyTreeCtrl::ExpandAllBranches(BOOL bExpand )
+{
+      HTREEITEM hItem=GetRootItem();//获取根结点,可能会有多个根结点
+      do{
+          ExpandBranch(hItem,bExpand);
+      } while(hItem=GetNextSiblingItem(hItem));
+      Select(hItem,TVGN_FIRSTVISIBLE);//设置选中结点
+}
+
+
+ HTREEITEM hCurrSel = GetSelectedItem();//获取当前选中结点
+      // Figure out which item was right clicked
+      CPoint pt(0, 0);
+      ::GetCursorPos(&pt);
+      ScreenToClient (&pt);
+      HTREEITEM hNewSel = HitTest(pt, &nFlags);
+
+
+2020.04.29
+
+CString比较相等不得不说的故事
+https://blog.csdn.net/u011263315/article/details/50034043
+先说说今天的情况，扫码后把码值与自己写好的几百种配置文件进行比对，两个都是CString类型，但是不论是“==”，还是“?cstr1.Compare(cstr2)==0”，还是“cstr1.CompareNoCase(cstr2)==0”，结果都不行，开始还以为是什么问题，后来自己设置断点观察了一下，仔细看才发现在配置文件读出来的字符串有的后边还有个空格（空字符），我擦，然后就用”cstr1.Replace(" ","");“把空字符去掉，然后再跑程序，没问题。然后又试了试这几种比较方法，都是可以的
+————————————————
+版权声明：本文为CSDN博主「雨过天空」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u011263315/article/details/50034043
+
+帝国时代1罗马复兴
+https://baike.baidu.com/item/%E5%B8%9D%E5%9B%BD%E6%97%B6%E4%BB%A31%E7%BD%97%E9%A9%AC%E5%A4%8D%E5%85%B4/9470474
+微软推出的《帝国时代》（《Age Of Empires》）是他们在游戏软件领域的一个重要成就。游戏具有高度娱乐性，其纷繁浩杂的兵种、武器以及模拟各个历史时代出现的人类技术使人眼花缭乱。
+中文名帝国时代1罗马复兴原版名称《Age Of Empires》游戏类型即时战略游戏平台PC所属系列帝国时代开发商微软发行日期1998-10-31游戏画面2D
+
+
+怎样实现帝国时代1罗马复兴
+https://jingyan.baidu.com/article/f0062228eb3b8ffbd3f0c8fb.html
+《帝国时代》（英文：Age of Empires，AoE。港台译为世纪帝国）是一款由全效工作室开发，微软公司在1997年发行的及时战略游戏，在2003年推出了掌上型电脑版。有时也泛指整个帝国时代系列的游戏与资料片。由于帝国时代的风行，之后陆续推出续作与扩充数据片，形成了帝国时代系列游戏，包括：《帝国时代》及其资料片《帝国时代：罗马复兴》《帝国时代II：帝王世纪》及其资料片《帝国时代II：征服者》《帝国时代III：探索时代》及其资料片《帝国时代III：酋长》和《帝国时代III：亚洲王朝》。有美国电影中文译名为《帝国时代》。
+
+
+
+
+BOOL CAnlyTech_MACD::Put_DRAWTOOL_HITTESTINFO( const DRAWTOOL_HITTESTINFO& rVal )
+{
+	#if 1 //_Add_Signal_CAT_TTD_TTW
+	int n = 4;
+#else
+		int n = 3;
+#endif
+
+	for( int i=0;i<n;i++ )
+	{
+		if( m_pIndicatorTool[i]!=NULL )
+		{
+			CproxyDrawTool pIndicator(m_pIndicatorTool[i]);
+
+			if( rVal.iState==_DrawToolState_Active )
+			{
+/*
+				if( i==rVal.iArea )
+					pIndicator->PutProp_DrawTool( _Item_DrawTool_HITTESTINFO, (BYTE*)&rVal ) ;
+				else
+				{
+					DRAWTOOL_HITTESTINFO temp ;
+					temp.iState = _DrawToolState_UnActive ;
+					pIndicator->PutProp_DrawTool( _Item_DrawTool_HITTESTINFO, (BYTE*)&temp ) ;
+				}
+*/
+				// let all objs active!
+				pIndicator.Put_HITTESTINFO( rVal ) ;
+			}
+			else
+				pIndicator.Put_HITTESTINFO( rVal ) ;
+
+		}//end if( not NULL. )
+
+	}//end for.
+	return TRUE ;
+
+}
+
+
+钻进去某个点了？ 像流水线上的某个产品部件？
+
+动脑动手不困。做一遍会有收获的。(w)
+
+昨晚唐辉问：你开发过PHP程序吗( 做过， 干就得了。 v ok)
+
+2020.04.28
+
+坚持每天找到一点点进步。有时逼下自己？
+
+昨梦:为其规划，问平时多想什么(按兴趣规划)，汪洲嗣海做事快，但有时会发呆一整天。验设计过两人世界.....
+
+小学: 美术，音乐 idea.
+
+五指: C VC++ C# JAVA ANDROID 应用: 电脑，智能手机APK，儿童手表(高通，MTK，威盛)
+前: 汇编，看雪解密，应用:单片机
+后: STL, ATL, 架构，设计模式，算法，游戏，网站，微信小程序，外挂， (w) (v ok)
+
+check ChartAnlyTech TTDlgs
+
+BOOL CAnlyTech_MACD::GetIndicatorName( BOOL bFullName, WORD wPriceTypeArg, CString& echoVal ) const 
+{
+	#if 1 // _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg>3 )
+		return FALSE ;
+#else
+		if( wPriceTypeArg>=3 )
+		return FALSE ;
+
+#endif
+
+	MACDOPT* pOpt = GetOpt() ;
+	if( pOpt==NULL )
+		return FALSE ;
+
+	if( wPriceTypeArg==0 )
+		echoVal.Format( "M1" ) ;
+	else
+	#if 1 //  _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg==1 )
+		echoVal.Format( "M2" ) ;
+	else if(wPriceTypeArg == 2)
+		echoVal.Format( "Dff" ) ;
+...}
+
+
+病情分析：
+      你好，根据你的描述可考虑为手指活动障碍，可由颈椎病或软组织病变引起，需结合检查结果。
+https://www.120ask.com/question/70465325.htm
+
+苏女士今年68岁,自从去年开始手指关节就一直疼痛,“上了年纪,身体是一年不如一年,除了手指疼,别的地方也不舒服,家里有两个孩子,有时候看孩子都没法蹲下或者弯腰。”苏女士说,刚才她也做了骨密度检测,同样偏低,属于中度缺钙,令她更没想到的是,引起手指关节这一系列疼痛的竟然是颈椎。“我真不明白为啥手指不舒服,是颈椎的事?”
+　　对于苏女士的迷惑,济南市按摩医院主任医师栾希文表示,颈椎病的确会引起手指关节疼痛,疼痛的部位有:食指和中指之间一直到虎口抽疼和闷疼；中指和无名指之间疼痛；中指麻木疼痛；整个手肿胀、麻木和疼痛；胳膊疼痛,麻木等症状。
+https://epaper.qlwb.com.cn/qlwb/content/20160621/ArticelB03006FM.htm
+
+BOOL CTTChartAnlyTech::g_Get_IndicatorsTotal( CTTChartAnlyTech& obj, BYTE* pVal )
+{
+	if( pVal==NULL )
+		return FALSE ;
+
+	short* pEchoVal = (short*)pVal ;
+
+	CAnlyTech*	pObj = obj.GetObj() ;
+	if( pObj==NULL )
+		return FALSE ;
+	BOOL bRet = pObj->GetIndicatorsTotal( *pEchoVal ) ;					
+	return bRet ;
+
+}
+
+#define		_Symbol_PreClose_	6
+
+#define _Item_ChartObj_IndicatorsTotal		1		// ChartObj中包含的Indicator数, short.
+
+
+GetIndicatorUnitData
+
+BOOL CproxyChartObj::GetIndicatorUnitData( WORD wIndicatorType, long lViewportPos, float& echoData )
+{
+	if( m_pObj==NULL )
+		return FALSE ;
+
+	INDICATORUNITDATA arg ;
+	arg.wPriceTypeArg = wIndicatorType ;
+	arg.lViewportPos  = lViewportPos ;
+	arg.pEchoData = &echoData ;
+	HRESULT bRet = m_pObj->GetProp_ChartObj( _Item_ChartObj_IndicatorUnitData, (BYTE*)&arg ) ;
+	return (bRet==S_OK) ? TRUE : FALSE ;
+
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+接口函数
+STDMETHODIMP CTTChartAnlyTech::GetProp_ChartObj( long lPropID, BYTE* pVal )
+中的数据参数 pVal 是由外部组件传进来的,
+暂时跟踪不到哪个工程模块调用传过来了啦。(v ok)
+
+#define _Item_ChartObj_IndicatorUnitData	16		// 某个Indicator的 某个单元数据. get( WORD wIndicatorType, long lViewportPos, float* pEchoData. )
+
+
+
+STDMETHODIMP CTTChartAnlyTech::GetProp_ChartObj( long lPropID, BYTE* pVal )
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+	static TTChartAnlyTech_Call pCalls[] = {
+				g_Get_FloorAddr,		// _Item_ChartObj_FloorAddr			
+				g_Get_IndicatorsTotal,	// _Item_ChartObj_IndicatorsTotal		
+				g_Get_IndicatorName,	// _Item_ChartObj_IndicatorName		
+				NULL,					// _Item_ChartObj_IndicatorData		
+				g_Get_Name,				// _Item_ChartObj_Name					
+				g_Get_IndicatorCol,		// _Item_ChartObj_IndicatorCol			
+				g_Get_SCALEOPTX,		// _Item_ChartObj_SCALEOPTX			
+				g_Get_SCALEOPTY,		// _Item_ChartObj_SCALEOPTY			
+				g_Get_IndicatorLastUnitData,	// _Item_ChartObj_IndicatorLastUnitData	
+				g_Get_IndicatorShortName,		// _Item_ChartObj_IndicatorShortName	
+				g_Get_ShortName,		// _Item_ChartObj_ShortName			
+				NULL,					// _Item_ChartObj_Floor				
+				NULL,					// _Item_ChartObj_ChartWindow			
+				g_Get_CoordinateIndex,	// _Item_ChartObj_CoordinateIndex		
+				g_Get_MainItem,			// _Item_ChartObj_MainItem				
+				g_Get_IndicatorType,	// _Item_ChartObj_IndicatorType		
+				g_Get_IndicatorUnitData // _Item_ChartObj_IndicatorUnitData	
+
+		} ;
+
+	if( lPropID<0 || lPropID>=sizeof(pCalls)/sizeof(TTChartAnlyTech_Call) )
+		return S_FALSE ;
+	if( pCalls[lPropID]==NULL )
+		return S_FALSE ;
+
+	BOOL bRet = (*pCalls[lPropID])( *this, pVal ) ;
+	return (bRet==TRUE) ? S_OK : S_FALSE ;
+
+}
+
+
+
+BOOL CTTChartAnlyTech::g_Get_IndicatorUnitData( CTTChartAnlyTech& obj, BYTE* pVal ) 
+{
+	if( pVal==NULL )
+		return FALSE ;
+
+	INDICATORUNITDATA* pEchoVal = (INDICATORUNITDATA*)pVal ;
+	if( pEchoVal->pEchoData==NULL )
+		return FALSE  ;
+
+	CAnlyTech*	pObj = obj.GetObj() ;
+	if( pObj==NULL )
+		return FALSE ;
+
+	BOOL bRet = pObj->GetIndicatorUnitData( pEchoVal->wPriceTypeArg, pEchoVal->lViewportPos, *(pEchoVal->pEchoData) ) ;
+	return bRet ;
+
+}
+
+
+BOOL CAnlyTech_MACD::GetIndicatorUnitData( WORD wPriceTypeArg, long	lViewportPos, float&  echoVal ) const
+{
+
+	smCLog.Format("CAnlyTech_MACD::GetIndicatorUnitData() wPriceTypeArg=%d ...b",wPriceTypeArg);
+	mCLog.WriteLog(smCLog);
+	
+	echoVal = 0.0f ;
+	#if _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg>3 )
+		return FALSE ;
+	#else
+			if( wPriceTypeArg>=3 )
+		return FALSE ;
+	#endif
+
+....}
+
+	#if _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg>3 )
+		return FALSE ;
+	#else
+			if( wPriceTypeArg>=3 )
+		return FALSE ;
+	#endif
+--->错写成:(v ok)
+
+	#if _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg>3 )
+		return FALSE ;
+	else
+			if( wPriceTypeArg>=3 )
+		return FALSE ;
+	#endif
+
+急燥汇报(v ok) :)
+
+
+		// draw tools.
+	#if  1 // _Add_Signal_CAT_TTD_TTW
+			IUnknown*	m_pIndicatorTool[3] ;		// curves1/curves2/Histogram1/Histogram2  // 4 不出错
+			// data.
+			COriginalSingleUnitArray	m_arrayIndicators[7] ;	// 7 5
+
+
+	INDICATOROPT	optHistogram[2] ;// Histogram/Histogram的0刻度水平线.
+	INDICATOROPT	optHistogram[2] ;// Histogram1/Histogram的0刻度水平线.
+
+AnlyTech_MACD.h
+	#if  1 // _Add_Signal_CAT_TTD_TTW
+			IUnknown*	m_pIndicatorTool[4] ;		// curves1/curves2/Histogram1/Histogram2
+			// data.
+			COriginalSingleUnitArray	m_arrayIndicators[5] ;	// 7 //即时出错.
+			// m_arrayIndicators[0]-->curves1, 
+
+
+2020.04.27
+
+BOOL CAnlyTech_MACD::GetIndicatorName( BOOL bFullName, WORD wPriceTypeArg, CString& echoVal ) const 
+{
+	#if _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg>3 )
+		return FALSE ;
+#else
+		if( wPriceTypeArg>=3 )
+		return FALSE ;
+
+#endif
+
+	MACDOPT* pOpt = GetOpt() ;
+	if( pOpt==NULL )
+		return FALSE ;
+
+	if( wPriceTypeArg==0 )
+		echoVal.Format( "M1" ) ;
+	else
+	#if _Add_Signal_CAT_TTD_TTW
+
+	if( wPriceTypeArg==1 )
+		echoVal.Format( "M2" ) ;
+	else if(wPriceTypeArg == 2)
+		echoVal.Format( "Df" ) ;
+	else 
+		echoVal.Format("H_signal");
+#else
+		if( wPriceTypeArg==1 )
+		echoVal.Format( "M2" ) ;
+	else
+		echoVal.Format( "Df" ) ;
+
+#endif
+
+	return TRUE ;
+
+}
+
+
+
+
+
+
+使用 ChartAnlyTech 1.0.0.38_2.dll 都出错
+
+//使用原来的 TTDlgs use .dll  都正常
+
+13630200601
+
+俄罗斯14岁女孩怀孕5个月，与10岁孩子爸相拥亲吻庆祝，盼娃出生
+http://dy.163.com/v2/article/detail/FAVGJF6S0541A1O8.html
+
+10岁女孩被12岁堂兄杀害 村民：嫌疑人在家被溺爱
+https://news.163.com/20/0423/15/FATKLL5B0001899O.html
+
+STDMETHODIMP CTTChartAnlyTech::Draw( HANDLE hDC, RECT cliprect )
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+	if( hDC==NULL )
+		return S_FALSE ;
+
+	CAnlyTech* pObj = GetObj() ;
+	if( pObj==NULL )
+		return S_FALSE ;
+
+	pObj->Draw( hDC, cliprect ) ;
+	return S_OK ;
+
+}
+
+
+IUnknown* CAnlyTech::GetIChartWnd() const 
+{
+	if( m_pMaster!=NULL )
+		return m_pMaster->m_pIChartWnd ;
+	return NULL ;
+
+}
+
+STDMETHODIMP CTTChartAnlyTech::OnNewFrame(short wDataType, IStream *pIStream)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+	CAnlyTech*	pObj = GetObj() ;
+	if( pObj==NULL )
+		return S_FALSE ;
+	
+	pObj->OnNewFrame( wDataType, pIStream ) ;
+	return S_OK ;
+}
+
+
+BOOL CTTChartAnlyTech::PutAnlyTechType( const short& rVal ) 
+{
+	m_optAnlyTech.iAnlyTechType = rVal ;
+	CreateObj() ;
+	CAnlyTech*	pObj = GetObj() ;
+	if( pObj!=NULL )
+		pObj->OnPutOpt() ;
+	return TRUE ;
+
+}
+
+中国709事件是未
+
+疫情期间任中央指导组成员的公安部副部长孙力军被查
+https://news.china.com/socialgd/10000169/20200419/38103134_all.html
+4月19日晚，中央纪委国家监委网站发布消息，公安部党委委员、副部长孙力军涉嫌严重违纪违法，目前正接受中央纪委国家监委纪律审查和监察调查。
+他成为了继福建省委常委、副省长张志南之后，今年第二个落马“老虎”。
+
+2020.04.24
+
+Andy  16:09:05
+哪里面除了ben，都在香港
+
+Andy  16:09:12
+jk是老板
+
+Andy  16:09:27
+dixon是小老板，管技术的
+
+awendy  16:09:31
+哦，好的，知道了。
+
+
+Fixlog->WT->ChartAnlyTech.txt
+1, 0, 0, 35
+Rolle @2018.12.12
+MACD增加H_signal.
+
+Fixlog->WT->TTDlgs.txt
+1.0.1.42
+Rolle 2018.12.12
+MACD增加H_signal.
+
+Fixlog->W2T->TTCharWindow
+1.0.2.25
+Rolle 2018.12.12
+MACD增加H_signal.
+
+
+#if _Add_Signal_CAT_TTD_TTW
+
+
+common->chartBase.h
+// MACD属性:
+typedef struct tagMACDOPT {
+	WORD			wPriceTypeArg ;	// 指标类型参数. ( 如: open, hi, low, close. )
+
+	INDICATOROPT	optCurves[3] ;	 // curves1/curves2/Curves的0刻度水平线.
+	INDICATOROPT	optHistogram[2] ;// Histogram1/Histogram的0刻度水平线.
+	BYTE			byDisplayType ;	 // 显示类型:  curves/histogram/both
+
+	WORD			wMACD1 ;		// MACD1参数.
+	WORD			wMACD2 ;		// MACD2参数.
+	WORD			wEMA ;			// MACD-EMA参数.
+	BYTE			byUseEMA ;		// curves使用EMA计算. 1-->EMA, 0-->SMA.
+	WORD			wHIS ;			// MACD-HIS参数.
+	INDICATOROPT	optHistogram2;	// Histogram2
+
+} MACDOPT ;
+
+
+
+//_ADD_H_signal_WT_ChartAnlyTech_WT_TTDlgs_W2T_TTCharWindow
+// ADD H_signal WT: ChartAnlyTech, TTDlgs W2T:TTCharWindow
+
+#define _Add_Signal_CAT_TTD_TTW 0
+
+
+_ADD_H_signal_WT_ChartAnlyTech_WT_TTDlgs_W2T_TTCharWindow 太长资源编译器出错
+
+
+
+IDD_Page_MACD
+
+#if _ADD_H_signal_WT_ChartAnlyTech_WT_TTDlgs_W2T_TTCharWindow
+	int n = 4;
+#else
+	int n = 3;
+#endif
+	for( int i=0;i<n;i++ )
+	{}
+
+#define _ADD_H_signal_WT_ChartAnlyTech_WT_TTDlgs_W2T_TTCharWindow 1
+
+#if _ADD_H_signal_WT_ChartAnlyTech_WT_TTDlgs_W2T_TTCharWindow
+...
+#else
+...
+#endif
+
+Andy  9:05:58
+WT 目录下的 ChartAnlyTech ，TTDlgs
+
+Andy  9:06:20
+W2T 目录下的 TTCharWindow
+
+#define _ADDH_SIGNAL 1
+
+#if _TESTCALLATL
+#endif
+
+//#define defDelForTestDlgCall 1 
+#define _TESTCALLATL 1 
+#if _TESTCALLATL
+#endif
+
+git 的远程库或本地库在哪里？ Remote URL must not be empty
+
+Visual SourceSafe Explorer->common -> get latest version
+
+08:25
+
+2020.04.23
+
+Visual SourceSafe Explorer
+--> Show History... 不勾 Labels only，不然有可能看不到最新的check in 版本
+
+sprintf( szFile, "%susers\\%s\\RadarAlert.cfg", szFile, strUserName );
+
+	for(int i=0; i<8; i++)
+	{
+		memset( &alertterm, 0, sizeof(ALERTTERM) );
+		alertterm.dwIndex = ALERTTERM_DSCJ;//大手成交
+		alertterm.fVal_Stock = 50;
+		alertterm.nVal_Futures = 10;
+		alertterm.fVal_Stockcjje = 100;
+		m_RadarSet.arrayAlertterm[i].Add( alertterm );
+		
+		memset( &alertterm, 0, sizeof(ALERTTERM) );
+		alertterm.dwIndex = ALERTTERM_MJCJ;//密集成交
+		alertterm.nVal_Stock = 20;
+		alertterm.nVal_Futures = 20;
+		m_RadarSet.arrayAlertterm[i].Add( alertterm );
+		
+		memset( &alertterm, 0, sizeof(ALERTTERM) );
+		alertterm.dwIndex = ALERTTERM_LXMMP;//连续大手买卖
+		alertterm.nLxcs = 10;
+		alertterm.fVal_Stock = 50;
+		alertterm.nVal_Futures = 10;
+		alertterm.fVal_Stockcjje = 100;
+		m_RadarSet.arrayAlertterm[i].Add( alertterm );
+	}
+
+
+#define ALERTTERM_DSCJ      0X0001	//大手成交
+#define ALERTTERM_MJCJ      0X0002	//密集成交
+#define ALERTTERM_CXZS      0X0004	//潮汐指数
+#define ALERTTERM_JSZD      0X0008	//急速涨跌
+#define ALERTTERM_JSFL      0X0010	//急速放量
+#define ALERTTERM_LXMMP     0X0020	//连续买卖盘
+
+CArrayAlertTerm* pArray = &(m_pTT->m_RadarSet.arrayAlertterm[nSel]) ;
+pArray->Add( array.GetAt(i) );
+
+void Ctermpage::Apply()
+{
+	CString			str;
+	CArrayAlertTerm array;
+	ALERTTERM		alertterm;
+
+	m_pTT->m_RadarSet.option = m_option;
+	int nSel = m_nCurSel;
+
+	memset( &alertterm , 0 , sizeof(ALERTTERM) );
+	m_Edit_Dscj_cjssstock.GetWindowText( str );
+	alertterm.fVal_Stock = atof(str);
+	m_Edit_Dscj_cjssfutures.GetWindowText( str );
+	alertterm.nVal_Futures = atoi(str);
+	m_Edit_Dscj_stockcjje.GetWindowText( str );
+	alertterm.fVal_Stockcjje = (float)atof(str);
+	if( m_ChkDscj.GetCheck()>0 )
+	{
+		alertterm.dwIndex = ALERTTERM_DSCJ;
+	}
+	array.Add( alertterm );
+
+	memset( &alertterm , 0 , sizeof(ALERTTERM) );
+	m_Edit_Mjcj_cjbsstock.GetWindowText( str );
+	alertterm.nVal_Stock = atoi(str);
+
+	int nTemp = atoi(str);
+	if( nTemp>13 )
+	{
+		m_pTT->m_RadarSet.audio.nSampleSize_Base = 50;
+		m_pTT->m_RadarSet.audio.nSampleSize_Block = 20;
+	}
+	else if( nTemp<14 && nTemp>8 )
+	{
+		m_pTT->m_RadarSet.audio.nSampleSize_Base = 100;
+		m_pTT->m_RadarSet.audio.nSampleSize_Block = 40;
+	}
+	else if( nTemp<9 && nTemp>3 )
+	{
+		m_pTT->m_RadarSet.audio.nSampleSize_Base = 150;
+		m_pTT->m_RadarSet.audio.nSampleSize_Block = 60;
+	}
+	else if( nTemp<4 )
+	{
+		m_pTT->m_RadarSet.audio.nSampleSize_Base = 250;
+		m_pTT->m_RadarSet.audio.nSampleSize_Block = 100;	
+	}
+
+	m_Edit_Mjcj_cjbsfutures.GetWindowText( str );
+	alertterm.nVal_Futures = atoi(str);
+	if( m_ChkMjcj.GetCheck()>0 )
+	{	
+		alertterm.dwIndex = ALERTTERM_MJCJ;
+	}
+	array.Add( alertterm );
+
+	memset( &alertterm , 0 , sizeof(ALERTTERM) );
+	m_Edit_Lxmmp_lxcs.GetWindowText( str );
+	alertterm.nLxcs= atoi(str);
+	m_Edit_Lxmmp_cjssstock.GetWindowText( str );
+	alertterm.fVal_Stock = atof(str);
+	m_Edit_Lxmmp_cjssfutures.GetWindowText( str );
+
+	alertterm.nVal_Futures = atoi(str);
+	m_Edit_Lxmmp_cjjestock.GetWindowText( str );
+	alertterm.fVal_Stockcjje = (float)atof(str);
+	if( m_ChkLxmmp.GetCheck()>0 )
+	{
+		alertterm.dwIndex = ALERTTERM_LXMMP;
+	}
+	array.Add( alertterm );
+
+
+	BOOL bChanged = FALSE;
+	CArrayAlertTerm* pArray = &(m_pTT->m_RadarSet.arrayAlertterm[nSel]) ;
+	int nCount = array.GetSize();
+
+	if( nCount != pArray->GetSize() )
+	{
+		bChanged = TRUE;
+	}
+	else if( nCount!=0 )
+	{
+		int nRet = memcmp( (const void*)&array[0], (const void*)&(*pArray)[0], sizeof(ALERTTERM)*nCount );
+		bChanged = (nRet!=0);
+	}
+	if( bChanged )
+	{
+		pArray->SetSize( 0, nCount );
+		for( int i=0; i<nCount; i++ )
+		{
+			pArray->Add( array.GetAt(i) );
+		}
+#ifdef _W2TSERVER
+		m_pTT->SendNewAlertConditions();
+#endif
+	}
+	if(m_option == 0)
+	{
+		for(int i=0; i<8; i++)
+		{
+			if(i == nSel)
+				continue;
+
+			memset(&m_pTT->m_RadarSet.arrayAlertterm[i], 0, sizeof(ALERTTERM));
+			m_pTT->m_RadarSet.arrayAlertterm[i].Copy(m_pTT->m_RadarSet.arrayAlertterm[nSel]);
+		}
+	}
+}
+
+
+
+
+
+
+	memset( &alertterm , 0 , sizeof(ALERTTERM) );
+	m_Edit_Dscj_cjssstock.GetWindowText( str );
+	alertterm.fVal_Stock = atof(str);
+	m_Edit_Dscj_cjssfutures.GetWindowText( str );
+	alertterm.nVal_Futures = atoi(str);
+	m_Edit_Dscj_stockcjje.GetWindowText( str );
+	alertterm.fVal_Stockcjje = (float)atof(str);
+
+IDC_EDIT_MJCJ_CJBS_STOCK
+
+	m_Edit_Dscj_cjssstock.GetWindowText( str );
+	alertterm.fVal_Stock = atof(str);
+
+void Ctermpage::OnKillfocusEditDscjCjssstock() 
+{
+	CString str, str1;
+	m_Edit_Dscj_cjssstock.GetWindowText( str );
+	float n = atof(str);
+	if( n<m_pTT->fVal_Stock_DS )
+	{
+		str1.Format("%s %.2f", szPutup[m_pTT->m_nLang-1], m_pTT->fVal_Stock_DS);
+		AfxMessageBox(str1);
+		str.Format("%.2f", m_pTT->fVal_Stock_DS);
+		m_Edit_Dscj_cjssstock.SetWindowText( str );
+		m_Edit_Dscj_cjssstock.SetFocus();
+		m_Edit_Dscj_cjssstock.SetSel(0, -1);
+	}
+}
+
+void Ctermpage::OnChangeEditDscjCjssstock() 
+{
+	GetDlgItem(IDC_BUTTON_APPLY)->EnableWindow(1);
+}
+
+
+	m_Edit_Dscj_stockcjje.GetWindowText( str );
+	alertterm.fVal_Stockcjje = (float)atof(str);
+...
+
+m_Edit_Dscj_cjssstock
+OnChangeEditDscjCjssstock
+OnKillfocusEditDscjCjssstock
+
+m_Edit_Dscj_stockcjje
+OnChangeEditDscjCjjestock
+OnKillfocusEditDscjCjjestock
+
+IDC_CHECK_DSCJ 大手成交:
+股票:每笔成交量>= IDC_EDIT_DSCJ_CJSSSTOCK  万股或金额>= IDC_EDIT_DSCJ_CJJESTOCK 万元
+
+IDC_EDIT_DSCJ_CJSSSTOCK
+IDC_EDIT_DSCJ_CJJESTOCK
+
+20200422 11:59:41(14590601),  OnNewFrame wDataType=='RA' iBrokerNo=6698,iTickerTime=1159,iTransactionKey=40005,frame.lQuantify=500,fPrice=30.350000...8
+20200422 11:59:41(14590601),  OnNewFrame wDataType=='RA' m_bAccept[0]=1...9
+20200422 11:59:41(14590601),  OnNewFrame wDataType=='RA' m_bAccept[0]=0...10
+20200422 11:59:41(14590601),  OnNewFrame wDataType=='RA' RefreshList...13
+20200422 11:59:41(14590601),  OnNewFrame wDataType=='RA' return S_OK...14
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA'...1 
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA'...6
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA' iBrokerNo=3439,iTickerTime=1159,iTransactionKey=40000,frame.lQuantify=50000,fPrice=38.650002...8
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA' m_bAccept[0]=1...9
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA' m_bAccept[0]=1...10
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA'...10.01
+20200422 11:59:41(14590913),  OnNewFrame wDataType=='RA'...10.1 m_ArrayLDTT.GetSize()=99-----------------------------m_ArrayLDTT.Add(hisframe)
+
+
+
+ChartAnlyTech->
+E:\ReStore_MACDH_signal\WT\ChartAnlyTech 1.0.0.35\AnlyTech_MACD.cpp
+BOOL CAnlyTech_MACD::Draw( HANDLE hDC, RECT rect ) 
+{...
+//打开注释掉的代码
+...}
+
+编辑图表视窗->布局->Y轴 勾 显示左边轴线
+
+Fixlog->WT->ChartAnlyTech.txt
+1, 0, 0, 35
+Rolle @2018.12.12
+MACD增加H_signal.
+
+Fixlog->WT->TTDlgs.txt
+1.0.1.42
+Rolle 2018.12.12
+MACD增加H_signal.
+
+Fixlog->W2T->TTCharWindow
+1.0.2.25
+Rolle 2018.12.12
+MACD增加H_signal.
+
+
+Andy  9:05:58
+WT 目录下的 ChartAnlyTech ，TTDlgs
+
+Andy  9:06:20
+W2T 目录下的 TTCharWindow
+
+
+
+Visual SourceSafe Explorer
+Fixlog 修改日志
+WT->ChartAnlyTech->AnlyTech_MACD.cpp AnlyTech_MACD.h
+
+
+
+
+
+void CRecord::GetRequestDays()
+{...
+	/*sqlite3_open(m_pTT->m_strDBPath, &m_pTT->m_db);
+	sprintf(szSQL, "select * from table1 where time>=%d and time<=%d order by time asc", iBegin, iEnd);
+	sqlite3_exec(m_pTT->m_db, szSQL, callback1, NULL, 0);
+	sqlite3_close(m_pTT->m_db);
+
+	BOOL bCompare;
+	for(i=0; i<nSize; i++ )
+	{
+		bCompare = FALSE;
+		for(int j=0; j<arr_record.GetSize(); j++ )
+		{
+			if( strcmp(arr_string[i], (char *)&arr_record[j].data.cGroup)==0 )
+			{
+				bCompare = TRUE;
+				break;
+			}	
+		}
+		if( bCompare==FALSE )
+		{
+			arr_int.RemoveAll();
+			arr_record.RemoveAll();
+			break;
+		}
+	}*/
+	//会影响效率，取消
+...}
+
+void CTTRadarAlert::SaveDBData()
+{...
+	sqlite3_open(m_strDBPath, &m_db);
+	sqlite3_exec(m_db, "BEGIN;", 0, 0, 0);
+...
+		char szSQL[1000] = {0};
+		sprintf(szSQL, "insert into table1 values(%d, '%c', '%s', '%s', '%s', '%c', '%c', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", tempTime, tempGroup, tempItemCode, tempTurnOver, tempShares, tempTrade, tempType, tempLAsk, tempHAsk, tempLBid, tempHBid, tempAskTimes, tempBidTimes, tempXTimes, tempYTimes, tempTotal, tempAskTurnover, tempBidTurnover, tempAskPercent, tempBidPercent, tempAskAvg, tempBidAvg, tempAskShares, tempBidShares, tempSSTurnover, tempSSShares );
+		int hr = sqlite3_exec(m_db, szSQL, 0, 0, 0);
+	}
+	sqlite3_exec(m_db, "COMMIT;", 0, 0, 0);
+	sqlite3_close(m_db);
+}
+
+G:\Tele-Trend\Bin\W2TTradeData1.db
+G:\Tele-Trend\icon\esico\Thumbs.db
+
+void CTTRadarAlert::GetDBFilePath()
+{
+	char szFile[MAX_PATH];
+	memset( szFile, 0, MAX_PATH );
+	GetModuleFileName( NULL, szFile, MAX_PATH );
+	int nlen = strlen( szFile ) - 1;
+	while( nlen>=0 )
+	{
+		if( szFile[nlen]=='\\' )
+		{
+			break;
+		}
+		szFile[nlen] = 0;
+		nlen--;
+	}
+	
+	strcat( szFile , "W2TTradeData1.db" );
+	m_strDBPath = szFile;
+
+	sqlite3_open(m_strDBPath, &m_db);
+	char szSQL[1000] = {0};
+	sprintf(szSQL, "%s", "create table if not exists table1( time integer, cGroup varchar(1), itemcode varchar(9), price varchar(13), quantify varchar(13), trade varchar(1), type varchar(1), lask varchar(10), hask varchar(10), lbid varchar(10), hbid varchar(10), asktime integer, bidtime integer, xtimes integer, ytimes integer, total integer, aturnover varchar(13), bturnover varchar(13), apercent varchar(10), bpercent varchar(10), askavg varchar(10), bidavg varchar(10), askshares varchar(13), bidshares varchar(13), ssturnover varchar(13), ssshares varchar(13))");
+	sqlite3_exec(m_db, szSQL, 0, 0, 0);
+	sqlite3_close(m_db);
+}
+
+
+
+	sqlite3  *m_db;
+	sqlite3  *m_db1;
+	sqlite3  *m_db2;
+
+sqlite3_exec
+
+E:\CODE\Options 1.0.0.59_Wendy\RadarAlert - 1.0.0.54\sqlite3.c VC6中代码区上面没有地址栏出现,其它文件有
+
+08:07
+
+2020.04.22
+
+IDC_CHECK_DSCJ 大手成交:
+股票:每笔成交量>= IDC_EDIT_DSCJ_CJSSSTOCK  万股或金额>= IDC_EDIT_DSCJ_CJJESTOCK 万元
+
+IDC_EDIT_DSCJ_CJSSSTOCK
+IDC_EDIT_DSCJ_CJJESTOCK
+
+
+婆婆是闺密又是自己的老板。是哪部电视剧???_百度知道
+这是电视剧《家有喜妇》,由袁姗姗、陈小艺、贾乃亮等主演的,袁姗姗饰演的角色在剧中本来和陈小艺是闺蜜,而且在陈小艺的律师事务所上班,后来剧中袁姗姗和贾乃亮结婚了
+
+我建了个属性表，但是编译的时候出错，说找不到父类CPropertyPage，请问是不是还要包含什么东西？
+https://bbs.csdn.net/topics/60321644
+把CPropertyPage所在的.h文件包进去
+#include <afxdlgs.h>
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\Include\AFXDLGS.H
+class CPropertyPage : public CDialog
+{
+	DECLARE_DYNAMIC(CPropertyPage)
+....}
+
+StdAfx.h
+#include <afxdlgs.h>
+
+
+20200421 11:48:46(100277208),  OnNewFrame wDataType=='RA' iBrokerNo=0,iTickerTime=1148,iTransactionKey=44000,frame.lQuantify=20000,fPrice=19.799999...8
+
+20200421 09:55:01(93451993),  OnNewFrame(wDataType = 0x4453(17491)(DS), pIStream, dwID=0, LogCounts=100 ) 
+20200421 09:55:02(93453459),  OnNewFrame(wDataType = 0x5359(21337)(SY), pIStream, dwID=0, LogCounts=3100 ) 
+20200421 09:55:10(93461290),  OnNewFrame(wDataType = 0x5241(21057)(RA), pIStream, dwID=0, LogCounts=19000 ) 
+20200421 09:55:17(93467967),  OnNewFrame(wDataType = 0x4446(17478)(DF), pIStream, dwID=0, LogCounts=31800 ) 
+20200421 09:55:21(93472086),  OnNewFrame(wDataType = 0x5241(21057)(RA), pIStream, dwID=0, LogCounts=39400 ) 
+20200421 09:56:01(93512833),  OnNewFrame(wDataType = 0x5241(21057)(RA), pIStream, dwID=0, LogCounts=99900 )
+20200421 09:56:32(93542973),  OnNewFrame(wDataType = 0x4354(17236)(CT), pIStream, dwID=0, LogCounts=127300 ) 
+20200421 10:10:37(94388685),  OnNewFrame(wDataType = 0x4446(17478)(DF), pIStream, dwID=0, LogCounts=1384000 )
+
+	if( wDataType != 'CT' && wDataType != 'DS' && wDataType != 'DF' &&
+		 wDataType != 'DT' && wDataType != 'SR' && wDataType != 'DN' && 
+		 wDataType != 'DO' && wDataType != 'SY' && wDataType != 'BS' &&
+		 wDataType != 'RS' && wDataType != 'RA' && wDataType != 'DP')
+
+
+	switch(wDataType)
+	{
+	case 'DO':
+		ReadDOFrame(pIStream,dwID);
+		break;
+	case 'DS':
+		ReadDSFrame(pIStream);
+		break;
+	case 'DP':
+		ReadDPFrame(pIStream);
+		break;
+	case 'DF':
+		ReadDFFrame(pIStream);
+		break;
+/*
+	case 'OU':
+		{
+			PostMessage(CM_UNLOCKWINDOWUPDATE);
+		}
+		break;
+*/
+	default:
+		return S_FALSE;
+
+
+
+#include "stdafx.h"
+
+int main(int argc, char* argv[])
+{
+	int wDataType;  // short
+	wDataType='DS';  //  SY RA SR LD
+
+	printf(" wDataType =%d, wDataType=0x%x, wDataType = %c%c \n",wDataType,wDataType,wDataType>>8,wDataType);
+
+
+	printf("Hello World!\n");
+	return 0;
+}
+
+如何看待临近交割的WTI原油5月合约4.20开盘后迅速下挫后续跌负并历史首次负价收于-37.63美元？
+https://www.zhihu.com/question/389331169/answer/1168319965
+
+2020.04.21
+
+
+	#ifdef NDEBUG //  _DEBUG
+	m_pRecord->Create( IDD_RECORD, pWnd );  // wendy test
+	#endif
+
+VC中debug和release版本的区别
+https://blog.csdn.net/hegeneral/article/details/51264114
+
+_DEBUG与NDEBUG 
+这是最重要的一个选项。这两个是编译器的预处理器定义，默认情况下_DEBUG用于Debug版本，而NDEBUG用于Release版本。 它们可以说是重要的无以复加。因为，assert系列的断言仅仅在_DEBUG下生效！ 
+
+
+VC++判断DEBUG状态——函数
+https://blog.csdn.net/songjinn/article/details/17195895
+
+BOOL isDebug()
+{
+#ifdef _DEBUG
+	return TRUE;
+#else
+	return FALSE;
+#endif
+...}
+
+
+
+#ifdef DEBUG
+#include <stdio.h>
+#else
+#ifndef NDEBUG
+#define NDEBUG
+#endif
+#endif
+
+_DEBUG
+
+
+20200420 16:21:16(30227440),  Enter CTTRadarAlert() 
+20200420 16:21:22(30233446),  PutByID(nID=1017, pVar )
+20200420 16:22:49(30320213),  PutByID(nID=1000, pVar )
+20200420 16:22:49(30320213), Enter InitObject()!
+20200420 16:22:49(30320213), Create taskbar notifier!
+20200420 16:22:49(30320213), pObj = 0xa6a4600
+20200420 16:22:49(30320213), TTPID_MessageWindow, pWnd = 0x173fb60
+20200420 16:22:49(30320229), Create history dialog!
+20200420 16:22:49(30320291), Create history dialog!3 
+20200420 16:22:49(30320401), Create history dialog!10 
+20200420 16:22:49(30320432), Create CRecord 
+20200420 16:22:49(30320432), CRecord..1 
+20200420 16:22:49(30320432), CRecord..2 
+20200420 16:22:49(30320432), CRecord..3 
+20200420 16:22:49(30320432), CRecord..4 
+20200420 16:22:49(30320432), CRecord..5 
+20200420 16:22:49(30320432), Create CRecord...2 
+20200420 16:22:49(30320432), Create CRecord...3 
+20200420 16:22:49(30320447), Create CHisDlg 
+20200420 16:22:49(30320447), Create CHisDlg...2 
+20200420 16:22:49(30320447), Create CHisDlg...3 
+20200420 16:22:49(30320447), Create CAudioDlg 
+20200420 16:22:49(30320463), Create CPopupDlg 
+20200420 16:22:49(30320479), Create CFlowDlg 
+20200420 16:22:49(30320494), Call InitRadarSetting()!
+20200420 16:22:49(30320494), Call LoadRadarSetting()!
+20200420 16:22:49(30320635),  PutByID(nID=5333, pVar )
+
+
+CWnd* CWnd::GetDlgItem(int nID) const
+{
+	ASSERT(::IsWindow(m_hWnd));  // 76  // (x no) wendy 1120 W_2T Debug 出错 Release不会出错.
+..}
+
+20200420 16:13:53(29784054),  Enter CTTRadarAlert() 
+20200420 16:14:13(29804864),  PutByID(nID=1017, pVar )
+20200420 16:15:16(29867561),  PutByID(nID=1000, pVar )
+20200420 16:15:16(29867561), Enter InitObject()!
+20200420 16:15:16(29867561), Create taskbar notifier!
+20200420 16:15:16(29867561), pObj = 0xa5a4600
+20200420 16:15:16(29867577), TTPID_MessageWindow, pWnd = 0x2d9fb60
+20200420 16:15:16(29867577), Create history dialog!
+20200420 16:15:16(29867639), Create history dialog!3 
+20200420 16:15:16(29867748), Create history dialog!10 
+20200420 16:15:16(29867779), Create CRecord 
+20200420 16:15:16(29867779), CRecord..1 
+20200420 16:15:16(29867779), CRecord..2 
+20200420 16:15:16(29867779), CRecord..3 
+20200420 16:15:16(29867779), CRecord..4 
+20200420 16:15:16(29867779), CRecord..5 
+20200420 16:15:16(29867779), Create CRecord...2 
+20200420 16:15:17(29868294),  PutByID(nID=5333, pVar )
+
+20200420 15:58:51(28882461),  Enter CTTRadarAlert() 
+20200420 15:59:19(28910869),  PutByID(nID=1017, pVar )
+20200420 16:00:34(28985578),  PutByID(nID=1000, pVar )
+20200420 16:00:34(28985594), Enter InitObject()!
+20200420 16:00:34(28985594), Create taskbar notifier!
+20200420 16:00:34(28985594), pObj = 0xa344600
+20200420 16:00:34(28985594), TTPID_MessageWindow, pWnd = 0xafefb60
+20200420 16:00:34(28985609), Create history dialog!
+20200420 16:00:34(28985703), Create history dialog!3 
+20200420 16:00:34(28985812), Create history dialog!10 
+20200420 16:00:34(28985843), Create CRecord 
+20200420 16:00:34(28985984),  PutByID(nID=5333, pVar )
+W_2T Debug 出错
+
+20200420 15:53:13(28544392),  Enter CTTRadarAlert() 
+20200420 15:53:28(28559727),  PutByID(nID=1017, pVar )
+20200420 15:54:55(28646416),  PutByID(nID=1000, pVar )
+20200420 15:54:55(28646416), Enter InitObject()!
+20200420 15:54:55(28646416), Create taskbar notifier!
+20200420 15:54:55(28646416), pObj = 0xa559078
+20200420 15:54:55(28646416), TTPID_MessageWindow, pWnd = 0xa55f7ac
+20200420 15:54:55(28646447), Create history dialog!
+20200420 15:54:55(28646525), Create history dialog!3 
+20200420 15:54:55(28646619), Create history dialog!10 
+20200420 15:54:55(28646650), Create CRecord 
+20200420 15:54:55(28646744), Create CAudioDlg 
+20200420 15:54:55(28646744), Create CPopupDlg 
+20200420 15:54:55(28646759), Create CFlowDlg 
+20200420 15:54:55(28646791), Call InitRadarSetting()!
+20200420 15:54:55(28646791), Call LoadRadarSetting()!
+20200420 15:54:55(28646837), Call ConfigNotifier()!
+20200420 15:54:55(28646837), Call ConfigHisDlg()!
+20200420 15:54:55(28646837), Configurate history dialog!
+20200420 15:54:55(28646853), Activate(0)!
+20200420 15:54:55(28646853), Leave InitObject()!
+20200420 15:54:55(28646993),  PutByID(nID=5333, pVar )
+20200420 15:55:16(28667055),  ShowRadarAlertHistoryWnd() 
+20200420 15:55:16(28667055), Activate(1)!
+Release不会出错. Release OK信息log
+
+
+20200420 15:45:45(28096794),  Enter CTTRadarAlert() 
+20200420 15:45:49(28100990),  PutByID(nID=1017, pVar )
+20200420 15:46:52(28163765),  PutByID(nID=1000, pVar )
+20200420 15:46:52(28163765), Enter InitObject()!
+20200420 15:46:52(28163765), Create taskbar notifier!
+20200420 15:46:52(28163765), pObj = 0xa454600
+20200420 15:46:52(28163765), TTPID_MessageWindow, pWnd = 0x17bfb60
+20200420 15:46:52(28163796), Create history dialog!
+20200420 15:46:53(28164139),  PutByID(nID=5333, pVar )
+W_2T Debug 出错 Release不会出错.
+
+BOOL CGdiObject::Attach(HGDIOBJ hObject)
+{
+	ASSERT(m_hObject == NULL);      // only attach once, detach on destroy  // (x no) wendy 1120 W_2T Debug 出错 Release不会出错.
+	if (hObject == NULL)
+		return FALSE;
+	CHandleMap* pMap = afxMapHGDIOBJ(TRUE); // create map if not exist
+	ASSERT(pMap != NULL);
+	pMap->SetPermanent(m_hObject = hObject, this);
+	return TRUE;
+}
+
+
+UINT AdviseThread(void* lParam) (v ok) Log显示可接收到数据
+{
+	CTTRadarAlert* pv = (CTTRadarAlert*)lParam;
+	UINT	   bRet;
+	
+	try
+	{
+		if( pv->m_bAdvise==TRUE )
+		{
+			...
+			bRet = AtlAdvise( pv->m_pDataProxy,pv->GetUnknown(),IID__ITTDataProxyEvents,&pv->m_dwAdvise );	
+			...
+		}
+		else 
+		{
+			...
+			bRet = AtlUnadvise( pv->m_pDataProxy,IID__ITTDataProxyEvents,pv->m_dwAdvise );
+			...
+		}
+	catch(...)
+	{
+	}
+	return bRet;
+}
+
+请教关于AtlAdvise函数的问题（ATL控件事件捕获） [问题点数：20分，结帖人gloom]
+https://bbs.csdn.net/topics/20098200
+我想将HTML Document的Body元素与一个接口连接起来，此接口用来处理事件，但不知为什么接收不到任何消息？如果不用Body,改用Div或其它元素则没问题，这是什么原因？难道Body不能接收消息，但是在HTML脚本中可以啊？是不是参数的设置问题啊？
+hr = CComObject<CEventSink>::CreateInstance(&m_pEventSink);
+if (SUCCEEDED(hr))
+{
+m_pEventSink->AddRef();
+m_pEventSink->m_pBehavior = this;
+
+hr = AtlAdvise(m_spElem, (IDispatch*)m_pEventSink,
+DIID_HTMLElementEvents,
+&m_dwCookie);
+}
+如果m_spElem为Div或其它元素则无问题，如为Body则不行，接收不到任何消息。是不是与第三个参数有关?除了DIID_HTMLElementEvents，还可以设哪些值？
+如能成功解决，200分相谢。
+2002-11-08 11:58:10
+将第三个参数设为DIID_HTMLDocunentEvents就可以了
+
+STDMETHODIMP CTTRadarAlert::Activate(int nState)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+//	g_OutputExt( "Activate(%d)!", nState );
+
+	if( m_pSystemObj == NULL || m_pDataProxy == NULL )
+		return S_FALSE;
+
+	if (nState == MACRO_CmdStart) 
+		m_bAdvise = TRUE ;
+	else  //MACRO_CmdStop
+		m_bAdvise = FALSE;
+
+//	AdviseThread( (LPVOID)this );  // wendy 请求数据?
+
+	return S_OK;
+}
+
+晚上看手机多，食指弯曲痛
+
+目录和CLS_ID等都检测，异动雷达菜单才有效.(v ok)
+
+《双子杀手》再造年轻版威尔史密斯，李安：我对他的脸比他妈都熟
+https://baijiahao.baidu.com/s?id=1644275784075898485&wfr=spider&for=pc
+
+双子杀手小克是谁演的
+https://www.tvmao.com/shuoju/MSMuZSw=.html
+电影《双子杀手》中的小克是由演员威尔·史密斯在数字技术的帮助下来饰演的演员角色，剧组透过电脑动画来打造片中的年轻版克隆人，并由威尔·史密斯进行动态捕捉。为了制作年轻的威尔史密斯，特效团队只能一块块肌肉、一层层皮肤地狠抠。这场只有4分钟的打戏，最终制作了长达9个月之久，只为让年轻的威尔看起来更真实。
+
+自己调用dllregisterserver接口与regsvr32进行注册有什么不一样？ [问题点数：20分，结
+https://bbs.csdn.net/topics/70307300
+用atl写的组件，自己调用其dllregisterserver接口进行注册，发现只注册了IUnknown和IDispatch两个接口，而自定义的一个接口没有被注册。用regsvr32就可以成功注册。这是为什么？
+应该是一样的。我自己曾用 LoadLibrary --> GetProcAddress --> dllregisterserver 的方法注册过组件，没遇到什么问题。
+才发现居然不能用中文目录！
+是这个原因吗？
+atl的com不能中文注册 原因是atl的源码中有一个bug，导致不能处理中文目录，只对单字节字符有效。
+修改atl/include/statreg.h 217行
+    lpszT++;
+改为：
+    lpszT = CharNext(lpszT);
+原有的com需要重新编译才可以。
+似乎还是不行，算了不用中文目录了。
+也结贴了，有哪位知道原因还请继续回此贴。
+
+
+
+模块 "E\CODE\Options"加载失败.... 目录中有空格需要加双引号(v ok)
+
+Regsvr32注册控件或删除注册控件. [问题点数：40分，结帖人ning1958]
+https://bbs.csdn.net/topics/340183847
+在系统中注册控件：regsvr32 d:\mm\MshFlxGd.ocx
+提示:d:\mm\MshFlxGd.ocx中的DLLRegisterServer成功
+
+删除注册的控件：regsvr32/U  d:\mm\MshFlxGd.ocx
+提示:d:\mm\MshFlxGd.ocx中的DLLUnRegisterServer成功
+
+请问各位大侠的问题是:
+如何在Regedit中看到.MshFlxGd注册控件或删除注册控件的工作状态.
+
+用MshFlxGd找了一下,用了上面两个操作步骤感觉没有什么变化.
+
+
+注册后，控件的一些重要信息被写到了 HKEY_CLASSES_ROOT\TypeLib\ 这个以控件自己的 GUID 为名字的子建下
+
+regsvr32 注册和反注册控件文件的用法
+https://blog.csdn.net/weixin_33895604/article/details/85453870
+Regsvr 32命令是Windows中控件文件(如扩展名为DLL、OCX、CPL的文件)的注册和反注册工具。　　
+
+命令格式 　Regsvr32 [/s] [/n] [/i[:cmdline]] dllname 　　
+/u 卸载安装的控件，卸载服务器注册； 　　
+/s 注册成功后不显示操作成功信息框； 　　
+/i 调用DllInstall函数并把可选参数[cmdline]传给它，当使用/u时用来卸载DLL；　　
+/n 不调用DllRegisterServer，该参数必须和/i一起使用。 　
+
+
+2020.04.20
+
+   Creating library RadarAlert___Win32_W2T_Debug/RadarAlert.lib and object RadarAlert___Win32_W2T_Debug/RadarAlert.exp
+configpage.obj : error LNK2001: unresolved external symbol __imp__sndPlaySoundA@8
+FlowDlg.obj : error LNK2001: unresolved external symbol __imp__sndPlaySoundA@8
+TTRadarAlert.obj : error LNK2001: unresolved external symbol __imp__sndPlaySoundA@8
+D:\dll\RadarAlert.dll : fatal error LNK1120: 1 unresolved externals
+执行 link.exe 时出错.
+
+Project Settiings ->连接-> 对象/库模块: Winmm.lib (v ok)
+
+E:\CODE\Options 1.0.0.59\RadarAlert - 1.0.0.54\FlowDlg.cpp(264) : error C2065: 'sqrt' : undeclared identifier
+#include <math.h>
+#include "stdafx.h"
+对调顺序后为
+#include "stdafx.h"
+#include <math.h> (v ok)
+
+   Creating library RadarAlert___Win32_W2T_Release_MinSize/RadarAlert.lib and object RadarAlert___Win32_W2T_Release_MinSize/RadarAlert.exp
+Performing registration
+Creating browse info file...
+
+RadarAlert.dll - 0 error(s), 0 warning(s)
+
+
+fatal error C1853: 'Debug/test.pch' is not a precompiled header file created with this compiler
+https://www.cnblogs.com/tonykong/archive/2012/08/22/2650631.html
+网上查了好多，有两种说法，但都没有解决我的问题：
+取消VC预编译，这样会使大项目编译变慢，而且取消后仍然无法通过编译。
+Rebuild all  /  先F7，然后CTRL+F7。 仍然不行
+真正的原因在于项目中包含有 .c 后缀的源码，而正确的文件名后缀应该是 .cpp !
+stdafx.h的正确使用方法
+首先stdfax.h不是系统库文件，所以写成#include <stdfax.h>是不对的（虽然可以通过编译？），正确的写法是#include "stdfax.h"
+其次，每个.cpp文件（无论是否有对应的.h文件，都要写到.cpp中，写到.h中是不行的）的首行（不包括注释），都应该是以#include "stdfax.h"开头。
+.h文件中可以不用引用需要调用系统库文件，而可以将需要引用的系统库文件写入stdafx.h中。
+fatal error C1853: 'Debug/RadarAlert.pch' is not a precompiled header file created with this compiler (v ok)
+
+
+
+\afx.h(15) : fatal error C1189: #error :  MFC requires C++ compilation (use a .cpp suffix)
+
+e:\code\options 1.0.0.59\radaralert - 1.0.0.54\sqlite3.c(20) : fatal error C1853: 'Debug/RadarAlert.pch' is not a precompiled header file created with this compiler
+
+解决错误 fatal error C1010: unexpected end of file while looking for precompiled head
+https://blog.csdn.net/liuqiyao_01/article/details/38867145
+
+问题详细解释：致命错误C1010，在寻找预编译指示头文件时，文件未预期结束。就是没有找到预编译指示信息的问文件。
+顾名思义就是预编译因为缺少了预编译文件而失败。解决方法显然可以取消预编译，或者帮助编译器找到预编译文件。
+故解法：
+1.右键单击项目工程中的cpp文件，在菜单Project->Settings->C/C++->Precompile Header，设置为第一项：Not using precompile headers。
+2.在.cpp文件开头添加包含文件stdafx.h。 #include"stdafx.h"
+
+
+sqlite3.c(140457) : fatal error C1010: unexpected end of file while looking for precompiled header directive
+
+[LASTLOGIN]
+SAVEPASSWORD=1
+LASTUSERNAME=andyzhou
+LASTPASSWORD="4"5"6"7"8"9 (o-s)
+
+[W2TSERVER]
+DEFAULTSERVER=2
+
+USERMNG.CFG.TXT
+
+当你迟钝健忘，这并不代表你老了；当你云鬓染霜，这并不代表你老了；当你儿孙满堂，这并不代表你老了。只有当你连做梦的力气都没有了的时候，你才是真的老了。
+
+一天赚一万，工资30多万，不吃不喝，也要差不多10年才买得起。
+一天一千，工资3万多，100年。 一天一百，工资3千多，1000年。
+
+有触动思维的图留下,深圳香蜜湖房价成交上千万览表图（x no)(v ok) 昨晚傍晚17点多手机上的图。电脑上找一中午也找不到。
+
+2017年香蜜湖板块二手房成交一览表：这个涨幅惊呆我了！ 
+
+---- WTTCommon.h Matches (43 in 43 files) ----
+
+即使是当年的2007年,2015年牛市，我也是开始小赚点钱，然后都亏回去的。
+所以我才说对股票，我只有一个字:服 哈哈。
+你看四月天，现在搞WIT原油连续，相信不久也会服的啦，哈哈。
+如果不服的话，那就是继续亏钱吧。我认识的知道的人搞股票，好像真没有一个人是赚到钱的。
+股票权期基金，看着很简单，不就是买进卖出嘛，其实里面的水很深的，深得你无法想象。
+经济市场，不是专业人士搞的话，很容易亏的。 人家说的: 十个搞股票的, 七个亏，二个保本，只有一个赚钱。
+大家都想做那一个赚钱的人，结果都不是，那一个赚钱的人可能就是国家税收赚钱吧，哈哈。
+
+请问，悲伤逆流成河中齐铭到底爱的是谁？
+https://zhidao.baidu.com/question/76609720.html
+
+儿孙满堂的语句摘抄_关于儿孙满堂的语句
+https://www.wenzhangba.com/jingdianyulu/201802/227035.html
+齐铭，昨天晚上我一个人在拘留所，望着周围清冷的墙壁失声痛哭。我想我再也没有勇气去承担任何坎坷，或许你这个天神般的男子始终不适合我。即使，现在幸福近在咫尺，我都把它拒之门外。就如我们第一次相见时，我唱Faye的那首歌，害怕悲剧重演，我的命中命中，越美丽的东西越不可碰。
+齐铭，伤痛不过百日长，你我都撑不起的未来，就让我来告别。
+齐铭，我只是希望，来日，在你妻妾成群，儿孙满堂时，还能想起我。
+而我，我想，即使已经白发苍苍，抬头没有光，得不到，也不甘去遗忘。 ----夏七夕
+
+2020.04.17
+
+[Window编程][VC6.0++][error LNK2001: unresolved external symbol __imp__PlaySoundA@12]
+https://blog.csdn.net/weixin_30384031/article/details/99256591
+#pragma comment(lib, "winmm.lib")
+在main.cpp头文件下面加入#pragma comment(lib, "winmm.lib")，就是导入库文件，
+#pragma 是一条编译器指令,是给告诉编译器你要链接一些东西，winmm.dll(有关多媒体的动态连接库)。
+
+20200416 14:28:59(23299186), Enter PutByID(nID=1017,...)! // 设置语言,可能无效
+20200416 14:30:14(23373832), Enter PutByID(nID=1000,...)! // 有用 TTPID_SystemObject = 1000
+20200416 14:30:14(23373832), Enter InitObject()!
+20200416 14:30:14(23373832), Create taskbar notifier!
+20200416 14:30:14(23373832), pObj = a4acf08
+20200416 14:30:14(23373832), TTPID_MessageWindow, pWnd = a4b250c
+20200416 14:30:14(23373832), Create history dialog!
+20200416 14:30:14(23374066), Call InitRadarSetting()!
+20200416 14:30:14(23374066), Call LoadRadarSetting()!
+20200416 14:30:14(23374082), Call ConfigNotifier()!
+20200416 14:30:14(23374082), Call ConfigHisDlg()!
+20200416 14:30:14(23374097), Configurate history dialog!
+20200416 14:30:14(23374113), Activate(0)!
+20200416 14:30:14(23374113), Leave InitObject()!
+20200416 14:30:14(23374222), Enter PutByID(nID=5333,...)! // 设置服务端
+20200416 14:40:08(23967931), Enter Config() //进入异动雷达设置界面
+20200416 14:41:37(24056726), Enter Config() //进入异动雷达设置界面
+20200416 14:42:49(24129392), Enter ShowRadarAlertHistoryWnd() //进入最近1000个异动雷达界面
+20200416 14:42:49(24129392), Activate(1)!
+20200416 14:43:04(24143915), Activate(0)! //退出最近1000个异动雷达界面
+
+VARENUM 中的 VT_xx 含义
+https://blog.csdn.net/b2292486308/article/details/62874053
+VT_EMPTY = 0,//空
+VT_NULL = 1,//null值
+VT_I2 = 2,//短整型short
+VT_I4 = 3,//整形int
+VT_R4 = 4,//单精度float
+VT_R8 = 5,//双精度double
+VT_CY = 6,
+VT_DATE = 7,//日期
+VT_BSTR = 8,//字符串
+VT_DISPATCH = 9,
+VT_ERROR = 10,
+VT_BOOL = 11,//bool布尔
+VT_VARIANT = 12,
+VT_UNKNOWN = 13,//未知
+VT_DECIMAL = 14,//小数
+VT_I1 = 16,//char整形
+VT_UI1 = 17,
+VT_UI2 = 18,
+VT_UI4 = 19,//无符号整形
+VT_I8 = 20,
+VT_UI8 = 21,//无符号长整形
+VT_INT = 22,//无符号整形
+VT_UINT = 23,
+VT_VOID = 24,
+VT_HRESULT = 25,
+VT_PTR = 26,
+VT_SAFEARRAY = 27,
+VT_CARRAY = 28,
+VT_USERDEFINED = 29,
+VT_LPSTR = 30,//字符串
+VT_LPWSTR = 31,//字符串
+VT_RECORD = 36,
+VT_INT_PTR = 37,
+VT_UINT_PTR = 38,
+VT_FILETIME = 64,
+VT_BLOB = 65,
+VT_STREAM = 66,
+VT_STORAGE = 67,
+VT_STREAMED_OBJECT = 68,
+VT_STORED_OBJECT = 69,
+VT_BLOB_OBJECT = 70,
+VT_CF = 71,
+VT_CLSID = 72,
+VT_VERSIONED_STREAM = 73,
+VT_BSTR_BLOB = 0xfff,
+VT_VECTOR = 0x1000,
+VT_ARRAY = 0x2000,
+VT_BYREF = 0x4000,
+VT_RESERVED = 0x8000,
+VT_ILLEGAL = 0xffff,
+VT_ILLEGALMASKED = 0xfff,
+VT_TYPEMASK = 0xfff
+
+————————————————
+版权声明：本文为CSDN博主「sad_s」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/b2292486308/article/details/62874053
+
+20200416 14:12:52(22331745), Enter PutByID(nID=1017,...)!
+20200416 14:13:54(22394349), Enter PutByID(nID=1000,...)!
+20200416 14:13:54(22394364), Enter InitObject()!
+20200416 14:13:54(22394364), Create taskbar notifier!
+20200416 14:13:54(22394364), pObj = a3ecf08
+20200416 14:13:54(22394364), TTPID_MessageWindow, pWnd = a3f24cc
+20200416 14:13:54(22394380), Create history dialog!
+20200416 14:13:55(22394629), Call InitRadarSetting()!
+20200416 14:13:55(22394629), Call LoadRadarSetting()!
+20200416 14:13:55(22394645), Call ConfigNotifier()!
+20200416 14:13:55(22394645), Call ConfigHisDlg()!
+20200416 14:13:55(22394661), Configurate history dialog!
+20200416 14:13:55(22394661), Activate(0)!
+20200416 14:13:55(22394676), Leave InitObject()!
+20200416 14:13:55(22394770), Enter PutByID(nID=5333,...)!
+20200416 14:15:28(22487606), Enter Config()
+20200416 14:15:48(22508011), Activate(1)!
+20200416 14:16:10(22530366), Activate(0)!
+20200416 14:16:24(22543704), Enter ShowRadarAlertHistoryWnd()
+20200416 14:16:24(22543704), Activate(1)!
+20200416 14:16:42(22562003), Activate(0)!
+20200416 14:16:49(22569241), Enter ShowRadarAlertHistoryWnd()
+20200416 14:16:49(22569241), Activate(1)!
+
+
+
+
+
+MFC DLL资源动态切换
+https://blog.csdn.net/segen_jaa/article/details/7860404
+解决办法：
+
+1、在DLL中改进：
+
+方法1。
+
+// in DLL
+void CDLL::ShowDlg(void)
+{
+       AFX_MANAGE_STATE(AfxGetStaticModuleState())  // (v ok)
+       CDialog dlg(IDD_DLL_DIALOG); //打开ID为2000的对话框
+       dlg.DoModal();
+}
+
+
+AFX_MANAGE_STATE(AfxGetStaticModuleState());
+AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+WM程序出现ERROR: Cannot find dialog template with IDD 0x131的解决方法
+https://blog.csdn.net/winnyrain/article/details/8942399?locationNum=7
+这是由于EXE与DLL中资源没切换引起的。需要使用以下方式切换资源
+在开始加上始下代码
+HINSTANCE save_hInstance = AfxGetResourceHandle();
+AfxSetResourceHandle(m_hResDLL);
+
+中间要LoadBitmap等获取资源时，必须使用
+AfxGetResourceHandle()来获取句柄
+
+使用完毕要恢复：
+
+AfxSetResourceHandle(save_hInstance);
+
+详见
+http://blog.csdn.net/segen_jaa/article/details/7860404
+————————————————
+版权声明：本文为CSDN博主「Leckun」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/winnyrain/article/details/8942399
+
+
+RROR: Cannot find dialog template with IDD 0x00C9.
+
+template <class T>
+class _NoAddRefReleaseOnCComPtr : public T
+{
+	private:
+		STDMETHOD_(ULONG, AddRef)()=0;
+		STDMETHOD_(ULONG, Release)()=0;
+};
+
+template <class T, const IID* piid = &__uuidof(T)>
+class CComQIPtr
+{...
+	CComQIPtr(IUnknown* lp)
+	{
+		p=NULL;
+		if (lp != NULL)
+			lp->QueryInterface(*piid, (void **)&p);
+	}
+...
+	_NoAddRefReleaseOnCComPtr<T>* operator->() const
+	{
+		ATLASSERT(p!=NULL);
+		return (_NoAddRefReleaseOnCComPtr<T>*)p;  // 智能指针转化为参数化定义的类型指针
+	}
+...
+	T* p;
+};
+
+
+STDMETHODIMP CTTRadarAlert::InitObject()
+{...
+	if(m_pMainFrm != NULL)
+	{
+		CComQIPtr<ITTObject, &IID_ITTObject> pObj(m_pMainFrm);
+
+		VARIANT var;
+		var.vt = VT_I4;
+		VARIANT *pVar = &var;
+		pObj->GetByID( TTPID_MessageWindow,&pVar );
+		pWnd = CWnd::FromHandle( (HWND)pVar->lVal );
+...}
+
+
+
+谈ATL（四）--VARIANT类型与CComVariant
+https://blog.csdn.net/weixin_33847182/article/details/91603391
+这个定义意味着可以兼容所有的数据类型，但是它的缺点也是显而易见的，不宜使用，比如，我想给VARIANT类型初始化一个整数，需要以下步骤：
+VARIANT varInt;
+varInt.vt = VT_I2;
+varInt.ival = 10;
+
+VARIANT 与 CComVariant 的使用
+https://blog.csdn.net/tangaowen/article/details/6553305
+
+birthday? 控制不了别人，控制得了自己。
+
+2020.04.16
+
+\\TSCISERVER
+
+G:\temp\TSCISERVER\netlogon\小红伞杀毒 Avira Antivirus Pro 2019 及终身授权许可证|易破解
+
+执行 cl.exe 时出错.问题
+https://blog.csdn.net/greenish2008/article/details/83438631
+最近由于工作需要，开始用VC做些开发，在网上下载了些代码，但每次编译都会提示：
+
+fatal error C1083: Cannot open precompiled header file:?? 'Debug/api_eg.pch': No such file or directory
+执行 cl.exe 时出错.
+
+api_eg.obj - 1 error(s), 0 warning(s)
+
+代码当然是没问题，开始很奇怪，以为是环境配置有问题，再其它电脑上测试，也是如此，再网上找了很久，没能找到合适的解决方法，现将我的解决方法列出：
+方法1、先build后compile,这样可以先生成一个.pch文件，再编译就不会报错了。
+方法2、工程－>设置－>c/c++ ->分类（）->预编译的头文件->自动使用预补偿文件（标题：stdafx.h）->点击确定。
+方法3、每次编译之前先编译StdAfx.cpp，这样再编译就不会报错啦！
+这是我用的3种方法，有谁有更好的方法，可以留言交流一下！
+
+
+
+执行 cl.exe 时出错.
+
+//最初配置 (添加配置时从基配置复制过来时的最初配置)
+# ADD BASE CPP /nologo /MD /W3 /GX /O1 /D "_W2TSERVER" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /Yu"stdafx.h" /FD /c
+
+//当前配置 (添加配置后修改后的当前配置) (v ok)
+# ADD CPP /nologo /MD /W3 /GX /O1 /D "_W2T" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /FR /Yu"stdafx.h" /FD /c
+
+
+
+请问VC6编译器的/FD选项是什么作用啊？ [问题点数：40分，结帖人fhw_bin_dl]
+https://bbs.csdn.net/topics/391085625?page=1
+
+C/C++ 编译器选项
+
+
+                              -优化-
+
+/O1 最小化空间                          /O2 最大化速度
+/Ob<n> 内联扩展(默认 n=0)               /Od 禁用优化(默认)
+/Og 启用全局优化                        /Oi[-] 启用内部函数
+/Os 优选代码空间                        /Ot 优选代码速度
+/Ox 最大化优化                          /Oy[-] 启用帧指针省略
+
+                             -代码生成-
+
+/GF 启用只读字符串池                    /Gm[-] 启用最小重新生成
+/Gy[-] 分隔链接器函数                   /GS[-] 启用安全检查
+/GR[-] 启用 C++ RTTI                    /GX[-] 启用 C++ EH (与 /EHsc 相同)
+/EHs 启用 C++ EH (没有 SEH 异常)        /EHa 启用 C++ EH (w/ SEH 异常)
+/EHc 外部“C”默认为 nothrow
+/fp:<except[-]|fast|precise|strict> 选择浮点模式:
+    except[-] - 在生成代码时考虑浮点异常
+    fast -“fast”浮点模式；结果可预测性比较低
+    precise -“precise”浮点模式；结果可预测
+    strict -“strict” 浮点模式(意味着 /fp:except)
+/GL[-] 启用链接时代码生成               /GA 为 Windows 应用程序进行优化
+/Ge 对所有函数强制堆栈检查              /Gs[num] 控制堆栈检查调用
+/Gh 启用 _penter 函数调用               /GH 启用 _pexit 函数调用
+/GT 生成纤程安全 TLS 访问               /RTC1 启用快速检查(/RTCsu)
+/RTCc 转换为较小的类型检查              /RTCs 堆栈帧运行时检查
+/RTCu 未初始化的局部用法检查
+/clr[:option] 为公共语言运行库编译，其中 option 是:
+    pure - 生成只包含 IL 的输出文件(没有本机可执行代码)
+    safe - 生成只包含 IL 的可验证输出文件
+    oldSyntax - 接受 Visual C++ 2002/2003 的托管扩展语法
+    initialAppDomain - 启用 Visual C++ 2002 的初始 AppDomain 行为
+    noAssembly - 不产生程序集           /Gd __cdecl 调用约定
+/Gr __fastcall 调用约定                 /Gz __stdcall 调用约定
+/GZ 启用堆栈检查(/RTCs)                 /QIfist[-] 使用 FIST 而不是 ftol()
+/hotpatch 确保可热修补映像的函数填充
+/arch:<SSE|SSE2> CPU 结构的最低要求，为以下内容之一:
+    SSE - 启用支持 SSE 的 CPU 可用的指令
+    SSE2 - 启用支持 SSE2 的 CPU 可用的指令
+
+                              -输出文件-
+
+/Fa[file] 命名程序集列表文件            /FA[scu] 配置程序集列表
+/Fd[file] 命名 .PDB 文件                /Fe<file> 命名可执行文件
+/Fm[file] 命名映射文件                  /Fo<file> 命名对象文件
+/Fp<file> 命名预编译头文件              /Fr[file] 命名源浏览器文件
+/FR[file] 命名扩展 .SBR 文件
+/doc[file] 处理 XML 文档注释，并可选择命名 .xdc 文件
+
+                              -预处理器-
+
+/AI<dir> 添加到程序集搜索路径           /FU<file> 强制使用程序集/模块
+/C 不抽出注释                           /D<name>{=|#}<text> 定义宏
+/E 将预处理定向到 stdout                /EP 预处理到标准输出，没有 #line
+/P 预处理到文件                         /Fx 将插入的代码合并到文件中
+/FI<file> 命名强制包含文件              /U<name> 移除预定义的宏
+/u 移除所有预定义的宏                   /I<dir> 添加到包含搜索路径
+/X 忽略“标准位置”
+
+                                -语言-
+
+/Zi 启用调试信息                        /Z7 启用旧式调试信息
+/Zp[n] 在 n 字节边界上包装结构          /Za 禁用扩展
+/Ze 启用扩展(默认)                      /Zl 忽略 .OBJ 中的默认库名
+/Zg 生成函数原型                        /Zs 只进行语法检查
+/vd{0|1|2} 禁用/启用 vtordisp           /vm<x> 指向成员的指针类型
+/Zc:arg1[,arg2] C++ 语言一致性，这里的参数可以是:
+    forScope[-] - 对范围规则强制使用标准 C++
+    wchar_t[-] - wchar_t 是本机类型，不是 typedef
+/ZI 启用“编辑并继续”调试信息          /openmp 启用 OpenMP 2.0 语言扩展
+
+                              - 杂项 -
+
+@<file> 选项响应文件                    /?, /help 打印此帮助消息
+/bigobj 生成扩展的对象格式              /c 只编译，不链接
+/errorReport:option 将内部编译器错误报告给 Microsoft
+    none - 不发送报告                       prompt - 提示立即发送报告
+    queue - 在下一次管理员登录时，提示发送报告(默认)
+    send - 自动发送报告                 /FC 诊断中使用完整路径名
+/H<num> 最大外部名称长度                /J 默认 char 类型是 unsigned
+/nologo 取消显示版权消息                /showIncludes 显示包含文件名
+/Tc<source file> 将文件编译为 .c        /Tp<source file> 将文件编译为 .cpp
+/TC 将所有文件编译为 .c                 /TP 将所有文件编译为 .cpp
+/V<string> 设置版本字符串               /w 禁用所有警告
+/wd<n> 禁用警告 n                       /we<n> 将警告 n 视为错误
+/wo<n> 发出一次警告 n                   /w<l><n> 为 n 设置警告等级 1-4
+/W<n> 设置警告等级(默认 n=1)            /Wall 启用所有警告
+/WL 启用单行诊断                        /WX 将警告视为错误
+/Yc[file] 创建 .PCH 文件                /Yd 将调试信息放在每个 .OBJ 中
+/Yl[sym] 为调试库插入 .PCH 引用         /Yu[file] 使用 .PCH 文件
+/Y- 禁用所有 PCH 选项                   /Zm<n> 最大内存分配(默认为 %)
+/Wp64 启用 64 位端口定位警告
+
+                                -链接-
+
+/LD 创建 .DLL                           /LDd 创建 .DLL 调试库
+/LN 创建 .netmodule                     /F<num> 设置堆栈大小
+/link [链接器选项和库]                  /MD 与 MSVCRT.LIB 链接
+/MT 与 LIBCMT.LIB 链接                  /MDd 与 MSVCRTD.LIB 调试库链接
+/MTd 与 LIBCMTD.LIB 调试库链接
+
+                         -代码分析-
+
+/analyze[:WX-] 启用代码分析
+    WX- - 即使调用了 /WX，也不应将代码分析警告视为错误
+
+
+
+
+E:\CODE\Options 1.0.0.59\RadarAlert - 1.0.0.39\sqlite3.c(140457) : fatal error C1010: unexpected end of file while looking for precompiled header directive
+sqlite3.c 设置为不使用预编译头文件即可。
+
+E:\CODE\Options 1.0.0.59\RadarAlert - 1.0.0.39\TTRadarAlert.cpp(2199) : error C2065: 'm_strMinPath' : undeclared identifier
+E:\CODE\Options 1.0.0.59\RadarAlert - 1.0.0.39\TTRadarAlert.cpp(2203) : error C2065: 'm_db1' : undeclared identifier
+
+E:\CODE\Options 1.0.0.59\RadarAlert - 1.0.0.39\TTRadarAlert.cpp
+#ifdef _W2TSERVER
+#include "..\\common\\w2tServerCommon.h"
+#endif
+
+!ELSEIF  "$(CFG)" == "RadarAlert - Win32 W2T Release MinSize"
+
+# PROP BASE Use_MFC 2
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "RadarAlert___Win32_W2T_Release_MinSize"
+# PROP BASE Intermediate_Dir "RadarAlert___Win32_W2T_Release_MinSize"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 2
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "RadarAlert___Win32_W2T_Release_MinSize"
+# PROP Intermediate_Dir "RadarAlert___Win32_W2T_Release_MinSize"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MD /W3 /GX /O1 /D "_W2TSERVER" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O1 /D "_W2T" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /FR /Yu"stdafx.h" /FD /c
+# ADD BASE RSC /l 0x804 /d "NDEBUG" /d "_AFXDLL"
+
+
+
+VSS权限: WT->Radar RadarAlert
+
+
+\\TSCISERVER\Sourcesafe\CSource\users\wendy\ss.ini
+
+Admin = users\admin\ss.ini
+Guest = users\guest\ss.ini
+Andy = users\andy\ss.ini
+Hope = users\hope\ss.ini
+Daniel = users\daniel\ss.ini
+Roger = users\roger\ss.ini
+Paul = users\paul\ss.ini
+Rolle = users\rolle\ss.ini
+Ben = users\ben\ss.ini
+Johnny = users\Johnny\ss.ini
+keeping = users\keeping\ss.ini
+holly = users\holly\ss.ini
+cove = users\cove\ss.ini
+wendy = users\wendy\ss.ini
+
+\\TSCISERVER\Sourcesafe\CSource\srcsafe.ini
+
+\\TSCISERVER
+
+2020.04.15
+
+//1.0.0.54 sqlite3_exec
+void CTTRadarAlert::SaveDBData()
+{...
+		char szSQL[1000] = {0};
+		sprintf(szSQL, "insert into table1 values(%d, '%c', '%s', '%s', '%s', '%c', '%c', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", tempTime, tempGroup, tempItemCode, tempTurnOver, tempShares, tempTrade, tempType, tempLAsk, tempHAsk, tempLBid, tempHBid, tempAskTimes, tempBidTimes, tempXTimes, tempYTimes, tempTotal, tempAskTurnover, tempBidTurnover, tempAskPercent, tempBidPercent, tempAskAvg, tempBidAvg, tempAskShares, tempBidShares, tempSSTurnover, tempSSShares );
+		int hr = sqlite3_exec(m_db, szSQL, 0, 0, 0);
+	}
+	sqlite3_exec(m_db, "COMMIT;", 0, 0, 0);
+	sqlite3_close(m_db);
+}
+
+BOOL CFlowDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	
+	CBitmap bmpMask; 
+	bmpMask.LoadBitmap(IDB_FRAME); 
+	HRGN hRgn;  
+	hRgn = BitmapToRegion((HBITMAP)bmpMask, RGB(255,255,255));   
+	SetWindowRgn(hRgn, TRUE);  
+	SetWindowTransparent(GetSafeHwnd(), 200);  
+...}
+
+数据来源接口函数
+STDMETHODIMP CTTRadarAlert::OnNewFrame(short wDataType, IStream *pIStream,unsigned long dwID)
+{
+...
+//1.0.0.54 客户端
+//				if( strcmp(m_Block.szDate, "T")!=0 )
+//					SaveDBData();  会影响效率  取消
+...
+//1.0.0.39 服务器端
+#ifdef _W2TSERVER
+		SaveDBData( &m_frame_ld_tt );
+		//CalcFlow(&m_frame_ld_tt, 0);
+#endif
+...}
+
+
+5元限制在我们券商是可以取消的，只是对资金有要求
+http://bbs.tianya.cn/post-stocks-1381759-1.shtml
+
+listcontrol控件 网格线的颜色怎么设置呀 [问题点数：40分，结帖人m532992731]
+https://bbs.csdn.net/topics/340230360
+
+MsEdit_Wendy 起动定时器添加数据，所以不用listctrl属性设置为虚表，LVN_GETDISPINFO消息显示数据。
+
+MFC CListCtrl不响应LVN_GETDISPINFO消息
+https://blog.csdn.net/kiss_xq/article/details/51019402
+好吧，深呼吸，程序员是不怕坑的。总结一下：
+在CListCtrl Create了之后再去设置LVS_OWNERDATA目测是没有用的，必须在Create的时候就把这个style写上。
+
+LVN_GETDISPINFO 是LISTVIEW的控件通知消息，通知它的父窗口提供显示在LISTVIEW中的ITEM。
+而LVN_SETDISPINFO则相反，将改控件中的ITEM发送给父窗口。
+WM_NOTIFY, (WPARAM)LVN_GETDISPINFO, (LPARAM)LVITEM
+
+
+listctrl属性设置为虚表，LVN_GETDISPINFO消息响应函数可以手动触发吗？ [问题点数：20分，结帖人ha
+https://bbs.csdn.net/topics/391493251
+LRESULT SendMessage( UINT message, WPARAM wParam = 0, LPARAM lParam = 0 );
+把NMHDR类型数据的地址强制转换成LPARAM ，传给第三个参数
+
+请问在VC中CListCtrl的LVN_GETDISPINFO消息怎么发送？
+
+
+https://blog.csdn.net/dyzhen/article/details/5993588
+两种方法:
+一,已知具体的插入项目
+m_pList->InsertItem (iIndex, LPSTR_TEXTCALLBACK); 
+二,只知道项目总数,iCount为列表项目总数
+SetItemCountEx (iCount, LVSICF_NOINVALIDATEALL);
+或者
+SendMessage(LVM_SETITEMCOUNT, (WPARAM)iCount, (LPARAM)LVSICF_NOINVALIDATEALL); 
+
+
+MFC中List控件动态填充数据(LVN_GETDISPINFO)
+https://blog.csdn.net/weixin_34174422/article/details/94204035
+在使用List控件的过程中，有时候List控件中需要添加大量的数据，如果使用InsertItem填充，会一次性将数据全部添加进List控件中，
+比较耗时。这里记录下如何动态添加List控件数据。
+
+步骤
+1.List控件Owner Data属性设置为true,或者在代码中添加
+
+ModifyStyle(0,LVS_OWNERDATA|LVS_REPORT);
+2.为List控件添加Event，事件名为LVN_GETDISPINFO
+
+3.使用SetItemCount设置List控件总共的数据条数
+
+4.在对应对话框中的OnGetDispinfo函数中，为List控件填充数据
+
+ 1 void CTestDlg::OnGetdispinfo(NMHDR* pNMHDR,LRESULT* pResult)
+ 2 {
+ 3     LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+ 4     LV_ITEM* pItem = &(pDispInfo)->item;  
+ 5     int iItemIndex = pItem->iItem;
+ 6     if(pItem->mask & LVIF_TEXT)
+ 7     {
+ 8         switch(pItem->iSubItem)
+ 9         {
+10          case 0://第0列
+11                 lstrcpy(pItem->pszText,str0);
+12                 break;
+13          case 1: //第一列
+14                 break;    
+15         }
+16     }
+17 }
+
+
+08:26
+
+2020.04.14
+
+昨晚由于和济剪发冲凉，济好像吓着了一下。
+
+好看的皮囊千篇一律，有灵的魂魄万里挑一。
+
+\vc98\atl\include\atlcom.h(1823) : while compiling c
+https://bbs.csdn.net/topics/80186575
+没实现你声明的方法把GetName（。。。）
+IDL文件中定义，h cpp文件中实现它
+
+2020年美股复活节休市安排 美股复活节休市几天？
+http://www.zt5.com/gp/xinwen/479504.html
+2020年4月10日(星期五) 至4月13日(星期一)为香港耶稣受难节及复活节假期，港股休市，4月14日(星期二)恢复正常交易。4月10日(星期五)至4月13日(星期一)不提供港股通服务，4月14日(星期二)起照常开通港股通服务。
+
+#ifdef _W2TSERVER
+#include  "..\MAS\MAS.h" 
+#include  "datadef.h"
+#endif
+
+#ifdef _W2T
+#include  "..\MAS\MAS.h" 
+#include  "datadef.h"
+#endif
+
+
+学海无涯, 常用不多
+
+F:\Temp\RadarAlert_Wendy\RadarAlert_Wendyps.mk
+		mtxih.lib mtx.lib mtxguid.lib \
+
+
+win7壁纸存放位置在哪
+https://zhidao.baidu.com/question/1836158499007313540.html
+系统自带抄的壁纸在百C:\WINDOWS\Web\Wallpaper里面，或者你也可以到记事本编辑自带主题的*.theme，找到自带图片的位置，所有的主题都存放在度C:\WINDOWS\Resources\Themes这里面了; (港信软件深圳有限公司）
+
+Have (gxrjsz) gang xin ruan jian shen zhen
+EXTERN_PROXY_FILE( DataProxy )
+EXTERN_PROXY_FILE( RadarAlert )
+EXTERN_PROXY_FILE( WTTCommon )
+
+
+dlldatax.c
+dlldatax.h
+
+extern "C"
+BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /*lpReserved*/)
+{
+    if (dwReason == DLL_PROCESS_ATTACH)
+...}
+Support MFC (no)
+-->
+CRadarAlert_WendyApp theApp;
+Support MFC (have)
+
+Have
+#include <afxwin.h>
+#include <afxdisp.h>
+Support MFC (have)
+
+No 
+#ifdef _MERGE_PROXYSTUB
+    if (PrxDllCanUnloadNow() != S_OK)
+        return S_FALSE;
+#endif
+Allow merging of proxy/stub code (no)
+
+// CTTRadarAlert
+class ATL_NO_VTABLE CTTRadarAlert : 
+	public CComObjectRootEx<CComSingleThreadModel>,
+	public CComCoClass<CTTRadarAlert, &CLSID_TTRadarAlert>,
+	public IDispatchImpl<ITTRadarAlert, &IID_ITTRadarAlert, &LIBID_RADARALERTLib>,
+	public IDispatchImpl<_ITTDataProxyEvents,&IID__ITTDataProxyEvents, &LIBID_RADARALERTLib>,
+	public ITTObject
+
+
+Short Name: TTRadarAlert
+coclass TTRadarAlert interface ITTRadarAlert : IDispatch
+com组件类为:CTTRadarAlert 	文件:TTRadarAlert.h TTRadarAlert.cpp
+宿主类为:CRadarAlertApp 	文件为:RadarAlert.h RadarAlert.cpp
+
+
+awendy  8:35:41
+Ben, 早上好。 RadarAlert雷达的服务端和客户端现在是分开编译成两个RadarAlert.dll组件的。 有无合并成一个RadarAlert.dll的代码呢？ 这样可能比较好调试吧？
+
+08:23
+
+2020.04.13
+
 VC++ Tab Control控件的使用
 https://blog.csdn.net/andylin02/article/details/3910426
 
