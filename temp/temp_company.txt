@@ -1,3 +1,2283 @@
+MFC dll注入
+
+	int x, y;
+	x = GetSystemMetrics(SM_CXSCREEN); //屏幕宽度
+	y = GetSystemMetrics(SM_CYSCREEN); //屏幕高度
+
+	CWnd * pWnd = new CWnd;
+	CString strWndClass=AfxRegisterWndClass(CS_DBLCLKS, AfxGetApp()->LoadStandardCursor(IDC_ARROW), (HBRUSH)(COLOR_3DFACE+1), AfxGetApp()->LoadStandardIcon(IDI_WINLOGO));
+
+	pWnd->CreateEx(0,strWndClass,_T("my program"),
+	WS_OVERLAPPED|WS_SYSMENU|WS_CAPTION|WS_MINIMIZEBOX,
+	CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,
+	NULL,NULL);
+	::ShowWindow(pWnd->m_hWnd, TRUE);
+	::SetWindowPos(pWnd->m_hWnd, HWND_TOP, x/2-100, y/2-100 ,200,200,SWP_DRAWFRAME|SWP_SHOWWINDOW|SWP_FRAMECHANGED);//使它显示在上面
+	
+//    cksb = new CWnd;
+//	RECT rect = {0, 0, 200,200};
+//	cksb->Create( NULL,
+//		_T("mywnd"),
+//		WS_CHILD|WS_CAPTION,
+//		rect,
+//		this,
+//		0,
+//		NULL);
+//	::ShowWindow(cksb->m_hWnd, TRUE);
+//	::SetWindowPos(cksb->m_hWnd, HWND_TOP, x/2-100, y/2-100 ,200,200,SWP_DRAWFRAME|SWP_SHOWWINDOW|SWP_FRAMECHANGED);//使它显示在上面
+
+
+
+GetSystemMetrics()函数的用法
+https://blog.csdn.net/mxling/article/details/4760872
+可以用GetSystemMetrics函数可以获取系统分辨率，但这只是其功能之一，GetSystemMetrics函数只有一个参数，称之为「索引」，这个索引有75个标识符，通过设置不同的标识符就可以获取系统分辨率、窗体显示区域的宽度和高度、滚动条的宽度和高度。
+为了使使GetSystemMetrics的功能，我们以获取系统分辨率为例，并将其中的两个值用TextOut输出到窗体中。
+
+第一步：用GetSystemMetrics获取屏幕的宽度和高度
+int x, y;
+x = GetSystemMetrics(SM_CXSCREEN); //屏幕宽度
+y = GetSystemMetrics(SM_CYSCREEN); //屏幕高度
+
+
+从CWnd::GetSafeHwnd实现得到的知识
+https://blog.csdn.net/s634772208/article/details/69210758
+在看MFC源码的过程中，有个地方一直不解，看如下代码
+BOOL CFrameWnd::Create(LPCTSTR lpszClassName,
+    LPCTSTR lpszWindowName,
+    DWORD dwStyle,
+    const RECT& rect,
+    CWnd* pParentWnd,
+    LPCTSTR lpszMenuName,
+    DWORD dwExStyle,
+    CCreateContext* pContext)
+{
+    HMENU hMenu = NULL;
+    if (lpszMenuName != NULL)
+    {
+        // load in a menu that will get destroyed when window gets destroyed
+        HINSTANCE hInst = AfxFindResourceHandle(lpszMenuName, ATL_RT_MENU);
+        if ((hMenu = ::LoadMenu(hInst, lpszMenuName)) == NULL)
+        {
+            TRACE(traceAppMsg, 0, "Warning: failed to load menu for CFrameWnd.\n");
+            PostNcDestroy();            // perhaps delete the C++ object
+            return FALSE;
+        }
+    }
+
+    m_strTitle = lpszWindowName;    // save title for later
+
+    if (!CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle,
+        rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,
+        pParentWnd->GetSafeHwnd(), hMenu, (LPVOID)pContext))
+    {
+        TRACE(traceAppMsg, 0, "Warning: failed to create CFrameWnd.\n");
+        if (hMenu != NULL)
+            DestroyMenu(hMenu);
+        return FALSE;
+    }
+
+    return TRUE;
+}
+注意Create函数参数pParentWnd如果传NULL进来，pParentWnd->GetSafeHwnd并不会报错。开始一看，吓我一大跳，怎么不出现内存访问违规呢，奇怪了。经过试验，还是自己的知识太欠缺了啊。
+
+原因还得在代码中找，看下GetSafeHwnd的实现， 内部判断了this==NULL（第一次知道还可以这样用）
+
+_AFXWIN_INLINE HWND CWnd::GetSafeHwnd() const
+    { return this == NULL ? NULL : m_hWnd; }
+
+以下是试验代码：
+#include <iostream>
+using namespace std;
+
+class TestClass
+{
+public:
+    TestClass():m_nInt( 222 ) 
+    {
+        cout << "TestClass()" << endl; 
+    }
+
+    virtual ~TestClass() 
+    { 
+        cout << "~TestClass()" << endl;
+    }
+
+    //this==NULL时，未使用本类变量
+    int GetInt() 
+    {
+        if ( this == NULL )
+        {
+            return 888;
+        }
+        return m_nInt;
+    }
+
+    //函数引用此类变量
+    int GetInt2()
+    {
+        return m_nInt;
+    }
+
+private:
+    int m_nInt;
+};
+
+int main()
+{
+    TestClass* pTest = NULL;
+
+    //this==NULL时，未使用本类变量,故可正常调用 
+    int nRet = pTest->GetInt();
+
+    //this==NULL时，使用本类变量，
+    //而对象并不存在，内存访问违规！！！
+    int nRet2 = pTest->GetInt2();
+    return 0;
+}
+
+TODO: 有空要学习下《深度探索C++对象模型》
+————————————————
+版权声明：本文为CSDN博主「shanql」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/s634772208/article/details/69210758
+
+
+
+MFC-核心类库-CWnd的成员函数介绍（一）
+https://blog.csdn.net/huanhuanxiaoxiao/article/details/80933235
+
+MFC-核心类库-CWnd的成员函数介绍（二）
+https://blog.csdn.net/huanhuanxiaoxiao/article/details/80957760
+
+MFC-核心类库-CWnd的成员函数介绍（三）
+https://blog.csdn.net/huanhuanxiaoxiao/article/details/80963002
+
+huanhuanxiaoxiao的博客
+https://blog.csdn.net/huanhuanxiaoxiao/category_7299160.html
+
+句柄HWND数据类型
+https://blog.csdn.net/weixin_34179762/article/details/91879822
+在VC++6中使用右键转至定义一步一步查看HWND
+1、
+HWND
+2、
+#ifndef WIN_INTERNAL
+DECLARE_HANDLE            (HWND);  //<-这里
+DECLARE_HANDLE            (HHOOK);
+#ifdef WINABLE
+DECLARE_HANDLE            (HEVENT);
+#endif
+#endif
+3、
+
+#ifdef STRICT          //#ifndef STRICT
+                       //#define STRICT 1  
+                       //#endif
+typedef void *HANDLE;
+#define DECLARE_HANDLE(name) struct name##__ { int unused; }; typedef struct name##__ *name //<-这里
+#else
+typedef PVOID HANDLE;      //typedef void *PVOID;
+#define DECLARE_HANDLE(name) typedef HANDLE name //<-这里
+#endif
+typedef HANDLE *PHANDLE;
+整理一下
+struct HWND__ { 
+
+    int unused ;
+
+};
+typedef struct HWND__ *HWND;
+
+所以HWND应该是一个 HWND__型指针，而HWND__是一个包含一个int型数据结构的结构体。
+
+只有在STRICT未定义的情况下 HWND 才是一个void指针。
+
+PS：不过STRICT未定义的情况还不太了解。
+
+转载于:https://my.oschina.net/TMDJoJo/blog/65414
+
+
+Windows中HWND定义说明
+https://blog.csdn.net/Panjiyizhan/article/details/54948699
+在WinNT.h中，可以看到宏定义；
+#define DECLARE_HANDLE(name) struct name##__{int unused;}; typedef struct name##__ *name
+
+在windef.h中，可以看到：
+DECLARE_HANDLE （HWND)；
+
+对上述宏定义展开，即
+struct nameHWND__ {int unused;}; typedef sturct nameHWND__ * HWND;
+由此，我们得到其定义，即HWND 是一个指向结构体的指针，这个结构体包含一个成员变量unused。
+
+
+HWND是在什么头文件中定义 [问题点数：20分，结帖人ulardili]
+windef.h
+
+
+CButton::Create
+
+BOOL Create(
+     LPCTSTR lpszCaption,
+     DWORD dwStyle,
+     const RECT& rect,
+     CWnd* pParentWnd,
+     UINT nID
+    );
+
+
+割肉是不可能空仓的，这辈子都不可能割肉的，做T又不会，只能看着它跌才能维持得了生活的样子。在山顶站岗就好像回到家里的感觉。在山顶上面站岗的，个个都是人才 ，说话又好听，我超喜欢在山顶的感觉。
+
+CObject/CCmdTarget/CCmdTarget三个类的能力
+超频化石鱼 2018-02-01 08:30:59  254  收藏
+展开
+三个类的能力分别为：
+CObject：运行时类型识别(RTTI)、动态创建(Dynamic Creation)、文件读写(Serialization)
+CCmdTarget：消息机制，拥有DECLARE_MESSAGE_MAP宏，从而可以接收WM_COMMAND消息
+CWnd：除WM_COMMAND消息之外，还可以接收WM_xxx消息
+这三者的派生关系是：CObject->CCmdTarget->CWnd。
+
+只要从某个类派生，那该派生类就具有基类的能力。
+————————————————
+版权声明：本文为CSDN博主「超频化石鱼」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fyyyr/article/details/79213315
+
+
+专题->类->API->英MSDN ？ (v ok)
+(MFC类库详解.chm->VC6Insight->CSDN网站->百度->c与c++标准类库及函数.chm->英文VC6_MSDN->...)
+
+
+读书(编程,深圳)->深圳机房管理(数据库,网页,编程)->易通达网管(编程)->国贸招商投资网拓富(张明亮编程)->永泰(VC++编程)->
+龙域(手机编程)->尊瑞(高通手表编程)->安位(高通手表编程)->港信(VC++编程) (v ok)
+
+
+CDlgObjectDumpDlg::OnButton3() line 291
+_AfxDispatchCmdMsg(CCmdTarget * 0x0012fe38 {CDlgObjectDumpDlg}, unsigned int 1002, int 0, void (void)* 0x0040102d CDlgObjectDumpDlg::OnButton3(void), void * 0x00000000, unsigned int 12, AFX_CMDHANDLERINFO * 0x00000000) line 88
+CCmdTarget::OnCmdMsg(unsigned int 1002, int 0, void * 0x00000000, AFX_CMDHANDLERINFO * 0x00000000) line 302 + 39 bytes
+CDialog::OnCmdMsg(unsigned int 1002, int 0, void * 0x00000000, AFX_CMDHANDLERINFO * 0x00000000) line 97 + 24 bytes
+CWnd::OnCommand(unsigned int 1002, long 268404) line 2099
+CWnd::OnWndMsg(unsigned int 273, unsigned int 1002, long 268404, long * 0x0012f818) line 1608 + 28 bytes
+CWnd::WindowProc(unsigned int 273, unsigned int 1002, long 268404) line 1596 + 30 bytes
+CDlgObjectDumpDlg::WindowProc(unsigned int 273, unsigned int 1002, long 268404) line 306
+AfxCallWndProc(CWnd * 0x0012fe38 {CDlgObjectDumpDlg hWnd=???}, HWND__ * 0x00031876, unsigned int 273, unsigned int 1002, long 268404) line 215 + 26 bytes
+AfxWndProc(HWND__ * 0x00031876, unsigned int 273, unsigned int 1002, long 268404) line 379
+AfxWndProcBase(HWND__ * 0x00031876, unsigned int 273, unsigned int 1002, long 268404) line 220 + 21 bytes
+USER32! 75c1c4b7()
+USER32! 75c1c5b7()
+USER32! 75c15264()
+USER32! 75c15552()
+USER32! 75c496c5()
+USER32! 75c497c5()
+USER32! 75c37ed1()
+USER32! 75c28285()
+USER32! 75c1c4b7()
+USER32! 75c1c5b7()
+USER32! 75c1cbe9()
+USER32! 75c1cc40()
+USER32! 75c141bb()
+USER32! 75c22043()
+CWnd::IsDialogMessageA(tagMSG * 0x004177f8 {msg=0x00000202 wp=0x00000000 lp=0x00110029}) line 182
+CWnd::PreTranslateInput(tagMSG * 0x004177f8 {msg=0x00000202 wp=0x00000000 lp=0x00110029}) line 3435
+CDialog::PreTranslateMessage(tagMSG * 0x004177f8 {msg=0x00000202 wp=0x00000000 lp=0x00110029}) line 92
+CWnd::WalkPreTranslateTree(HWND__ * 0x00031876, tagMSG * 0x004177f8 {msg=0x00000202 wp=0x00000000 lp=0x00110029}) line 2678 + 18 bytes
+CWinThread::PreTranslateMessage(tagMSG * 0x004177f8 {msg=0x00000202 wp=0x00000000 lp=0x00110029}) line 672 + 18 bytes
+CWinThread::PumpMessage() line 848 + 30 bytes
+CWnd::RunModalLoop(unsigned long 4) line 3489 + 19 bytes
+CDialog::DoModal() line 539 + 12 bytes
+CDlgObjectDumpApp::InitInstance() line 122 + 8 bytes
+AfxWinMain(HINSTANCE__ * 0x00400000, HINSTANCE__ * 0x00000000, char * 0x001e2ea7, int 1) line 39 + 11 bytes
+WinMain(HINSTANCE__ * 0x00400000, HINSTANCE__ * 0x00000000, char * 0x001e2ea7, int 1) line 30
+WinMainCRTStartup() line 330 + 54 bytes
+KERNEL32! 7643ef3c()
+NTDLL! 77a63618()
+NTDLL! 77a635eb()
+
+
+BOOL CCmdTarget::OnCmdMsg(UINT nID, int nCode, void* pExtra,
+	AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+...
+#ifdef _AFXDLL
+	for (pMessageMap = GetMessageMap(); pMessageMap != NULL;
+	  pMessageMap = (*pMessageMap->pfnGetBaseMap)())
+#else
+	for (pMessageMap = GetMessageMap(); pMessageMap != NULL;
+	  pMessageMap = pMessageMap->pBaseMap)
+#endif
+	{
+		// Note: catches BEGIN_MESSAGE_MAP(CMyClass, CMyClass)!
+#ifdef _AFXDLL
+		ASSERT(pMessageMap != (*pMessageMap->pfnGetBaseMap)());
+#else
+		ASSERT(pMessageMap != pMessageMap->pBaseMap);
+#endif
+
+		lpEntry = AfxFindMessageEntry(pMessageMap->lpEntries, nMsg, nCode, nID);
+		if (lpEntry != NULL)
+		{
+			// found it
+#ifdef _DEBUG
+			if (afxTraceFlags & traceCmdRouting)
+			{
+				if (nCode == CN_COMMAND)
+				{
+					TRACE2("SENDING command id 0x%04X to %hs target.\n", nID,
+						GetRuntimeClass()->m_lpszClassName);
+				}
+				else if (nCode > CN_COMMAND)
+				{
+					if (afxTraceFlags & traceWinMsg)
+					{
+						TRACE3("SENDING control notification %d from control id 0x%04X to %hs window.\n",
+							nCode, nID, GetRuntimeClass()->m_lpszClassName);
+					}
+				}
+			}
+#endif //_DEBUG
+			return _AfxDispatchCmdMsg(this, nID, nCode,
+				lpEntry->pfn, pExtra, lpEntry->nSig, pHandlerInfo);
+		}
+	}
+	return FALSE;   // not handled
+}
+
+
+struct AFX_MSGMAP_ENTRY;       // declared below after CWnd
+
+struct AFX_MSGMAP
+{
+#ifdef _AFXDLL
+	const AFX_MSGMAP* (PASCAL* pfnGetBaseMap)();
+#else
+	const AFX_MSGMAP* pBaseMap;
+#endif
+	const AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+#ifdef _AFXDLL
+#define DECLARE_MESSAGE_MAP() \
+private: \
+	static const AFX_MSGMAP_ENTRY _messageEntries[]; \
+protected: \
+	static AFX_DATA const AFX_MSGMAP messageMap; \
+	static const AFX_MSGMAP* PASCAL _GetBaseMessageMap(); \
+	virtual const AFX_MSGMAP* GetMessageMap() const; \
+
+#else
+#define DECLARE_MESSAGE_MAP() \
+private: \
+	static const AFX_MSGMAP_ENTRY _messageEntries[]; \
+protected: \
+	static AFX_DATA const AFX_MSGMAP messageMap; \
+	virtual const AFX_MSGMAP* GetMessageMap() const; \
+
+#endif
+
+#ifdef _AFXDLL
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	const AFX_MSGMAP* PASCAL theClass::_GetBaseMessageMap() \
+		{ return &baseClass::messageMap; } \
+	const AFX_MSGMAP* theClass::GetMessageMap() const \
+		{ return &theClass::messageMap; } \
+	AFX_COMDAT AFX_DATADEF const AFX_MSGMAP theClass::messageMap = \
+	{ &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0] }; \
+	AFX_COMDAT const AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
+	{ \
+
+#else
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	const AFX_MSGMAP* theClass::GetMessageMap() const \
+		{ return &theClass::messageMap; } \
+	AFX_COMDAT AFX_DATADEF const AFX_MSGMAP theClass::messageMap = \
+	{ &baseClass::messageMap, &theClass::_messageEntries[0] }; \
+	AFX_COMDAT const AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
+	{ \
+
+#endif
+
+#define END_MESSAGE_MAP() \
+		{0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
+	}; \
+
+// Message map signature values and macros in separate header
+#include <afxmsg_.h>
+
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;   // windows message
+	UINT nCode;      // control code or WM_NOTIFY code
+	UINT nID;        // control ID (or 0 for windows messages)
+	UINT nLastID;    // used for entries specifying a range of control id's
+	UINT nSig;       // signature type (action) or pointer to message #
+	AFX_PMSG pfn;    // routine to call (or special value)
+};
+
+
+2020.05.15
+
+// 步骤： 
+// 1、往对话框上添加一个按钮，ID 设置为 IDC_BTN_TEST 
+// 2、向 CTestCursorDlg 类中添加成员变量 BOOL m_bBusy，并在 CTestCursorDlg 的构造函数中初始化为 FALSE 
+// 3、写现程函数 
+// 4、为 IDC_BTN_TEST 按钮添加点击处理函数 
+// 5、重载 WindowProc() 函数 
+// 6、为 WM_SETCURSOR 消息添加处理函数 
+// 注意： 
+// 以下代码最好在 Debug 下运行，否则 TRACE 语句不执行会大大缩短线程执行时间，有可能导致不能观察到鼠标光标的变化 
+DWORD WINAPI AddProc(PVOID pvParam) 
+{ 
+int j=0; 
+for(int i=0; i<50000; i++)
+{ 
+j += i; TRACE(TEXT("%d\n"), j);
+} 
+
+PostMessage((HWND)pvParam, WM_APP + 1, 0, 0); return j;
+} 
+
+void CTestCursorDlg::OnBtnTest() 
+{
+m_bBusy = TRUE; BeginWaitCursor();
+ HANDLE hThread = CreateThread(NULL, 0, AddProc, (PVOID)(HWND)*this, 0, NULL); 
+CloseHandle(hThread); 
+} 
+
+LRESULT CTestCursorDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{ 
+if(message == (WM_APP + 1))
+{ m_bBusy = FALSE; EndWaitCursor();} 
+return CDialog::WindowProc(message, wParam, lParam);
+} 
+
+BOOL CTestCursorDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+{ 
+if(m_bBusy) return TRUE; 
+return CDialog::OnSetCursor(pWnd, nHitTest, message);
+}
+
+分享：
+
+
+
+
+急等：怎么我的BeginWaitCursor和EndWaitCursor不起作用了？ [问题点数：100分，结帖人xycyc]
+https://bbs.csdn.net/topics/50470630
+我的问题基本上解决了：
+1. 在这个程序的一个类中用：
+   启动等待光标时：
+    SetCapture(); 
+::SetCursor(::LoadCursor(NULL,IDC_WAIT));
+   关闭等待光标，恢复原光标：
+       ReleaseCapture();
+::SetCursor(::LoadCursor(NULL,IDC_ARROW));  
+2. zhucde(【風間苍月】)(ＭＳ_ＭＶＰ) 的办法：
+建议直接修改系统鼠标比较理想:
+
+HCURSOR hcursor = LoadCursorFromFile("c:\\winnt\\cursors\\busy_m.cur");
+SetSystemCursor(hcursor,32512);
+
+恢复鼠标:
+HCURSOR hcursor = LoadCursorFromFile("c:\\winnt\\cursors\\arrow_m.cur")；
+SetSystemCursor(hcursor,32512);
+
+3.一般的程序中都可以用以下方法
+  BeginWaitCursor();
+  ...
+  RestoreWaitCursor();
+  ...
+  EndWaitCursor();
+4.或者启用CWaitCursor类
+   AfxGetApp()->DoWaitCursor(1); //相当于BeginWaitCursor();
+   AfxGetApp()->DoWaitCursor(0); //相当于RestoreWaitCursor();
+   AfxGetApp()->DoWaitCursor(-1);//相当于EndWaitCursor();
+
+我是用方法1解决的，3,4应该也可以，我用的不够好
+
+
+
+CCmdTarget 类是CObject 类的子类
+所有响应消息或事件的类都从它派生,例如: CWinapp CWnd CDocument CView CDocTemplate CFrameWnd等
+CCmdTarget 类是 MFC 处理命令消息的基础核心
+
+
+消息处理机制：CCmdTarget 和 消息映射表
+https://blog.csdn.net/hyhnoproblem/article/details/6117631
+MFC的消息处理机制由两部分组成：CCmdTarget类和消息映射表。
+
+窗口消息构成
+所有的窗口消息由3部分组成
+
+UINT Msg,
+WPARAM wParam,
+LPARAM lParam
+
+?为神马不用虚函数来处理消息？
+因为，虚函数是使用类的虚函数表实现的，每个派生类都会带一个虚函数表的拷贝。虚函数表中的每个入口都是一个4字节指针，这样每个类对象就会在虚函数表中带来大量的额外字节。同时，窗口消息的个数和种类随时会发生变化，在消息改变时，使用虚函数实现的消息机制容易导致代码的废弃
+
+消息机制内幕
+MFC的消息映射技术由两部分组成：CCmdTarget类 和 消息映射表。CCmdTarget是所有接受窗口消息和命令对象的基类，为了接受消息，类必须从CCmdTarget派生。消息映射表是将窗口消息与处理消息的类成员函数关联起来的机制。消息映射表数据结构和消息映射宏是消息映射系统的另外的两个重要的方面。
+a） 两个消息映射表数据结构
+
+AFX_MSGMAP_ENTRY 消息映射项? ( 见afxwin.h )
+AFX_MSGMAP 消息映射表 ( 见afxwin.h )
+（b） 消息映射宏
+
+MFC提供了三个宏来产生消息映射表：DECLARE_MESSAGE_MAP、BEGIN_MESSAGE_MAP、END_MESSAGE_MAP。要在类中使用消息映射表，最基本的办法是在类声明中包含DECLARE_MESSAGE_MAP (.h文件)，在类实现体中包含BEGIN_MESSAGE_MAP、END_MESSAGE_MAP和消息映射信息(.cpp文件)
+
+
+DECLARE_MESSAGE_MAP? ( 见afxwin.h )
+
+定义了两个Protect函数，GetThisMessageMap用于返回本类中的消息映射表指针，GetMesssageMap是个虚函数
+
+BEGIN_MESSAGE_MAP? ( 见afxwin.h )
+
+GetMessageMap 和 GetThisMessageMap函数的实现，在GetThisMessageMap中一个函数中定义了两个函数静态变量：_messageEntries 表示所有的消息映射项、messageMap表示消息映射表(见下)
+
+
+END_MESSAGE_MAP? ( 见afxwin.h )
+
+BEGIN_MESSAGE_MAP 和 END_MESSAGE_MAP之间的内容是一系列消息映射表的入口宏。这些宏扩展后可以填充类的消息映射表_messageEntries。MFC定义的各种消息映射表入口宏，见下表
+
+（3）MFC定义各种消息映射表入口宏
+
+消息类型
+
+宏形式
+
+参数
+
+预定义窗口消息
+
+ON_WM_XXXX
+
+None
+
+命令
+
+ON_COMMAND
+
+Command Id, Handler Name
+
+命令ID的范围
+
+ON_COMMAND_RANGE
+
+Start ID, End ID,
+
+Handler Name
+
+更新命令
+
+ON_UPDATE_COMMAND_UI
+
+Commnad Id, Handler Name
+
+用于更新的命令ID的范围
+
+ON_UPDATE_COMMAND_UI_RANGE
+
+Start ID, End ID,
+
+Handler Name
+
+控件通知
+
+ON_XXXX
+
+Control Id, Handler Name
+
+控件ID范围
+
+ON_CONTROL_RANGE
+
+Notify Code、Start ID、End ID、Handler Name
+
+用户定义的消息
+
+ON_MESSAGE
+
+User-defined Message ID,
+
+Handler Name
+
+注册的窗口消息
+
+ON_REGISTERED_MESSAGE
+
+Registered message ID variable, Handler Name
+
+————————————————
+版权声明：本文为CSDN博主「huyinhou」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/hyhnoproblem/article/details/6117631
+
+MFC架构之CCmdTarget类
+https://blog.csdn.net/FlowShell/article/details/6008190
+类CCmdTarget是MFC类库中消息映射体系的一个基类。所有响应消息或事件的类都从它派生。例如，CWinApp，CWnd，CDocument，CView，CDocTemplate，CFrameWnd，等等。
+?????? CCmdTarget类是MFC处理命令消息的基础、核心。MFC为该类设计了许多成员函数和一些成员数据，基本上是为了解决消息映射问题的，而且，很大一部分是针对OLE设计的。在OLE应用中，CCmdTarget是MFC处理模块状态的重要环节，它起到了传递模块状态的作用：其构造函数获取当前模块状态，并保存在成员变量m_pModuleState里头。
+
+?????? CmdTarget有两个与消息映射有密切关系的成员函数：DispatchCmdMsg和OnCmdMsg。
+
+1.静态成员函数DispatchCmdMsg
+CCmdTarget的静态成员函数DispatchCmdMsg，用来分发Windows消息。此函数是MFC内部使用的，其原型如下：
+static BOOL DispatchCmdMsg(
+CCmdTarget* pTarget,UINT nID,int nCode,AFX_PMSG pfn,
+void* pExtra,UINT nSig,AFX_CMDHANDLERINFO* pHandlerInfo)。
+
+2. 虚拟函数OnCmdMsg
+CCmdTarget的虚拟函数OnCmdMsg，用来传递和发送消息、更新用户界面对象的状态，其原型如下：
+OnCmdMsg(UINT nID,int nCode,void* pExtra,AFX_CMDHANDLERINFO* pHandlerInfo);
+??? 框架的命令消息传递机制主要是通过该函数来实现的。本文中命令目标指希望或者可能处理消息的对象；命令目标类指命令目标的类。
+CCmdTarget对OnCmdMsg的默认实现：在当前命令目标(this所指)的类和基类的消息映射数组里搜索指定命令消息的消息处理函数（标准Windows消息不会送到这里处理）。这里使用虚拟函数GetMessageMap得到命令目标类的消息映射入口数组_messageEntries，然后在数组里匹配指定的消息映射条目。匹配标准：命令消息ID相同，控制通知代码相同。因为GetMessageMap是虚拟函数，所以可以确认当前命令目标的确切类。如果找到了一个匹配的消息映射条目，则使用DispachCmdMsg调用这个处理函数；如果没有找到，则使用_GetBaseMessageMap得到基类的消息映射数组，查找，直到找到或搜寻了所有的基类（到CCmdTarget）为止；如果最后没有找到，则返回FASLE。
+????? 每个从CCmdTarget派生的命令目标类都可以覆盖OnCmdMsg，利用它来确定是否可以处理某条命令，如果不能，就通过调用下一命令目标的OnCmdMsg，把该命令送给下一个命令目标处理。通常派生类覆盖OnCmdMsg时，要调用基类的被覆盖的 OnCmdMsg。
+????? 在MFC框架中，一些MFC命令目标类覆盖了OnCmdMsg，如框架窗口类覆盖了该函数，实现了MFC的标准命令消息发送路径。
+必要的话，应用程序也可以覆盖OnCmdMsg，改变一个或多个类中的发送规定，实现与标准框架发送规定不同的发送路径。例如，在以下情况可以作这样的处理：在要打断发送顺序的类中把命令传给一个非MFC默认对象；在新的非默认对象中或在可能要传出命令的命令目标中。
+
+?
+
+CCmdTarget还有以下三个函数
+
+1.BeginWaitCursor ?显示沙漏标
+2.EnableAutomation ?允许CCmdTarget对象的OLE自动函数
+3.RestoreWaitCursor ?重置沙漏标
+
+实例：
+
+
+
+
+c++中的点号(.)，冒号（:）和双冒号（::）运算符
+https://blog.csdn.net/tham_/article/details/44905561?utm_source=blogkpcl3
+1.冒号（:）用法
+（1）表示机构内位域的定义（即该变量占几个bit空间）
+
+typedef struct _XXX{
+ 
+             unsigned char a:4; ?//char型的字符a占4位
+ 
+             unsigned char c;
+ 
+} XXX;
+
+（2）构造函数后面的冒号起分割作用，是类给成员变量赋值的方法，初始化列表，更适用于成员变量的常量const型。
+struct _XXX{
+ 
+         _XXX() : y(0xc0) {  }
+ 
+};
+（3） public:和private:后面的冒号，表示后面定义的所有成员都是公有或私有的，直到下一个"public:”或"private:”出现为止。"private:"为默认处理。
+
+（4）类名冒号后面的是用来定义类的继承。
+?class 派生类名 : 继承方式? 基类名
+{
+??????? 派生类的成员
+};
+继承方式：public、private和protected，默认处理是public。
+
+
+2．双冒号（::）用法
+（1）表示“域操作符”
+??????? 例：声明了一个类A，类A里声明了一个成员函数void f()，但没有在类的声明里给出f的定义，那么在类外定义f时， 就要写成void A::f()，表示这个f()函数是类A的成员函数。
+（2）直接用在全局函数前，表示是全局函数
+??????? 例：在VC里，你可以在调用API 函数里，在API函数名前加 ::
+（3）表示引用成员函数及变量，作用域成员运算符
+??????? 例：System::Math::Sqrt() 相当于System.Math.Sqrt()
+——————————————————————————————————————
+
+VC中如下
+????? ::是C++里的“作用域分解运算符”。比如声明了一个类A，类A里声明了一个成员函数voidf()，但没有在类的声明里给出f的定义，那么在类外定义f时，就要写成voidA::f()，表示这个f()函数是类A的成员函数。
+　　:: 一般还有一种用法，就是直接用在全局函数前，表示是全局函数。当类的成员函数跟类外的一个全局函数同名时，考试,大提示在类内定义的时候，打此函数名默认调用的是本身的成员函数；如果要调用同名的全局函数时，就必须打上::以示区别。比如在VC里，你可以在调用API函数时，在API函数名前加::。
+
+*********************************************************************************************
+
+这篇文章将总结C/C++中的冒号的用法。
+
+
+1、位域定义
+这个在前面关于位结构体的文章里说得够多的了，不再重复了。
+
+2、类构造函数(Constructor）的初始化列表
+先说下什么叫构造函数吧（是不是啰嗦了？C++的人应该都知道了吧，还是以防万一一下）。所谓构造函数，就是与类同名的函数，它与普通函数的区别在于，它没有返回类型。
+在构造函数后面紧跟着冒号加初始化列表，各初始化变量之间以逗号(,)隔开。下面举个例子。
+
+class myClass
+{
+    public :
+               myClass();// 构造函数，无返回类型，可以有参数列表，这里省去
+               ~myClass();// 析构函数
+               int a;
+               const int b;
+}
+ 
+myClass::myClass():a(1),b(1)// 初始化列表
+{
+}
+上面的例子展示了冒号的这个用法，下面对这个用法进行几点说明：
+1)初始化列表的作用相当于在构造函数内进行相应成员变量的赋值，但两者是有差别的。
+在初始化列表中是对变量进行初始化，而在构造函数内是进行赋值操作。两都的差别在对于像const类型数据的操作上表现得尤为明显。我们知道，const类型的变量必须在定义时进行初始化，而不能对const型的变量进行赋值，因此const类型的成员变量只能（而且必须）在初始化列表中进行初始化，即下面的代码将会出错：
+myClass::myClass（）
+{
+     a = 1;// 没错，效果相当于在初始化列表中进行初始化
+     b = 1;// 出错，const变量不能进行赋值操作；
+}
+2）初始化的顺序与成员变量声名的顺序相同。
+???? 先看一下下面的程序：
+myClass::myClass():b(1),a(b)
+{
+}
+这样的执行结果a,b各是多少呢？b=1,a=1?不是，b=1而a是个随机数。这一点是相当重要的哦，一般在初始化列表中进行初始化时，初始化的顺序应与声明的顺序保持一致，防止出现不必要的错误。
+3）对于继承的类来说，在初始化列表中也可以进行基类的初始化，初始化的顺序是先基类初始化，然后再根据该类自己的变量的声明顺序进行初始化。
+
+3、声明基类。
+假设我们重新定义一个类，继承自myClass类。定义方式如下：
+class derivedClass : public myClass
+{
+?????? // 略去
+}
+这里的冒号起到的就是声名基类的作用，在基类类名前面可以加public/private/protected等标签，用于标识继承的类型，也可以省略，省略的话，用class定义的类默认为private，用struct定义的类默认为public，至于具体各个标签有什么区别这里就不说了。
+与初始化列表一样的，这里也可以声名多个基类，各基类之间用逗号(,)隔开。
+
+4、条件语句(? :)
+与?构成条件语句，作用相当于if else，如下；
+int a,b,c;
+a=3;
+b=2;
+c=a>b?a:b;// 如果a>b成立，则反a赋给c，否则把b赋给c
+条件语句的结构为：
+条件表达式?表达式1:表达式2
+当条件表达式为true时，表达式的值为表达式1的值，否则为表达式2的值。
+几点说明：
+1）?:可以嵌套，但不推荐使用（难懂），下面的表达式你能看懂啥意思不？
+int max = i>j ? i>k ? i : k : j>k ? j : k;
+脑袋大了吧，呵呵。
+2）?:具有很低的优先级，这个要注意哦，下面的程序执行结果是啥呢？
+int i = 3;
+int j = 2;
+cout << i>j?i:j; // 出错，<<比>具有更高的优先级，执行顺序为 ((cout<<i)>j)?i:j,相当于是比较cout<<i与j的大小，然后根据比较结果决定表达式值为i或j，这显然要出错的，cout<<i的值是cout，不能跟整型数j进行比较。
+cout << (i>j)?i:j; //输出1或0，相当于(cout<<(i>j))作为判决条件，来决定表达式的值为i或j，而cout<<(i>j)，i>j则输出1否则0，然后再将(cout<<(i>j))作为？：的条件，如果cout正确执行则为1（true），否则为0（false），以此决定表达式值为i或j
+cout <<(i>j?i:j);//i>j则输出i，否则输出j，表达式值为true如果cout正确执行，否则为false
+更多的关于优先级的问题就不说了。
+
+5、语句标签
+通常跟goto配合使用，如：
+step1: a = f1();
+....
+goto step1;
+这种作法也不是很推荐，原因在于它破坏了语句的顺序执行，这样的代价大家应该清楚吧。不过存在即为合理嘛，既然它还存在，肯定还是有它的用处有它的好处的，比如说，多层嵌套的退出（会比break continue直观一点吧），也可以避免重复代码之类之类的
+
+6、switch语句中case后。
+这个不说了，要是不会的话，我也没话可说了。
+
+7、汇编指令模板
+这个我也不懂，不班门弄斧了，可以参考一下：http://developer.e800.com.cn/articles/2006/43/1144846933898_1.html
+改天学习一下。
+*********************************************************************************************
+
+1、?
+作用域符号::的前面一般是类名称，后面一般是该类的成员名称，C++为例避免不同的类有名称相同的成员而采用作用域的方式进行区分
+如：A,B表示两个类，在A,B中都有成员member。那么
+A::member就表示类A中的成员member
+B::member就表示类B中的成员member
+
+
+
+2、?
+
+全局作用域符号：当全局变量在局部函数中与其中某个变量重名，那么就可以用::来区分如：
+
+
+char zhou; //全局变量
+ 
+void sleep（）
+ 
+｛
+ 
+    char zhou; //局部变量
+ 
+    char(局部变量) = char(局部变量) *char(局部变量) ;
+ 
+    ::char(全局变量) =::char(全局变量) *char(局部变量);
+ 
+｝
+3、?
+::是C++里的“作用域分解运算符”。比如声明了一个类A，类A里声明了一个成员函数voidf()，但没有在类的声明里给出f的定义，那么在类外定义f时，就要写成voidA::f()，表示这个f()函数是类A的成员函数。例如
+
+
+	class CA {  
+	public:  
+	  int ca_var;  
+	  int add(int a, int b);  
+	  int add(int a);  
+	}; 
+	  
+	//那么在实现这个函数时，必须这样书写：  
+	int CA::add(int a, int b)  
+	{  
+	  return a + b;  
+	}  
+	  
+	//另外，双冒号也常常用于在类变量内部作为当前类实例的元素进行表示，比如:  
+	int CA::add(int a)  
+	{  
+	  return a + ::ca_var;  
+	} 
+	  
+	//表示当前类实例中的变量ca_var。
+??
+C++中点号(.)运算符
+首先介绍一下C++中的结构。对于一个结构来说，
+struct MyStruct {
+???????? int member_a;
+};
+
+如果有个变量MyStruct s，那么使用其中的成员元素时可以用
+s.member_a = 1;
+
+如果采用指针方法访问，比如MyStruct * ps，那么同样的访问必须用箭头号：
+
+ps->member_a = 1;
+
+::只用在类成员函数和类成员变量中。比如，声明一个类：
+class CA {
+? ? ? ? ? public:
+? ? ? ? ? int ca_var;
+? ? ? ? ? int add(int a, int b);
+? ? ? ? ? int add(int a);
+};
+
+那么在实现这个函数时，必须这样书写：
+int CA::add(int a, int b)
+{
+???? return a + b;
+}
+另外，双冒号也常常用于在类变量内部作为当前类实例的元素进行表示，比如:
+
+int CA::add(int a)
+{
+???? return a + ::ca_var;
+}
+
+表示当前类实例中的变量ca_var。
+
+c++中当定义类对象是指针对象时候，就需要用到->指向类中的成员；当定义一般对象时候时就需要用到"."指向类中的成员.......
+例如：
+class A
+{
+? ? public:?
+? ? ? ? ? play();
+}
+如果定义如下：
+
+A *p则：p->play()使用; 左边是结构指针。
+A p 则：p.paly()使用; 左边是结构变量。
+————————————————
+版权声明：本文为CSDN博主「tham_」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/tham_/article/details/44905561
+
+
+
+
+
+union MessageMapFunctions
+{
+	AFX_PMSG pfn;   // generic member function pointer
+
+	// specific type safe variants for WM_COMMAND and WM_NOTIFY messages
+	void (AFX_MSG_CALL CCmdTarget::*pfn_COMMAND)();
+	BOOL (AFX_MSG_CALL CCmdTarget::*pfn_bCOMMAND)();
+	void (AFX_MSG_CALL CCmdTarget::*pfn_COMMAND_RANGE)(UINT);
+	BOOL (AFX_MSG_CALL CCmdTarget::*pfn_COMMAND_EX)(UINT);
+
+	void (AFX_MSG_CALL CCmdTarget::*pfn_UPDATE_COMMAND_UI)(CCmdUI*);
+	void (AFX_MSG_CALL CCmdTarget::*pfn_UPDATE_COMMAND_UI_RANGE)(CCmdUI*, UINT);
+	void (AFX_MSG_CALL CCmdTarget::*pfn_OTHER)(void*);
+	BOOL (AFX_MSG_CALL CCmdTarget::*pfn_OTHER_EX)(void*);
+
+	void (AFX_MSG_CALL CCmdTarget::*pfn_NOTIFY)(NMHDR*, LRESULT*);
+	BOOL (AFX_MSG_CALL CCmdTarget::*pfn_bNOTIFY)(NMHDR*, LRESULT*);
+	void (AFX_MSG_CALL CCmdTarget::*pfn_NOTIFY_RANGE)(UINT, NMHDR*, LRESULT*);
+	BOOL (AFX_MSG_CALL CCmdTarget::*pfn_NOTIFY_EX)(UINT, NMHDR*, LRESULT*);
+
+
+C++类的成员函数指针与普通的函数指针用法
+https://blog.csdn.net/lyz769109884/article/details/52956656
+1.类成员函数指针调用
+注意:如果在类内调用,则函数指针声明要放在类里面.如果是类外调用,则函数指针声明放在调用类中.
+CFunCall.h文件:
+
+class CFunCall
+{
+    typedef int (CFunCall::*CLASSFUNC)(int);
+public:
+    explicit CFunCall();
+    ~CFunCall();
+    void ClassPrint(int );
+private:
+    CLASSFUNC mCfun;
+};
+CFunCall.cpp
+
+CFunCall::CFunCall()
+
+{
+   
+    mCfun=&CFunCall::ClassPrint;  
+    (this->*mCfun)(1);//类内直接调用,需要指定当前类的实例this.
+}
+
+////////////////////类外调用////////////
+
+main.cpp
+
+
+typedef int (CFunCall::*CLASSFUNC)(int);
+
+int main(int argc, char *argv[])
+{
+
+    CFunCall   mCFunCall;//实例化类
+    CLASSFUNC mCfun;
+    mCfun=&CFunCall::ClassPrint;   //附值类的成员函数给定义的函数指针
+    (mCFunCall.*mCfun)(1);    //调用,注意调用的形式,要有类的实例
+2.普通函数指针调用
+这个比类函数指针更容易理解.直接上代码说明
+
+.h文件
+
+typedef int (*FunC)(int);//声明函数指针,带一个int参数,和返回一个整形数
+
+int Print(int);
+
+class FunCall
+{
+?
+public:
+    FunCall();
+    ~FunCall();
+    
+private:
+    FunC      mFun;      //定义函数指针
+};
+
+在.cpp中实现一个打印函数
+
+int Print(intdata)
+{
+    qDebug()<<"data"<<data;
+    return 0;
+}
+/////////调用//////////////////////////
+
+mFun=&Print;//将Print的函数地址给定义的函数指针.
+
+    (*mFun)(1);  //调用
+
+/////////////////////效果//////////////////
+
+
+typedef void (AFX_MSG_CALL CCmdTarget::*AFX_PMSG)(voi
+https://tieba.baidu.com/p/5871884651?red_tag=0445509923
+函数 指针 名称 前面 有一个 类 进行 限制，这是什么意思呢。
+
+C++中的:和*号
+https://www.cnblogs.com/opsing/p/3435957.html
+1.冒号（:）用法
+（1）表示机构内位域的定义（即该变量占几个bit空间）
+typedef struct _XXX{  
+unsigned char a:4;  
+unsigned char c;  
+} ; XXX  
+（2）构造函数后面的冒号起分割作用，是类给成员变量赋值的方法，初始化列表，更适用于成员变量的常量const型。
+struct _XXX{  
+_XXX() : y(0xc0) {}  
+};  
+myClass::myClass():b(1),a(b)  
+{  
+} 
+这样的执行结果a,b各是多少呢？b=1,a=1?不是，b=1而a是个随机数。这一点是相当重要的哦，一般在初始化列表中进行初始化时，初始化的顺序应与声明的顺序保持一致，防止出现不必要的错误。
+（3） public:和private:后面的冒号，表示后面定义的所有成员都是公有或私有的，直到下一个"public:”或"private:”出现为止。"private:"为默认处理。
+（4）类名冒号后面的是用来定义类的继承。
+class 派生类名 : 继承方式 基类名  
+{  
+    派生类的成员  
+};  
+继承方式：public、private和protected，默认处理是public。
+（5）条件语句(? :)
+与?构成条件语句，作用相当于if elsec=a>b?a:b;
+（6）语句标签
+通常跟goto配合使用，如：
+step1: a = f1();  
+....  
+goto step1; 
+2．双冒号（::）用法（1）表示“域操作符”
+
+例：声明了一个类A，类A里声明了一个成员函数void f()，但没有在类的声明里给出f的定义，那么在类外定义f时， 
+就要写成void A::f()，表示这个f()函数是类A的成员函数。
+（2）直接用在全局函数前，表示是全局函数 
+例：在VC里，你可以在调用API 函数里，在API函数名前加：：
+（3）表示引用成员函数及变量，作用域成员运算符
+例：System::Math::Sqrt() 相当于System.Math.Sqrt()
+3．星号（*）用法
+*一般被称作指针运算符，又叫反向取址运算符，与&作用相反
+指针，其实就是一个变量，只是它的值是另一个变量或是常量的地址罢了
+而*的作用便是把这个地址所存放的值取出，所以叫作反向取址运算符
+
+
+
+作用域运算符的用途
+https://blog.csdn.net/qq_43709111/article/details/90382084
+(作用域运算符)
+
+::——C++里的“作用域运算符”。
+（1）作为在类外写类的成员函数的函数名的一部分；比如声明了一个类A，类A里声明了一个成员函数void f()，但没有在类的声明里给出f的定义，那么在类外定义f时，就要写成void A::f()，表示这个f()函数是类A的成员函数。
+（2）:: 一般还有一种用法，就是直接用在全局函数前，表示是全局函数。当类的成员函数跟类外的一个全局函数同名时，在类内定义的时候，打此函数名默认 调用的是本身的成员函数；如果要调用同名的全局函数时，就必须打上::以示区别。比如在VC里，你可以在调用API函数时，在API函数名前加::。
+
+#include<iostream>
+using namespace std;
+
+class _myclass_
+{
+private:
+int num;
+public:
+void display(const int &a);  //声明函数
+};
+
+void _myclass_::display(const int &a)  //使用作用域运算符定义函数
+{
+    cout<<"display value is = "<<a<<endl;
+}
+_myclass_ _value_;
+int main() 
+{
+ 　　_value_.display(3);
+　　return 0;
+}
+
+（3）如果有两个同名变量，一个是全局的，一个是局部的，那么局部的变量在其作用域拥有较高的优先权，全局变量则被屏蔽。
+那如果我希望在局部变量的作用域里使用全局变量怎么办，这时就要用到::作用域运算符了。比如：
+
+#include<iostream>
+usingnamespace std;
+int x=100;
+int main()
+{
+    int x = 200;
+    _value_.display(3);
+    cout << "x is "<<x<<endl;    //输出main函数中的局部变量（main函数中默认屏蔽所有全局同名变量）
+    cout << "x is "<<::x<<endl;  //输出全局作用域变量
+    return 0;
+}
+
+
+
+
+
+void Student::show()    //在类外定义函数时要加上类名和作用域运算符
+
+耶耶耶 编辑 讨论 上传视频
+耶耶耶为DJ小可remix，原曲为primetime sexcrime-Earphones。两者性质不同。属于经典慢摇系列，比较出名，中文名字就叫《耶耶耶》，其它经典的还有《lonely》和《嘟啊嘟》。
+
+(Yeah yeah yeah, yeah yeah, yeah)
+
+void CDlgObjectDumpDlg::OnButton2() 
+{
+	// TODO: Add your control notification handler code here
+	CString msgtemp, msg;
+
+	CRuntimeClass * pClass;
+
+	pClass = RUNTIME_CLASS(CDlgObjectDumpDlg);
+	
+	for(int i =0; i++, pClass!=NULL;pClass = pClass->m_pfnGetBaseClass())  //pClass = CRuntimeClass::pFirstClass
+	{
+		
+		TRACE("i=%d pClass->m_lpszClassName =%s \n",i,pClass->m_lpszClassName);
+		//cout << pClass->m_lpszClassName << "\n";		
+		msgtemp.Format("i=%d pClass->m_lpszClassName =%s \n",i,pClass->m_lpszClassName);
+		msg = msg + msgtemp;
+		
+		TRACE("i=%d pClass->m_nObjectSize =%d \n", i,pClass->m_nObjectSize);
+		//cout << pClass->m_nObjectSize << "\n";
+		msgtemp.Format("i=%d pClass->m_nObjectSize =%d \n", i,pClass->m_nObjectSize);
+		msg = msg + msgtemp;
+		
+		//cout << pClass->m_wSchema << "\n";		
+	}
+
+	MessageBox(msg);
+}
+
+
+
+结构体和类，构造函数
+https://blog.csdn.net/shidamowang/article/details/80075307
+1.C的结构体和C++结构体的区别
+（1）C的结构体内不允许有函数存在，C++允许有内部成员函数，且允许该函数是虚函数。
+ ? ?所以C的结构体是没有构造函数、析构函数、和this指针的。
+（2）C的结构体对内部成员变量的访问权限只能是public，而C++允许public,protected,private三种。
+（3）C语言的结构体是不可以继承的，C++的结构体是可以从其他的结构体或者类继承过来的。
+C++,结构体除了可以包含变量外，还可以包含函数，能继承，能实现多态
+2.C++的结构体和C++类的区别-成员的访问控制差异
+（1）C++结构体内部成员变量及成员函数默认的访问级别是public,
+而C++类的内部成员变量及成员函数的默认访问级别是private。
+（2）C++结构体的继承默认是public，而c++类的继承默认是private。
+
+private私有成员只能被其自身成员访问
+protected保护成员只能在该类的派生类类体中使用
+类的友元可以访问类的任何成员
+友元类的所有成员函数都是友元函数，
+提供了不同类或对象的成员函数之间，类的成员函数与一般函数之间的数据共享
+友元函数定以后可以访问该类的所有对象的成员
+必须要在类定义时声明，friend double dist(point &m, point &n);
+友元成员-一个类的成员函数是另一个类的友元函数，
+友元类-class girl;
+
+在类中定义成员变量时，不能赋值，构造函数的主要功能是为对象分配空间，也可以为类成员变量赋值
+构造函数的重载，boy(int a, int b){...}
+拷贝构造函数-用一个已经存在的对象来初始化该类的新对象，point(point &p); //拷贝函数声明
+调用情况：1用类的对象去初始化给类的另一个对象，boy x2(x1);
+2函数的形参是对象，调用函数进行形参和实参的结合
+3函数的返回值是对象，函数执行完返回调用者
+析构函数-被声明是公有成员，释放分配给对象的内存空间，~boy(){...}
+	没有参数，没有返回值，一个类中只能有一个析构函数
+	在构造函数中用new分配空间，在析构函数中用delete释放空间
+
+
+
+结构体里面也有构造函数的吧啊？？？
+https://zhidao.baidu.com/question/608645879.html
+有的，其百实可以说结构体和度类一样，只不过结构体中知定义的变量或者道方法的默认访问版属性是public的，而类是private的。
+
+
+结构体本身就是一个class只不过所有成员的默认访问级别为public。它定义构造函数和普通class一样的
+https://zhidao.baidu.com/question/504612027.html?qbl=relate_question_5
+
+
+C++中结构体、联合体里能不能定义函数、构造函数？
+https://zhidao.baidu.com/question/264475375345138285.html
+结构体中能定义函数，但是结构体中没有构造函数这么一说。
+联合体中是不能定义函数的，就更没有构造函数了。
+
+C++的结构体是可以定义函数的，包括构造函数。C的结构体不可以定义函数，构造函数也不行。
+
+结构体是否有默认的构造函数？（没有，如果需要，需要自己写）
+https://blog.csdn.net/deniece1/article/details/89057093
+
+// node type used by winner tree
+
+#ifndef player_
+#define player_
+
+struct player  //竞赛树的每个外节点 
+{
+   int id, key; //id表示元素所在的顺串号，key表示元素的值 
+
+   operator int () const {return key;} //有了这个函数就可以像内建数据类型一样把player类型 强制/自动转换成int型了。 
+};
+
+#endif
+
+
+#include <iostream>
+#include "player.h"
+using namespace std;
+int main() 
+{
+	player a;
+	a.id=1;
+	a.key=2;
+//	player b=a;
+	//	player b(a);
+	//player b(1,2);
+	cout<<b.id<<endl;
+	cout<<b.key<<endl;
+}
+
+
+	
+*上面程序运行后，
+发现player b=a；以及player b（a）；都可以，但player b（1，2）会报错。
+可见，结构体不能默认生成构造函数，????
+但是结构体对象相互之间的赋值还是可以的。*
+
+
+
+
+
+量变到质变，看(书)多或伴(人)多熟，目标明确（目标不明确的话，如aoe单机多年没用过也不会) (v ok)
+
+2020.05.14
+
+卢广仲
+
+知乎下
+
+你根本不知道，中国今天有多难 霓红灯
+https://mp.weixin.qq.com/s/wV0Ja7LdbY-DXF2LsWGzBg
+有句话说，鸡蛋从外部打破，是食物，从内部打破，是生命。
+
+G:\BaiduNetdiskDownload\ART\work
+
+锐哥 2019/12/18 星期三 19:48:39
+罗马复兴平台下载
+http://hd.fxt365.com/down.html
+------------------------------
+IPX协议全自动安装器
+http://hdbbs.fxt365.com/thread-64423-1-1.html
+
+
+中午午休后，电脑黑屏打不开，只能强制电源键关机重启。中毒？ 单车时尔有小毛病，打印机年前装墨水后几个月才好用。
+
+花时间去努力(多方面MSDN,CSDN网站,百度,VC6Insight,MFC类库详解.chm ...)，坚持(几天或几星期)分析理解，
+一般(也有确实弄不懂的如股票:))总会弄懂原理的。如：MACD画线,CObject类等 (v ok)
+
+天天新发现进步(李加诚看到自己天天进步，他们原步)(v ok)
+
+MSDN -> MFC类库详解.chm -> 类的使用，类中常用函数的用法等。（v ok)
+
+查找,分析,理解 代码中的根源VC6代码实现原理过程。(v ok)
+
+D:\Program Files\Microsoft Visual Studio\VC98\MFC\Include\AFX.INL
+
+#ifdef _AFX_INLINE
+
+// CObject
+_AFX_INLINE CObject::CObject()
+	{ }
+_AFX_INLINE CObject::~CObject()
+	{ }
+_AFX_INLINE void CObject::Serialize(CArchive&)
+	{ /* CObject does not serialize anything by default */ }
+_AFX_INLINE void* PASCAL CObject::operator new(size_t, void* p)
+	{ return p; }
+#ifndef _DEBUG
+// _DEBUG versions in afxmem.cpp
+_AFX_INLINE void PASCAL CObject::operator delete(void* p)
+	{ ::operator delete(p); }
+#if _MSC_VER >= 1200
+_AFX_INLINE void PASCAL CObject::operator delete(void* p, void*)
+	{ ::operator delete(p); }
+#endif
+_AFX_INLINE void* PASCAL CObject::operator new(size_t nSize)
+	{ return ::operator new(nSize); }
+// _DEBUG versions in objcore.cpp
+#ifdef _AFXDLL
+_AFX_INLINE void CObject::AssertValid() const
+	{ /* no asserts in release builds */ }
+_AFX_INLINE void CObject::Dump(CDumpContext&) const
+	{ /* no dumping in release builds */ }
+#endif //_AFXDLL
+#endif //!_DEBUG
+_AFX_INLINE const CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, const CObject* pObject)
+	{ return (const CObject*)AfxDynamicDownCast(pClass, (CObject*)pObject); }
+#ifdef _DEBUG
+_AFX_INLINE const CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, const CObject* pObject)
+	{ return (const CObject*)AfxStaticDownCast(pClass, (CObject*)pObject); }
+#endif
+
+
+
+virtual void Serialize(CArchive& ar);
+
+void CSingleDocDoc::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+	}
+	else
+	{
+		// TODO: add loading code here
+	}
+}
+
+BOOL CObject::IsKindOf(const CRuntimeClass* pClass) const
+{
+	ASSERT(this != NULL);
+	// it better be in valid memory, at least for CObject size
+	ASSERT(AfxIsValidAddress(this, sizeof(CObject)));
+
+	// simple SI case
+	CRuntimeClass* pClassThis = GetRuntimeClass();
+	return pClassThis->IsDerivedFrom(pClass);
+}
+
+BOOL CRuntimeClass::IsDerivedFrom(const CRuntimeClass* pBaseClass) const
+{
+	ASSERT(this != NULL);
+	ASSERT(AfxIsValidAddress(this, sizeof(CRuntimeClass), FALSE));
+	ASSERT(pBaseClass != NULL);
+	ASSERT(AfxIsValidAddress(pBaseClass, sizeof(CRuntimeClass), FALSE));
+
+	// simple SI case
+	const CRuntimeClass* pClassThis = this;
+	while (pClassThis != NULL)
+	{
+		if (pClassThis == pBaseClass)
+			return TRUE;
+#ifdef _AFXDLL
+		pClassThis = (*pClassThis->m_pfnGetBaseClass)();
+#else
+		pClassThis = pClassThis->m_pBaseClass;
+#endif
+	}
+	return FALSE;       // walked to the top, no match
+}
+
+
+为什么struct默认是public,而class默认是private?
+https://blog.csdn.net/xiaxiaojing/article/details/79398299
+可能是这样的原因：
+
+1.struct的设计目的是让外部的程序访问其数据成员，class设计的目的之一是不让外部程序直接访问其数据成员。
+
+2.可能struct也是为了兼容C语言，如果设计成私有的，原来大量的C语言就无法使用了。
+
+
+酱紫(v ok)
+最佳答案: 酱紫为网络词语,意思可以译为“这样子”。
+
+CObject::
+
+炒米粉
+
+2020.05.13
+
+全编译下可以了。(v ok)
+
+CObject* pDoc = RUNTIME_CLASS(CMyDoc)->CreateObject();
+
+截止2020年4月14日，微信最多可以添抄加5000个好友（不包括群、及公众号个数）。进入微信【通讯录】，拉至通讯录列表底部，可以查看当前通讯录联系人总人数。
+
+微信的加好友也是有时间限制的，微信好友验证请求，有效期为3天，如果超过三天就会自动过期了，就没有办百法通过验证了。并且微信有自己的防骚扰的设置，如果添加同一个好友，连续6次左右发送好友申请，微信后台会自动屏蔽掉你的请求，并提示发送失败。
+
+CRuntimeClass::
+
+---- CRuntimeClass:: Matches (5 in 3 files) ----
+Arccore.cpp (vc98\mfc\src):CRuntimeClass* PASCAL CRuntimeClass::Load(CArchive& ar, UINT* pwSchemaNum)
+Arccore.cpp (vc98\mfc\src):void CRuntimeClass::Store(CArchive& ar) const
+Arcobj.cpp (vc98\mfc\src):		if ((pClassRef = CRuntimeClass::Load(*this, &nSchema)) == NULL)
+Objcore.cpp (vc98\mfc\src):CObject* CRuntimeClass::CreateObject()
+Objcore.cpp (vc98\mfc\src):BOOL CRuntimeClass::IsDerivedFrom(const CRuntimeClass* pBaseClass) const
+
+
+
+MFC六大关键技术
+https://www.cnblogs.com/gaohongchen01/p/4090137.html
+MFC六大关键技术包括：
+
+MFC Initialization —— MFC程序的初始化过程
+RTTI（Runtime Type Information）—— 运行时类型识别
+Dynamic Creation —— 动态创建
+Persistence ——永久保存（串行化、序列化）
+Message Mapping —— 消息映射
+Message Routing —— 消息传递
+
+
+MFC深入浅出-CObject类
+一、对运行时的支持
+如果要使用IsKinsOf则要求类实现：
+   1.DECLARE_DYNAMIC(CLASSNAME)宏
+   2.IMPLAMENT_DYNAMIC(CLASSNAME,BASECLASSNAME)宏
+二、对动态创建的支持
+在定义该类时，要实现：
+   1.DECLARE_DYNCREATE(CLASSNAME)宏.
+   2.定义一个不带参数的构造函数.
+   3.在类的实现文件中使用IMPLAMENT_DYNCREATE(CLASSNAME,BASECLASS)宏
+   使用时，先用RUNTIME_CLASS得到类的RUNTIME信息，再用CRuntimeClass的成员成员函数CreateObject创建一个该类的实例。
+
+
+美媒：数以万计美国人死于新冠病毒 特朗普满嘴谎言却有可能再次当选
+https://baijiahao.baidu.com/s?id=1665916916337777915&wfr=spider&for=pc
+任何从这些简报中能感到安慰的美国人，早已被特朗普灌醉。而清醒的人看见的和听到的是总统的本来面目：一个把所有的一切——包括堆积如山的尸体——当作舞台的“音盲”戏子。
+
+昨晚抖音花了时间(v ok)
+
+2020.05.12
+
+一个中小企业，往往最后得益的都是以前傻傻地留下来加班的那群人，那些精明的人早跑光光了，当老板苦过了之后，做大了，老板第一想到的就是跟他苦的人
+
+2002-2003年那会，刚毕业，我就是这样，每周六日免费加班，到了2004年的时候，终于坐上了技术经理的岗位
+
+当时那家公司，技术经理是什么什么工程院士，几个技术大佬又是清华大学、中山大学的，我只是个专科生，连做个小弟都不配的
+
+结果，被我跑赢了他们
+
+2003年那会，我入职时拿2.5k，他们拿6k
+
+到了2004年，我拿15k了，他们还是拿6k
+
+@岑茂洪   岑总，你这个是个例啊，对我们没什么参考价值的。
+1、你本来就是我们当中最牛逼的，别管什么学历不学历，技术上你绝对是一哥，当年拿15K，吓死人了，我们是10几年后才拿的15K，这个能力毋庸置疑，不可能只因为是老板重感情认可给你的。
+2、遇到好老板了，大部分老板都是反过来操作的，任劳任怨肯干的人可多了，跑出来的又有几个呢！
+
+我在每一个公司都是加班加点，任劳任怨的，都熬3年以上，然后几乎都是团队的人换了一遍，然后薪资就成了团队的倒数，加薪永远跟不上物价新招的薪酬都比较高。最后灰溜溜的跑了！没有遇到一个好老板！我是后悔没有2年内一换，这个才是加薪的普遍之道。努力是要的，加班也要，快速成长，快速往更好的平台走，是比较通用的成功套路。
+
+
+如果有身份证，就在微信里办
+深圳不动产登记 官方公众号
+
+你们的无房证明都搞定了吗？
+小孩的需要有身份证才能网上查询
+要不然得去现场打印
+说是可以在深圳不动产这个公账号下查询
+全家人都要
+我们家妹妹的身份证还没有
+得去现场打印
+
+
+尼玛，俺在家里：
+1、吃：是小孩子吃剩下的
+2、看：不准开电视
+3、手机：不准看手机
+4、睡：去书房睡
+复制 http://zzzccc.live/awW
+https://www.zzzttt.vip/archives/196.html
+
+叶子楣
+
+亿家直播 官网
+http://www.yjzbcloud.com/
+
+阿文_黄文敏:
+闲鱼二手网站
+
+买卖二手物品有以下的几款软件，如：闲转、闲鱼、58同城、赶集网、京东拍拍。可以根据需要进行使用。
+
+G:\Download
+
+F:\Users\Wendy
+
+妈妈戒指.
+
+cover罗军说空调不凉，以为模式不对，andy关窗，原来是窗打开了。(v ok)
+
+Alt+x 突然变为截图，以为是QQ，原来是UC浏览器（最近打开它可查它)(v ok)。
+
+去湿地公园冲过头，关键时刻放慢步伐想清楚再行动。(v ok)
+
+aoe阻升级,降人口(v ok)
+
+周末装WIN7忘备temp.txt(及时或周期备份好16号)。昨晚找济书，旁边书中夹(从实际出发)。今早听歌下意识知道下一首(熟能生巧?)。(v ok) (w)
+
+2020.05.11
+
+亲点约246类
+
+书上说大 约200MFC类.
+
+VC++的MFC类库有多少个类。 [问题点数：20分，结帖人a15119303304]
+https://bbs.csdn.net/topics/370068289
+232个，剩下个别极简单我都没算，当时在学校时数的，API数了2032个
+
+不钻牛角尖，放 (v ok)
+
+WINAPI PropSheetPage Example
+m_psp.psztemplate
+
+用CPropertysheet和CPropertyPage做属性页，怎样才能去掉Sheet下面的几个按钮阿？ [问题点数：20
+https://bbs.csdn.net/topics/70487452?list=604270
+//在afxpriv.h中定义的CDialogTemplate类
+CDialogTemplate dlgtemp;
+//装载第一页的对话框模版
+VERIFY (dlgtemp.Load (pPage->m_psp.pszTemplate));
+//获取对话框模版的字体信息
+CString strFace;
+WORD wSize;
+VERIFY (dlgtemp.GetFont (strFace, wSize));
+if (m_ftFont.m_hObject)
+VERIFY (m_ftFont.DeleteObject());
+//利用从第一页获得的字体信息创建成员变量字体对象
+VERIFY (m_ftFont.CreatePointFont (wSize*10, strFace));
+}
+
+//下面两个量是CPropertySheet成员变量
+CFont m_ftFont; /****界面统一字体***/
+RECT m_rcRect_page; /****界面统一大小***/
+
+
+
+
+
+@有一手?过来人，女人要么扣得住，要么你能低头，通情达理待人处事不错，不要错不多过得去，结婚生子后柴米油盐小孩养老的事一参合，不是你想得那么简单，三天两头吵闹，受不了还是会闹离婚的，特别是有了娃
+
+C & 位操作
+
+CPropertyPage::m_psp
+Remarks
+
+m_psp is a structure whose members store the characteristics ofPROPSHEETPAGE. Use this structure to initialize the appearance of a property page after it is constructed.
+
+For more information on this structure, including a listing of its members, see PROPSHEETPAGE in the Windows SDK Programmer’s Reference.
+
+
+Example
+
+// Declare a CPropertySheet object.
+CPropertySheet sheet("Simple PropertySheet");
+
+// Change the settings of the two pages to enable property sheet's 
+// Help button when the page is active.  Both CStylePage and 
+// CColorPage are CPropertyPage-derived classes.
+CStylePage style;
+style.m_psp.dwFlags |= PSP_HASHELP;
+
+CColorPage color;
+color.m_psp.dwFlags  |= PSP_HASHELP;
+
+sheet.AddPage(&style);
+sheet.AddPage(&color);
+
+// Display a modal CPropertySheet dialog.
+sheet.DoModal();
+
+
+
+感情亲情我是这么觉得的，用中国外交的话来说就是：我不想疏远，但我也不怕疏远。因为我不欠他们，倒是他们欠我。(v ok) (w)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+宝安区义务教育入学信用承诺书
+宝安区教育局：
+信用承诺是社会信用体系建设的重要内容，更是体现诚信守法的重要标志。本人谨作出以下承诺：
+本人在此次义务教育学位申请过程中，保证所提供的申请资料真实、合法，没有任何伪造、变造资料，或通过欺骗、窃取等非法及不正当手段获得相关资料的行为。如存在上述情形，贵单位有权将相关信息归集到宝安区公共信用信息平台进行公示和披露，列入本人的信用记录，且取消本次义务教育入读公办学校的资格。本人愿意承担由此产生的所有后果。
+
+承诺人姓名：              手机号码：
+承诺人身份证号码：
+承诺期限： 2020年5月14日至2021年5月13日
+监督方：深圳市宝安区信用促进会
+监督电话：0755-23201273
+
+承诺人签名：
+签订日期：      年  月  日
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+宝安区2020年秋季义务教育新生入学指引:
+https://mp.weixin.qq.com/s/9M_q7c7lqPOsFuXg0qZYUg
+（四）申请学位需提交的证明材料
+1.深圳户籍儿童
+(1)身份证明：儿童出生证，儿童及父母的户口本和身份证；
+
+(2)住房证明：儿童父母或其他法定监护人在学区购房（父母、祖父母、外祖父母或其他法定监护人有学区合法产权房【含政府出售的人才住房、安居房、经济适用房】或祖屋，且产权份额≥51%）或学区租房（父母或其他法定监护人在学区租房且经过备案）或有特殊住房（父母或其他法定监护人在学区有自建房、军产房、集资房、集体宿舍等）证明。学区内无房租房或有特殊住房（基础分为95分和85分）的学生需要提交房产信息登记部门本年度出具的父母或其他法定监护人和子女均没有本市商品房（含房产信息登记部门能查询到的私宅）的证明；
+
+（3）计划生育信息核验：深圳户籍儿童的家长需持相关资料在报名结束前到现居住地社区工作站申报并录入计划生育信息，计生核验不影响新生入学资格审核，只影响计生加分；
+
+（4）学籍信息：非深圳六年级毕业生，需提供原外地就读学校加盖公章的《学生学籍信息卡》或《小学毕业生登记表》或《学生手册》等相关证明材料。
+
+
+（二）家长网上报名（小一：5月18日—5月24日；初一：5月20日—5月26日）。
+
+1.家长登录报名系统：
+
+小一：https://bajjk.sz.edu.cn/visitbagbxyjz
+初一：https://bajjk.sz.edu.cn/visitbagbcyjz
+
+对照公办学校招生范围（招生范围查询网址：http://www.baoan.gov.cn/jyj/zwgk/jcjyk/xxgg/），根据自己的住址，选择对应的学校，按要求如实填写各项资料并上传证件材料扫描件。
+
+2.网上报名截止时间是：小一5月24日下午5时整，初一5月26日下午5时整，超过该时间报名系统将自动关闭，逾期未报名的不予补报。
+
+（三）信息初核（小一：5月25日—5月30日；初一：5月27日-6月1日）。
+
+1.不需要到志愿学校现场初核的情况：申请学位住房材料使用商品房房产证（或不动产权证）、安居型住房或房屋租赁凭证（或个人跟住建部门签订的公共租赁房合同）的家长，不需要到学校现场进行信息初核，只需将申请学位所需的所有入学证件材料扫描拍照，按要求上传至报名系统，学校将在网上对材料进行初审。
+
+2.需要到志愿学校现场初核的情况：申请学位住房材料使用祖屋或特殊住房（含军产房、集资房、自建房、集体宿舍等）的家长，需要到学校现场进行信息初核。家长网上报名时把申请学位所需的所有入学证件材料扫描拍照，按要求上传至报名系统后，携带学位申请表及各项资料的原件（另备一套复印件）提交给申请的学校，学校初审合格，开具回执。填报了第一批民办志愿学校的，使用特殊住房申请学位的家长到公办学校（第一志愿）进行初核，学校初审合格，开具回执。
+
+3.未按时向学校递交或上传初审材料视自动放弃学位申请；对不符合入学条件的学生，学校一律不受理其入学申请。
+
+4.家长按要求签订《宝安区义务教育入学信用承诺书》（下载模板签署后，上传至报名系统；模板下载网址：宝安区教育局基础教育科http://www.baoan.gov.cn/jyj/zwgk/jcjyk/rxbm/），申请人对申请材料的真实性负全部责任，提供虚假材料的，一经查实将取消学位申请资格并记录在案，涉嫌犯罪的，移交司法机关处理。
+
+
+（八）家长查询录取结果（小一、初一：7月23日-7月26日）。
+
+1.第一批民办志愿学校（7月23日）：家长登录报名系统或到填报的第一批民办志愿学校查看录取结果，各学校在7月23日下午3点前将本校录取名单公告在校门口显眼位置。
+
+2.公办学校（7月24日）：家长登录报名系统或到填报的公办第一志愿学校查看录取结果，各学校在当日下午3点前将本校录取名单公告在校门口显眼位置。
+
+3.第二批民办志愿学校（7月26日）：审核合格但未被公办学校录取的学生，请家长于7月26日下午3点后登录报名系统查看第二批民办志愿的录取结果。
+
+4.补征集志愿（7月27日）：分流工作完成后，如部分民办学校还有空余学位，符合公办就读条件未被录取的学生于7月27日下午5点前到原初审的公办学校（第一志愿）补征集民办学校志愿，各学区教育办组织进行第二次分流。如因特殊原因时间有调整，将在网上申请系统登录页面左侧公告，请家长留意。
+
+
+（九）新生报到注册（小一、初一：7月31日前）。
+
+在规定日期前，录取的新生到申请学校报到注册，具体时间由学校根据本校实际决定。逾期不注册的，视作自动放弃学位处理，不再安排学位。
+
+四、如何进行网上报名
+
+学生家长在规定时间内登录报名网站，网上申请义务教育公民办学校小一、初一学位。
+
+（一）第一批民办志愿学校：共1个志愿，为选报志愿，可在全区范围选择，不限学区，如符合条件且被录取，不能参加后续包括公办、第二批民办的录取，请家长了解收费及办学情况，慎重选择。具体的招生单位名单和招生计划，在报名系统开放后，可登录系统查看。
+
+学位积分由基础分和加分项两部分构成综合积分。
+
+1. 基础分
+
+根据申请人户籍和居住情况，设置8个基础分值：
+
+（1）宝安户籍，学区购房（父母、祖父母、外祖父母或其他法定监护人有学区合法产权房或祖屋，且产权份额≥51%，下同）：积105分。
+
+（2）宝安户籍，学区租房（父母或其他法定监护人在学区租房且经过备案，下同）或有特殊住房（含自建房、军产房、集资房、集体宿舍等，下同），并且父母双方或其他法定监护人在深圳无产权房（提交房产信息登记部门在入学当年出具的无房证明）：积95分。
+
+（3）宝安户籍，学区租房或有特殊住房，并且父母双方或其他法定监护人在深圳有产权房（即不能提交房产信息登记部门在入学当年出具的无房证明）：积70分。
+
+（4）深圳其他区户籍，学区购房：积100分。
+
+（5）深圳其他区户籍，学区租房或有特殊住房，并且父母双方或其他法定监护人在深圳无产权房（提交房产信息登记部门在入学当年出具的无房证明）：积85分。
+
+（6）深圳其他区户籍，学区租房或有特殊住房，并且父母双方或其他法定监护人在深圳有产权房（即不能提交房产信息登记部门在入学当年出具的无房证明）：积65分。
+
+（7）非深户籍，学区购房：积75分。
+
+（8）非深户籍，学区租房或有特殊住房：积60分。
+
+
+2.加分项
+
+（1）深圳户籍
+
+①居住时间加分：按申请学生家庭在学区连续居住的时间（月份）进行加分，居住每满1个月加0.1分。计算居住时间的起始日期是：提交房产证或不动产权证的，以证书右侧摘要及附记备注时间为准；提交购房合同的，按产权登记部门盖章日期为准；加分不封顶。提交租赁凭证证明材料的，以办理租赁凭证时登记备案的盖章落款日期为准，加分不封顶；提交特殊住房证明材料的，以社区或所在单位和街道相关部门出具的有效证明显示的入住日期为准，加分封顶5分。
+
+②计生情况加分：市卫健部门对申请入学儿童、少年的家庭计划生育信息核验结果为独生子女的，加2分，非独生子女及信息有误（含未登记信息）不加分。
+
+③户证情况加分：符合以下条件之一的，加0.5分：申请入学儿童、少年的父母或其他法定监护人双方均持有具有使用功能的深圳居住证；父母或其他法定监护人其中一方为深圳户籍，另一方持有具有使用功能的深圳居住证；父母或其他法定监护人双方均为深圳户籍。
+
+（2）非深户籍
+
+①社保时间加分：加分分值以社保部门出具的申请入学儿童、少年的父母或其他法定监护人参保证明中养老险和医疗险中同时缴纳时间为准，每满一个月加0.1分，补缴的不积分。加分不封顶。
+其中，申请小一的，父母或其他法定监护人至少一方持有有效的深圳居住证、缴纳社保（养老保险和医疗保险同时缴纳）年限满5年及以上的非深户籍人员子女，另加1分；申请初一的，父母或其他法定监护人至少一方持有有效的深圳居住证、缴纳社保（养老保险和医疗保险同时缴纳）年限满6年及以上，其子女为具有我市完整六年小学学籍的非深户籍小学毕业生，另加1分。
+
+②计生情况加分：市卫健部门对申请入学儿童、少年的家庭计划生育信息核验结果为独生子女的，加2分，非独生子女及信息有误（含未登记信息）不加分。
+
+③户证情况加分：符合以下条件之一的，加0.5分：申请入学儿童、少年的父母或其他法定监护人双方均持有具有使用功能的深圳居住证；父母或其他法定监护人其中一方为深圳户籍，另一方持有具有使用功能的深圳居住证；父母或其他法定监护人双方均为深圳户籍。
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+宝安区2020年秋季小一初一新生报名公告:
+https://mp.weixin.qq.com/s/J3fxDb4sz3WvLlmH4-C0_g
+
+需提交的证明材料请登录招生网站（http://www.baoan.gov.cn/jyj/），到“科室专栏”的“基础教育科”（http://www.baoan.gov.cn/jyj/zwgk/jcjyk/xxgg/）查看《宝安区2020年义务教育新生入学指引》。其他最新资讯也请登录网站查看或关注“宝安教育”微信公众号。
+
+1．家长网上报名（小一：5月18日—5月24日；初一：5月20日—5月26日）。
+2．信息初核（小一：5月25日—5月30日；初一：5月27日-6月1日）。
+3．部门审核（小一：5月31日—6月21日；初一：6月2日—6月21日）。
+4．家长核对（小一、初一：6月22日—6月24日）。
+5．部门复核（小一、初一：6月28日—7月12日）。
+6．学位安排与核查（小一、初一：7月13日-7月22日）。
+7．家长查询录取结果（小一、初一：7月23日－26日）。
+8．新生报到注册（具体日期学校自定，小一、初一：7月31日前）。
+
+受疫情的影响，今年的招生宣传将通过“空中课堂”方式开展，请家长务必参加由学校组织的招生政策宣讲会。同时，为了减少人员聚集，信息初核环节，我区部署了证件上传“云审核“系统，家长在网上报名填报信息的同时还需要上传所有资料、证件的扫描件或照片，请家长在报名前，提前将纸质证件扫描或拍照保存。具体要求请家长及时查看《新生入学指引》，切勿错过报名时间和初核时间。
+
+扫描下方二维码查看
+宝安区2020年秋季义务教育公办学校招生计划及招生范围
+↓↓↓↓↓↓
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+(黄明济小一报名)
+
+https://bajjk.sz.edu.cn/visitbagbxyjz
+新生身份证件号: 440229201406213513
+密码: Hmj140621@
+
+宝安区2020年义务教育新生入学指引
+http://sz.bendibao.com/qinzi/202057/836058.shtm
+
+
+需提交的证明材料请登录招生网站（http://www.baoan.gov.cn/jyj/），到“科室专栏”的“基础教育科”
+（http://www.baoan.gov.cn/jyj/zwgk/jcjyk/xxgg/）查看《宝安区2020年义务教育新生入学指引》。
+其他最新资讯也请登录网站查看或关注“宝安教育”微信公众号。
+
+
+全球抗疫观察之六十六：全球确诊逾383万 特朗普新检测结果为阴性
+https://new.qq.com/omn/20200508/20200508A01YZ800.html
+美国累计确诊1252911例 特朗普一名贴身随从感染新冠病毒
+
+华盛顿邮报：谁能从特朗普的无能女婿手里拯救美国人？
+https://new.qq.com/omn/20200507/20200507A02YYX00.html
+选了一个奸商当总统，就是选择了他的管理模式，这就是家族式企业的管理模式，任人唯亲再正常不过。你们选的总统，含着泪也要熬到他干完。对于我来说，我更希望他连任，这样奇葩的领导人百年难得一见，现在我一天看不到他的雷语雷事就觉得像少了些什么，生活就是要这样的调味料。
+我是台上皇 : 从美国报纸来看，美国疫情绝对很严重
+不是一般的严重
+因为记者都急了，都急了
+美国人，有正常思维的人都急了
+美国已经到了必须与新冠病毒决战的时候了
+
+
+2020.05.08
+
+类成员变量使用带参数的构造函数时
+https://www.iteye.com/blog/tcspecial-1554628
+ C++不允许在类定义中初始化成员变量, 必须在构选函数中初始化, 这就带来一个问题, 如果我一个带参数的类怎么声明了 (v ok)
+
+1. 头文件
+
+Java代码  收藏代码
+private:  
+    int age;  
+    ParamClass param; // 只有一个带参数的构造函数  
+   
+
+  2. 源文件
+
+Cpp代码  收藏代码
+MyWiget:MyWidget(parent):param("hello"){ }  
+ 在类的构造函数内部,给param变量赋值是不恰当的, 因为此时变量已经构造完成了.只能在初始化列表中传递参数 ( v ok)
+
+
+
+
+
+关于属性表对话框步骤
+https://www.cnblogs.com/zhanjxcom/p/4423191.html
+
+关于属性表对话框步骤
+1.每个属性页关联一个类，比如有两个属性页，对应2个类，CMyPage1,CMyPage2，注意重载CPropertyPage 类的函数
+2.添加一个新类CMySheet，利用mfc的类向导，从CpropertySheet继承
+3.在CMySheet中定义两个变量，CMypage1 m_p1;CMypage2 m_p2，注意引入头文件，在构造函数中分别声明一个对象。
+4.在CMysheet的构造函数中，添加如下语句：AddPage(&m_p1);AddPage(&m_p2)
+5.经过上面的步骤，CpropertySheet类完成了，在需要的地方调用。举个例子：
+CMysheet m_sheet(_T("个人资料"));
+m_sheet.DoModal();
+就可以了。。
+
+注：关于DoModal
+  页添加到特性表按希望它们的出现从左到右的顺序。
+
+AddPage 添加到 CPropertySheet 的 CPropertyPage 对象对象列表页，但并不实际创建页的窗口。 框架推迟窗口中创建该页，直到用户选择该页。
+
+使用 AddPage时，添加属性页，CPropertySheet 是 CPropertyPage的父级。 若要从属性页的属性表若要访问，请调用 CWnd::GetParent。
+
+等待属性表窗口中创建一个名为 AddPage并不是必需的。 通常，在调用 DoModal 或 创建前调用 AddPage。
+
+如果在显示属性页之后调用 AddPage，选项行将反映新添加的页。
+
+
+
+
+BOOL CDlgCProperty0001Dlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+...
+	CMySheet m_sheet(_T("个人资料"));	//(v ok)
+	m_sheet.DoModal();
+	
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+class CDlgCProperty0001Dlg : public CDialog
+{
+// Construction
+public:
+
+//	CMySheet m_sheet(_T("个人资料")); (x no)
+...}
+
+
+
+CPropertySheet 与CPropertyPage
+
+\\TSCISERVER\software\MSDN2001_Jan
+
+求学习Win32 SDK(C++)书籍
+https://zhidao.baidu.com/question/576176138.html
+《windows程序设计》
+Visual C++ 6.0 技术内幕
+
+书上说大 约200MFC类.
+
+VC++的MFC类库有多少个类。 [问题点数：20分，结帖人a15119303304]
+https://bbs.csdn.net/topics/370068289
+232个，剩下个别极简单我都没算，当时在学校时数的，API数了2032个
+
+2020.05.07
+
+
+厉害了！这几点教你从孩子的画看出孩子的性格！
+https://www.sohu.com/a/130384473_669259
+喜欢画折线的孩子：
+分析能力比较强，思维敏捷，反应速度快。但容易陷入相对紧张的状态之中，情绪不稳定，时好时坏，让父母难以捉摸。
+
+喜欢水蓝和白色系列儿童有完美主义倾向。有大约15%的女孩和6%的男孩有较严重的完美主义倾向，他们无一例外地喜爱白色，以及浅到极点的水蓝。热爱白色的孩童几乎都有洁癖：不愿别的小朋友上他的床、用他的毛巾或借用他的文具，他本人的爱干净程度也是一流，夏天时一天要换三套白色衣裤，五双白袜子。他总是在努力交朋友，但很快又因为不能容忍朋友的缺点而否定别人。热爱白色的小孩与父母的亲子关系也常常令人尴尬。
+
+
+
+G:\BaiduNetdiskDownload\win32api\MSDN\help2.chm 双击后打不开。(v ok)
+
+如何不用手机验证就可以在电脑上登录微信
+https://jingyan.baidu.com/article/f71d6037978f1b1ab641d132.html
+先用你的防护软件下个“靠谱助手”。
+
+没带手机如何用电脑登微信
+https://jingyan.baidu.com/article/67508eb497d93edccb1ce414.html
+1,电脑上网搜索、下载、安装一个手游助手（例如腾讯手游助手），即安卓手机模拟器，可以在电脑上虚拟一个安卓手机。
+2,安装并进入手游助手后，在搜索栏搜索“微信”
+
+08:10:36
+
+2020.05.06
+
+启动任务管理器->应用程序->选中或全选(ctrl or shift) ->结束任务(不会保存)
+
+任务栏属性->任务栏按钮->始终合并,占满时合并，从不合并
+
+VC++的MFC类库有多少个类。 [问题点数：20分，结帖人a15119303304]
+https://bbs.csdn.net/topics/370068289
+232个，剩下个别极简单我都没算，当时在学校时数的，API数了2032个，，
+
+
+proxyTool_Indicator.cpp
+
+BOOL CproxyTool_Indicator::CreateObj( IUnknown** ppv ) 
+{
+	if( ppv==NULL )
+		return FALSE ;
+
+	*ppv = NULL ;
+	HRESULT ret = CoCreateInstance( __uuidof(TTTool_Indicator) /*CLSID_TTTool_Indicator*/, 
+		   NULL, CLSCTX_ALL,
+		   IID_IUnknown, (LPVOID*)ppv );
+	if( ret!=S_OK || *ppv==NULL )
+	{
+		TRACE( "Tool_Indicator create faile!\r\n" ) ;
+		return FALSE ;
+	}
+	return TRUE ;
+
+
+}
+
+BOOL CAnlyTech_MACD::CreateTools()
+{
+
+	DelTools() ;
+	MACDOPT* pOpt = GetOpt() ;
+	if( pOpt==NULL )
+		return FALSE ;
+
+	#if _Add_Signal_CAT_TTD_TTW
+	for( int i=0;i<INDICATORTOOLS;i++ )
+	{
+		CproxyTool_Indicator::CreateObj( &(m_pIndicatorTool[i]) ) ;
+		if( m_pIndicatorTool[i]==NULL )
+		{
+			ATLTRACE( "m_pIndicatorTool create faile!\r\n" ) ;
+			return FALSE ;
+		}
+		CproxyTool_Indicator pIndicator(m_pIndicatorTool[i]);
+		if( i<2 )
+			pIndicator.PutIndicatorOpt( pOpt->optCurves[i] ) ;
+		else
+		{	
+			if(i == 2)
+			{
+				pOpt->optHistogram[0].wIndicatorType = _Indicator_Histogram ;
+				pIndicator.PutIndicatorOpt( pOpt->optHistogram[0] ) ;
+			}
+			else
+			{
+				pIndicator.PutIndicatorOpt( pOpt->optHistogram2 ) ;
+			}
+		}
+
+	}
+#else
+...}
+
+一汽丰田的卡罗拉和广汽的雷凌,车辆参数几乎一样,不知那个性价比更高?... 一汽丰田的卡罗拉和广汽的雷凌,车辆参数几乎..
+.两车不同之处 在售的雷凌和卡罗拉都是基于...
+
+
+有人说，在国内有两大阵营，买丰田车的消费者，会鄙视开本田的车主，反而不会嘲笑开大众的人。开本田车的人，总喜欢秒天秒地，不把所有人放在眼里。开飞度的总以为自己开了超跑GK5，开思域的总喜欢挑衅宝马M3、奔驰C63，当然你可以当成是调侃，但是，生活中这种现象确实存在。
+
+
+	#if 1 // _Add_Signal_CAT_TTD_TTW
+
+			if( pScalY2!=NULL && pOpt->byDisplayType!=0 )
+			{
+				CproxyScaling scaleY2( pScalY2 ) ;
+				if( scaleY2.CalPhyVal( 0.0f, y )==TRUE && y>rect.top && y<rect.bottom ) 
+				{
+					COMPONENTOPT& opt = pOpt->optHistogram[1].opt ;
+					CPen pen ;
+					g_CreatePen( &opt, pen ) ;
+					dc.SelectObject( &pen ) ;
+					dc.MoveTo( rect.left+1,	y ) ;
+					dc.LineTo( rect.right,  y ) ;
+					//dc.SelectObject( pOldPen ) ;
+				//}
+
+					int count = (rect.right - rect.left) / 120;  // 30 120
+					int r = 120/2; // 半径 r
+
+					//opt = pOpt->optCurves[2].opt ;
+					//g_CreatePen( &opt, pen ) ;
+
+					for(int i = 0; i< count; i++)
+					{
+						int cx = rect.left + 120 * i + r; // // 圆心 cx  // 圆心 y
+						dc.Arc(cx-r,y-r,cx+r,y+r,cx-r,y,cx+r,y);//下半圆弧.
+						dc.Arc(cx-r,y-r,cx+r,y+r,cx+r,y,cx-r,y);//下半圆弧
+
+						//int cx = 192, cy = 192; //圆心
+						//int p = 64; //半径
+						//dc.Arc(cx-p,cy-p,cy+p,cy+p,cx-p,cy,cx+p,cy);//下半圆弧.  // cy+p,cy+p 错了.
+						//dc.Arc(cx-p,cy-p,cy+p,cy+p,cx+p,cy,cx-p,cy);//下半圆弧
+					}
+					
+					dc.SelectObject( pOldPen ) ;
+				}
+
+			}//end if( pScalY2!=NULL )
+#endif
+
+
+
+VC++ CDC::Arc 汉化参数明说及举例
+https://blog.csdn.net/zhanjx1314/article/details/7927291/
+BOOL Arc( int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4 );
+BOOL Arc( LPCRECT lpRect, POINT ptStart, POINT ptEnd );
+x1为有效矩形左上角X坐标点.y1为有效矩形左上角y坐标点.x2为有效矩形右下角x坐标点.y2为有效矩形右下角y坐标点.
+x3为画圆弧起始x坐标点.y3为画圆弧起始y坐标点.x4为画圆弧终点x点,y4为画圆弧终点y点.
+x1,y1,x2,y2为画圆弧矩形区域.x3,y3,x4,y4为画圆弧起始点,终点. Arc 画圆弧是按逆时针方向.
+LPCRECT lpRect 为矩形区域. POINT ptStart 指坐标系上一点.即圆弧起始点.POINT ptEnd为终点.
+如题:两圆弧组成一个圆
+例1.
+
+int cx = 192, cy = 192; //圆心
+int p = 64; //半径
+
+dc.Arc(cx-p,cy-p,cy+p,cy+p,cx-p,cy,cx+p,cy);//下半圆弧.
+dc.Arc(cx-p,cy-p,cy+p,cy+p,cx+p,cy,cx-p,cy);//下半圆弧
+
+例2.
+
+dc.Arc(CRect(128,128,256,256),CPoint(128,192),CPoint(256,192));
+dc.Arc(CRect(128,128,256,256),CPoint(256,192),CPoint(128,192));
+
+自由人:
+@待定?好好把握有生之年
+你十句不离本行，想到就去做
+嘴上开炮难瘦
+信誉的重要性(v ok)
+
+
+MFC如何画圆？ [问题点数：20分，结帖人mei1977mei]
+https://bbs.csdn.net/topics/320100656
+ CDC *pDC;
+	pDC=GetDC();
+	CPen GreenPen(PS_SOLID,1,RGB(0,255,0)),*pOldPen;
+	pOldPen=pDC->SelectObject(&GreenPen);			//选择画笔
+	int x1,x2,y1,y2;
+	pDC->Arc(CRect(x1,y1,x2,y2),CPoint(x1,y1),CPoint(x1,y1));
+	pDC->SelectObject(pOldPen);
+	GreenPen.DeleteObject();
+	ReleaseDC(pDC);
+
+Arc()是用来画圆弧的，但是起始点为同一点，或弧度为360°的就是一个圆；
+这个函数和Ellipse（）相比而言，它不会用画刷填充圆内部区域，即画的图就是一个圆的曲线，内部仍是透明的，不会遮盖掉你其他的画图内容。
+Arc（）具体怎么用，建议看看MSDN
+
+组件工程模块就像工厂流水线上的一个加工零件？
+
+看着我小孩拼积木变形汽车，突然来了句：我就不信了我还拼不了你。 想起多年前自己的一句话：我就不信了股票还赚不了钱。
+现在渐渐明白这句话的含义其实是：我就不信了我还中不了一等奖彩票。
+
+http://msdn.microsoft.com
+--->
+Visual C++ 文档
+https://docs.microsoft.com/zh-cn/cpp/?view=vs-2019
+
+CSDN: Chinese Software Developer Network
+
+MSDN是Microsoft Software Developer Network的简称。这是微百软的针对开发度者的开发计划。你可以在http://msdn.microsoft.com看到有关软件开发的资料。在VC++ 6.0中包括问MSDN Library的光盘答，其中包括VC++的帮助文件和许多与开发相关的技术文献回，学习VC++编程经常要搜索一答下MSDN Library。MSDN Library每个季度更新一次，可以向微软订阅更新光盘。
+
+Win32 API
+https://baike.baidu.com/item/Win32%20API/5087100
+标准Win32 API函数可以分为以下几类：
+1、窗口管理
+2、窗口通用控制
+3、Shell特性
+4、图形设备接口
+5、系统服务
+6、国际特性
+7、网络服务
+8、虚拟键盘
+
+
+c语言库函数与windows API 的区别？
+https://zhidao.baidu.com/question/462964119.html?qbl=relate_question_6
+简单的理解：
+1、使用Windows API编写的程序，在其他操作系统（例如Linux）下就无法运行了。
+2、如果只用C语言库函数编写的程序到其他操作系统下（支持标准C语言的）也可以运行。
+C 库函数 是指 C 语言本身支持百的一些基本函数，通常是汇编直接实现 的。 。 API 函数是操作系度统提供给用户方便设计应用程序的函数，实现一问些特定的答功能， API 函数也是 C 语言的函数实现的。 他们之间区别是：API 函数是针对操作系统的回，C 语言函数则是针对 C 语言本 身的。 C语言库函数是API的上层！答
+
+Windows一共有多少个公开的API
+https://zhidao.baidu.com/question/1243749787300178699.html
+Windows的Api总数达一万以上，不同新版本都会增加上千个新api。
+Windows API所提供的功能有以下几类：
+
+VC++中的API函数一共有多少个?至今
+单独的VC++的API函数.不要其它的程序的
+是几百还是几千,还是几万?
+https://zhidao.baidu.com/question/40775616.html
+windows api大约有8万，vc能调用其中绝大部分
+
+
+windows api 到底有多少函数？
+https://zhidao.baidu.com/question/337278077.html
+windows api中常用的函数有160个，记住常用的就行没人能记住所有的，有本书知叫做《Windows API——函数、接口、编程实例》范文道庆编著的，这里面的函数基本都是常用的函数，函数名字大都数需要记住。学习Windows API编程庆幸的是有MSDN，里面函数的功能用法都写得专比较清楚，这使得我们知道有这个函数且能记住函数部分名字就可以了。学习MFC学得好一点都要至少半年，windows api至少得学习一年以上才能有点自己的理解，而不属是只会用不理解
+很多，随着win的更新换代也越来越多，全背下来不现实，一些常用的背下来。然后再带上个手册查询
+
+
+window api 函数一共有多少个?
+https://zhidao.baidu.com/question/557023842.html
+好像是2千多吧，具体数字不知道。还有未公开的api呢
+追问
+我打算一下学习windows api，这位有朋友有什么好的建议吗?
+追答
+不用考虑学全，你根本不可能都记住。
+API就像字典里的成语，需要的时候现查就可以。想学windows编程的话，就看MSDN最权威，不是指API说明。
+MSDN里对编程分类讲的很清楚很全面，每一类里涉及的API都会提及。
+windows api 有数千种，你想学api可以去看一下windows 程序设计之类的书
+
+
+VC6.0中英文完整版
+VC++ 6.0 msdn中文版
+
+https://docs.microsoft.com/zh-cn/previous-versions/f7yhsd2b(v=vs.120)
+https://docs.microsoft.com/zh-cn/cpp/atl/reference/adding-a-new-interface-in-an-atl-project?view=vs-2017
+
+08:07:30
+
+2020.05.05
+
+27岁包租婆坐拥400栋楼月入2亿？当事人：太夸张，但确实白手起家
+https://new.qq.com/omn/20200504/20200504A0A2LK00.html?pgv_ref=aio2015&ptlang=2052
+上大学时，D姐家庭条件不是特别好，为了生活，她做各种兼职，最多的时候一个人打6份工。赚了一些钱后，D姐利用假期出国旅游提高视野，在旅行中，她发现国外的民宿做得特别好，而国内发展的则很一般。回国后，他在大学附近租了一个3室一厅的房子，一间留给自己，另两间租给了别人。D姐还找人做了一个房源网站，专门收集房源信息。
+
+在互联网创业高峰的前几年，D姐还做了一个跑步APP，结果太烧钱，到大学毕业之后，D姐不仅没赚钱还负债200多万。
+
+负债之后的D姐决心要做一个稳定的赚钱项目，她开始选择了做房屋中介，之前做的房源网站给她提供了很大的帮助，因为那里有很多的房主信息。后来她选择做了长租公寓，第一栋楼的租赁权拿到后，她把长租房改成短期房，运营得很好，后来她又做了第二栋楼、第三栋楼。钱不够就找相熟的朋友来投资、合作。
+
+CImagelist 基本用法
+https://blog.csdn.net/h490516509/article/details/95192655
+https://www.cnblogs.com/lidabo/archive/2013/01/10/2855388.html
+
+(1)从程序中资源文件中添加图标和位图图像如下所示（通常这是最为简单直观的方法）：
+// 创建一个CImageList类的指针变量
+CImageList* pImageList;
+pImageList = new CImageList();
+pImageList->Create(32, 32, ILC_COLOR32, 0, 4); // 必不可少
+
+// 添加图标，图标可以随图像列表大小自动拉伸
+pImageList->Add(AfxGetApp()->LoadIcon(IDI_ICON1));
+pImageList->Add(AfxGetApp()->LoadIcon(IDI_ICON2));
+
+// 添加位图，并使黑色为透明色,如果图像列表大小和位图大小不一致可能会导致天添加失败
+CBitmap bmp;
+bmp.LoadBitmap(IDB_BITMAP1)
+pImageList->Add(&bmp, RGB(0, 0, 0));
+bmp.DeleteObject();
+bmp.LoadBitmap(IDB_BITMAP2)
+pImageList->Add(&bmp, RGB(0, 0, 0));
+
+(2)从外部文件中添加图标和位图图像代码如下所示（这种方法可以是可执行程序更小，便于发行）
+
+HBITMAP hBitmap;
+CBitmap *pBitmap;
+CString FilePathName = "e:/TIME.bmp";
+pBitmap = new   CBitmap;
+//从文件导入位图
+
+HBitmap=(HBITMAP)LoadImage(AfxGetInstanceHandle(),FilePathName,
+
+IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
+pBitmap->Attach(hBitmap);
+m_pImageList->Add(pBitmap, RGB(0,0,0));
+
+
+
+
+
+
+
+MFC：CComboBoxEx使用总结
+https://blog.csdn.net/hisinwang/article/details/45752989
+m_imglist.Create(16, 16, ILC_COLORDDB, 2, 2);//ILC_COLORDDB会比较好点,其他值若设置不正确有可能失真
+m_imglist.Add(AfxGetApp()->LoadIcon(IDI_ICON1));
+m_imglist.Add(AfxGetApp()->LoadIcon(IDI_ICON2));
+m_cbex.SetImageList(&m_imglist);
+
+COMBOBOXEXITEM cbexItem;
+memset(&cbexItem, 0, sizeof(cbexItem));
+cbexItem.mask = CBEIF_TEXT | CBEIF_IMAGE | CBEIF_SELECTEDIMAGE;
+for (int i=0; i<=2; ++i)
+{
+    cbexItem.iItem = 0;          //Index
+    cbexItem.iImage = 0;         //Normal state image index
+    cbexItem.iSelectedImage = 1; //Selected state image index
+    CString cstrText;
+    cstrText.Format(TEXT("%d"), i);
+    cbexItem.pszText = cstrText.GetBuffer();
+    m_cbex.InsertItem(&cbexItem);
+}
+
+
+
+那有.16X16的BMP格式的图片
+https://wenwen.sogou.com/z/q807789025.htm?ch=ww.xqy.xgzs&pid=ww.xqy.xgzs
+最简单的就是用QQ聊天时候的截图工具，就是打开QQ然后按CTRL+ALT+A然后就可以选择截取部分了，上面还有大小的数字，你可以看着显示到16X16了就可以点保存就OK了
+
+CComboBox和CComboBoxEx用法介绍
+https://blog.csdn.net/lab131415926/article/details/41820369
+CComboBoxEx为CComboBox的子类，在MSDN中是这样介绍的：CComboBoxEx类扩展了组合框控件通过提供支持图像列表。通过使用CComboBoxEx创建组合框控件,不再需要实现自己画的代码。相反,使用CComboBoxEx访问图像从一个图像列表
+
+定义初始化图像列表并将图像列表选入到控件中
+	CImageList  m_img;
+	m_img.Create(IDB_BITMAP2,16,2,ILC_COLOR24);
+	m_combex.SetImageList(&m_img);
+
+插入一行文本，这里不能用Addstring
+
+	  COMBOBOXEXITEM   Item;  
+	  Item.mask   = CBEIF_IMAGE|CBEIF_INDENT|CBEIF_OVERLAY|CBEIF_SELECTEDIMAGE|CBEIF_TEXT;  
+	  Item.iImage=1;
+  	  Item.iSelectedImage=0;
+	  Item.iOverlay =1;
+	  
+	  Item.pszText   =   (LPTSTR)(LPCTSTR)(_T("测试"));  
+	  Item.iItem   =   0;//index    
+	  m_combex.InsertItem(&Item);   //
+
+
+
+VSS点击项目Show History... 没有diff菜单。 点某个具体文件Show History才会有diff功能菜单。
+
+MACD去掉H-signal
+
+Andy 16:06:56
+@keung 你测试一下，MACD去掉H-signal
+
+
+在这个节骨眼上，日本更尊重日本民众的生命权。美国的老特就是出来搞笑的单口相声演员
+http://dy.163.com/v2/article/detail/FBMR678B05504DP0.html
+
+Andy 2020/5/4 星期一 10:31:17
+TTDlgs ，chartAnlytech 如果没问题了，就把它们check in到sourcesafe
+
+Andy 2020/5/4 星期一 10:31:47
+写fixlog 和 加上label
+
+awendy 2020/5/4 星期一 10:32:54
+哦，好的。
+
+2020.05.04
+
+使用MFC Custom Control实现界面的自绘
+http://shanewfx.github.io/blog/2012/11/23/mfc-custom-control/
+
+MFC 自定义控件使用实践（1）
+https://blog.csdn.net/xiaolongwang2010/article/details/11649613
+以前在对话框窗体上绘制图形都是先自定义一个继承CView类的绘图类，然后把这个类绑定到对话框上的一个静态控件上来做， 
+今天突然发现其实直接使用MFC的自定义控件来做更简单。如何使用自定义控件呢？
+
+首先创建一个MFC对话框工程Demo,然后在资源视图中打开这个对话框，在Toolbox里面把Custom Control 控件拖拽到窗体上，
+注意，如果忘记在MyCustomControl 构造函数调用 RegisterWndClass();
+或者没有创建关联custom control 自定义控件和Demo应用程序的控制变量m_drawpad, 此时直接F5的话， 窗口是创建失败的，此时对话框也不会显示！
+ 必须要记得把上面两步做了，才能成功创建窗口对话框！
+
+
+
+VC MFC(Custom Control)自定义控件
+https://blog.csdn.net/xiaolongwang2010/article/details/11667551
+关于Custom Control自定义控件的介绍，有一篇文章感觉不错，不过是英文的，英语不好的也没关系，不是有“有道”吗？再说了，我们只要看代码就行了，而且步骤也就那么几步，结合教程图片稍微猜一下也就知道了。
+
+原文地址：http://www.codeproject.com/KB/static/CustomControl.aspx
+
+接下来我把上面教程的操作步骤简单描述一下：
+
+首先往对话框添加一个“自定义控件”，然后右击该控件选择“建立类向导”，在弹出的对话框点击“Add Class...”，选择“New...",
+
+之后“Name"项填CMyCustomControl, “Base Class"选择generic CWnd,点确定。
+
+给CMyCustomControl类添加如下函数：
+
+BOOL CMyCustomControl::RegisterWndClass()
+{
+ WNDCLASS windowclass;
+ HINSTANCE hInst=AfxGetInstanceHandle();
+ if(!::GetClassInfo(hInst,"MyDrawPad",&windowclass))
+ {
+  windowclass.style=CS_DBLCLKS;
+  windowclass.lpfnWndProc=::DefWindowProc;
+  windowclass.cbClsExtra=windowclass.cbWndExtra=0;
+  windowclass.hInstance=hInst;
+  windowclass.hIcon=NULL;
+  windowclass.hCursor=AfxGetApp()->LoadStandardCursor(IDC_ARROW);
+  windowclass.hbrBackground=::GetSysColorBrush(COLOR_WINDOW);
+  windowclass.lpszMenuName=NULL;
+  windowclass.lpszClassName="MyDrawPad";
+  if(!AfxRegisterClass(&windowclass))
+  {
+   AfxThrowResourceException();
+   return FALSE;
+  }
+ }
+
+return TRUE;
+
+}
+
+在MyCustomControl类构造函数中调用RegisterWndClass函数，如下：
+
+CMyCustomControl::CMyCustomControl()
+{
+ RegisterWndClass();
+}
+
+接着右击对话框里“自定义控件”，选择属性，“种类”框里填上MyDrawPad（窗口类）。给对话框类添加一个CMyCustomControl类对象。如：
+
+CMyCustomControl m_drawpad;（记得包含头文件）。对话框类的DoDataExchange函数里添加如下语句：
+
+void CThirdDlg::DoDataExchange(CDataExchange* pDX)
+{
+ CDialog::DoDataExchange(pDX);
+ //{{AFX_DATA_MAP(CThirdDlg)
+  // NOTE: the ClassWizard will add DDX and DDV calls here
+ //}}AFX_DATA_MAP
+ DDX_Control(pDX,IDC_CUSTOM1,m_drawpad);//IDC_CUSTOM1为自定义控件的ID号
+}
+
+到了这里，自定义控件的基本问题算是解决了。可自行给CMyCustomControl类添加消息响应函数，运行一下吧。
+
+ 自定义控件仿工具栏
+
+标题名是仿工具栏控件，其实也只是仿下工具栏那个模式而已，想一下，工具栏类里有那么多个函数，能仿得过来吗？
+
+
+
+MFC基于Dlg的工程拖了一个Custom Control到界面上,程序就运行不起来了。 [问题点数：40分，结帖
+https://bbs.csdn.net/topics/380107887
+
+
+VC里的Custom Control
+https://blog.csdn.net/hbxtlhx/article/details/3931663
+VC里的Custom Control的使用很简单，用鼠标拖动到窗体上，然后设置其“Class”属性为已注册的窗口类，比哪Edit、Button等等。因为像Edit、Button等控件可以很容易的画到窗体上，而对继承于CWnd的自定义窗口类则没有办法直接用鼠标画到窗体上，这时Custom Control就用上了，只要类是使用RegisterClass注册后就能被使用，如：
+
+这时保存在CustomControl的Class属性上输入MyWindow后，程序运行正常。
+
+其实我们可以不用这么“麻烦”的来使用自定义类。只一个SubclassWindow就搞定了。使用方法：
+
+１：定义我们需要类，比如从CWnd继承一个新的类MyWindow、并编写自己的代码实现。
+
+２：在窗体上放任何一个控件（目的是使用这个控件的大小及位置），比如可以放一个Static在窗体上。为控件添加一个变量，变量类型为MyWindow，然后在代码的合适的地方（比如OnInitDialog）添加如下的代码就可以了：
+
+直接运行程序，绝不会出现CustomControl那种运行不起来的现象。
+甭错，俺就是这么用滴～不过最好将IDC_Static改一下，并且选择NOTIFY选项...
+
+
+
 记者1：你可以把面具摘了，病例死亡率只有0.1%-0.3%
 记者2：真的？这可真让人放心。无论如何，来这里的人都打过疫苗了。（"Everybody Here Has Been Vaccinated Anyway"）
 记者1：USC与洛杉矶县医疗局在加州做的调查，他们发现虽然数据显示只有7000病例，但是实际感染人数应该在21.1万至42.2万人直接。
