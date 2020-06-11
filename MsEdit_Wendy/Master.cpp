@@ -15,7 +15,7 @@
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
-extern CLog w_Log;
+//extern CLog w_Log;
 extern CString s_Log;
 
 //////////////////////////////////////////////////////////////////////
@@ -44,6 +44,8 @@ void Master::Play()
 
 BOOL Master::CreateGroupsMng()
 {
+	return  FALSE ; // wendy
+	
 	if( m_pGroupsMng!=NULL )
 		return TRUE ;
 	

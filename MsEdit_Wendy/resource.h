@@ -5,7 +5,7 @@
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
-#define IDD_READMDS                     102
+#define IDD_MAINDLG                     102
 #define IDR_MAINFRAME                   128
 #define IDD_SHOWDATA                    129
 #define IDR_MENU1                       130
@@ -18,7 +18,7 @@
 #define IDC_ITEM                        1004
 #define IDC_TRANSCODE                   1005
 #define IDC_TIME                        1006
-#define IDC_DELAY                       1007
+#define IDC_FSIZE                       1007
 #define IDC_LIST_DATA                   1010
 #define IDC_EDIT_CELL                   1011
 #define IDC_TIME_END                    1013

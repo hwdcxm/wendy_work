@@ -85,6 +85,7 @@ int CEINFO::cmp_time(_Frame_e *pFrame_e)
 	}
 }
 
+#if 0
 int tolower(int c)  
 {  
     if (c >= 'A' && c <= 'Z')  
@@ -123,6 +124,7 @@ int htoi(char s[])
     }  
     return n;  
 }  
+#endif
 
 int CEINFO::cmp_key(_Frame_e *pFrame_e)
 {

@@ -85,7 +85,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
 END
 
-IDD_READMDS DIALOGEX 0, 0, 321, 321
+IDD_MAINDLG DIALOGEX 0, 0, 321, 321
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
@@ -104,12 +104,13 @@ BEGIN
     LISTBOX         IDC_LOG,7,143,307,76,LBS_NOINTEGRALHEIGHT | 
                     LBS_WANTKEYBOARDINPUT | LBS_EXTENDEDSEL | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_DELAY,57,300,81,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_FSIZE,89,300,138,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_DISABLED | NOT WS_BORDER
     PUSHBUTTON      "(Cancel)",IDCANCEL,235,300,79,14
     LTEXT           "(ItemCode)",IDC_STATIC,7,229,57,8
     LTEXT           "(TransCode)",IDC_STATIC,7,253,69,8
     LTEXT           "(Time)",IDC_STATIC,7,279,41,8
-    LTEXT           "(delay)",IDC_STATIC,7,301,45,8
+    LTEXT           "(file size < 4096G)",IDC_STATIC,7,301,77,8
     LTEXT           "to",IDC_STATIC,117,280,9,8
     LTEXT           "end",IDC_STATIC,197,279,25,8
     GROUPBOX        "File List£º",IDC_STATIC,7,7,301,119
@@ -163,8 +164,8 @@ FONT 10, "System"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,7,75,50,14
     PUSHBUTTON      "Cannel",IDCANCEL,130,75,50,14
-    CONTROL         "Progress2",IDC_PROGRESS1,"msctls_progress32",PBS_SMOOTH | 
-                    WS_BORDER,7,52,173,8
+    CONTROL         "Progress2",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    7,52,173,8
     LTEXT           "Reading data...Do not operate other",IDC_STATIC,36,9,
                     116,8
     LTEXT           "FilesSize:",IDC_STATIC_SIZE,62,64,118,8
@@ -234,7 +235,7 @@ BEGIN
         BOTTOMMARGIN, 48
     END
 
-    IDD_READMDS, DIALOG
+    IDD_MAINDLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 314

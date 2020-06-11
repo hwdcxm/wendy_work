@@ -11,7 +11,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern DWORD g_fileSize;
+extern DWORD g_fileSizeKB;
 extern Master g_Master;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ LRESULT CProgressDlg::OnUpdateProgress( WPARAM wParam, LPARAM lParam )
 	DWORD nProgress = lParam;
 	CString getstr;
 	
-	DWORD g_fileSizeKB = g_fileSize/1024;
+	//DWORD g_fileSizeKB = g_fileSizeKB; //
 	DWORD SetNum = nProgress * 100 / g_fileSizeKB;
 
 	m_progressCtrl.SetPos( SetNum );
@@ -60,7 +60,7 @@ LRESULT CProgressDlg::OnUpdateProgress( WPARAM wParam, LPARAM lParam )
 	getstr.Format("Read: %d KB",nProgress);
 	if (wParam == 1)
 	{
-		getstr.Format("ReadGetFramesl: %d",nProgress);
+		getstr.Format("ReadGetFrames: %d",nProgress);
 	}
 	m_pStatic_Read->SetWindowText(getstr);
 
@@ -77,7 +77,7 @@ BOOL CProgressDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here
-	m_progressCtrl.SetRange(0,100);  // g_fileSize / 1024
+	m_progressCtrl.SetRange(0,100);  // g_fileSizeKB / 1024
 	
 	m_pStatic_Read=(CStatic*)GetDlgItem(IDC_STATIC_READ);
 	m_pStatic_Size=(CStatic*)GetDlgItem(IDC_STATIC_SIZE);
@@ -86,7 +86,7 @@ BOOL CProgressDlg::OnInitDialog()
 	CString getstrUpper;
 //	m_progressCtrl.GetRange(nLower, nUpper);
 
-	getstrUpper.Format("FilesSize: %d KB ", g_fileSize / 1024);
+	getstrUpper.Format("FilesSize: %d KB ", g_fileSizeKB);
 	m_pStatic_Size->SetWindowText(getstrUpper);
 
 

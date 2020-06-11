@@ -14,21 +14,25 @@ static char THIS_FILE[] = __FILE__;
 
 Master g_Master;
 HANDLE g_hEvent;
-CLog w_Log;
+//CLog w_Log;
 CLog w_InofLog;
 CString s_Log;
 CString s_eLog;
 CProgressDlg *g_pProDlg;
-DWORD g_fileSize;
+DWORD g_fileSizeKB;
 DWORD g_fileSizeMB;
 
 extern CListDataFrame mCListDataFrame;
 extern CListFrame_e mCListFrame_e;
+
+extern CListFrame_Simple mCListFrame_Simple;
+
+
 CStringArray pre_files ;
 
-// for read Profile.ini value
-int mCanBuffer=1;
-DWORD mBufferMaxMB=500;
+// for read set.ini value
+int mode=1;
+DWORD maxMB=500;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -86,10 +90,11 @@ CMsEdit_WendyDlg::CMsEdit_WendyDlg(CWnd* pParent /*=NULL*/)
 	m_TransCode = _T("");
 	m_item = _T("");
 	m_time = _T("");
-	m_delay = _T("");
 	m_time_end = _T("");
+	m_fsize = 0;
 	InitCreateGroupsMng = FALSE;
 	m_needreadfs = 0;
+	m_strfsize = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -104,8 +109,8 @@ void CMsEdit_WendyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TRANSCODE, m_TransCode);
 	DDX_Text(pDX, IDC_ITEM, m_item);
 	DDX_Text(pDX, IDC_TIME, m_time);
-	DDX_Text(pDX, IDC_DELAY, m_delay);
 	DDX_Text(pDX, IDC_TIME_END, m_time_end);
+	DDX_Text(pDX, IDC_FSIZE, m_strfsize);
 	//}}AFX_DATA_MAP
 }
 
@@ -152,7 +157,7 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	m_loglist.SetHorizontalExtent(1200);  //HorizontalScorllbar
-	w_Log.Init("ReadMds.log",1024*1024*1024);  // wendy 1024*1024
+	//w_Log.Init("ReadMds.log",1024*1024*1024);  // wendy 1024*1024
 	w_InofLog.Init("InfoMds.log",1024*1024*1024);  // wendy 1024*1024
 	s_Log.Format("==========================Start Application==========================");
 	SetTimer(1, 10, NULL) ;  // 350
@@ -166,16 +171,18 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 		} 
 	}
 
-	//读PrivateProfileInt
+	//读set.ini
 	//如果 Key 值没有找到，则返回缺省的值 如果Key值第一个字符不为整数则返回0
-	mCanBuffer =GetPrivateProfileInt("ReadFileMode","CanBuffer",1,".\\Profile.ini"); 
-	mBufferMaxMB =GetPrivateProfileInt("ReadFileMode","BufferMaxMB",500,".\\Profile.ini"); 
+	mode =GetPrivateProfileInt("set","mode",1,".\\set.ini"); 
+	maxMB =GetPrivateProfileInt("set","max",500,".\\set.ini"); 
 
-	if (mCanBuffer >1)
+	if (mode >=2)
 		{
-			mBufferMaxMB = 0x0FFFFFFF;
-		}
-	
+			maxMB = 0x7FFFFFFF;
+		} 
+
+	m_strfsize.Format("%d KB = %d MB",m_fsize,g_fileSizeMB);
+	UpdateData(FALSE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -343,18 +350,24 @@ void CMsEdit_WendyDlg::OnRead()
 		}
 	}
 
-	if (g_fileSizeMB >=mBufferMaxMB || mCanBuffer < 1)
+	if (g_fileSizeMB >=maxMB || mode <= 0)
 	{
 		m_needreadfs = 1;
+		
+		if (mode == 0)
+		{
+			w_InofLog.EmptyLog();
+		}
 	}
 	
 	TRACE("m_needreadfs=%d. \n",m_needreadfs);
 
 	if (m_needreadfs || !mCListDataFrame.GetCount())	//mCListFrame_e
 	{
-		//g_fileSize = 0;
+		//g_fileSizeKB = 0;
 		if(g_Master.m_MSCEType != MSCE_TYPE_PROXY)
 		{
+			g_Master.m_unpakcer_TTFrame.ClearStream();  // g_Master.m_unpakcer_TTFrame.nBuffIp = 30;
 			//g_Master.m_pDataSrc_TTFrameFile = new CDataSrc_TTFrameFile() ;
 			g_Master.m_DataSrc_TTFrameFile.m_pUnpacker=&g_Master.m_unpakcer_TTFrame;
 			//g_Master.m_pDataSrc_TTFrameFile->m_pCacheStream = &g_Master.m_cacheStream_TTFrame ;
@@ -391,11 +404,16 @@ void CMsEdit_WendyDlg::OnRead()
 			mCListFrame_e.RemoveAll();
 		}
 
+		if (mCListFrame_Simple.IsEmpty() == 0)
+		{
+			mCListFrame_Simple.RemoveAll();
+		}
+
 		ResetEvent(g_hEvent);
 
 		pShowData =  new CShowData;
 
-		if ( mCanBuffer > 0)
+		if ( mode >= 1)
 		{
 			pShowData->Create(IDD_SHOWDATA);
 			pShowData->ShowWindow(SW_SHOW);
@@ -411,7 +429,7 @@ void CMsEdit_WendyDlg::OnRead()
 
 		TRACE("Read Files.... \n");
 		g_Master.Play();
-		if (m_needreadfs == 1 && g_fileSizeMB < mBufferMaxMB && mCanBuffer > 0)
+		if (m_needreadfs == 1 && g_fileSizeMB < maxMB && mode >= 1)
 		{
 			GetDlgItem(IDC_READ)->SetWindowText("(Search)");
 		}
@@ -421,7 +439,7 @@ void CMsEdit_WendyDlg::OnRead()
 		SetEvent(g_hEvent);
 		
 		pShowData =  new CShowData;
-		if ( mCanBuffer > 0)
+		if ( mode >= 1)
 		{
 			pShowData->Create(IDD_SHOWDATA);
 			pShowData->ShowWindow(SW_SHOW);
@@ -450,7 +468,12 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 		{
 			mCListFrame_e.RemoveAll();
 		}
-		
+
+		if (mCListFrame_Simple.IsEmpty() == 0)
+		{
+			mCListFrame_Simple.RemoveAll();
+		}
+			
 		//if (g_Master.m_pDataSrc_TTFrameFile)
 		//{
 		//	delete g_Master.m_pDataSrc_TTFrameFile;
@@ -463,23 +486,23 @@ BOOL CMsEdit_WendyDlg::DestroyWindow()
 	{
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
 		errlog.Format("MemoryException %d,%s",GetLastError(),str);
-		w_Log.Log(errlog);
+		//w_Log.Log(errlog);
 	}
 	catch (CFileException* e)
 	{
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
 		errlog.Format("FileException %d,%s",GetLastError(),str);
-		w_Log.Log(errlog);
+		//w_Log.Log(errlog);
 	}
 	catch (CException* e)
 	{
 		e->GetErrorMessage((LPSTR)(LPCSTR)str,255);
 		errlog.Format("Exception %d,%s",GetLastError(),str);
-		w_Log.Log(errlog);
+		//w_Log.Log(errlog);
 	}
 	
-	w_Log.Log("===========================End Application===========================");
-	w_Log.Close();
+	//w_Log.Log("===========================End Application===========================");
+	//w_Log.Close();
 	w_InofLog.Close();
 	return CDialog::DestroyWindow();
 }
@@ -490,7 +513,7 @@ void CMsEdit_WendyDlg::OnTimer(UINT nIDEvent)
 	
 	if (s_Log.GetLength())
 	{
-		w_Log.Log(s_Log);
+		//w_Log.Log(s_Log);
 		char *token;
 		CString str[10];
 		char seps[] = "\n";
@@ -550,7 +573,7 @@ int CMsEdit_WendyDlg::SetBtnReadOrSearch(int Flag)
 	int m_count = m_filelist.GetCount();
 	int m_precount = pre_files.GetSize();
 
-	if (GetFileSizeMB(m_filelist) >= mBufferMaxMB || mCanBuffer < 1)
+	if (GetFileSizeMB(m_filelist) >= maxMB || mode <= 0)
 	{
 		m_needreadfs = 1;
 	}
@@ -603,7 +626,7 @@ DWORD CMsEdit_WendyDlg::GetFileSizeMB(CListBox &mClistBox)
 	char szTemp[256];
 	int i = 0;
 	int m_count = mClistBox.GetCount();
-	g_fileSize = 0;
+	g_fileSizeKB = 1; // 0;
 
 	for(i=0;i<m_count;i++ )
 	{
@@ -628,11 +651,16 @@ DWORD CMsEdit_WendyDlg::GetFileSizeMB(CListBox &mClistBox)
 			fileSize = fileInfo.nFileSizeLow;
 		}
 		FindClose(hFind);
-		g_fileSize = g_fileSize + fileSize;		
+		g_fileSizeKB = g_fileSizeKB + fileSize/1024;		
 	}
 
-	g_fileSizeMB = g_fileSize/1024/1024;
-			
+	m_fsize = g_fileSizeKB; //
+	g_fileSizeMB = m_fsize /1024;
+
+	m_strfsize.Format("%d KB = %d MB",m_fsize,g_fileSizeMB);
+
+	UpdateData(FALSE);
+	
 	return g_fileSizeMB;
 }
 

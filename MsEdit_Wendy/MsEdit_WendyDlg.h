@@ -33,14 +33,15 @@ public:
 	
 // Dialog Data
 	//{{AFX_DATA(CMsEdit_WendyDlg)
-	enum { IDD = IDD_READMDS };
+	enum { IDD = IDD_MAINDLG };
 	CMyListBox	m_loglist;  //CListBox
 	CListBox	m_filelist;
 	CString	m_TransCode;
 	CString	m_item;
 	CString	m_time;
-	CString	m_delay;
 	CString	m_time_end;
+	UINT	m_fsize;
+	CString	m_strfsize;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -54,6 +55,9 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
+
+	CAutoLock	m_lock ;
+	
 
 	// Generated message map functions
 	//{{AFX_MSG(CMsEdit_WendyDlg)

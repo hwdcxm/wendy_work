@@ -29,18 +29,11 @@ struct _tagTTDataFrame{
 	BYTE btTransCode;
 	int nTransDataLength;
 	void * pTransData;
+	virtual void fun(){}
 };
 
-struct _Frame_e  // get from _tagTTDataFrame
+struct _Frame_e :  _tagTTDataFrame 
 {
-	int nLength;
-	time_t lTime;
-	BYTE btGroupCode;
-	char arItemCode[8];
-	BYTE btTransCode;
-	int nTransDataLength;
-	void * pTransData;
-
 	DWORD	dwVal;
 	WORD	BrokerNo;
 	WORD	TradeTime;
@@ -52,6 +45,14 @@ struct _Frame_e  // get from _tagTTDataFrame
 	DWORD	lTemp;
 	BYTE	byTmp;
 };
+
+struct _Frame_Simple  :  _tagTTDataFrame  // wendy add 2020.06.04
+{
+
+	WORD	Time;
+	float		Price;
+};
+
 
 struct _tagFrame201
 {

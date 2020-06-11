@@ -14,11 +14,11 @@ extern CString s_Log;
 #include "ProgressDlg.h"
 
 extern CProgressDlg *g_pProDlg;
-extern DWORD g_fileSize;
+extern DWORD g_fileSizeKB;
 extern DWORD BigFile_NoSelectGetTotalRecord;
 
 extern CMsEdit_WendyDlg* gpMsEdit_WendyDlg;
-extern int mCanBuffer;
+extern int mode;
 extern DWORD ReadGetFrames;
 
 
@@ -66,8 +66,8 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	unsigned long filesize = 0;
 
 	CString s_Log_temp;
-	DWORD m_filesize_read = 0; //static
-	DWORD m_filesize_send = 0;
+	DWORD m_filesize_readKB = 0; //static
+	DWORD m_filesize_sendKB = 0;
 	int nLastSendMsg = 0;
 
 	MEMORYSTATUS stat;
@@ -104,38 +104,49 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 					m_whileCount ++;
 					ProcRecPackage( buf, readsize ) ;
 
-					m_filesize_read = m_filesize_read + readsize;
-					if ((g_fileSize - m_filesize_read) < FILE_RATE +3 )
+					m_filesize_readKB = m_filesize_readKB + readsize/1024;
+					if ((g_fileSizeKB - m_filesize_readKB) < 2 )  // FILE_RATE +3
 					{
 						nLastSendMsg = 1;
 					}
 					if( (m_whileCount % 3 ==0 || nLastSendMsg ) && g_pProDlg->GetSafeHwnd() )
 					{
 						//Sleep( 100 );
-						m_filesize_send = m_filesize_read / 1024;
-						g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 0, m_filesize_send);
+						m_filesize_sendKB = m_filesize_readKB; //  / 1024;
+						g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 0, m_filesize_sendKB);
 
-						if ( mCanBuffer < 0 && nLastSendMsg==1 )
+						if ( mode <= 0 && nLastSendMsg==1 ) // mode <= -1
 							{
 								g_pProDlg->SendMessage( WM_PROGRESS_MESSAGE, 1, ReadGetFrames);
 							}
 
 					}
 
-					if(m_whileCount % 1024*1024 ==0 )
+					if(m_whileCount % 1024 ==0 )
 					{
 					  static DWORD percentVirMem=100,pre_percent = 0;
 
 					  GlobalMemoryStatus (&stat);
 					  
 		 			 percentVirMem = (stat.dwAvailVirtual/1024)*100 /(stat.dwTotalVirtual/1024);
-					 TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
-					 TRACE ("There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
+					 //TRACE("%ld percent of memory is in use.\n", stat.dwMemoryLoad);
+					 //TRACE ("There are percentVirMem =%ld virtual memory.\n",percentVirMem);	
 					 
 					  if (pre_percent > stat.dwMemoryLoad && pre_percent >90 || percentVirMem < 10 || BigFile_NoSelectGetTotalRecord >=200000)
 					  	{
 					  		m_nThreadStatu = -1 ;
-							TRACE("Because pre_percent(%d) > Now(%d), So EndThread m_nThreadStatu = -1.\n", pre_percent,stat.dwMemoryLoad);
+							if (pre_percent >90)
+							{
+								TRACE("Because pre_percent(%d)[>90%%] > Now(%d), So EndThread m_nThreadStatu = -1.\n", pre_percent,stat.dwMemoryLoad);
+								AfxMessageBox("Current system memory usage arrive 90% ! \n You can reduce made value or max value in configuration file set.ini ");
+							}
+
+							if (percentVirMem < 10)
+							{
+								TRACE("Because percentVirMem(%d) < 10%%, So EndThread m_nThreadStatu = -1.\n", percentVirMem);
+								AfxMessageBox("Availability rate of virtual address space less 10% ! \n You can reduce made value or max value in configuration file set.ini");
+							}
+
 							if (BigFile_NoSelectGetTotalRecord >=200000)
 							{
 								TRACE("BigFile_NoSelectGetTotalRecord(>=200000)=%d, So EndThread m_nThreadStatu = -1.\n", BigFile_NoSelectGetTotalRecord);
@@ -158,7 +169,7 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	}
 //	logstr.Format( "finish ttframe files" );
 	s_Log = s_Log + _T("EndThread DataSrc_TTFrameFile ");
-	if ( mCanBuffer>=0)
+	if ( mode>=1)  //  mode>=0
 	{
 		g_pProDlg->PostMessage( WM_PROGRESS_END, 0, 123 );
 	}
@@ -177,7 +188,7 @@ UINT CDataSrc_TTFrameFile::ThreadEntry ()
 	Sleep(1600);
 	SetEvent(g_hEvent);
 
-	if ( mCanBuffer<1)
+	if ( mode<=0)
 	{
 		delete gpMsEdit_WendyDlg->pShowData;
 	}
