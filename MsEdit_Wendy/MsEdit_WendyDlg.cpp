@@ -27,12 +27,16 @@ extern CListFrame_e mCListFrame_e;
 
 extern CListFrame_Simple mCListFrame_Simple;
 
+extern DWORD DirectWrite_mIndexNo;
 
 CStringArray pre_files ;
 
 // for read set.ini value
 int mode=1;
 DWORD maxMB=500;
+
+int pre_mode=mode;
+DWORD pre_maxMB=maxMB;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -104,6 +108,7 @@ void CMsEdit_WendyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMsEdit_WendyDlg)
+	DDX_Control(pDX, IDC_SET, m_set);
 	DDX_Control(pDX, IDC_LOG, m_loglist);
 	DDX_Control(pDX, IDC_LIST1, m_filelist);
 	DDX_Text(pDX, IDC_TRANSCODE, m_TransCode);
@@ -123,6 +128,7 @@ BEGIN_MESSAGE_MAP(CMsEdit_WendyDlg, CDialog)
 	ON_BN_CLICKED(IDC_DELFILE, OnDelfile)
 	ON_BN_CLICKED(IDC_READ, OnRead)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_SET, OnSet)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -180,6 +186,8 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 		{
 			maxMB = 0x7FFFFFFF;
 		} 
+
+	m_set.LoadBitmaps(IDB_BITMAP1,IDB_BITMAP2);
 
 	m_strfsize.Format("%d KB = %d MB",m_fsize,g_fileSizeMB);
 	UpdateData(FALSE);
@@ -350,6 +358,11 @@ void CMsEdit_WendyDlg::OnRead()
 		}
 	}
 
+	if ( mode != pre_mode | maxMB != pre_maxMB)
+	{
+		m_needreadfs = 1;
+	}
+
 	if (g_fileSizeMB >=maxMB || mode <= 0)
 	{
 		m_needreadfs = 1;
@@ -357,6 +370,7 @@ void CMsEdit_WendyDlg::OnRead()
 		if (mode == 0)
 		{
 			w_InofLog.EmptyLog();
+			DirectWrite_mIndexNo = 0;
 		}
 	}
 	
@@ -418,10 +432,6 @@ void CMsEdit_WendyDlg::OnRead()
 			pShowData->Create(IDD_SHOWDATA);
 			pShowData->ShowWindow(SW_SHOW);
 		}
-		else
-			{
-				w_InofLog.EmptyLog();
-			}
 
 		g_pProDlg = new CProgressDlg();
 		g_pProDlg->Create(CProgressDlg::IDD, NULL );
@@ -664,3 +674,10 @@ DWORD CMsEdit_WendyDlg::GetFileSizeMB(CListBox &mClistBox)
 	return g_fileSizeMB;
 }
 
+#include "Set.h"
+void CMsEdit_WendyDlg::OnSet() 
+{
+	// TODO: Add your control notification handler code here
+	CSet mSet;
+	mSet.DoModal();
+}

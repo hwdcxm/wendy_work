@@ -11,6 +11,9 @@
 #define IDR_MENU1                       130
 #define IDD_E_INFO                      131
 #define IDD_PROGRESS                    132
+#define IDB_BITMAP1                     133
+#define IDB_BITMAP2                     134
+#define IDD_SET                         135
 #define IDC_LIST1                       1000
 #define IDC_READ                        1001
 #define IDC_ADDFILE                     1002
@@ -39,6 +42,11 @@
 #define IDC_EDIT9                       1022
 #define IDC_WRITE_SEARCH                1022
 #define IDC_EDIT10                      1023
+#define IDC_SET                         1023
+#define IDC_EDIT_MODE                   1024
+#define IDC_EDIT_MAX                    1025
+#define IDC_OPEN_SETFILE                1026
+#define IDC_OPEN_DATAFILE               1027
 #define ID_MENUITEM_COPY                32771
 #define ID_MENUITEM_INFO                32772
 #define ID_MENUITEM2_COPY               32773
@@ -48,9 +56,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        133
+#define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1023
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -1,0 +1,25 @@
+---- mCListDataFrame Matches (24 in 3 files) ----
+MsEdit_WendyDlg.cpp:extern CListDataFrame mCListDataFrame;
+MsEdit_WendyDlg.cpp:	if (m_needreadfs || !mCListDataFrame.GetCount())	//mCListFrame_e
+MsEdit_WendyDlg.cpp:		if (mCListDataFrame.IsEmpty() == 0)
+MsEdit_WendyDlg.cpp:			mCListDataFrame.RemoveAll();
+MsEdit_WendyDlg.cpp:		if (mCListDataFrame.IsEmpty() == 0)
+MsEdit_WendyDlg.cpp:			mCListDataFrame.RemoveAll();
+ShowData.cpp:CListDataFrame mCListDataFrame;
+ShowData.cpp:		TotalRecord =mCListDataFrame.GetCount();
+ShowData.cpp:		//				ListSTLDataFrameToListCtr(mCListDataFrame,m_list_data);
+ShowData.cpp:		ps = mCListDataFrame.GetHeadPosition();
+ShowData.cpp:			pFramePara_wf = (_tagTTDataFrame *) &mCListDataFrame.GetAt(ps);
+ShowData.cpp:			mCListDataFrame.GetNext(ps);
+ShowData.cpp:			ps = mCListDataFrame.GetHeadPosition();
+ShowData.cpp:		TotalRecord = mCListDataFrame.GetCount();
+ShowData.cpp:			pFramePara = (_tagTTDataFrame *) &mCListDataFrame.GetAt(ps);
+ShowData.cpp:				ps = mCListDataFrame.FindIndex(SearchRecord);
+ShowData.cpp:			mCListDataFrame.GetNext(ps);
+Unpacker_TTFrame.cpp:extern CListDataFrame mCListDataFrame;
+Unpacker_TTFrame.cpp:							//mCListDataFrame.AddTail(*pStFrame);
+Unpacker_TTFrame.cpp:						//mCListDataFrame.AddTail(*pStFrame);
+Unpacker_TTFrame.cpp:						//mCListDataFrame.AddHead(*pStFrame);
+Unpacker_TTFrame.cpp:								//mCListDataFrame.AddTail(*pStFrame);  // wendy test
+Unpacker_TTFrame.cpp:									mCListDataFrame.AddTail(*pStFrame);
+Unpacker_TTFrame.cpp:							mCListDataFrame.AddTail(*pStFrame);  // wendy test

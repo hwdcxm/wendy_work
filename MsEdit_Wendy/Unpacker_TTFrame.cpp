@@ -867,7 +867,7 @@ BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize )
 				//HandleFrame(buff,sizeof(_tagTTDataFrame)+nTradLen);
 				//if( m_pProc!=NULL )
 				{
-					if((bCheckFrame && bNight && bXFrame==FALSE && bxItem) == FALSE) //4个条件都满足,不发这个帧
+					if((bCheckFrame && bNight && bXFrame==FALSE && bxItem) == FALSE || (bXFrame==TRUE) ) // 4个条件都满足,不发这个帧 // wendy add || (bXFrame==TRUE)
 					{
 						//(*m_pProc)( m_pProcArg, buff, sizeof(_tagTTDataFrame)+nTradLen );
 						//g_Master.tele.HandleFrame(buff,sizeof(_tagTTDataFrame)+nTradLen);
@@ -889,8 +889,7 @@ BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize )
 									HandleFrame_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy add 2020.06.04
 								}
 								
-								mCListDataFrame.AddTail(*pStFrame);
-								
+								mCListDataFrame.AddTail(*pStFrame); 								
 								
 							}
 							else

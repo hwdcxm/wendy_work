@@ -111,6 +111,7 @@ protected:
 	afx_msg void OnBtnTimer();
 	virtual void OnCancel();
 	afx_msg void OnWriteSearch();
+	afx_msg void OnOpenDatafile();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

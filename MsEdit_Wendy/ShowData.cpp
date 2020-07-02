@@ -78,7 +78,8 @@ ON_COMMAND(ID_MENUITEM_INFO, OnMenuitemInfo)
 ON_COMMAND(ID_MENUITEM_COPY, OnMenuitemCopy)
 ON_BN_CLICKED(IDC_BTN_TIMER, OnBtnTimer)
 ON_BN_CLICKED(IDC_WRITE_SEARCH, OnWriteSearch)
-//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_OPEN_DATAFILE, OnOpenDatafile)
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -88,8 +89,7 @@ _tagTTDataFrame mTTDataFrame;
 _Frame_e mFrame_e;
 
 _tagTTDataFrame *pFramePara;
-_tagTTDataFrame *pFramePara_wf
-;	
+_tagTTDataFrame *pFramePara_wf;	
 extern HANDLE g_hEvent;
 
 int CShowData::op_item(_tagTTDataFrame *pStFrame)
@@ -1025,6 +1025,7 @@ int CShowData::OnTimer_Frame_To_ListPara(_tagTTDataFrame *pFrame, CListCtrl &mp_
 	return 0;
 }
 
+DWORD DirectWrite_mIndexNo = 0;
 
 int CShowData::DirectWrite(_tagTTDataFrame * pFrame )
 {
@@ -1035,14 +1036,12 @@ int CShowData::DirectWrite(_tagTTDataFrame * pFrame )
 	
 	
 	POSITION ps;
-	DWORD mIndexNo = 0;
 	
 	if (op_TransCode(pFrame)&&op_item(pFrame)&&op_time(pFrame)) 
 	{
-		
-		mIndexNo ++;
+		DirectWrite_mIndexNo ++;
 		CString CstrIndexNo;
-		CstrIndexNo.Format("No:%ld,",mIndexNo);
+		CstrIndexNo.Format("No:%ld,",DirectWrite_mIndexNo);
 		
 		CString CstrGroup;
 		CstrGroup.Format("Group:%c,",pFrame->btGroupCode);
@@ -1202,4 +1201,10 @@ int CShowData::DirectWrite(_tagTTDataFrame * pFrame )
 		m_lock.UnLock();
 		
 		return 0;
+}
+
+void CShowData::OnOpenDatafile() 
+{
+	// TODO: Add your control notification handler code here
+	ShellExecute(NULL,"open",".\\InfoMds.log",NULL,NULL,SW_SHOWNORMAL); // 打开当前目录下的set.ini 文件
 }

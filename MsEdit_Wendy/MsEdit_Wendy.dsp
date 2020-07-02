@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GR /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x804 /d "NDEBUG" /d "_AFXDLL"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GR /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x804 /d "_DEBUG" /d "_AFXDLL"
@@ -154,6 +154,10 @@ SOURCE=.\QServer_Remote.cpp
 # Begin Source File
 
 SOURCE=.\QSNative_Option.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Set.cpp
 # End Source File
 # Begin Source File
 
@@ -258,6 +262,10 @@ SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Set.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ShowData.h
 # End Source File
 # Begin Source File
@@ -295,6 +303,14 @@ SOURCE=.\res\MsEdit_Wendy.ico
 # Begin Source File
 
 SOURCE=.\res\MsEdit_Wendy.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\set1.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\set2.bmp
 # End Source File
 # End Group
 # Begin Source File

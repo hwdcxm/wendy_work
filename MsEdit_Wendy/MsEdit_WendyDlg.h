@@ -34,6 +34,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CMsEdit_WendyDlg)
 	enum { IDD = IDD_MAINDLG };
+	CBitmapButton m_set; // CButton
 	CMyListBox	m_loglist;  //CListBox
 	CListBox	m_filelist;
 	CString	m_TransCode;
@@ -69,6 +70,7 @@ protected:
 	afx_msg void OnDelfile();
 	afx_msg void OnRead();
 	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnSet();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
