@@ -1,0 +1,166 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+MsEdit_Wendy
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="png_1.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+	if( (parent.isSVG) || 
+		(parent.isVML && parent.vmlSupported) || 
+		(parent.isXAML && parent.isUpLevel)) 
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+<script type="text/javascript" language="javascript">
+var pageID = 0;
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = 0.126879;
+	viewMgr.visBBoxRight = 7.977649;
+	viewMgr.visBBoxBottom = 4.886647;
+	viewMgr.visBBoxTop = 22.482283;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="显示所选形状的位置" src="arrow.png"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+<style type="text/css"> 
+body {
+	background:url(foo) fixed;
+	padding: 10px;
+}
+div.banner {
+	position: fixed;
+	_position: absolute;
+	top: 0;
+	left: 0;
+	_top: expression(eval(document.body.scrollTop));
+	_left: expression(eval(document.body.scrollLeft));
+	width: 100%;
+	_width: expression(eval(document.body.clientWidth));
+	margin: 0;
+	padding: 3px;
+	padding-left: 6px;
+	background:lime;
+	background-color: #FFFFC6;
+	font: 11px tahoma,arial,serif;
+	border-bottom: 2px ridge #FFFFC6;
+}
+</style>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF" style="margin: 0px">
+
+<script type="text/javascript" language="javascript">
+// Displays the banner prompt to install Silverlight
+if (parent.slSupported && !parent.slInstalled)
+{
+	var slBanner = document.createElement("div");
+	slBanner.className = "banner";
+	slBanner.innerHTML = '若要启用全部功能(例如扫视和缩放)，<a href="http://www.microsoft.com/silverlight/resources/install.aspx" target="parent">单击此处</a> 需要安装 Silverlight 插件。';
+
+	document.body.appendChild(slBanner);
+	document.body.style.paddingTop = "2.5em";
+}
+</script>
+
+
+<div id="arrowdiv" style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+<DIV id="RasterDiv" style="margin:10px">
+
+<center>
+  <IMG id="ConvertedImage" SRC="png_1.png" ALT="页-1" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="m_needreadfs" origTitle="m_needreadfs" TITLE="m_needreadfs"  target="_top" COORDS="12,301,33,314,55,301,33,288,12,301" onmouseover="UpdateTooltip(this,0,39,event)" onfocus="UpdateTooltip(this,0,39,event)" onclick="return OnShapeClick(0,39,event);" onkeyup="OnShapeKey(0,39,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="设置搜索条件的编辑框m_item m_TransCode m_time" origTitle="设置搜索条件的编辑框m_item m_TransCode m_time" TITLE="设置搜索条件的编辑框m_item m_TransCode m_time"  target="_top" COORDS="28,264,91,264,91,239,28,239,28,264" onmouseover="UpdateTooltip(this,0,34,event)" onfocus="UpdateTooltip(this,0,34,event)" onclick="return OnShapeClick(0,34,event);" onkeyup="OnShapeKey(0,34,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="设置mode，max值OnSet()" origTitle="设置mode，max值OnSet()" TITLE="设置mode，max值OnSet()"  target="_top" COORDS="140,258,183,258,183,241,140,241,140,258" onmouseover="UpdateTooltip(this,0,24,event)" onfocus="UpdateTooltip(this,0,24,event)" onclick="return OnShapeClick(0,24,event);" onkeyup="OnShapeKey(0,24,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="退出程序" origTitle="退出程序" TITLE="退出程序"  target="_top" COORDS="281,250,307,250,310,249,312,248,314,246,315,244,316,241,315,239,314,236,312,234,310,233,307,233,281,233,279,233,276,234,274,236,273,239,273,241,273,244,274,246,276,248,279,249,281,250" onmouseover="UpdateTooltip(this,0,22,event)" onfocus="UpdateTooltip(this,0,22,event)" onclick="return OnShapeClick(0,22,event);" onkeyup="OnShapeKey(0,22,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="读取或搜索数据OnRead()" origTitle="读取或搜索数据OnRead()" TITLE="读取或搜索数据OnRead()"  target="_top" COORDS="273,224,316,224,316,207,273,207,273,224" onmouseover="UpdateTooltip(this,0,18,event)" onfocus="UpdateTooltip(this,0,18,event)" onclick="return OnShapeClick(0,18,event);" onkeyup="OnShapeKey(0,18,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="添加文件后可删除OnDelfile()" origTitle="添加文件后可删除OnDelfile()" TITLE="添加文件后可删除OnDelfile()"  target="_top" COORDS="273,198,316,198,316,181,273,181,273,198" onmouseover="UpdateTooltip(this,0,8,event)" onfocus="UpdateTooltip(this,0,8,event)" onclick="return OnShapeClick(0,8,event);" onkeyup="OnShapeKey(0,8,event);">
+  <AREA shape="POLYGON" tabindex="1" ALT="添加MDS数据文件OnAddfile()" origTitle="添加MDS数据文件OnAddfile()" TITLE="添加MDS数据文件OnAddfile()"  target="_top" COORDS="313,158,311,156,309,156,307,155,281,155,279,156,277,156,276,158,275,158,275,158,274,160,273,163,273,165,273,168,275,170,277,171,279,172,281,173,307,173,310,172,312,171,314,170,315,168,316,165,316,163,315,160,313,158,313,158,313,158" onmouseover="UpdateTooltip(this,0,2,event)" onfocus="UpdateTooltip(this,0,2,event)" onclick="return OnShapeClick(0,2,event);" onkeyup="OnShapeKey(0,2,event);">
+</MAP>
+
+
+</DIV>
+</body>
+</html>

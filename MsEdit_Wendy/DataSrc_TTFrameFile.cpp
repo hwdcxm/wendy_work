@@ -207,7 +207,7 @@ void CDataSrc_TTFrameFile::ProcRecPackage( char* pPkgBuf, int pkgSize )
 //	g_Master.m_pDataSrc_TTFrameFile->m_pUnpacker->InputData( (BYTE*)pPkgBuf, pkgSize ) ;  // wendy
 	m_pUnpacker->InputData( (BYTE*)pPkgBuf, pkgSize ) ;  // wendy
 	
-	m_RecDataCount += pkgSize ;
+	//m_RecDataCount += pkgSize ;
 }
 
 BOOL CDataSrc_TTFrameFile::Init( CStringArray&  files,int SleepCount ) 

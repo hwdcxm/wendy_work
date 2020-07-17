@@ -868,82 +868,10 @@ BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize )
 				//if( m_pProc!=NULL )
 				{
 					if((bCheckFrame && bNight && bXFrame==FALSE && bxItem) == FALSE || (bXFrame==TRUE) ) // 4个条件都满足,不发这个帧 // wendy add || (bXFrame==TRUE)
-					{
-						//(*m_pProc)( m_pProcArg, buff, sizeof(_tagTTDataFrame)+nTradLen );
-						//g_Master.tele.HandleFrame(buff,sizeof(_tagTTDataFrame)+nTradLen);
-						//mCArrayItemDataFrame.Add(*pStFrame); // xxx long time
-						//mCListDataFrame.AddTail(*pStFrame);
-						//mCListDataFrame.AddHead(*pStFrame);
-						ReadGetFrames ++;
-						if ( mode >= 1)
 						{
-							if (g_fileSizeMB <maxMB)
-							{
-								if (pStFrame->btTransCode == 'e')
-								{
-									HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
-								}
-								// wendy add 2020.06.04
-								else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
-								{
-									HandleFrame_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy add 2020.06.04
-								}
-								
-								mCListDataFrame.AddTail(*pStFrame); 								
-								
-							}
-							else
-							{
-								if (gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
-								{
-									if (gpMsEdit_WendyDlg->pShowData->noselitem && gpMsEdit_WendyDlg->pShowData->noselcode && gpMsEdit_WendyDlg->pShowData->noseltime)
-									{
-										BigFile_NoSelectGetTotalRecord ++;
-									}
-									else
-									{
-										BigFile_NoSelectGetTotalRecord = 0;
-									}
-									
-									if (pStFrame->btTransCode == 'e')
-									{
-										HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
-									}
-									// wendy add 2020.06.04
-									else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
-									{
-										HandleFrame_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy add 2020.06.04
-									}
-									
-									mCListDataFrame.AddTail(*pStFrame);
-									
-								}
-							}
+							HandleFrame_Fun(pStFrame, buff,nTradLen);  // wendy 2020.07.07 add
 						}
-						
-						else if ( mode == 0)
-						{
-							if(gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
-							{
-								if (pStFrame->btTransCode == 'e')
-								{
-									HandleFrame_write_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
-								}
-								else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
-								{
-									HandleFrame_write_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);									
-								}
-								else
-								{
-									gpMsEdit_WendyDlg->pShowData->DirectWrite(pStFrame);
-								}
-							}
-							
-						}
-						
-						//mCQSNative_Option.HandleFrame(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy test
-						
-					}
+
 				}
 				
 				pStFrame->btTransCode=buff[sizeof(_tagTTDataFrame)+nTradLen];
@@ -1460,3 +1388,80 @@ void CUnpacker_TTFrame::HandleFrame_write_e(BYTE * buff,WORD Len)
 }
 
 
+void CUnpacker_TTFrame::HandleFrame_Fun(_tagTTDataFrame* pStFrame, BYTE * buff,WORD nTradLen)
+{
+	//(*m_pProc)( m_pProcArg, buff, sizeof(_tagTTDataFrame)+nTradLen );
+	//g_Master.tele.HandleFrame(buff,sizeof(_tagTTDataFrame)+nTradLen);
+	//mCArrayItemDataFrame.Add(*pStFrame); // xxx long time
+	//mCListDataFrame.AddTail(*pStFrame);
+	//mCListDataFrame.AddHead(*pStFrame);
+	ReadGetFrames ++;
+	if ( mode >= 1)
+	{
+		if (g_fileSizeMB <maxMB)
+		{
+			if (pStFrame->btTransCode == 'e')
+			{
+				HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+			}
+			// wendy add 2020.06.04
+			else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
+			{
+				HandleFrame_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy add 2020.06.04
+			}
+			
+			mCListDataFrame.AddTail(*pStFrame); 								
+			
+		}
+		else
+		{
+			if (gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
+			{
+				if (gpMsEdit_WendyDlg->pShowData->noselitem && gpMsEdit_WendyDlg->pShowData->noselcode && gpMsEdit_WendyDlg->pShowData->noseltime)
+				{
+					BigFile_NoSelectGetTotalRecord ++;
+				}
+				else
+				{
+					BigFile_NoSelectGetTotalRecord = 0;
+				}
+				
+				if (pStFrame->btTransCode == 'e')
+				{
+					HandleFrame_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+				}
+				// wendy add 2020.06.04
+				else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
+				{
+					HandleFrame_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy add 2020.06.04
+				}
+				
+				mCListDataFrame.AddTail(*pStFrame);
+				
+			}
+		}
+	}
+	
+	else if ( mode == 0)
+	{
+		if(gpMsEdit_WendyDlg->pShowData->op_TransCode(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_item(pStFrame)&&gpMsEdit_WendyDlg->pShowData->op_time(pStFrame))
+		{
+			if (pStFrame->btTransCode == 'e')
+			{
+				HandleFrame_write_e(buff, sizeof(_tagTTDataFrame)+nTradLen);
+			}
+			else if (pStFrame->btTransCode == 'O' || pStFrame->btTransCode == 'L' || pStFrame->btTransCode == 'H' || pStFrame->btTransCode == 'G' || pStFrame->btTransCode == 'C')
+			{
+				HandleFrame_write_Simple(buff, sizeof(_tagTTDataFrame)+nTradLen);									
+			}
+			else
+			{
+				gpMsEdit_WendyDlg->pShowData->DirectWrite(pStFrame);
+			}
+		}
+		
+	}
+	
+	//mCQSNative_Option.HandleFrame(buff, sizeof(_tagTTDataFrame)+nTradLen);  // wendy test
+	
+}

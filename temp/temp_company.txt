@@ -1,3 +1,2373 @@
+291794177@qq.com
+
+Dixon 2020/7/17 星期五 11:52:35
+我弄一個servers.ini吧，等等
+
+Andy 2020/7/17 星期五 11:52:46
+要包含futures
+
+Andy 2020/7/17 星期五 11:52:54
+昨天不说了吗？
+
+wahchoi 2020/7/17 星期五 11:53:59
+這個開頭寫乜會影響我連那個SERVER嗎？
+
+Dixon 2020/7/17 星期五 11:54:04
+他們不知道，我處理一下
+
+
+
+
+[FuturesOnlyMS]
+;Futures Only MS list， max=10
+FuturesOnlyMSCount=2
+FuturesOnlyMS1=210.22.4.98
+FuturesOnlyMS2=192.168.0.160
+
+IBM服务器售后电话是多少
+https://zhidao.baidu.com/question/362401415686050052.html
+售后
+技术支持热线
+800-810-1818 （免费）
+400-810-1818
+产品故障报修 分机 5003
+软件系统安装使用 分机 5004
+800
+810
+1818
+打过去，上门修，保内免费换硬盘，保外就别找IBM修了，价格太高了
+给联想打就好了
+
+Lenovo联想服务器售后维修服务-深圳地区
+http://www.vipshfw.com/pc/fwqlx/lenovo.htm?sdclkid=A52D152D15-6152lb_
+报修电话：400-013-0755
+
+IBM 公司售后及技术支持内容
+https://wenku.baidu.com/view/45c505dfa58da0116c1749ea.html
+
+IBM技术支持中心电话指南
+http://www.360doc.com/content/10/0301/09/146562_17170654.shtml
+
+DNS 192.168.0.99
+
+114.114.114.114.
+1.2.4.8
+8.8.8.8
+
+广东电信 DNS 202.96.128.86 202.96.128.166
+名称 DNS服务器 IP 地址114 DNS / 114.114.114.114 / 114.114.115.115
+阿里 AliDNS / 223.5.5.5 / 223.6.6.6
+百度 BaiduDNS / 180.76.76.76
+DNSPod DNS+ / 119.29.29.29 / 182.254.116.116
+CNNIC SDNS / 1.2.4.8 / 210.2.4.8
+oneDNS / 112.124.47.27 / 114.215.126.16
+Google DNS / 8.8.8.8 / 8.8.4.4
+OpenDNS / 208.67.222.222 / 208.67.220.220
+V2EX DNS / 199.91.73.222 / 178.79.131.110
+
+
+2020.07.17
+
+// no depacker no add log version
+
+					if((bCheckFrame && bNight && bXFrame==FALSE && bxItem) == FALSE || (bXFrame==TRUE) ) // 4个条件都满足,不发这个帧 // wendy add || (bXFrame==TRUE)
+						{
+							HandleFrame_Fun(pStFrame, buff,nTradLen);  // wendy 2020.07.07 add
+						}
+
+
+void CMyClientComm_Transparence::SendVerifyPkg()
+{
+	switch( m_DataSrcFmtType )
+	{
+		case _DATASRCFMT_TTFRAME:
+			SendVerifyPkg_TTFrame() ;
+			break ;
+		case _DATASRCFMT_JYB_LEVEL_ONE:
+			SendVerifyPkg_JYB_LevelOne() ;
+			break ;
+		case _DATASRCFMT_USA_STOCK:
+			SendVerifyPkg_USA_Stock();
+			break ;
+		case _DATASRCFMT_GF:
+			SendVerifyPkg_GF();
+			break ;
+		default:
+			break ;
+
+	}
+	
+}
+
+
+
+BOOL CMaster::RecData_DataSrc_TTFrame( int ID, BYTE* pBuf, int size ) 
+{
+	//TRACE( "rec:%d\r\n", size ) ;	
+	
+	CMyListener& obj = m_Listener ;
+
+	// 先 解桢.
+	if( ID>=0 && ID<=1 )
+	{
+		m_Unpacker[ID].InputData( pBuf, size ) ;
+	}
+	else
+	{
+		return TRUE ;
+	}
+
+	// check use line.
+	Lock();
+
+
+
+各自用自己的ID：
+andyfut        
+billfut        
+dixonfut       
+jk1fut         
+keungfut       
+kihuifut       
+micfut         
+wahfut         
+waifut         
+wendyfut       
+
+Test site pw: 123456
+Real site pw: 654321
+
+test site: wendyh/123456
+real site: testwendy/654321
+
+Andy 2020/4/20 星期一 16:55:03
+tj test Acc
+dcip.t18.com
+User :wendy
+pass :同上
+
+Andy 2020/4/20 星期一 16:55:15
+这是你的账号
+
+awendy 2020/4/20 星期一 16:55:49
+好的。
+
+
+
+中国好声音:众学员合唱《梦想天空分外蓝》  王乃恩
+
+2020.07.16
+
+Ben  16:44:01
+他们主动重启一般会选在休市时间，ms和雷达server有时候会崩溃
+
+Ben  16:44:11
+就需要重启
+
+awendy  16:44:32
+停雷达服务器，有没有影响呢？
+
+Ben  16:44:57
+有啊，少数据
+
+
+
+Andy  15:10:24
+你在解帧那个地方 加一点log ，只log 0700
+
+Andy  15:10:37
+700是腾讯，成交比较活跃
+
+awendy  15:11:11
+好的，那刚才那些log暂时去掉了。
+
+Andy  15:11:25
+嗯
+
+
+
+
+
+Master.cpp:extern CLog		g_Log ;
+
+Andy  14:19:02
+	(*m_pProc)( m_pProcArg, pBuf, bufSize );
+
+Andy  14:19:29
+这句话 3个地方有 ，你改的地方是 Unpacker
+
+Andy  14:19:38
+_TTFrame; 
+
+awendy  14:19:58
+是的。
+
+Andy  14:20:03
+还有Unpacker_MDP ,Unpacker_GF
+
+Andy  14:20:14
+ 那两个地方没有解帧
+
+Andy  14:20:23
+可能是那些地方来的
+
+Andy  14:21:13
+你在着3个地方都加一句log ，看到底是收的哪里的数据
+
+awendy  14:21:57
+哦，好的。
+
+awendy  14:23:40
+如果这两个地方有数据来的话，可能会打印很多的哦。  要不要每1024才打印一次？ 如: if(Count % 1024 ==0 ) {打印log}
+
+Andy  14:24:09
+可以
+
+Andy  14:24:24
+这个临时看下，没关系的
+
+awendy  14:24:54
+哦，好的。
+
+
+
+
+Ben  16:41:20
+嗯，应该是了，test site重启也会影响
+
+
+MsEdit_Wendy_InputData
+2717545
+1627931 futures only 
+- 1089614
+
+ditributo_InputData
+2576127
+1595847 futures only 
+- 980280
+
+-141418
+-32084
+
+G:\BaiduNetdiskDownload\ART\work\2020.07.15_修改futures only丢掉stock数据
+
+VC6.0 不能断点调试的解决方法 VC6.0没有debug模式
+https://blog.csdn.net/hjk216/article/details/53422540
+调试旧程序，VC6.0环境
+
+1.VC6.0没有debug模式
+
+Build->Configurations->Add
+
+2.VC6.0不能断点调试  转载地址：http://blog.csdn.net/bin_zh123/article/details/5733459
+
+现象是用 debug中的 step info或者run to cursor合着设置断点会出现One or morebreakpoints cannot be set and have been disabled.   Execution will stopat the beginning of the program.解决方法，
+
+1.在project->setting->c/c++-general->debug info->program databse for edit and continue ;
+
+2.edit->breakpoints->removeall;
+
+3.build->set active project configuration->*.exe win32 debug.
+
+经过以上三步，ok!
+  
+
+另一篇:
+
+
+
+黄文看微信约半个钟轮询一次。
+
+在日期2020.06.11经验教训后，前些日还是地铁递纸巾底黑口罩女擦汗，做好事大家愉快。
+
+可以看区间涨幅，如果从月初7月1号开始买进证券股不动，到现在至少能赚20%了。
+
+2020.07.15
+
+Andy 2020/7/14 星期二 15:50:05
+港交所发出来的数据 ---> 香港那边接收，接收有几个来源， 
+做成我们的格式（tt frame） --> distributor ->分给各个服务器，这个可以发到深圳
+
+awendy 2020/7/14 星期二 15:52:03
+好的，了解啦。
+
+
+Andy  15:43:53
+check in & label
+
+awendy  15:43:54
+加了个宏。
+
+awendy  15:44:08
+哦，好的。
+
+Andy  15:44:33
+还有fixlog
+
+
+编译报错:"error C2220: warning treated as error - no 'object' file generated"的解决办法
+https://blog.csdn.net/viggirl/article/details/8281403
+解决的办法是：将警告级别设置为低  或者  关闭将警告视为错误
+
+
+BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize ) 
+{...
+//if(bStxFound&&!bDleFound)
+...
+	if(lpbuf==ETX&&!bDleFound)
+	{//找到一帧
+...}
+
+Andy 2020/7/14 星期二 11:37:34
+改下W2TServer\distributor ，
+
+Andy 2020/7/14 星期二 11:37:37
+ 
+
+Andy 2020/7/14 星期二 11:38:03
+就是把这种类型的tt frame扔掉
+
+awendy 2020/7/14 星期二 11:39:21
+哦，好的，我看看。
+
+Andy 2020/7/14 星期二 11:39:49
+加个宏定义， 分别编译两种版本， 一种是原先的， 另一种就是扔掉股票数据的， 这种改下标题 futures only
+
+Andy 2020/7/14 星期二 11:40:04
+就是解帧那里，你应该很熟悉了
+
+awendy 2020/7/14 星期二 11:40:38
+好的，我先VSS下载下来。
+
+
+TJ溫馨提示：
+為提升系統效能，我們即將更新服務器地址，
+如 閣下有設置防火牆，請務必在*2020-07-24或之前*更新防火牆設置，
+否則 閣下的服務將會*受到影響*，不便之處，敬請見諒。
+
+詳情可致電(852)2921 8221 沈先生
+
+
+
+jk<jackychan@tscihk.com>  11:04:59
+這樣做:
+1. 淨期指收費平很多, 競爭力強;
+2. 將期指搬家 , 讓股票客ms cpu 好負擔些 , 也會快些;
+3. 這是短期最快達到的效果;
+4. 否則 , 真是不用做了!!
+
+DKwok(397717592)  11:05:09
+先解決淨期指用戶
+
+
+jk<jackychan@tscihk.com>  11:12:43
+1. 股票有期指 , 
+2. 期指無股票.
+3. 搬走期指客, ----------ms 自然會好好多的!
+
+
+
+
+哲学家们告诉我们，做我们所喜欢的，然后成功就会随之而来。——巴菲特
+
+如何定义朋友呢：他们会向你隐瞒什么。
+——巴菲特
+
+投资必须是理性的，如果你不能理解它，就不要做。——巴菲特
+
+想要在股市从事波段操作是神做的事，不是人做的事。——巴菲特
+
+拥有一只股票，期待它下个早晨就上涨是十分愚蠢的。——巴菲特
+
+我们不必屠杀飞龙，只需躲避它们就可以做的很好。——巴菲特
+
+投资对于我来说，既是一种运动，也是一种娱乐。——巴菲特
+
+在短期内，市场是一台投票机，但在长期内，它是一台称重机。——巴菲特
+
+如果盖茨卖的不是软件而是汉堡，他也会成为世界汉堡大王。——巴菲特
+
+投资股票致富的秘诀只有一条，买了股票以后锁在箱子里等待，耐心地等待。——巴菲特
+
+要投资，就要屏蔽兴奋，至少不要在错误的时间兴奋。——巴菲特
+
+当人们忘记二加二等于四这种最基本的常识时，就该是脱手离场的时候了。——巴菲特
+
+想成为最优秀的人，就要向最优秀的人学习。——巴菲特
+
+如果你打了半小时牌，仍然不知道谁是菜鸟，那么你就是。——巴菲特
+
+当别人贪婪时，你就该恐惧，当别人恐惧时，你就该贪婪。——巴菲特
+
+如果你不愿意拥有一只股票十年，那就不要考虑拥有它十分钟。——巴菲特
+
+2020.07.14
+
+
+CArrayDouble array1; 出错.
+
+20200713 17:21:35(31935885), DrawHistogram()->CalCoord(iYmax=100.000000,iYmin=0.000000)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=6910,i=0)  tempDey=350,array1[i](temphwd)=1974.303955, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6910,i=0)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=0)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=7226,i=1)  tempDey=350,array1[i](temphwd)=2064.755859, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=7226,i=1)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=1)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=9494,i=2)  tempDey=350,array1[i](temphwd)=2712.635254, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=9494,i=2)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=2)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=6886,i=3)  tempDey=350,array1[i](temphwd)=1967.580811, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6886,i=3)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=3)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=2244,i=4)  tempDey=350,array1[i](temphwd)=641.289795, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=2244,i=4)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=4)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=19753,i=5)  tempDey=350,array1[i](temphwd)=5643.968750, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=19753,i=5)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=5)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=8883,i=6)  tempDey=350,array1[i](temphwd)=2538.079834, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=8883,i=6)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=6)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=6260,i=7)  tempDey=350,array1[i](temphwd)=1788.700195, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6260,i=7)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=7)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=6577,i=8)  tempDey=350,array1[i](temphwd)=1879.269287, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6577,i=8)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=8)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=368,i=9)  tempDey=350,array1[i](temphwd)=105.208038, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=368,i=9)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=9)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=4983,i=10)  tempDey=350,array1[i](temphwd)=1423.972412, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=4983,i=10)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=10)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=11689,i=11)  tempDey=350,array1[i](temphwd)=3339.822266, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=11689,i=11)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=11)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=595,i=12)  tempDey=350,array1[i](temphwd)=170.066040, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=595,i=12)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=12)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=3902,i=13)  tempDey=350,array1[i](temphwd)=1114.912598, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=3902,i=13)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=13)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=2550,i=14)  tempDey=350,array1[i](temphwd)=728.663086, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=2550,i=14)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=14)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle  (YInt=13996,i=15)  tempDey=350,array1[i](temphwd)=3999.039795, m_Phymax=100.000000...33
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=13996,i=15)...0
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=15)...1
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle(top=-6463)...22 oxy.y(447) -arr_YInt[0](6910)=-6463 
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle(top=242)...2
+20200713 17:21:35(31935885), DrawHistogram()->Rectangle(top=-6779)...22 oxy.y(447) -arr_YInt[2](7226)=-6779 
+
+20200713 17:23:17(32038003),  OnNewFrame wDataType=='RA'...5
+20200713 17:23:17(32038034), DrawHistogram()->CalCoord(iYmax=60.000000,iYmin=0.000000)...1
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle  (YInt=56,i=0)  tempDey=354,array1[i](temphwd)=9.610966, m_Phymax=60.000000...33
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=56,i=0)...0
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=0)...1
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle  (YInt=83,i=1)  tempDey=354,array1[i](temphwd)=14.221196, m_Phymax=60.000000...33
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=83,i=1)...0
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=1)...1
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle  (YInt=87,i=2)  tempDey=354,array1[i](temphwd)=14.886148, m_Phymax=60.000000...33
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=87,i=2)...0
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=2)...1
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle  (YInt=181,i=3)  tempDey=354,array1[i](temphwd)=30.755207, m_Phymax=60.000000...33
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=181,i=3)...0
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=3)...1
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle  (YInt=39,i=4)  tempDey=354,array1[i](temphwd)=6.699675, m_Phymax=60.000000...33
+20200713 17:23:17(32038034), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=39,i=4)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=4)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=174,i=5)  tempDey=354,array1[i](temphwd)=29.645998, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=174,i=5)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=5)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=147,i=6)  tempDey=354,array1[i](temphwd)=25.019991, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=147,i=6)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=6)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=88,i=7)  tempDey=354,array1[i](temphwd)=15.065655, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=88,i=7)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=7)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=105,i=8)  tempDey=354,array1[i](temphwd)=17.836966, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=105,i=8)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=8)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=23,i=9)  tempDey=354,array1[i](temphwd)=3.938021, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=23,i=9)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=9)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=102,i=10)  tempDey=354,array1[i](temphwd)=17.445408, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=102,i=10)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=10)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=299,i=11)  tempDey=354,array1[i](temphwd)=50.686848, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=299,i=11)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=11)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=29,i=12)  tempDey=354,array1[i](temphwd)=5.076269, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=29,i=12)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=12)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=171,i=13)  tempDey=354,array1[i](temphwd)=29.012602, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=171,i=13)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=13)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=164,i=14)  tempDey=354,array1[i](temphwd)=27.894396, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=164,i=14)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=14)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle  (YInt=78,i=15)  tempDey=354,array1[i](temphwd)=13.306093, m_Phymax=60.000000...33
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=78,i=15)...0
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=15)...1
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle(top=391)...22 oxy.y(447) -arr_YInt[0](56)=391 
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle(top=391)...2
+20200713 17:23:17(32038050), DrawHistogram()->Rectangle(top=364)...22 oxy.y(447) -arr_YInt[2](83)=364 
+
+
+
+c语言double类型不能用%d输出，会出错
+
+20200713 17:06:10(31010783), DrawHistogram()->CalCoord(iYmax=0,iYmin=1079574528)...1
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle  (YInt=6910,i=0)  tempDey=350,array1[i](temphwd)=1073741824, m_Phymax=1084152119...33
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6910,i=0)...0
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=0)...1
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle  (YInt=7226,i=1)  tempDey=350,array1[i](temphwd)=0, m_Phymax=1084236163...33
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=7226,i=1)...0
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=1)...1
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle  (YInt=9494,i=2)  tempDey=350,array1[i](temphwd)=1073741824, m_Phymax=1084567877...33
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=9494,i=2)...0
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=2)...1
+20200713 17:06:10(31010783), DrawHistogram()->Rectangle  (YInt=6886,i=3)  tempDey=350,array1[i](temphwd)=-1073741824, m_Phymax=1084145234...33
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6886,i=3)...0
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=3)...1
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle  (YInt=2244,i=4)  tempDey=350,array1[i](temphwd)=-2147483648, m_Phymax=1082395217...33
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=2244,i=4)...0
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=4)...1
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle  (YInt=19753,i=5)  tempDey=350,array1[i](temphwd)=0, m_Phymax=1085672440...33
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=19753,i=5)...0
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=5)...1
+20200713 17:06:10(31010799), DrawHistogram()->Rectangle  (YInt=8883,i=6)  tempDey=350,array1[i](temphwd)=-536870912, m_Phymax=1084478504...33
+
+20200713 16:45:41(29781932), DrawHistogram()->CalCoord(iYmax=0,iYmin=1079574528)...1
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle  (YInt=6910,i=0)  tempDey=350,array1[i]=1073741824, m_Phymax=1084152119...33
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=6910,i=0)...0
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=0)...1
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle  (YInt=7226,i=1)  tempDey=350,array1[i]=0, m_Phymax=1084236163...33
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=7226,i=1)...0
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=1)...1
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle  (YInt=9494,i=2)  tempDey=350,array1[i]=1073741824, m_Phymax=1084567877...33
+20200713 16:45:41(29781948), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=9494,i=2)...0
+
+YInt = (tempDey*array1[i])/m_Phymax ;
+
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle  (YInt=101,i=0)  tempDey=354,array1[i]=1610612736, m_Phymax=1076965196...33
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=101,i=0)...0
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=0)...1
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle  (YInt=57,i=1)  tempDey=354,array1[i]=-1610612736, m_Phymax=1076076342...33
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=57,i=1)...0
+20200713 16:46:37(29838108), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=1)...1
+
+眼瞅着要涨停，拼命压单为哪般[想一下][想一下][想一下]
+
+黄金坑
+
+把上面70万压单全干掉，明天直接一(近3个亿啊)
+庄家主力是不是就是需要这种效果呢？
+
+20200713 11:50:49(12089765),  Enter CTTRadarAlert() 
+20200713 11:50:52(12093103),  PutByID(nID=1017, pVar )
+20200713 11:52:07(12168233),  PutByID(nID=1000, pVar )
+20200713 11:52:07(12168233), Enter InitObject()!
+20200713 11:52:07(12168233), Create taskbar notifier!
+20200713 11:52:07(12168233), pObj = 0xa807fd8
+20200713 11:52:07(12168233), TTPID_MessageWindow, pWnd = 0xa81018c
+20200713 11:52:07(12168233), Create history dialog!
+20200713 11:52:08(12168280), Create history dialog!3 
+20200713 11:52:08(12168343), Create history dialog!10 
+20200713 11:52:08(12168358), Create CRecord 
+20200713 11:52:08(12168358), CRecord..1 
+20200713 11:52:08(12168358), CRecord..2 
+20200713 11:52:08(12168358), CRecord..3 
+20200713 11:52:08(12168358), CRecord..4 
+20200713 11:52:08(12168358), CRecord..5 
+20200713 11:52:08(12168421), Create CAudioDlg 
+20200713 11:52:08(12168436), Create CPopupDlg 
+20200713 11:52:08(12168436), Create CFlowDlg 
+20200713 11:52:08(12168452), Call InitRadarSetting()!
+20200713 11:52:08(12168452), Call LoadRadarSetting()!
+20200713 11:52:08(12168467), Call ConfigNotifier()!
+20200713 11:52:08(12168467), Call ConfigHisDlg()!
+20200713 11:52:08(12168483), Configurate history dialog!
+20200713 11:52:08(12168483), Activate(0)!
+20200713 11:52:08(12168483), Leave InitObject()!
+20200713 11:52:08(12168592),  PutByID(nID=5333, pVar )
+...
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=118467,i=10)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=10)...1
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=39634,i=11)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=11)...1
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=74035,i=12)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=12)...1
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=67474,i=13)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=13)...1
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=60061,i=14)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=14)...1
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=37515,i=15)...0
+20200713 11:53:43(12264018), DrawHistogram()->Rectangle arr_Dscj.Add(YInt=0,i=15)...1
+
+
+awendy:
+所以说短期确实是无法知道的。 研究中期或长期应该是比较有意义的。
+
+awendy:
+短期很可能真的是没有任何意义的，且累人折腾人.....
+
+awendy:
+就像女人的月经，你搞短线去抓下个月的某一天是很难抓准确的，但如果你搞中线或长线，抓某两个星期，那几乎又是百分百可以抓准的哦.....
+
+
+1,股错一次就好，(较尾场夜回尽量看了向右变道时)夜晚车变道必须只错一次.(v ok)
+尽量不开夜车，尽量不变道，一定看准看清，转向灯一定打三秒再转，听喇叭看前照灯光(v ok)
+2,思想上升一个境界:Visio抽象概括不可太具体,股票知道短期具体上帝和骗子变中期半月半年,梅经从不
+定准时但肯定有来不能能具体。
+3,王观宝化学借分子听着生动并班重听,知道重讲重听的无聊,老板的辛苦无奈,李香港收复,换位思考.
+语文一二年级细讲,高年级不讲或少讲,独立的养成或老师的作用.
+4,梅家砖能拆估计都拆来洗了,知道我头发多少根就会放心吧，想讲人家总有理由价高贵价低质量不好.
+女人都这样吧，知道了解就好.
+
+
+2020.07.13
+
+短期是只持股几天，甚至隔日交易的(半个月内）。
+中期是指半个月到半年的。(v ok)
+长期指半年或一年以上，甚至数十年持股的。
+
+大部分短期是两个月以内、中期是半年、长期是1年至1年半左右、
+
+一般来说
+　　中期是指半个月到半年的；
+　　长期指一年以上，甚至数十年持股的。
+　　短期是只持股几天，甚至隔日交易的。
+
+①股市短线一般指的是买卖周期是几天或者2周以内
+②中线一般指的是买卖周期是3-6个月
+③长线指的是买卖周期在6个月以上，一般是指的一年以上时间持有股票,也就是相应的短期中期长期了.
+
+个人认为短期一般指3个月以下，中期3个月以上1年以下，长期1年以上。
+基金适合中长期持有这种说法比较常见，个人的理解是这样的，对股票基金来说，尤其是处于牛市中时，
+股票基金应该中长期持有，这样可以获得较高的收益，因为我们无法准确预测大盘何时调整，不可能做到高抛低吸。
+
+不同的人对短期、中期、长期的理解不同，不可一概而论。
+对于喜欢做短线的人来说，可能1个月至6个月就算是中期了，6个月以上就是长期了。
+而对于一些喜欢做长线的人来说，可能1年以下都算短线，3年以上才算长线。
+
+
+短线——根据技术面追涨杀跌，持股时间一周以内。 
+中线——以研究公司基本面为重，在行情较冷清时分批建仓，做足一个波段。大约1——6个月。 
+长线——在熊市结束时买入成长性好的股票，长期持有，有时在该股中做些波段。持股时间半年以上，甚至数年
+
+一般来说
+中期是指半个月到半年的；
+长期指一年以上，甚至数十年持股的。
+短期是只持股几天，甚至隔日交易的。
+
+1、一般来说，在股市中，长期是指1年以上，而中期是指3个月到1年，而短期一般是指3个月以内。
+在股市中，长线操作是做企业的，短中线操作是做市场的，不同的股民会根据自己的情况选择适合自己的操作模式。
+注意这只是一般的说法，并非成规。有的个性投资者，长线几年，短线则短至数天也不奇怪。
+
+2、目前在股市中，按照操作时间的长短大致可以分为四种方式：超短线操作、短线操作、中长线操作、长线操作。
+具体的时间并没有严格的划分，超短线是指一天内的操作，短线是指一周内的操作，
+中长线是指一至两个月内的操作，更长的时间就是长线操作了。
+
+
+对于股市短线一般指的是买卖周期是几天或者2周以内,
+　　中线一般指的是买卖周期是3-6个月,
+　　长线指的是买卖周期在6个月以上，一般是指的一年以上时间持有股票,也就是相应的短期中期长期了.
+
+股票短期一般是1-2个星期，短期需要依靠技术分析，并且有投机的成分在，需要投资者花费较多的时间进行短线操作。(v ok)
+股票短期的优势碍于比较好找股票的波动，见好就收，虽然盈利不会很多，(v ok)
+但是因为不停的盯盘，所以可以降低亏损的风险。不过对于未来升值空间较大的股票来说，长期持有才是最理想的。(v ok)
+
+大部分短期是两个月以内、中期是半年、长期是1年至1年半左右、
+
+短线 一般一月以内就算短线了
+中线 1月以上至1年
+长线 1年以上
+其实短中长线也没有一个统一的标准。
+
+短期bai炒股也叫短线炒股，时间大概是在一个du交易日到几周之间。zhi
+
+超短线一般一天有获利就抛；短线没有规定多少天的，一般3-5天不等。10天也是可以的。
+
+2-5天为短线股
+
+if (arr_YInt[ix] > oxy[i].y)  // oxy[i].y 450 0
+{
+	arr_YInt[ix]  = arr_YInt[ix] % oxy[i].y;
+	dc.Rectangle(oxy[i].x+witch[i]/2*j,oxy[i].y-arr_YInt[ix]/2,oxy[i].x+witch[i]/2*(j+1),oxy[i].y);
+}
+else											
+dc.Rectangle(oxy[i].x+witch[i]/2*j,oxy[i].y-arr_YInt[ix],oxy[i].x+witch[i]/2*(j+1),oxy[i].y);
+
+// wendy add
+if (arr_YInt[i] > oxy.y)
+{
+arr_YInt[i]  = arr_YInt[i] % oxy.y;  // 450 0
+dc.Rectangle(oxy.x+witch/2*j,oxy.y-arr_YInt[i]/2,oxy.x+witch/2*(j+1),oxy.y);
+}
+else					
+dc.Rectangle(oxy.x+witch/2*j,oxy.y-arr_YInt[i],oxy.x+witch/2*(j+1),oxy.y);
+
+
+文厚炒股模式，短线：1-7天.
+找人气交易量大的选股进场，选股很重要。
+一买进当天判断是否正常，不正常及刻退出。
+如果正常，让它涨1-7天。最多7天出来。
+
+股神巴菲特说过一句经典的话:预测股票短期的涨跌，那是愚蠢的行为！能知道股票明天涨
+股神巴菲特说过一句经典的话:预测股票短期的涨跌，那是愚蠢的行为！能知道股票明天涨跌的人只有两个:一个上帝，另一个就是骗子！(v ok)
+本人认为:高景气行业之中业绩持续高成长的优秀企业，没有必要去预测短期的涨跌！
+最好的投资方法就是在市场绝望中逢低买入高景气行业之中高成长的优秀企业，其它的事情就交给时间！
+在股市中战略眼光+良好的心态=成功！
+
+有个同学的逻辑是:  好股，买进了的人不会乱卖， 没有买的人会不断地买进，他长线就不断地赚钱...
+
+awendy:
+恩，明白理解的。
+
+awendy:
+如果是牛市，都会涨起来的。 所以换换也无妨吧。
+
+awendy:
+涨得差不多了卖了就相当于入袋为安了。
+
+awendy:
+买进的亏的话，就给点有限的耐心就可以了。
+
+高信:
+睡觉了
+
+awendy:
+恩，我沙井同学是支持搞长线的。
+
+awendy:
+他的逻辑是：
+
+awendy:
+好股，买进了的人不会乱卖， 没有买的人会不断地买进，他长线就不断地赚钱...(v ok)
+
+awendy:
+这个逻辑也是对的。
+
+高信:
+是，你去看看通策医疗和爱尔眼科的图
+
+
+用53版本改成56版本的.
+
+小鱼
+顶点软件打板买
+大智慧打板买
+明阳别人减仓她买
+第一创业打板买
+
+吓死宝宝了
+
+2020.07.10
+
+我最近推广裸贷
+有合适的客户介绍下
+
+取共同集，异集.....?
+
+一,炒股,有所为有所不为(牛市).(v ok)
+二,卖,赚随意(冲高),亏条件(22).
+三,买,跟买(热股?).
+
+高手: 有钱就跟买就好了，真的看不懂，估计很疯 (v ok)
+
+我是有赚就卖的啦。不在乎赚多少。 亏的话就要坚持下了，坚持到符合卖的条件就卖掉。
+有赚的话，想卖就卖，不卖也行......可以比较随意。 
+
+你想介入该行业，就应当充分考虑你的兴趣、能力，你的就业磨合期，收益时限以及这一职业的未来前景。
+
+有一个男孩考入了一所师范学院，在师范学院里，他喜欢上了唱歌。
+马上就要毕业了，男孩的心却充满了困惑。唱歌和当老师都是他喜欢的，如何选择呢？
+男孩最后想出了一个折衷的办法；先当一名教师，在教学之余练习唱歌，然后再成为一名歌唱家。
+男孩把他的想法告诉了父亲。父亲指了指他面前的两把椅子，那两把椅子相距有不远的距离，
+父亲说：“你能同时坐到那儿放的两把椅子上面吗？”男孩摇了摇头，他不能。
+父亲说：“很多的时候人们都同时想坐两把椅子，结果，只会使自己掉到地上。”
+此时，男孩知道他必须做出艰难的选择。最终，他选择了他更加喜欢的唱歌。后来，他成为一名著名的歌唱家。他就是意大利的帕瓦罗蒂。
+总有太多的原因让我们迷失了方向，太多的理由让我们做不出选择，又有太多的喜爱让我们常常在人生的十字路口徘徊。
+如果我们选择平庸，那尽可以让屁股把每一把椅子都坐坐;如果我们选择兼顾和尝试，那还是让屁股在椅子中间掉下去吧;
+如果我们选择理想和收获，那么，还是尽快像帕瓦罗蒂一样，让屁股结结实实坐到一把椅子上，然后专心致志，勤学苦练。
+
+其实在社会上一直是这样的，我们每个人都在追求完美，我们要掌握各方面的才能，因为不论你在某个领域多么优秀，
+但如果你在其他领域跟傻瓜一样，那也是不完美的人生，不求样样精通，但求不落伍为基本原则。
+
+因此，一份相对自由的，能充分发挥个人聪明才智的工作将越来越成为人们的首选择业目标。
+这样，人们就可能拥有更多灵活的时间、弹性安排自己的生活。这样的工作才是个性化的，理想的工作。
+
+他逻辑是对的，全球放水，黄金上涨，这是大水牛
+
+国金证券 2333/ (0.61/16.02) = 2333 / 0.0380774032459425717852684144819 = 61278.600983606557377049180327865
+西水股份 1000x 14.5 = 14500
+
+6.5W + 1.5W = 8W  8Wx2 = 16W。
+
+awendy:
+昨晚跟同学讨论了下炒票，他说得很对啊，股市里能赚钱的只有两种人：1, 纪律性很强的人。 2,专业的炒股人。
+(v ok)
+
+深圳-小丁(23465028)  11:16:12
+谁有期货帐号， 大家合作下？ 
+
+深圳-老k(2420032355)  11:16:28
+自己去开一个呗
+
+北京-小狼(14341010)  11:16:31
+我有，很长时间没玩期货了
+
+深圳-小丁(23465028)  11:16:33
+期货开户就要50万吧？
+
+深圳-老k(2420032355)  11:16:38
+要
+
+北京-小狼(14341010)  11:16:43
+不要
+
+北京-小狼(14341010)  11:16:50
+股指期货要
+
+北京-小狼(14341010)  11:17:00
+商品期货不要
+
+
+
+
+
+在牛市中，不赚钱就先不要放手吧。  别想这个又想那个，很多时候会丢了西瓜捡芝麻。华创阳安 600155 -476.34 (v ok)
+
+行情疯了和女朋友疯了基本差不多，初期不要试图去讲理，紧紧抱住就行……
+
+暴涨，一方面让人激动，另一方面，让人心慌。
+人人都像怀春的少女，希望牛市来，却又怕他乱来，但终究还是希望来。
+
+2020.07.09
+
+20200708 17:17:13(31593540), DrawHistogramExt()->Rectangle(top=-33)...22 oxy[0].y(254) -arr_YInt[16](287)=-33 
+20200708 17:17:13(31593540), DrawHistogramExt()->Rectangle(top=-33)...2
+
+Andy 2020/7/8 星期三 13:50:18
+radarserver是直接接收处理数据， 然后通过ms 发送给客户端
+
+Andy 2020/7/8 星期三 13:51:07
+也是一样的解帧，你先看看解帧部分，这部分你都熟悉
+
+Andy 2020/7/8 星期三 13:51:35
+处理请求，发送数据应该是没问题的，不用管
+
+国金 西水 蓝帆
+
+2020.07.08
+
+中国股市：为什么牛市总是券商股先涨，垃圾股最后涨呢？
+http://www.ddzzd.com/xiuxianlvyou/1772055.html
+下一轮牛市什么时候到来?这几年股市一直在跌，股民们很久没有体验过牛市了，当然还有不少人依然在坚持，等待下一轮牛市的到来，但是有时候当我们发现牛市之后，其实已经涨得很多了，当菜场的大妈都在讨论哪只股票会涨停的时候，牛市也快接接尾声了。那么如果是处于牛市的中途，有什么样的征兆，可以说明牛市来了呢?
+牛市来临时会出现这六大特征
+第一，牛市的时候，大部分股票都会上涨，虽然说不同阶段有不同的热点，但是因为行情好，大众乐观，流动性充足，资金不再考虑基本面，什么股票都会涨，会让市场呈现为普涨，就算是业绩很差的股票，也会莫名其妙的大涨。
+第二，有领涨先锋，每一轮牛市，都会有两个领涨先锋，第一个是该轮牛市的主导板块，比如说2007年时主导的是资源股，而2015年主导的是互联网金融股，这是第一主角，第二主角就是证券股，因为牛市中成交很活跃，券商业绩越来越好，形成循环。
+第三，牛市重心上移，牛市，就是一浪高过一浪，每过一段时间会出一个高点，如果说下个月点位比这个月还要低，那肯定就不是牛市，牛市的调整是比较短暂的，大部分时候都在上涨，每一次调整的低点会高于上一次。
+第四，在牛市中一般喜欢尾盘拉升，在牛市的时候，不管中途怎么震荡，主力采用拉高跳水，还是采取金针探底的方式，但是一般到快收盘的后二十分钟，都会有大量资金入场买入，因为盘中的波动只是短期的，资金看中的是趋势，所以源源不断的流入。
+第五，牛市的时候容会出现慢涨急跌，这主要是体现在大盘上，牛市的时候，往往会出现连续性的上涨，但涨幅不会太大，然后上涨一段时间后突然出现单日大跌，但是次日又重新开始走强，几天后又创出新高。
+第六，牛市会消灭低价股，这一点因为注册制改革，可能在未来的牛市中不一定有效，在以前的A股牛市中这一点是很有效的，即牛市的时候会消灭低价股和低市值股票，因为大家太狂热了，很多新股民开户进入股市就对着低价股买入，造成低价股批量上涨。
+如果这些情况都出现了，那么大概率已经身处牛市之中。
+
+为什么牛市券商股先涨，垃圾股最后涨？
+这句话是非常有道理的，现实中的股票市场确实是这样的，券商股最先涨，券商股持续大涨就是牛市加速信号，垃圾股集体持续大涨就是牛市结束信号。
+
+牛市行情板块上涨先后顺序
+1、券商板块，发出牛市开始信号;
+2、金融板块接力，券商，银行，保险，以及石油板块;
+3、周期股上涨，煤炭，钢铁，地产，有色，建材，水电等等板块上涨;
+4、题材股全年开花，中小板股票，创业板股票，牛市最高赚钱效应阶段;
+5、垃圾股补涨，意味着牛市即将结束，券商股开始调整，意味着牛市即将到来;
+整个牛市行情的板块轮动大致就是这样，一轮牛市总体分为5个阶段。
+券商股先涨，垃圾股后涨，其实这个是股市的规律
+券商股先涨，因为券商股跟行情息息相关的，也是股市行情的晴雨表，牛市一来，对券商是最大利好，券商股必然会得到资金的关注，从而推高券商行情。
+
+垃圾股后涨，因为垃圾股是市场冷门股，没有资金的推动，股价还在底部。而当股市牛市之时，其他股票都翻几倍了，唯独只有垃圾股还在底部，各路资金再度把垃圾股推动一波涨幅，获利了解，牛市结束。
+综合分析上面关于当前A股行情，以及牛市行情的规律，现在的A股确实属于牛市，只是牛市的底部而已。牛市加速之前，券商必然先涨，垃圾股最后涨，这是股市铁的规律，以往历史都是这样的。
+
+如果牛市来了什么股票最先涨，什么股票最后涨？
+https://3g.163.com/news/article/FGSLEU7K0548FKUF.html
+
+为什么牛市来了要先涨券商
+https://zhidao.baidu.com/question/310039134016293164.html
+1、牛市往往都是伴随交易bai量的放大，du券商的主营收入是佣金，交zhi易量放大，必然券商的佣金变多。dao所以牛市首先是利好券商。
+
+2、中国是政策市，聪明的资金是最早能发现行情，所以这些资金往往都是先流入券商股。
+
+3、当发现券商板块整体板块（不能只看个股）连续上涨，突破了某些价格位时，牛市可能来了。
+
+券商股不涨的真正原因 为什么牛市必买券商股
+第一，牛市必买券商股的bai原du因有几下几个，首先金融股所占zhi权重大，那么指数向上的dao牛市必有保险银行证券的上涨空间。
+然后随着牛市的来临，成交量会日渐放大，那么券商的业绩是可以预期的稳定成长，那么基本面也支持券商股有板块牛市的到来。
+
+第二，买券商这样在牛市里既有上涨空间，又稳定的股票对很多没有技术技巧做短线的人来说，是安全且可靠的方法。
+
+第三，因为市值大，资金部位大的大户进出很方便，不会出现进去了出不来的情况
+
+Log解双K线问题.
+分解.
+
+jk<jackychan@tscihk.com>  11:26:56
+ms1,ms2, ms3---------------減一台做期指/期權-------大勢所趨
+
+
+BOOL CUnpacker_TTFrame::InputData( BYTE* pBuf, int bufSize ) 
+{...
+			if( (nBuffIp>0) && (nTradLen>=0) )		// 2003-10-22, hope, add (nTradLen>=0).	
+			{
+				InFrameHead = 0;
+				pStFrame->nLength=sizeof(_tagTTDataFrame)+nTradLen;
+				pStFrame->nTransDataLength=nTradLen;
+				//ATLASSERT( pStFrame->nTransDataLength>=0 ) ; 
+				
+				//HandleFrame(buff,sizeof(_tagTTDataFrame)+nTradLen);
+				//if( m_pProc!=NULL )
+				{
+					if((bCheckFrame && bNight && bXFrame==FALSE && bxItem) == FALSE || (bXFrame==TRUE) ) // 4个条件都满足,不发这个帧 // wendy add || (bXFrame==TRUE)
+						{
+							HandleFrame_Fun(pStFrame, buff,nTradLen);  // wendy 2020.07.07 add
+						}
+				}
+				
+				pStFrame->btTransCode=buff[sizeof(_tagTTDataFrame)+nTradLen];
+				memmove(buff+sizeof(_tagTTDataFrame),buff+sizeof(_tagTTDataFrame)+nTradLen+1,sizeof(buff)-sizeof(_tagTTDataFrame)-nTradLen-2);
+				nBuffIp=nBuffIp-nTradLen-1;
+			}
+			else
+			{
+			}
+		}while(nBuffIp>3);
+...}
+
+void CUnpacker_TTFrame::HandleFrame_Fun(_tagTTDataFrame* pStFrame, BYTE * buff,WORD nTradLen)
+{...}
+
+void CDataSrc_TTFrameFile::ProcRecPackage( char* pPkgBuf, int pkgSize ) 
+{...
+	//m_RecDataCount += pkgSize ;
+...}
+
+2020.07.07
+
+我: 骚文，这波股市你怎么看？ 
+
+高手: 不知道啊，看不懂
+
+高手: 有钱就跟买就好了，真的看不懂，估计很疯
+
+那高手就说了这么两句话。
+
+我估计有钱投入的话，这两句话值好几十万哦，哈哈。
+
+
+骚文，这波股市你怎么看？ 
+不知道啊，看不懂
+有钱就跟买就好了，真的看不懂，估计很疯
+
+你永远无法挣到超出认知范围的钱，除非是靠运气。
+
+---- API Matches (22038 in 658 files) ----
+
+---- WINAPI Matches (5056 in 151 files) ----
+ACLAPI.H
+ADPTIF.H
+ADSHLP.H
+ADVPUB.H
+AFXDLLX.H
+AFXIMPL.H
+AFXINET.H
+AFXISAPI.H
+AFXISAPI.INL
+AFXISAPI.RC  多个版本
+AFXMEM.CPP
+AFXOLE.H
+AFXPRIV.H
+AFXPRIV2.H
+AFXRES.H
+AFXRES.RC 多个版本
+AFXSOCK.H
+AFXSTATE.CPP
+AFXSTAT_.H
+AFXTEMPL.H
+AFXTLS.CPP
+AFXTLS_.H
+AFXTRACE.CPP
+AFXVER_.H
+AFXV_DLL.H
+AFXV_W32.H
+APPCCFG.H
+APPMODUL.CPP
+APPTERM.CPP
+APPUI1.CPP
+APPUI2.CPP
+ARCCORE.CPP
+ARCEX.CPP
+ASSERT.H
+ATL.CPP
+ATLBASE.H
+ATLCOM.H 多个版本
+ATLCONV.H
+Atlimpl.cpp 
+Bdnapi.h
+Bh.h
+Bhfilter.h
+Bhsupp.h
+.....
+
+全局域符号::Fun的API函数一般都会有API关键字符.(v ok)
+
+user32.dll 2334 - 1502 + 1 = 833
+
+判断某个Fun函数是否为Win32Api，可以根据
+1, D:\Program Files\Microsoft Visual Studio\sourceIns\Microsoft Visual Studio.PR 打开后查找不到函数体，
+有WINAPI， WINOLEAPI说明符等，是否函数前有全局域符号::Fun
+WINOLEAPI CoCreateInstance(REFCLSID rclsid, LPUNKNOWN pUnkOuter,
+                    DWORD dwClsContext, REFIID riid, LPVOID FAR* ppv);
+HRESULT hr = ::CoCreateInstance(CLSID_DataConvert, NULL, CLSCTX_INPROC_SERVER, IID_IDataConvert, (void**)&m_spConvert);
+WINUSERAPI
+HWND
+WINAPI
+CreateWindowExA(
+    DWORD dwExStyle,
+    LPCSTR lpClassName,
+    LPCSTR lpWindowName,
+    DWORD dwStyle,
+    int X,
+    int Y,
+    int nWidth,
+    int nHeight,
+    HWND hWndParent ,
+    HMENU hMenu,
+    HINSTANCE hInstance,
+    LPVOID lpParam);
+WINUSERAPI
+HWND
+WINAPI
+CreateWindowExW(
+    DWORD dwExStyle,
+    LPCWSTR lpClassName,
+    LPCWSTR lpWindowName,
+    DWORD dwStyle,
+    int X,
+    int Y,
+    int nWidth,
+    int nHeight,
+    HWND hWndParent ,
+    HMENU hMenu,
+    HINSTANCE hInstance,
+    LPVOID lpParam);
+#ifdef UNICODE
+#define CreateWindowEx  CreateWindowExW
+#else
+#define CreateWindowEx  CreateWindowExA
+#endif // !UNICODE
+
+	HWND Create(LPCTSTR lpstrWndClass, HWND hWndParent, RECT& rcPos, LPCTSTR szWindowName = NULL,
+			DWORD dwStyle = 0, DWORD dwExStyle = 0,
+			UINT nID = 0, LPVOID lpCreateParam = NULL)
+	{
+		m_hWnd = ::CreateWindowEx(dwExStyle, lpstrWndClass, szWindowName,
+			dwStyle, rcPos.left, rcPos.top, rcPos.right - rcPos.left,
+			rcPos.bottom - rcPos.top, hWndParent, (HMENU)nID,
+			_Module.GetModuleInstance(), lpCreateParam);
+		return m_hWnd;
+	}
+2,MSDN （C:\Windows\hh.exe D:\Program Files\MSDN\msdn.col）查找函数Fun拉到下面有要求条件如下
+Requirements 
+  Windows NT/2000: Requires Windows NT 3.1 or later.
+  Windows 95/98: Requires Windows 95 or later.
+  Header: Declared in Winuser.h; include Windows.h.
+  Library: Use User32.lib.
+  Unicode: Implemented as Unicode and ANSI versions on Windows NT/2000.
+
+
+
+
+A:5255 B:6148 C:8713 D:5045 E:3126 F:3940 G:3450  = 35677
+H:3787 I:2844 J:1019 K:1553 L:3665 M:5660 N:2392  = 20920
+O:2580 P:7825 Q:465 R:4243 S:10952 T:5218 	  = 31283
+U:2437 V:1538 W:2806 X:93 Y:426 Z:317 #23	  = 7640
+
+= 95520  100个2.5年. 500个0.5年. 1000个3个月 200个1.25年 (v ok)
+
+堂弟建议：只关注光大，中银，招商，浙商证券，就行了，这都是银行下属的关联证券公司。
+股友建议： 我认为危险，现在环境不适合启动牛市，所以券商是涨一波逃跑
+
+A B C D E F G/H I J K L M N/O P Q R S T /U V W X Y Z
+
+Log解双K线问题.
+:API统计.
+分解.独立函数，读文件字符数大可能装不下的变量去掉.
+ABCDE....Z 新牛津英汉双解统计单词数.
+
+2020.07.06
+
+请问如何多张visio图同时导入word？
+https://zhidao.baidu.com/question/199279897259710565.html?qbl=relate_question_1&word=%B6%E0%D2%B3visio%C8%E7%BA%CE%D7%AA%BB%BB%B3%C9word
+每次只能放一张，方法：打开一个visio然后全选复制，粘贴到word中。
+
+visio如何转换成word
+https://zhidao.baidu.com/question/465632258.html
+word里面插入对象，来自于文件，选择visio图，即可变成word了。
+
+第一步，bai打开电脑，进入桌面，du打开Word文档，找到上方菜单栏zhi的插入-对象点击插入对象。
+第二步，点击后弹出界面选择由文件创建，选择文件的路径。
+第三步，点击浏览后弹出对话框选择需要文件的路径插入文件。
+第四步，插入完成后点击确定。
+第五步，完成上面步骤后VISIO文件就成功的插入到了Word文档中，可以适当编辑后保存即可。
+
+官田社区健康服务中心位于广东省深圳市宝安区石岩街道宝石东路354号，是一家社区卫生服务中心。 
+详细介绍
+医院地址：总院：广东省深圳市宝安区石岩街道宝石东路354号查看地图
+医院电话：医院总机：0755-27610185 其它：0755-27610185
+0755-23505921 宝石东路336号
+
+牛市的第一波一般是证券银行板块吗？
+全融证券板块齐涮涮红通通啊。 厉害。
+
+选好股，做轮动，一个牛市不单可以回本，还让有意想不到的收入。
+谈股的多了，牛市来了吗？
+
+visio 2013怎么更改默认字体大小？8号字体太小了，要求下次启动的时候也是修改后的
+https://www.zhihu.com/question/24327207 (v ok)
+开发工具->绘图资源管理器->主题->定义样式->文字->段落->文本块等等 确定保存
+09:59
+
+博士写游戏外挂3年分赃12万 被抓后才知卖了300万
+https://news.163.com/20/0703/07/FGJJ14JO00019B3E.html
+
+邓小平：让一部分人先富起来，带动大部分人加速发展、达到共同富裕...
+
+唉！女留学生被外国男友诱惑吸毒还染上艾滋...可怜可悲可气！
+https://dy.163.com/article/FGILO6SA05128ELF.html
+
+只发自群主或另一信男人(v ok)
+
+41集,32分,张自力敲门霍景良对不起火气不小啊老弟开车小心点
+
+2020.07.03
+
+模版的完全特化与偏特化
+https://blog.csdn.net/a185446828/article/details/89946545
+模版特化：任何针对模版参数进一步进行条件限制设计的特化版本。 <<泛型思维>>
+
+完全特化：针对所有的模版参数进行特化。 <<c++ primer>>
+
+ 
+
+举例如下：
+
+template<class T,class N> 
+class Template{}; 
+ 
+
+全特化:
+
+template<> 
+class Template<int,char>{};
+ 
+
+偏特化：
+
+template<class T> 
+class Template<T,int>{};
+ 
+
+注意：函数模版不存在偏特化，只有类模版才能偏特化
+
+#include <iostream>
+using namespace std;
+
+template<typename T, typename N>
+class Test
+{
+public:
+    Test( T i, N j ) : a(i), b(j)
+    {
+        cout<<"普通模板类"<< a <<' ' << b << endl;
+    }
+private:
+    T a;
+    N b;
+};
+
+template<>
+class Test<int , char>
+{
+public:
+    Test( int i, char j ) : a( i ), b( j )
+    {
+        cout<<"模版类全特化"<< a  << ' ' << b << endl;
+    }
+private:
+    int a;
+    char b;
+};
+
+template <typename N>
+class Test<char, N>
+{
+public:
+    Test( char i, N j ):a( i ), b( j )
+    {
+        cout<<"模版类偏特化"<< a<< ' ' << b << endl;
+    }
+private:
+    char a;
+    N b;
+};
+
+//模板函数  
+    template<typename T1, typename T2>  
+void fun(T1 a , T2 b)  
+{  
+    cout<<"模板函数"<<endl;  
+}  
+
+//模版函数全特化  
+template<>  
+void fun<int ,char >(int a, char b)  
+{  
+    cout<<"模版函数全特化"<<endl;  
+}  
+
+//函数不存在偏特化：下面的代码是错误的  
+// template<typename T2> 
+// void fun<char,T2>(char a, T2 b) 
+// { 
+//     cout<<"模版函数偏特化"<<endl; 
+// } 
+
+
+int main()
+{
+    Test<double , double> t1( 0.1,0.2 );   //普通模版类
+    Test<int , char> t2( 1, 'A' );   //模版类完全特化
+    Test<char, bool> t3( 'A', true );  //模版类偏特化
+    return 0;
+}
+ 
+
+模版全特化，实例化一个hash结构模板
+
+#include <iostream>
+#include <functional>//
+#include <string>
+#include <stdlib.h>
+
+using std::hash;//
+using std::string;
+using std::cout;
+
+//自定义类型
+class S 
+{
+public:
+    string first_name;
+    string last_name;
+};
+//自己封装一个哈希函数对象的类型，内部使用了hash结构模板
+class MyHash 
+{
+public:
+    size_t operator()(const S &s) const
+    {
+        size_t h1 = hash<string>()(s.first_name);
+        size_t h2 = hash<string>()(s.last_name);
+        return h1 ^ (h2 << 1);
+    }
+};
+//也可以用自定义类实例化一个hash结构模板
+template<>
+class hash < S > 
+{
+public:
+    size_t operator()(const S &s) const
+    {
+        size_t h1 = hash<string>()(s.first_name);
+        size_t h2 = hash<string>()(s.last_name);
+        return h1 ^ (h2 << 1);
+    }
+};
+
+int main()
+{
+    cout << "计算string的散列值的示例：\n";
+    string str = "Meet the new boss...";
+    hash<string> hash_fn;
+    size_t str_hash = hash_fn(str);
+
+    cout << str_hash << '\n';
+
+
+    cout << "\n计算自定义类型S的散列值的示例：\n";
+    string s1 = "Hubert";
+    string s2 = "Farnsworth";
+    hash<string> h1;
+    S obj_S;
+    obj_S.first_name = s1;
+    obj_S.last_name = s2;
+
+    cout << "hash(s1) = \t" << h1(s1) << "\n"
+        << "hash(s2) = \t" << hash<string>()(s2) << "\n"
+        << "MyHash(obj_S) = " << MyHash()(obj_S) << "\n"
+        << "hash(obj_S) = \t" << hash<S>()(obj_S) << "\n";
+
+
+    ::system("pause");
+    return 0;
+}
+
+
+
+他草根出身，却把3个女儿嫁入豪门，建成影响中国30多年权势家族
+https://baike.baidu.com/tashuo/browse/content?id=78a8591e7232acf8a9bb230d&lemmaId=9947958&lemmaId=9947958&fr=qingtian
+宋嘉树 宋耀如、韩教准、韩乔荪
+
+
+11487481
+
+2020.07.02
+
+Andy  16:47:07
+这个‘X' 其实只是个标记
+
+Andy  16:47:36
+跟在它后面的还是那些正常的'e' ,'O'之类的帧
+
+awendy  16:47:50
+哦。
+
+Andy  16:47:56
+只要偏移2个byte就可以了
+
+
+
+void  CQSNative_Charting::HandleFrame( BYTE* buff, WORD Len)
+{
+	_tagTTDataFrame* pStFrame=(_tagTTDataFrame *)buff;
+
+	// 检查是否需要发 时间桢, 日期有否更新等.		
+	CheckFrameTime( pStFrame ) ;
+...
+// 根据btTransCode解桢.
+	switch( pStFrame->btTransCode )
+	{
+	
+		case 'a':	//Current ask/bid price(B'C'D)
+			HandleFrame_a(buff,Len);
+			break;
+		case 'c':	//ask/bid price(D)
+			//HandleFrame_c(buff,Len);
+			break;
+		case 'e':   //andy add 2014.01.28 'e'代替't'
+			HandleFrame_e(buff,Len);
+			break;
+		case 't':	//Trade ticker('A')
+			HandleFrame_t(buff,Len);
+			break;
+		case 'y':	//ask/bid price
+			HandleFrame_y(buff,Len);
+			break;
+		case 'A':	//current ask price
+			HandleFrame_A(buff,Len);
+			break;
+		case 'B':	//current ask price
+			HandleFrame_B(buff,Len);
+			break;
+		case 'C':	//Previous closing price
+			HandleFrame_C(buff,Len);
+			break;
+		case 'E':
+			break;
+		case 'G':	//Today's lowest price
+			HandleFrame_G(buff,Len);
+			break;
+		case 'H':	//Today's highest price
+			HandleFrame_H(buff,Len);
+			break;
+		case 'I':	//Last day's open interest ('A', 'C') 
+			HandleFrame_I(buff,Len);
+			break;
+		case 'L':	//Last price(nominal)('A')
+			HandleFrame_L(buff,Len);
+			break;
+		case 'M':	//Nominal price(nominal)('C')
+			break;
+		case 'N':	//Nominal price(nominal)+turnover('C')
+			break;
+		case 'O':	//open price for ('A','C')
+			HandleFrame_O(buff,Len);
+			break;
+		case 'P':	//Last price plus shares frame
+			HandleFrame_P(buff,Len);
+			break;
+		case 'R':	//Total shares traded / turnover today ('A')
+			HandleFrame_R(buff,Len);
+			break;
+		case 128:	//Market open
+		case 200:	//DateTime
+			HandleFrame_200(buff,Len);
+			break;
+		case 201:
+		//case 214:	//item price amendment
+		case 218:    //andy 2013.10.4 amend协议修改了，增加了删除某时间段daily数据的协议。
+			HandleFrame_214(buff,Len);
+			break;
+		case 252:	//house keeping
+			HandleFrame_252(buff,Len);
+			break;
+		case 253:	//mark open
+			HandleFrame_253(buff,Len);
+			break;
+		case 254:	//mark close
+			HandleFrame_254(buff,Len);
+			break;
+		case 202:
+			HandleFrame_202(buff,Len);
+			break;
+		default:
+			break;
+	}
+
+}
+
+"2020.03.07"
+Andy 8:34:14
+这里有个问题， ‘X’帧你没解 ， 'X'是夜市帧，里面包含了普通帧， 比如‘A' ，'L' ，'e'
+awendy 8:36:12
+哦。好的，我检查看下。
+Andy 8:37:14
+用这个试，这是晚上的数据
+Andy 8:37:21
+X帧比较多
+awendy 8:37:35
+ 好的。
+Andy 8:39:10
+Andy 9:50:58
+你先改个只有一个log的版本
+Andy 9:51:10
+我先试一下
+Andy 9:51:31
+这是昨天的数据
+
+
+
+
+根据6月底曝光的一份内部文件显示，美国特朗普政府已将华为、海康威视、浪潮等在内的20家中国科技公司列为“中国军事公司或归中国人民解放军‘拥有或控制的公司”，以方便今后对这些公司施加新的制裁。
+
+
+特朗普侄女出书揭家族"黑历史" 法院裁定暂停出版
+https://news.163.com/20/0701/13/FGF2UGK400018AOR.html
+
+港澳办张晓明:美国一些人的手确实伸得太长了
+https://news.163.com/20/0701/12/FGEUS7IQ00019B3E.html
+张晓明说，如果这种霸凌主义的习性发作，如果他们觉得自己国内乱的还不够，如果他们不在乎所谓制裁造成的自损可能大于他损，如果他们想借机转嫁危机、玩甩锅，那他们就试试呗。无非是要给我们一个机会，展示我们自卫还击的决心和能力。事实上大家可能也注意到，这两天美国国务卿蓬佩奥、美国商务部长，已经宣布了几项所谓的制裁措施。中国政府也宣布了对涉港问题上表现恶劣的人员，要实行入境限制、签证限制。
+“我们有句老话，你做初一我做十五，只要美国方面出手，中国政府和香港特别行政区政府必定要予以反制，有关措施也会见步行步，陆续有来。”
+
+
+
+曾小丽我用单车载了你四年，还是比不过开宝马车的接送你三次就跟别人跑了，
+最让我不能容忍的是你跑的时候居然带走了电饭煲，你特么的让我怎么吃饭啊？
+
+林郑月娥致辞哽咽:去年是40年公务生涯最严峻考验
+https://news.163.com/20/0701/10/FGENPK4D00019B3E.html
+
+这也拿来报道，这跟“你瞅啥”有啥不一样？
+
+老人公交车上猥亵女生 攥拳头威胁劝阻者：离远点！
+https://news.163.com/20/0701/08/FGEID1NG00019B3E.html
+
+港澳办：香港国安法施行有市民撕毁移民表格
+https://news.163.com/20/0701/11/FGEPHN0G00019B3E.html
+一位立法会议员跟我说，他的好朋友前不久在申办新加坡移民手续，本来已经办下来了。但当他听说国家正在为香港制定这样一部维护国家安全法律的时候，当着他的面把原来的那些表格撕掉了，很激动地说了一句“香港有救了”。
+
+美媒：美将华为和中兴通讯列为"美国家安全威胁"
+https://news.163.com/20/0701/11/FGEQRQS000019B3E.html
+美国不发展5G，就是为了迎接星链，6G时代，美国依然是世界领先者。
+
+Andy 2020/7/1 星期三 10:42:30
+你有没有解'X' 帧？
+
+awendy 2020/7/1 星期三 10:42:53
+我看下代码。
+
+awendy 2020/7/1 星期三 10:43:23
+哦，没有加， 要加上吗？
+
+Andy 2020/7/1 星期三 10:43:58
+X帧是代表夜市
+
+Andy 2020/7/1 星期三 10:44:25
+里面包含了open ，high ，low，close ，e那些帧
+
+Andy 2020/7/1 星期三 10:44:50
+解帧方法是一样的，你加上试试
+
+awendy 2020/7/1 星期三 10:45:23
+哦，好的，我看看。
+
+
+
+
+病情分析：
+      你好，蔬菜是能量很少的，这样不补充能量而要消耗能量当然可以减肥了。
+      指导意见：
+      只是容易引起营养不良和免疫力低下，还是应该适当的补充些蛋白质的，蛋白质物质对身体的健康是很重要的，病毒和细菌的入侵都是靠它来抵抗。您可以再吃些豆制品类，蛋白含量丰富并且不含脂肪。
+https://www.120ask.com/question/14929838.htm
+
+2020.07.01
+
+为什么要使用线程局部存储(TlsAlloc，TlsGetValue，ets)而不是局部变量
+https://oomake.com/question/1602625
+
+
+TLS--线程局部存储
+概念：线程局部存储（Thread Local Storage，TLS）用来将数据与一个正在执行的指定线程关联起来。
+https://www.cnblogs.com/stli/archive/2010/11/03/1867852.html
+
+
+总结：
+贴了这么多代码，简单的总结下流程：
+AfxGetApp / AfxGetThread -> AfxGetModuleThreadState -> AfxGetModuleState -> CThreadLocalObject::GetData (_afxThreadState operator->) -> CThreadSlotData::GetThreadValue
+https://www.cnblogs.com/hanawasakuraki/p/9499416.html
+
+TlsGetValue
+
+TlsGetValue
+The TlsGetValue function retrieves the value in the calling thread's thread local storage (TLS) slot for the specified TLS index. Each thread of a process has its own slot for each TLS index. 
+
+LPVOID TlsGetValue(
+  DWORD dwTlsIndex   // TLS index
+);
+
+
+
+MFC的模块状态：AfxGetApp()和AFX_MANAGE_STATE()
+https://blog.csdn.net/chaozi2008/article/details/21629901
+1. Introduction
+当我们在用MFC编程的时候，我们经常用到AfxGetApp()来获得当前的CWinApp的Instance。看看MFC的源代码中AfxGetApp()的实现，你会发现AfxGetApp()的实现并不像一般情况下面那样直接：
+
+_AFXWIN_INLINE CWinApp* AFXAPI AfxGetApp()
+
+       { return afxCurrentWinApp; }
+
+#define afxCurrentWinApp    AfxGetModuleState()->m_pCurrentWinApp
+
+AfxGetApp()调用的是AfxGetModuleState()，该函数返回一个AFX_MODULE_STATE的指针，其中的一个成员保存着当前的CWinApp的指针。可AfxGetModuleState()的作用又是什么呢？
+
+ 
+
+此外，当我们在开发MFC DLL程序的时候，我们会在每个输出的DLL函数前面加上一句AFX_MANAGE_STATE：
+
+void SomeMFCDllFunction()
+
+{
+
+AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+…
+
+ 
+
+AFX_MANAGE_STATE又是起什么作用呢？从字面上看来，它是Manage某种State，而AfxGetStaticModuleState又是获得State的，那么State究竟是什么呢？
+
+在MFC中，States用来保存某种相关的状态信息，分为下面几类：
+
+1.     Process State，和某个单独的进程绑定起来
+
+2.     Thread State，和某个单独的线程绑定
+
+3.     Module State，和Module相关
+
+前两种State和一般的全局变量十分类似，只是根据需求的不同被绑定于不同的进程/线程，如多线程支持等。而Module State本身比较特别，Module State根据情况的不同，可以是全局，线程，或者进程相关的State，并且可以根据要求快速切换。
+
+2.      Process State
+常见的Process State有：
+
+1.     _AFX_WIN_STATE
+
+2.     _AFX_DB_STATE
+
+3.     _AFX_DEBUG_STATE
+
+4.     _AFX_SOCK_STATE
+
+5.     ……
+
+从字面上面可以很容易猜出这些状态的用处。
+
+MFC通过下面的宏来定义Process State:
+
+#define PROCESS_LOCAL(class_name, ident_name) /
+
+       AFX_COMDAT CProcessLocal<class_name> ident_name;
+
+#define EXTERN_PROCESS_LOCAL(class_name, ident_name) /
+
+       extern CProcessLocal<class_name> ident_name;
+
+PROCESS_LOCAL用CProcessLocal模板类定义了一个CProcessLocal<class_name>的一个实例作为状态变量，而EXTERN_PROCESS_LOCAL则使在头文件中声明此状态变量。CProcessLocal的定义如下：
+
+class AFX_NOVTABLE CProcessLocalObject
+
+{
+
+public:
+
+// Attributes
+
+       CNoTrackObject* GetData(CNoTrackObject* (AFXAPI* pfnCreateObject)());
+
+ 
+
+// Implementation
+
+       CNoTrackObject* volatile m_pObject;
+
+       ~CProcessLocalObject();
+
+};
+
+ 
+
+template<class TYPE>
+
+class CProcessLocal : public CProcessLocalObject
+
+{
+
+// Attributes
+
+public:
+
+       AFX_INLINE TYPE* GetData()
+
+       {
+
+              TYPE* pData = (TYPE*)CProcessLocalObject::GetData(&CreateObject);
+
+              ENSURE(pData != NULL);
+
+              return pData;
+
+       }
+
+       AFX_INLINE TYPE* GetDataNA()
+
+              { return (TYPE*)m_pObject; }
+
+       AFX_INLINE operator TYPE*()
+
+              { return GetData(); }
+
+       AFX_INLINE TYPE* operator->()
+
+              { return GetData(); }
+
+ 
+
+// Implementation
+
+public:
+
+       static CNoTrackObject* AFXAPI CreateObject()
+
+              { return new TYPE; }
+
+};
+
+ 
+
+CProcessLocal的作用只是一个Wrapper，Hold一个TYPE*的指针，一旦用户调用GetData来获得这个指针，GetData会首先判断该指针是否为空，如果为空，则创建一个新的实例保存起来，否则返回已有的指针。前提条件是，TYPE必须从CNoTrackObject继承。任何从CNoTrackObject继承的类都拥有自己的new/delete，这样此对象便不会被Debug的内存分配系统所跟踪而误判为Leak。
+
+CNoTrackObject* CProcessLocalObject::GetData(
+
+       CNoTrackObject* (AFXAPI* pfnCreateObject)())
+
+{
+
+       if (m_pObject == NULL)
+
+       {
+
+              AfxLockGlobals(CRIT_PROCESSLOCAL);
+
+              TRY
+
+              {
+
+                     if (m_pObject == NULL)
+
+                           m_pObject = (*pfnCreateObject)();
+
+              }
+
+              CATCH_ALL(e)
+
+              {
+
+                     AfxUnlockGlobals(CRIT_PROCESSLOCAL);
+
+                     THROW_LAST();
+
+              }
+
+              END_CATCH_ALL
+
+              AfxUnlockGlobals(CRIT_PROCESSLOCAL);
+
+       }
+
+       return m_pObject;
+
+}
+
+ 
+
+3.      Thread State
+和Process State类似，Thread State和某个线程绑定起来，Thread State有：
+
+1.     _AFX_THREAD_STATE
+
+2.     _AFXCTL_AMBIENT_CACHE
+
+同样的，Thread State是被THREAD_LOCAL和EXTERN_THREAD_LOCAL定义，也有CThreadLocal和CThreadLocalObject来Hold住Thread State的指针。CThreadLocal和CProcessLocal的实现方式不太一样，CThreadLocal利用TLS(Thread Local Storage)来保存指针，而不是用成员变量。简单来说，Thread Local Storage是Windows支持的功能，可以在任意线程中保存多个DWORD数据，每个这样的DWORD数据所占的位置称之为Slot，分配数据需要分配一个Slot，获得和修改数据CThreadLocalObject::GetData的实现如下：
+
+CNoTrackObject* CThreadLocalObject::GetData(
+
+       CNoTrackObject* (AFXAPI* pfnCreateObject)())
+
+{
+
+    ENSURE(pfnCreateObject);
+
+ 
+
+       if (m_nSlot == 0)
+
+       {
+
+              if (_afxThreadData == NULL)
+
+              {
+
+                     _afxThreadData = new(__afxThreadData) CThreadSlotData;
+
+                     ENSURE(_afxThreadData != NULL);
+
+              }
+
+              m_nSlot = _afxThreadData->AllocSlot();
+
+              ENSURE(m_nSlot != 0);
+
+       }
+
+       CNoTrackObject* pValue = static_cast<CNoTrackObject*>(_afxThreadData->GetThreadValue(m_nSlot));
+
+       if (pValue == NULL)
+
+       {
+
+              // allocate zero-init object
+
+              pValue = (*pfnCreateObject)();
+
+ 
+
+              // set tls data to newly created object
+
+              _afxThreadData->SetValue(m_nSlot, pValue);
+
+              ASSERT(_afxThreadData->GetThreadValue(m_nSlot) == pValue);
+
+       }
+
+       return pValue;
+
+}
+
+CThreadLocalObject::GetData首先判断m_nSlot，如果m_nSlot == 0，说明该Thread State未曾分配，GetData函数将会使用_afxThreadData->AllocSlot函数分配一个新的TLS的Slot，保存在m_nSlot之中，然后调用GetThreadValue检查pValue是否为NULL，如果是，则创建一个新的对象然后调用SetValue把pValue设置到该Slot之中。_afxThreadData的类型为CThreadSlotData，是对TLS API的一个简单的封装。
+
+_AFX_THREAD_STATE是一个很常用的Thread State，每个Thread，都会有自己的一份_AFX_THREAD_STATE。MFC提供了一个函数AfxGetThreadState来获得当前进程的Thread State，如果当前的线程还没有Thread State，该函数会创建一个新的Thread State。
+
+_AFX_THREAD_STATE* AFXAPI AfxGetThreadState()
+
+{
+
+       _AFX_THREAD_STATE *pState =_afxThreadState.GetData();
+
+       ENSURE(pState != NULL);
+
+       return pState;
+
+}
+
+ 
+
+_AFX_THREAD_STATE中保存着下列信息：
+
+1.     当前的m_pModuleState，每个线程都知道它当前的Module State，这个信息被用来获得当前的Module State，AfxGetModuleState正是这么做的：
+
+AFX_MODULE_STATE* AFXAPI AfxGetModuleState()
+
+{
+
+       _AFX_THREAD_STATE* pState = _afxThreadState;
+
+       ENSURE(pState);
+
+       AFX_MODULE_STATE* pResult;
+
+       if (pState->m_pModuleState != NULL)
+
+       {
+
+              // thread state's module state serves as override
+
+              pResult = pState->m_pModuleState;
+
+       }
+
+       else
+
+       {
+
+              // otherwise, use global app state
+
+              pResult = _afxBaseModuleState.GetData();
+
+       }
+
+       ENSURE(pResult != NULL);
+
+       return pResult;
+
+}
+
+ 
+
+2.     之前的m_pModuleState，用来保存之前的Module State，用于Module State切换，可参考AFX_MANAGE_STATE
+
+3.     其他信息，具体可以参考_AFX_THREAD_STATE的定义
+
+4.      Module State
+Module State保存着和Module相关的状态信息。Module是Windows的术语，代表任何一个可执行的代码文件，EXE和DLL都是Module的一种。Module State有下面几种：
+
+1.     AFX_MODULE_STATE，保存MODULE的信息，是_AFX_BASE_MODULE_STATE和_AFX_DLL_MODULE_STATE的基类
+
+2.     _AFX_BASE_MODULE_STATE，保存MFC Module的状态信息，没有定义其他的成员
+
+3.     _AFX_DLL_MODULE_STATE，保存DLL的状态信息，没有定义其他的成员
+
+4.     AFX_MODULE_THREAD_STATE，保存主线程的有关状态信息，虽然AFX_MODULE_THREAD_STATE是保存的线程的状态信息，但是它只保存Module的主线程的状态信息，所以可以看作是Module State的一种。
+
+这些Module State保存了MFC中的大量重要信息：
+
+1.     CWinApp指针
+
+2.     实例句柄
+
+3.     资源Module的句柄
+
+4.     句柄表
+
+5.     OLE相关信息
+
+6.     窗口过程
+
+7.     Activation Context
+
+8.     ……
+
+ 
+
+4.1      AFX_MODULE_STATE
+AFX_MODULE_STATE的定义如下：
+
+// AFX_MODULE_STATE (global data for a module)
+
+class AFX_MODULE_STATE : public CNoTrackObject
+
+{
+
+public:
+
+#ifdef _AFXDLL
+
+       AFX_MODULE_STATE(BOOL bDLL, WNDPROC pfnAfxWndProc, DWORD dwVersion,
+
+              BOOL bSystem = FALSE);
+
+#else
+
+       explicit AFX_MODULE_STATE(BOOL bDLL);
+
+#endif
+
+       ~AFX_MODULE_STATE();
+
+ 
+
+       CWinApp* m_pCurrentWinApp;
+
+       HINSTANCE m_hCurrentInstanceHandle;
+
+       HINSTANCE m_hCurrentResourceHandle;
+
+       LPCTSTR m_lpszCurrentAppName;
+
+       // …… 其他成员，从略
+
+};
+
+可以看到：
+
+1.     AFX_MODULE_STATE从CNoTrackObject继承。CNoTrackObject定义了自己的new/delete保证自己不会被各种调试版本的new/delete来Track，以免自己被错误的当作Leak。
+
+2.     AFX_MODULE_STATE在DLL和非DLL（也就是EXE）的情况下具有不同的构造函数（和成员）
+
+3.     AFX_MODULE_STATE在成员中保存了一些和Module相关的重要信息
+
+实际上，AFX_MODULE_STATE并没有被直接使用，而是作为_AFX_BASE_MODULE_STATE和_AFX_DLL_MODULE_STATE的基类：
+
+_AFX_BASE_MODULE_STATE被用于Module，其定义如下：
+
+class _AFX_BASE_MODULE_STATE : public AFX_MODULE_STATE
+
+{
+
+public:
+
+#ifdef _AFXDLL
+
+       _AFX_BASE_MODULE_STATE() : AFX_MODULE_STATE(TRUE, AfxWndProcBase, _MFC_VER)
+
+#else
+
+       _AFX_BASE_MODULE_STATE() : AFX_MODULE_STATE(TRUE)
+
+#endif
+
+              { }
+
+};
+
+ 
+
+PROCESS_LOCAL(_AFX_BASE_MODULE_STATE, _afxBaseModuleState)
+
+_AFX_DLL_MODULE_STATE和_AFX_BASE_MODULE_STATE类似，只是仅用于DLL：
+
+class _AFX_DLL_MODULE_STATE : public AFX_MODULE_STATE
+
+{
+
+public:
+
+       _AFX_DLL_MODULE_STATE() : AFX_MODULE_STATE(TRUE, AfxWndProcDllStatic, _MFC_VER)
+
+              { }
+
+};
+
+ 
+
+static _AFX_DLL_MODULE_STATE afxModuleState;
+
+这两个class都没有定义额外的成员，比较简单，只是传入到基类AFX_MODULE_STATE的参数不同。此外，他们定义的方式不太一样，前者使用的是PROCESS_LOCAL宏，定义了一个变量_afxBaseModuleState。后者只是简单的定义了一个static变量afxModuleState。
+
+ 
+
+下面这些函数可以用来获得Module的State：
+
+1.     AfxGetModuleState
+
+AfxGetModuleState首先获得_afxThreadState的m_pModuleState，如果当前的Thread State的m_pModuleState返回NULL，说明当前的Thread State没有正确的初始化（通常的原因是创建线程的时候调用的是CreateThread函数而非AfxBeginThread），则使用_afxBaseModuleState。
+
+AFX_MODULE_STATE* AFXAPI AfxGetModuleState()
+
+{
+
+       _AFX_THREAD_STATE* pState = _afxThreadState;
+
+       ENSURE(pState);
+
+       AFX_MODULE_STATE* pResult;
+
+       if (pState->m_pModuleState != NULL)
+
+       {
+
+              // thread state's module state serves as override
+
+              pResult = pState->m_pModuleState;
+
+       }
+
+       else
+
+       {
+
+              // otherwise, use global app state
+
+              pResult = _afxBaseModuleState.GetData();
+
+       }
+
+       ENSURE(pResult != NULL);
+
+       return pResult;
+
+}
+
+ 
+
+_afxBaseModuleState是用PROCESS_LOCAL定义的：
+
+PROCESS_LOCAL(_AFX_BASE_MODULE_STATE, _afxBaseModuleState)
+
+它代表整个MFC Module的State。当你的程序是动态链接到MFC DLL的时候，该State只有一份。如果你的程序是静态链接到MFC的话，有几个模块（EXE/DLL）静态链接到MFC，MFC的代码就有几份，那么_afxBaseModuleState也就有几份。
+
+ 
+
+2.     AfxGetStaticModuleState
+
+AfxGetStaticModuleState在不同的Project下面有着不同的行为：在DLL项目中，AfxGetSaticModuleState返回afxModuleState，也就是定义好的_AFX_DLL_MODULE_STATE，而在非DLL项目中，AfxGetStaticModuleState直接调用AfxGetModuleState。可以看到，在DLL的情况下，必须使用AfxGetStaticModuleState才可以获得DLL本身的Module State。
+
+#ifdef _AFXDLL
+
+ 
+
+static _AFX_DLL_MODULE_STATE afxModuleState;
+
+ 
+
+AFX_MODULE_STATE* AFXAPI AfxGetStaticModuleState()
+
+{
+
+       AFX_MODULE_STATE* pModuleState = &afxModuleState;
+
+       return pModuleState;
+
+}
+
+ 
+
+#else
+
+ 
+
+AFX_MODULE_STATE* AFXAPI AfxGetStaticModuleState()
+
+{
+
+       AFX_MODULE_STATE* pModuleState = AfxGetModuleState();
+
+       return pModuleState;
+
+}
+
+#endif
+
+ 
+
+3.     AfxGetAppModuleState
+
+AfxGetAppModuleState是最简单的，直接返回_afxBaseModuleState：
+
+AFX_MODULE_STATE* AFXAPI AfxGetAppModuleState()
+
+{
+
+       return _afxBaseModuleState.GetData();
+
+}
+
+从上面的讨论可以看出，当前处于那个MFC Module的状态之中，返回的就是那个MFC Module所相关联的CWinApp对象。如果你有多个Module都是动态链接到MFC DLL的话，那么AfxGetAppModuleState返回的总是同一个CWinApp。
+
+ 
+
+5.      AFX_MANAGE_STATE
+AFX_MANAGE_STATE的作用切换到指定的Module State，当出了作用域的时候将Module State恢复到原来的值。是在不同的Module State之中切换，原因有2：
+
+1.     在不同的MFC DLL和MFC EXE的Module State之间切换，保持正确的AFX_MODULE_STATE，最常见的问题是在DLL输出的函数之中无法获得DLL本身相关的资源，这就是没有正确维护Module State的原因造成的，因为当前Resource DLL的句柄就保存在Module State之中。
+
+2.     切换Activation Context，不同的Module必然有着不同的Activation Context，需要切换。这是属于Side By Side的内容，以后我会专门写一篇文章来讲述Side By Side和manifest的相关信息。
+
+一般的用法如下：
+
+void SomeMFCDllFunction()
+
+{
+
+AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
+…
+
+注意这里使用的是AfxGetStaticModuleState，而非AfxGetModuleState。原因是在DLL项目中，AfxGetStaticModuleState返回的是DLL本身的Module State，而AfxGetModuleState则是返回当前线程相关的Module State，由于一般DLL输出的函数是被其他Module调用，那么大部分情况下当前线程的Module State都是错误的，所以必须得使用DLL本身的Module State。
+
+ 
+
+AFX_MANAGE_STATE只是一个宏，如下：
+
+struct AFX_MAINTAIN_STATE2
+
+{
+
+       explicit AFX_MAINTAIN_STATE2(AFX_MODULE_STATE* pModuleState) throw();
+
+       ~AFX_MAINTAIN_STATE2();
+
+ 
+
+protected:
+
+#ifdef _AFXDLL
+
+       AFX_MODULE_STATE* m_pPrevModuleState;
+
+       _AFX_THREAD_STATE* m_pThreadState;
+
+#endif
+
+ 
+
+       ULONG_PTR m_ulActCtxCookie;
+
+       BOOL m_bValidActCtxCookie;
+
+};
+
+ 
+
+#define AFX_MANAGE_STATE_NO_INIT_MANAGED(p) AFX_MAINTAIN_STATE2 _ctlState(p);
+
+#define AFX_MANAGE_STATE(p) _AfxInitManaged(); AFX_MANAGE_STATE_NO_INIT_MANAGED(p)
+
+可以看到AFX_MANAGE_STATE声明了一个栈上的局部变量_ctrlState，类型为AFX_MAINTAIN_STATE2。这是一个很常用的Pattern，AFX_MAINTAIN_STATE2在构造函数的时候会将当前的Module State切换为参数中指定的Module State：
+
+AFX_MAINTAIN_STATE2::AFX_MAINTAIN_STATE2(AFX_MODULE_STATE* pNewState) throw()
+
+{
+
+#ifdef _AFXDLL
+
+       m_pThreadState = _afxThreadState.GetData();
+
+       ASSERT(m_pThreadState);
+
+       if(m_pThreadState)
+
+       {
+
+              m_pPrevModuleState = m_pThreadState->m_pModuleState;
+
+              m_pThreadState->m_pModuleState = pNewState;
+
+       }
+
+       else
+
+       {
+
+              // This is a very bad state; we have no good way to report the error at this moment
+
+              // since exceptions from here are not expected
+
+              m_pPrevModuleState=NULL;
+
+              m_pThreadState=NULL;
+
+       }
+
+#endif
+
+ 
+
+       if (AfxGetAmbientActCtx() &&
+
+              pNewState->m_hActCtx != INVALID_HANDLE_VALUE)
+
+       {
+
+              m_bValidActCtxCookie = AfxActivateActCtx(pNewState->m_hActCtx, &m_ulActCtxCookie);
+
+       }
+
+       else
+
+       {
+
+              m_bValidActCtxCookie = FALSE;
+
+       }
+
+}
+
+然后在析构函数的时候将其恢复回来：
+
+// AFX_MAINTAIN_STATE2 functions
+
+_AFXWIN_INLINE AFX_MAINTAIN_STATE2::~AFX_MAINTAIN_STATE2()
+
+{
+
+#ifdef _AFXDLL
+
+       // Not a good place to report errors here, so just be safe
+
+       if(m_pThreadState)
+
+       {
+
+              m_pThreadState->m_pModuleState = m_pPrevModuleState;
+
+       }
+
+#endif
+
+ 
+
+       if (m_bValidActCtxCookie)
+
+       {
+
+              BOOL bRet;
+
+              bRet = AfxDeactivateActCtx(0, m_ulActCtxCookie);
+
+              ASSERT(bRet == TRUE);
+
+       }
+
+}
+
+可以看到，AFX_MAINTAIN_STATE2将当前_afxThreadState在m_pThreadState中存起来，然后将所指向的Module State保存在m_pPrevModuleState中。在析构函数中，则使用保存起来的m_pPrevModuleState恢复到m_pThreadState的Module State。除了保存恢复Module state之外，AFX_MAINTAIN_STATE2也会在切换Activation Context。这个Activation Context被用来查找Side By Side Assemblies，我以后会专门写一篇文章讲述Side By Side和Manifest相关的一些信息。这次就写到这里。
+
+
+克服追涨杀跌心态，必须要反过来操作。
+
+如何轻松对付孩子“唱反调”
+http://baby.sina.com.cn/edu/jtjy/2018-01-21/doc-ifyqrewk1193603.shtml
+1、教孩子换位思考
+家长们以后在遇到这种情况时，不妨也试试这种方法，通过角色扮演，让孩子体会自己的不听话行为对别人来说是什么感受。
+2、巧妙利用孩子的游戏心理
+例如让孩子吃饭，他就是不愿意吃的时候，家长就可以采取和孩子比赛的方式，看谁吃的又快又香。孩子的胜负欲被激发，也就积极投入到吃饭中了。
+3、给孩子选择的空间
+正确的给孩子选择是让孩子选择“先做”还是“后做”，而不是“做”和“不做”，例如孩子不想洗澡，让孩子选择“是妈妈先洗还是你先洗？”而不是直接说“你到底洗不洗？”
+4、故事人物来引导
+比如孩子不爱学习，可以跟孩子讲囊萤映雪的故事，通过主人公艰苦学习的事迹启发孩子，也是一种引导孩子思考的方法。
+5、转移注意力
+比如大冷天还非要吃冰激凌，不吃不罢休。家长可以通过和孩子商量周末的旅行计划或一会带他去某地游玩等，转移孩子注意力，起到四两拨千斤的效果。
+小学生上课不走神是有方法的！
+1）数字传真
+2）听字训练
+3）词语思维
+4）找差异训练
+5）玩扑克游戏
+6）买一些智力训练的书，每天坚持做练习
+7）玩“开火车”游戏
+8）玩乒乓球干扰注意游戏
+9）复述数字
+10）学播音
+11）抄书
+
+大逻小逻，逐层递分。(v ok)
+
+我哥我嫂
+https://www.tvmao.com/drama/YmFnaiBg
+女工夏一男在新婚当天被一场车祸彻底改变了命运，丈夫彭光明成了植物人，婆婆撒手人寰，只剩彭光荣和彭光亮还有已故大哥留下的两个孩子。夏一男走进彭家，接下长嫂如母的重任。彭光明苏醒却成了傻子，夏一男不离不弃精心照料全家。陆百灵因为爱慕彭光明而憎恨夏一男又下嫁彭光荣，掀起重重矛盾，恩怨不断。陆百灵的表哥陆淮海真诚豁达，是彭光明的主治医生，始终给予彭家真诚的帮助。夏母不幸离世、彭光明也重病去世、陆百灵兴风作浪，夏一男一一面对。俩个孩子的生母突然回归惹出更大的风波令夏一男猝不及防。孩子们渐渐长大，夏一男和陆淮海感情也越走越近，不料陆淮海的前妻却带着女儿从海外归来要求复婚，夏一男再次踏入情感的漩涡。夏一男以善良真诚的本性和强烈的责任感，用自己的宽容和大爱让所有的人都从灰暗走向了阳光，自己也收获了迟来的幸福。
+
+要他敬畏生命，敬畏长辈，这两点一定要.
+
+很难不把这本书和刚刚看过第二遍的另一本书——《最美的教育最简单》作对比，它们之间的差异就像中西医之间的差异，在我看来中医是把人看做一个整体，头痛医脚那种，用同一套经脉什么的理论来对付疾病。《最美》就是这样的书，作者真正想介绍的，并不是一个个具体的方法，而是尊重孩子，给予孩子信任和自由，你掌握了精髓便融会贯通。而西医就简单粗暴多了，生病了就上抗生素，治不了就开刀、切除，把身体看做几个独立的部分的组合。《正面管教》就是这样的书，作者重在每一个细节教给家长该如何。
+https://book.douban.com/review/7891693/
+
+正面管教是一种既不惩罚也不娇纵的管教孩子的方法……孩子只有在一种和善而坚定的气氛中，才能培养出自律、责任感、合作以及自己解决问题的能力，才能学会使他们受益终身的社会技能
+和生活技能，才能取得良好的学业成绩……我们将通过正面管教家长工作坊帮助家长学会如何运用正面管教方法使孩子获得这种能力。
+没有哪个父母不为了孩子而竭尽全力，但最美好的愿望却不一定给孩子带来最好的结果。30多年来，《正面管教》已经成为了管教孩子的“黄金准则”， 《正面管教》的书籍被翻译成16种语言，在美国销量超过400万册，在美国之外的国家销量超过200万册。
+https://baike.baidu.com/item/%E6%AD%A3%E9%9D%A2%E7%AE%A1%E6%95%99/1272338?fr=aladdin
+
+正面管教
+
+2020.06.30
+
+21:   int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+22:       LPTSTR lpCmdLine, int nCmdShow)
+23:   {
+5F435970   push        ebp
+
+
+__imp_?DoModal@CDialog@@UAEHXZ:
+06A60EEC   fisubr      word ptr [eax+43h]
+06A60EEF   pop         edi
+
+
+__imp_?AfxWinMain@@YGHPAUHINSTANCE__@@0PADH@Z:
+06A60E94   jo          __imp_?DoModal@CDialog@@UAEHXZ+3 (06a60eef)
+06A60E96   inc         ebx
+06A60E97   pop         edi
+
+
+AfxWinMain:
+0043A658   jmp         dword ptr [__imp_?AfxWinMain@@YGHPAUHINSTANCE__@@0PADH@Z (06a60e94)]
+
+772735EB   int         3
+程序中遇到int 3则暂停，可查看此时寄存器或内存的临时数据，按执行命令则继续执行。
+
+让程序产生一个interrupt 3
+这个中断通常是给debug使用的
+就是说，程序过运行收到Int 3
+那么会去调用debug服务之类的
+
+visio 2013 中的形状找来源， 选中形状看下一个，搜索下看来源模具。(v ok)
+
+要实习让装viso，找不到安装包，只能找到visio...严重怀疑viso是大家打错visio的结果.
+
+好像说现在只能特殊情况下针对特殊人员才可以打, 优先高危人员. 听说有人打了，128元一支.
+
+仙庙烧鸡深圳地址
+https://ditu.so.com/?k=%E4%BB%99%E5%BA%99%E7%83%A7%E9%B8%A1%E6%B7%B1%E5%9C%B3%E5%BA%97&c=%E6%B7%B1%E5%9C%B3%E5%B8%82&src=seo
+
+重磅！仙庙烧鸡福海店隆重开业！整只烧鸡免费送，连续10天送送送送送！不限量！! 
+https://www.sohu.com/a/335420590_655429
+
+我女儿今年六岁，去年查出眼睛散光全部是250度，近视一点点问题不大，现在正在戴眼镜。听周围有同样经历的人说，如果眼镜有矫正作用的话，经过一段时间是可以把眼镜摘掉的，对吗?
+你女儿的近视散光是遗传的。遗传的近视目前还没有一个人能真正的摘掉，我现在也有一个朋友近视类型和你女儿差不多，近视50度，散光200度！都戴了几十年了！
+https://wenwen.sogou.com/z/q800981590.htm
+
+250度散光，已经属于高度散光了。\r\n高度散光看东西看什么都模糊，无论远近。这是最典型的表现。\r\n高度散光加近视，配镜是一方面，另外最主要的就是及时治疗，改善散光和近视。\r\n近视散光的治i疗，要根据近视散光的程度制定合理的方法。\r\n养成合理的用眼习惯是第一步\r\n建议注意用眼卫生，不在强光或昏暗光线下久视；防止发生视屏终端性眼疲劳（如出现眼干涩、头晕眼花等视屏终端综合症）。\r\n阅读时眼与书的距离为30公分，姿势要端正，不能躺着看书或边走边看，光线要充分。阅读、写字、看电视、打电脑连续40分钟，应闭目休息、远眺5分钟。3个月或者半年到医院复查；注意饮食习惯及营养搭配，避免铬、钙微量元素缺乏。 \r\n及时的服用药物治i疗是第二步\r\n一般医生建议服用乐睛视力营养素，温水冲服，坚持服用一段时间，能很快的降低近视散光度数，提升视力，年龄越小越容易恢复。
+https://muzhi.baidu.com/question/445122232.html
+
+有一部分未成年人，如果他的散光只是单纯性的，没有近视或者弱视的情况，散光的度数又不是很高，是很有可能会随着年龄的增长和发育慢慢缓解。作为家长的我们要时刻关注孩子的用眼习惯，如有不良用眼习惯要及时改进，尽量不要躺着看书或者看电视，用眼1小时左右休息片刻缓解视疲劳是最好的。
+
+那么散光已经250度了算是严重的散光吗,其实这些事情要看发生在了什么人的身上，发生在成年人的身上很可能严重了，因为很有可能会影响工作，如果发生在孩子身上可能影响就没有那么大，因为孩子正处在发育阶段，只要眼睛不近视或者弱视，只是一般性的散光，孩子的视力很有可能就会恢复到正常的视力范围内。但是如果家长朋友们没有很好的监督孩子的用眼习惯，那孩子的恢复就没有希望了。
+
+眼睛散光很常见，这种情况是属于眼睛屈光不正所造成的，于眼睛的角膜的好坏有很大的关系，现在虽然医学很发达，虽然有的医生说可以用激光手术进行治疗，可也不是没有副作用的，对于散光这个问题来说，唯一的解决办法也就是带眼镜进行矫正，因为这是最安全的方法。
+
+8岁的孩子检查需要散瞳检查，如果是散瞳后的结果，需要配戴眼镜，没有别的好方法。平常注意休息，不要熬夜，少玩手机，学习时与设备保持适当的距离，多向远处眺望，多做眼保健操。
+
+
+其实，欣赏一个人，始于颜值，敬于才华，合于性格，久于善良，终于人品。
+
+一般情况下，这个只是筛查的验光单，没有很大的意义。不散光的人基本上很少，大部分都是有或多或少的散光，
+只是看散光度数的大小，孩子的眼球软，所以验光单的度数不准确。需要应用阿托品散瞳后再验光，减去眼睛的调节才准确，
+去医院做个检查看看吧。
+
+抖音找不到，想见。应用于交际微信QQ联系等。适当距离或不见。(v ok)
+新牛津英汉双解,每天100真可量变到质变，如:cage，branch,beach,biliaxxx必(练台球)等.(v ok)
+天道好轮回，苍天放过谁.(少年派-西乡大门划停车位-步行街出租-径贝村人少-坪洲站大仟里)(v ok)
+
+2020.06.29
+
 不能对比复制到右边灰色是因为编码错误，罗马dll接口乱码引起
 
 awendy 16:07:41 "2020.04.23"
@@ -19016,7 +21386,7 @@ if iswindowenabled（ Getwindow(hwnd,gw_owner）） ＝0 then 某窗口为模式窗口
 
 羊UDJ J->最简单的没试?
 
-都不是好友，哪里存在黑
+都不是好友，哪里存在黑.(二ben)
 ---言多必失
 
 你家牛会抽烟不?

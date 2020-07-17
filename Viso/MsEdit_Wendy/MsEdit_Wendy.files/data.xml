@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisioDocument>
+	<DocumentProperties>
+		<Title></Title>
+		<HyperlinkBase href=""></HyperlinkBase>
+	</DocumentProperties>
+	<Pages>
+		<Page ID="0" Name="页-1" NameU="Page-1">
+			<Layer IX="0">
+				<Name>流程图</Name>
+				<NameUniv>Flowchart</NameUniv>
+				<Visible>1</Visible>
+			</Layer>
+			<Layer IX="1">
+				<Name>连接线</Name>
+				<NameUniv>Connector</NameUniv>
+				<Visible>1</Visible>
+			</Layer>
+			<Shapes>
+				<Shape ID="1" UniqueID="{C0C54176-D987-48E9-A5A0-42250FF6BC04}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="MM">2.846456692913384</PinX>
+						<PinY Unit="MM">19.826033464566930</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{D6C697A3-11A7-4238-80DC-7BDF0ACEF3DC}" Name="开始/结束" NameU="Start/End" Master="2">
+					<Text>添加MDS数据文件OnAddfile() </Text>
+					<XForm>
+						<PinX Unit="MM">6.880249343832020</PinX>
+						<PinY Unit="MM">18.716535433070870</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="4" UniqueID="{C4958EA7-33E1-4094-A17C-E69615ACA5DF}" Name="动态连接线" NameU="Dynamic connector" Master="5">
+					<XForm>
+						<PinX Unit="MM">5.888123439052911</PinX>
+						<PinY Unit="MM">18.618110236220470</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="8" UniqueID="{04DE8BFE-395F-4CE1-BA0F-309A101AEB66}" Name="流程" NameU="Process" Master="7">
+					<Text>添加文件后可删除OnDelfile() </Text>
+					<XForm>
+						<PinX Unit="MM">6.880249343832020</PinX>
+						<PinY Unit="MM">18.125984251968500</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="12" UniqueID="{B0932278-1697-444C-BEA1-6B92F78D6456}" Name="动态连接线.12" NameU="Dynamic connector.12" Master="5">
+					<XForm>
+						<PinX Unit="MM">5.888123439052911</PinX>
+						<PinY Unit="MM">18.125984251968500</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="18" UniqueID="{5E26DABF-1447-4B16-8338-D0837A1A57FD}" Name="流程.18" NameU="Process.18" Master="7">
+					<Text>读取或搜索数据OnRead() </Text>
+					<XForm>
+						<PinX Unit="MM">6.880249343832020</PinX>
+						<PinY Unit="MM">17.535433070866141</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="21" UniqueID="{D163EC54-8D97-49F7-82B7-BF048EA3548B}" Name="动态连接线.21" NameU="Dynamic connector.21" Master="5">
+					<XForm>
+						<PinX Unit="MM">5.888123439052911</PinX>
+						<PinY Unit="MM">17.633858267716530</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="22" UniqueID="{7F61D389-132E-4874-89AE-A485E7F83F29}" Name="开始/结束.22" NameU="Start/End.22" Master="2">
+					<Text>退出程序</Text>
+					<XForm>
+						<PinX Unit="MM">6.880249343832020</PinX>
+						<PinY Unit="MM">16.944881889763781</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="23" UniqueID="{AD8A5F29-0D22-4B64-A754-232CB2FB7C1E}" Name="动态连接线.23" NameU="Dynamic connector.23" Master="5">
+					<XForm>
+						<PinX Unit="MM">5.888123439052911</PinX>
+						<PinY Unit="MM">17.141732283464560</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="24" UniqueID="{9C8851CF-4804-4AC0-A4AB-49CFF39FA835}" Name="流程.24" NameU="Process.24" Master="7">
+					<Text>设置mode，max值OnSet()</Text>
+					<XForm>
+						<PinX Unit="MM">3.838582677165355</PinX>
+						<PinY Unit="MM">16.760826771653541</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="25" UniqueID="{9A12BCD5-7B49-4DFA-9B6D-45902479EC6D}" Name="动态连接线.25" NameU="Dynamic connector.25" Master="5">
+					<XForm>
+						<PinX Unit="MM">3.838582677165354</PinX>
+						<PinY Unit="MM">17.063730314960630</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="30" UniqueID="{B119B555-60B9-4FE5-B3AC-CA896DA1C8A5}" Name="单线连接线" NameU="1 legged connector" Master="13">
+					<XForm>
+						<PinX Unit="MM">1.283750799548397</PinX>
+						<PinY Unit="MM">17.783996898056451</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="34" UniqueID="{095DD6A9-49C8-4407-B9BF-067561C471FF}" Name="流程.34" NameU="Process.34" Master="7">
+					<Text>设置搜索条件的编辑框m_item m_TransCode m_time</Text>
+					<XForm>
+						<PinX Unit="MM">1.487183192093954</PinX>
+						<PinY Unit="MM">16.707627558247989</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="36" UniqueID="{BD1518ED-14E3-4F1C-B2EF-A00142D04B8C}" Name="单线连接线.36" NameU="1 legged connector.36" Master="13">
+					<XForm>
+						<PinX Unit="MM">1.651679192293096</PinX>
+						<PinY Unit="MM">17.574814992905608</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="37" UniqueID="{10F50611-9B09-40A2-83E4-8A915F146C60}" Name="单线连接线.37" NameU="1 legged connector.37" Master="13">
+					<XForm>
+						<PinX Unit="MM">1.854537919602155</PinX>
+						<PinY Unit="MM">17.423203551116760</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="38" UniqueID="{51DFC53B-401A-448D-8DCC-4D73D40F1DBA}" Name="单线连接线.38" NameU="1 legged connector.38" Master="13">
+					<XForm>
+						<PinX Unit="MM">2.312992125984252</PinX>
+						<PinY Unit="MM">17.364148433006530</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="39" UniqueID="{7322EED9-40B5-4153-8C6B-764FC019E45B}" Name="判定" NameU="Decision" Master="14">
+					<Text>m_needreadfs</Text>
+					<XForm>
+						<PinX Unit="MM">0.885826771653543</PinX>
+						<PinY Unit="MM">15.579724409448820</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>0</LayerMember>
+					</LayerMem>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>成本</Label>
+					</Prop>
+					<Prop ID="2" Name="ProcessNumber" NameU="ProcessNumber">
+						<Value></Value>
+						<Label>进程编号</Label>
+					</Prop>
+					<Prop ID="3" Name="Owner" NameU="Owner">
+						<Value></Value>
+						<Label>所有者</Label>
+					</Prop>
+					<Prop ID="4" Name="Function" NameU="Function">
+						<Value></Value>
+						<Label>函数</Label>
+					</Prop>
+					<Prop ID="5" Name="StartDate" NameU="StartDate">
+						<Value></Value>
+						<Label>开始日期</Label>
+					</Prop>
+					<Prop ID="6" Name="EndDate" NameU="EndDate">
+						<Value></Value>
+						<Label>结束日期</Label>
+					</Prop>
+					<Prop ID="7" Name="Status" NameU="Status">
+						<Value></Value>
+						<Label>状态</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="40" UniqueID="{C38BB429-5ACA-463A-887C-5EC80E4A7BF4}" Name="动态连接线.40" NameU="Dynamic connector.40" Master="5">
+					<XForm>
+						<PinX Unit="MM">4.129101049868766</PinX>
+						<PinY Unit="MM">16.705216535433070</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="41" UniqueID="{FE24630D-5D85-455F-9161-C350ED39545E}" Name="1-D 文字提示框" NameU="1-D word balloon" Master="15">
+					<Text>MsEdit_WendyDlg.cpp (IDD_MAINDLG)</Text>
+					<XForm>
+						<PinX Unit="MM">6.594488188976376</PinX>
+						<PinY Unit="MM">21.386811023622052</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="44" UniqueID="{4C1EA865-C823-44F7-9A88-828D985D7E83}" Name="Sheet.44" NameU="Sheet.44">
+					<XForm>
+						<PinX Unit="MM">4.714566929133857</PinX>
+						<PinY Unit="MM">12.493274278215230</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="49" UniqueID="{F4F059F2-CF5F-477C-85AF-BB3581F4C4AD}" Name="动态连接线.49" NameU="Dynamic connector.49" Master="5">
+					<Text>是,启动读数据g_Master.Play()
+开始进度条读取文件数据</Text>
+					<XForm>
+						<PinX Unit="MM">1.022801837270340</PinX>
+						<PinY Unit="MM">10.658464566929130</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="50" UniqueID="{5B8AFD43-52F5-4072-B5D9-238B20E5C403}" Name="Sheet.50" NameU="Sheet.50">
+					<XForm>
+						<PinX Unit="MM">3.138943569553805</PinX>
+						<PinY Unit="MM">6.032480314960630</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="51" UniqueID="{B81BFABA-F071-47E4-A958-3669CF440627}" Name="Sheet.51" NameU="Sheet.51">
+					<XForm>
+						<PinX Unit="MM">5.704806430446194</PinX>
+						<PinY Unit="MM">8.394685039370081</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="76" UniqueID="{1CFCA963-EFFA-4F76-B4B5-23703A317402}" Name="动态连接线.76" NameU="Dynamic connector.76" Master="5">
+					<XForm>
+						<PinX Unit="MM">5.017757545931758</PinX>
+						<PinY Unit="MM">13.150672611914910</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="78" UniqueID="{87C7F678-23C5-48A6-82F9-614A4F470DEA}" Name="动态连接线.78" NameU="Dynamic connector.78" Master="5">
+					<Text>否，已缓存有数据，打开ShowData.cpp定时器显示数据
+IDD_SHOWDATA</Text>
+					<XForm>
+						<PinX Unit="MM">2.854330708661417</PinX>
+						<PinY Unit="MM">15.217601771742650</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+				<Shape ID="79" UniqueID="{9DBCE8B3-0577-424C-BE4F-C8D8DB9281D2}" Name="动态连接线.79" NameU="Dynamic connector.79" Master="5">
+					<Text>读取数据完毕显示</Text>
+					<XForm>
+						<PinX Unit="MM">3.346456692913386</PinX>
+						<PinY Unit="MM">8.719488188976378</PinY>
+					</XForm>
+					<LayerMem>
+						<LayerMember>1</LayerMember>
+					</LayerMem>
+				</Shape>
+			</Shapes>
+		</Page>
+	</Pages>
+</VisioDocument>

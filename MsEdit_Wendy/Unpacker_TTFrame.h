@@ -35,7 +35,8 @@ public:
 	
 	void HandleFrame_Simple(BYTE * buff,WORD Len);		// wendy add 2020.06.04
 	void HandleFrame_write_Simple(BYTE * buff,WORD Len);
-	
+
+	void HandleFrame_Fun(_tagTTDataFrame* pStFrame, BYTE * buff,WORD Len);
 	
 	///////////////////////////////////////////////////////////////////////////
 	// from hope's ttframe
