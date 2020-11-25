@@ -2027,6 +2027,7 @@ void CQSNative_Option::ProceDataFrame_136( _tagTTDataFrame * pStFrame , BYTE* pB
 {
 	//if(pStFrame->btTransCode == 136 && pStFrame->btGroupCode == 'A')// check options frame 		
 	static BYTE buf[1024*1024*2];
+	BYTE *pbuf = (BYTE *)&buf;	// wendy add to debug
 	if (nFrameLen>1024*100)
 	{
 		char logstr[100];

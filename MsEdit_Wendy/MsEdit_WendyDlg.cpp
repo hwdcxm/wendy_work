@@ -192,6 +192,18 @@ BOOL CMsEdit_WendyDlg::OnInitDialog()
 	m_strfsize.Format("%d KB = %d MB",m_fsize,g_fileSizeMB);
 	UpdateData(FALSE);
 
+
+	CString title1, title ;
+	GetWindowText(title1) ;		
+	title.Format( "%s", title1) ;
+
+	#ifdef _FUTURES_ONLY
+	title = title + "-futures only";
+	#endif
+
+	SetWindowText( title ) ;
+		
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
